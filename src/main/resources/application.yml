@@ -1,0 +1,35 @@
+# server config
+server:
+  port: 8001
+
+# oracle driver config
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:oracle:thin:@team-greedy.com:1521:xe
+    username: C##JAEGOJAEGO
+    password: JAEGOJAEGO
+    hikari:
+      auto-commit: false
+
+# jpa config
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: oracle
+    properties:
+      hibernate:
+        '[format_sql]': true
+
+#Live Reload 기능 활성화
+  devtools:
+    livereload:
+      enabled: true
+
+  web:
+    resources:
+      static-locations: file:src/main/resources/static/
+
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
