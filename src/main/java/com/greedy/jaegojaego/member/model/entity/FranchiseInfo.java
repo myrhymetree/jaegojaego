@@ -1,10 +1,14 @@
 package com.greedy.jaegojaego.member.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity(name = "FranchiseInfo")
 @Table(name = "FRANCHISE_INFO")
 public class FranchiseInfo {
@@ -31,8 +35,47 @@ public class FranchiseInfo {
     @Column(name = "FRANCHISE_ADDRESS")
     private String address;
 
-    @Column(name = "REGISTRATION_ATTACHMENT_NO")
+    @JoinColumn(name = "REGISTRATION_ATTACHMENT_NO")
     private int registrationAttachmentNo;
     
+    @JoinColumn(name = "CONTRACT_ATTACHMENT_NO")
+    private int contractAttachmentNo;
 
+    @JoinColumn(name = "BANK_ACCOUNT_ATTACHMENT_NO")
+    private int bankAccountAttachmentNo;
+
+    @Column(name = "BANK_ACCOUNT_NO")
+    private int bankAccountNo;
+
+    @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Member supervisorNo;
+
+
+    @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Member writedMember;
+
+    @Column(name = "FRANCHISE_PHONE")
+    private int phone;
+
+    @Override
+    public String toString() {
+        return "FranchiseInfo{" +
+                "representativeNo=" + representativeNo +
+                ", representativeName='" + representativeName + '\'' +
+                ", representativePhone=" + representativePhone +
+                ", representativeEmail='" + representativeEmail + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", businessRegistrationNo=" + businessRegistrationNo +
+                ", address='" + address + '\'' +
+                ", registrationAttachmentNo=" + registrationAttachmentNo +
+                ", contractAttachmentNo=" + contractAttachmentNo +
+                ", bankAccountAttachmentNo=" + bankAccountAttachmentNo +
+                ", bankAccountNo=" + bankAccountNo +
+                ", supervisorNo=" + supervisorNo +
+                ", writedMember=" + writedMember +
+                ", phone=" + phone +
+                '}';
+    }
 }

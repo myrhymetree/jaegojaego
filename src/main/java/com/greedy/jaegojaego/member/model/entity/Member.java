@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.member.model.entity;
 
 import lombok.*;
 
+import javax.naming.Name;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -23,16 +24,13 @@ import java.util.Set;
 @Builder
 public class Member implements Serializable {
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<MemberRole> roleSet = new HashSet<>();
+//    @ElementCollection(fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<MemberRole> roleSet = new HashSet<>();
 
-    public void addMemberRole(MemberRole memberRole) {
-        roleSet.add(memberRole);
-    }
-
-    @EmbeddedId
-    private AdminInfo adminInfo;
+//    public void addMemberRole(MemberRole memberRole) {
+//        roleSet.add(memberRole);
+//    }
 
     @Id
     @GeneratedValue(
@@ -72,6 +70,16 @@ public class Member implements Serializable {
     @Column(name = "MEMBER_DIVISION")
     private String memberDivision;
 
+    @JoinColumn(name = "AUTHORITY_CODE")
+    private int authorityCode;
+
+    @JoinColumns({
+            @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false),
+            @JoinColumn(name = "AUTHORITY_NO", insertable = false, updatable = false)
+    })
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private MemberRole memberRole;
+
     @Override
     public String toString() {
         return "Member{" +
@@ -86,6 +94,7 @@ public class Member implements Serializable {
                 ", franchiseDivision='" + franchiseDivision + '\'' +
                 ", officeDivision='" + officeDivision + '\'' +
                 ", memberDivision='" + memberDivision + '\'' +
+                ", authorityCode=" + authorityCode +
                 '}';
     }
 }

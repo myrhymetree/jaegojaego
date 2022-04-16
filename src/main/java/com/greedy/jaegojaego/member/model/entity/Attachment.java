@@ -35,6 +35,5 @@ public class Attachment {
     private int attachmentKindNo;
 
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE")
-    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
     private int franchiseReprentativeNo;
 }

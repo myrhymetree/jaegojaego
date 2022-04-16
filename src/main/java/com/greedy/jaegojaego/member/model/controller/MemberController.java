@@ -19,6 +19,11 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    @GetMapping("/login")
+    public void memberLoginForm() {
+
+    }
+
     @GetMapping("regist")
     public ModelAndView sendRegistView() {
 
@@ -28,7 +33,7 @@ public class MemberController {
     @PostMapping("/regist")
     public ModelAndView registMember(ModelAndView mv, MemberDTO newMember, RedirectAttributes rttr) {
 
-        newMember.getPhone();
+//        newMember.getPhone();
 
         memberService.registNewMember(newMember);
 

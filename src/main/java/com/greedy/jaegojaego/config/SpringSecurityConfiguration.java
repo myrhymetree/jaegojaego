@@ -43,6 +43,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
+                .antMatchers("/member/login").permitAll()
                 .anyRequest().permitAll()
             .and()
                 .formLogin()

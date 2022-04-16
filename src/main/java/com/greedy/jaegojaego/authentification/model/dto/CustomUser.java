@@ -11,13 +11,14 @@ public class CustomUser extends User {
     private int memberNo;
     private String memberId;
     private String memberPwd;
-    private String nickname;
-    private String phone;
-    private String email;
-    private String address;
-    private java.sql.Date enrollDate;
-    private String memberRole;
-    private String memberStatus;
+    private java.sql.Date memberPwdUpdateDate;
+    private String memberPwdInitStatus;
+    private java.sql.Date memberCreatedDate;
+    private java.sql.Date memberRemovedDate;
+    private String memberRemoveStatus;
+    private String franchiseDivision;
+    private String officeDivision;
+    private String memberDivision;
 
     public CustomUser(MemberDTO member, Collection<? extends GrantedAuthority> authorities) {
         super(member.getMemberId(), member.getMemberPwd(), authorities);
@@ -29,12 +30,12 @@ public class CustomUser extends User {
         this.memberNo = member.getMemberNo();
         this.memberId = member.getMemberId();
         this.memberPwd = member.getMemberPwd();
-        this.nickname = member.getNickname();
-        this.phone = member.getPhone();
-        this.email = member.getEmail();
-        this.address = member.getAddress();
-        this.enrollDate = member.getEnrollDate();
-        this.memberRole = member.getMemberRole();
-        this.memberStatus = member.getMemberStatus();
+        this.memberPwdUpdateDate = member.getMemberPwdUpdateDate();
+        this.memberPwdInitStatus = member.getMemberPwdInitStatus();
+        this.memberCreatedDate = member.getMemberCreatedDate();
+        this.memberRemovedDate = member.getMemberRemovedDate();
+        this.franchiseDivision = member.getFranchiseDivision();
+        this.officeDivision = member.getOfficeDivision();
+        this.memberDivision = member.getMemberDivision();
     }
 }

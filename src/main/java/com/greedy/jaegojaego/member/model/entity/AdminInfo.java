@@ -10,15 +10,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
+@Entity(name = "AdminInfo")
 @Table(name = "ADMIN_INFO")
-@Embeddable
 public class AdminInfo implements Serializable {
 
     @Column(name = "COMPANY_PHONE_NUMBER")
     private int companyPhoneNumber;
 
-
+    @Id
     @Column(name = "MEMBER_NO")
     private Integer memberNo;
 

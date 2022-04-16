@@ -2,7 +2,9 @@ package com.greedy.jaegojaego.authentification.model.service;
 
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.member.model.dto.MemberRoleDTO;
 import com.greedy.jaegojaego.member.model.entity.Member;
+import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +41,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         MemberDTO loginMember =  modelMapper.map(member, MemberDTO.class);
 
+        MemberRole memberRole = member.getMemberRole();
+
+        MemberRoleDTO memberRoleDTO = modelMapper.map(memberRole, MemberRoleDTO.class);
+
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority(loginMember.getMemberRole()));
+        authorities.add(new SimpleGrantedAuthority(loginMember.getAuthority().getAuthorityName()));
 
         return new CustomUser(loginMember, authorities);
     }
