@@ -70,12 +70,9 @@ public class Member implements Serializable {
     @Column(name = "MEMBER_DIVISION")
     private String memberDivision;
 
-    @JoinColumn(name = "AUTHORITY_CODE")
-    private int authorityCode;
-
     @JoinColumns({
             @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false),
-            @JoinColumn(name = "AUTHORITY_NO", insertable = false, updatable = false)
+            @JoinColumn(name = "AUTHORITY_CODE", insertable = false, updatable = false)
     })
     @ManyToOne(cascade = CascadeType.PERSIST)
     private MemberRole memberRole;
@@ -94,7 +91,6 @@ public class Member implements Serializable {
                 ", franchiseDivision='" + franchiseDivision + '\'' +
                 ", officeDivision='" + officeDivision + '\'' +
                 ", memberDivision='" + memberDivision + '\'' +
-                ", authorityCode=" + authorityCode +
                 '}';
     }
 }

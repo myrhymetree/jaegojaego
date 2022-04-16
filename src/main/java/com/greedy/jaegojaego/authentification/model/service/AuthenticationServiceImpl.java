@@ -41,9 +41,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         MemberDTO loginMember =  modelMapper.map(member, MemberDTO.class);
 
-        MemberRole memberRole = member.getMemberRole();
+//        MemberRole memberRole = member.getMemberRole();
 
-        MemberRoleDTO memberRoleDTO = modelMapper.map(memberRole, MemberRoleDTO.class);
+//        MemberRoleDTO memberRoleDTO = modelMapper.map(memberRole, MemberRoleDTO.class);
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 

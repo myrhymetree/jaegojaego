@@ -18,7 +18,7 @@ public class MemberRole {
     @EmbeddedId
     private MemberRolePK memberRolePK;
 
-    @JoinColumn(name = "AUTHORITY_CODE")
+    @JoinColumn(name = "AUTHORITY_CODE", insertable = false, updatable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Authority authority;
 

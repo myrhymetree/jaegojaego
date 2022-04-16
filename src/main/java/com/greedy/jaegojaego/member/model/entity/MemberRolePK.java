@@ -17,7 +17,7 @@ public class MemberRolePK implements Serializable {
     @JoinColumn(name = "MEMBER_NO")
     private int memberNo;
 
-    @Column(name = "AUTHORITY_NO")
-    private int authorityNo;
+    @Column(name = "AUTHORITY_CODE")
+    private int authorityCode;
 
 }
