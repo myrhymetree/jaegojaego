@@ -1036,8 +1036,8 @@ ul.nav-second-level {
     color: #8095a8 !important;
 }
 .minimalize-styl-2 {
-    padding: 4px 12px;
-    margin: 14px 5px 5px 20px;
+    padding: 4px 4px;
+    margin: 14px 5px 5px 2px;
     font-size: 14px;
     float: left;
 }
@@ -1066,7 +1066,7 @@ ul.nav-second-level {
     display: none;
 }
 .navbar.navbar-static-top {
-    padding: 0;
+    padding: 0px 20px 0px 15px;
     width: 100%;
     align-items: inherit;
 }
@@ -4604,7 +4604,7 @@ video {
     padding: 20px 10px 40px;
 }
 #page-wrapper {
-    padding: 0 15px;
+    /*padding: 0 15px;*/
     position: relative !important;
     flex-shrink: 1;
     width: calc(100% - 220px);
@@ -9843,4 +9843,36 @@ body.md-skin {
     #page-wrapper {
         margin: 0;
     }
+}
+
+/* 추가 css 코드 */
+/* 상단 navbar 가로 길이 수정 */
+.row {
+    margin-left: 0px !important;
+}
+
+/* 페이지명, 페이지경로 표시 영역 */
+.body-header {
+    height: 5.5%;
+    background-color: white;
+}
+
+/* 페이지명 */
+.menu-title {
+    font-size: 20px;
+    font-weight: bold;
+    padding-top: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+/* 페이지경로 */
+.menu-path {
+    font-size: 15px;
+    font-weight: normal;
+    margin-left: 0.5rem;
+}
+
+/* 페이지경로 링크 색상 제거 */
+.menu-path > a {
+    color: black;
 }
