@@ -1,0 +1,138 @@
+.chartAreaWhiteBoard {
+
+    border: 0.5px solid gray;
+    position: absolute;
+    left:2%;
+    top: 11%;
+    height: 250px;
+    width: 1260px;
+    background: white;
+}
+
+.backlogListWhiteboard {
+    border: 0.5px solid gray;
+    position: absolute;
+    top: 48%;
+    left: 2%;
+    height: 350px;
+    width: 1260px;
+    background: white;
+}
+
+.button {
+    background: #1AB394;
+    color: white;
+    border: none;
+    box-shadow: 1px 1px gray;
+    cursor: pointer;
+}
+
+.moveButton {
+    position: absolute;
+    left: 2%;
+    top: 45%;
+}
+
+
+.calendar-button {
+    position: absolute;
+    top: 3%;
+    left: 91%;
+}
+
+.calendarback-button {
+    position: absolute;
+    top: 3%;
+    left: 93%;
+    z-index: 1050;
+}
+
+.barGraph {
+    border: 0.5px solid gray;
+    height: 230px;
+    width: 650px;
+    position: absolute;
+    left: 1%;
+    top: 3%;
+}
+
+.circleGraph {
+    border: 0.5px solid gray;
+    height: 230px;
+    width: 400px;
+    position:absolute;
+    left: 57%;
+    top: 3%;
+}
+
+.yearBarGraph {
+    position: absolute;
+    left: 90%;
+    top: 3%;
+}
+
+.YearCircleGraph {
+    position: absolute;
+    left: 85%;
+    top: 3%;
+}
+
+
+.itemList {
+    position: absolute;
+    left: 1.5%;
+    top: 10%;
+}
+
+.month {
+    position: absolute;
+    top: 85%;
+}
+
+.january {
+    left: 5%;
+}
+
+.february {
+    left: 12%;
+}
+
+.march {
+    left: 19%;
+}
+
+.april {
+    left: 26%;
+}
+
+.may {
+    left: 33%;
+}
+
+.june {
+    left: 40%;
+}
+
+.july {
+    left: 47%;
+}
+
+.august {
+    left: 54%;
+}
+
+.september {
+    left: 61%;
+}
+
+.october {
+    left: 68%;
+}
+
+.november {
+    left: 75%;
+}
+
+.december {
+    left: 82%;
+}
