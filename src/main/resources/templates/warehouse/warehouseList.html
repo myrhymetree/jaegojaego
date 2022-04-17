@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<!-- 컨텐츠 작성 영역 -->
+
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>전체 입고</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">3건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>입고 완료</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">2건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>입고 정보</h2>
+
+    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+           placeholder="Search in table">
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>입고 번호</th>
+            <th>카테고리</th>
+            <th>품번</th>
+            <th>품명</th>
+            <th>품목</th>
+            <th>발주 일시</th>
+            <th>작업 상태</th>
+            <th>상세 정보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>2</td>
+            <td>20222022</td>
+            <td>Win 95+</td>
+            <td>Win 95+</td>
+            <td>Win 95+</td>
+            <td>Win 95+</td>
+            <td>4</td>
+            <td>입하 대기</td>
+            <td>
+                <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>20222023</td>
+            <td>Win 95+</td>
+            <td>Win 95+</td>
+            <td>Win 95+</td>
+            <td>Win 95+</td>
+            <td>5</td>
+            <td>입고 완료</td>
+            <td>
+                <button type="button" class="btn btn-w-m btn-primary" onclick="location.href='/warehouseDetail'">상세 조회</button>
+            </td>
+        </tr>
+
+        </tfoot>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+
+
+
+
+<div class="footer">
+    <div class="float-right">
+        10GB of <strong>250GB</strong> Free.
+    </div>
+    <div>
+        <strong>Copyright</strong> Example Company &copy; 2014-2018
+    </div>
+</div>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>
