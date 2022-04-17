@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.List;
+import java.util.Map;
+
 @EnableWebSecurity
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -41,9 +44,20 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        Map<String, List<String>> permitListMap = authenticationService.getPermitListMap();
+        System.out.println("permitListMap = " + permitListMap);
+        List<String> adminPermitList = permitListMap.get("adminPermitList");
+        List<String> memberPermitList = permitListMap.get("memberPermitList");
+
+        adminPermitList.forEach(url -> System.out.println("admin permit list : " + url));
+        memberPermitList.forEach(url -> System.out.println("member permit list : " + url));
+
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/member/login").permitAll()
+//                .antMatchers("/member/login").permitAll()
+//                .antMatchers(memberPermitList.toArray(new String[memberPermitList.size()])).hasAnyRole("ROLE_MEMBER", "ROLE_ADMIN")
+//                .antMatchers(adminPermitList.toArray(new String[adminPermitList.size()])).hasRole("ROLE_ADMIN")
                 .anyRequest().permitAll()
             .and()
                 .formLogin()

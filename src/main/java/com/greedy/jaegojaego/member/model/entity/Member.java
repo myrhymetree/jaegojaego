@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Member")
@@ -70,12 +71,9 @@ public class Member implements Serializable {
     @Column(name = "MEMBER_DIVISION")
     private String memberDivision;
 
-    @JoinColumns({
-            @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false),
-            @JoinColumn(name = "AUTHORITY_CODE", insertable = false, updatable = false)
-    })
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private MemberRole memberRole;
+    @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false)
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<MemberRole> memberRoleList;
 
     @Override
     public String toString() {
@@ -91,6 +89,7 @@ public class Member implements Serializable {
                 ", franchiseDivision='" + franchiseDivision + '\'' +
                 ", officeDivision='" + officeDivision + '\'' +
                 ", memberDivision='" + memberDivision + '\'' +
+                ", memberRoleList=" + memberRoleList +
                 '}';
     }
 }
