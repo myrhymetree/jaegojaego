@@ -11,15 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/client")
 public class ClientController {
 
-    private final ClientService clientService;
-
-    @Autowired
-    public ClientController(ClientService clientService){this.clientService = clientService; }
-
     @GetMapping("/list")
-    public ModelAndView clientList(){
+    public ModelAndView clientList(ModelAndView mv) {
 
-        return new ModelAndView("/client/clientList");
+        mv.setViewName("/client/clientList");
+
+        return mv;
     }
 
 }
