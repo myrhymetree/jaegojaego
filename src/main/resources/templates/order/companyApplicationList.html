@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .company-order-output {
+            background-color: #1a7bb9;
+            color: white;
+            cursor: pointer;
+            width: 50px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="/common/header.html"></div>
+
+    <div class="ibox ">
+        <div class="body-header">
+            <div class="menu-title">발주 신청</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 본사 발주 관리 / <span style="font-weight: bold">발주 신청서</span></div>
+        </div>
+
+        <div class="row" style="margin-top: 30px; height: 590px;">
+            <div class="col-lg-6">
+                <div class="ibox " style="width: 1000px; margin-left: 150px">
+                    <div class="ibox-title">
+                        <h3 style="font-weight: bold">발주 신청서 출력</h3>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <table class="table table-bordered" style="text-align: center">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>물품 이름</th>
+                                <th>거래처명</th>
+                                <th>수량</th>
+                                <th>발주 신청서</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>지로스팅 커피원두 1kg</td>
+                                <td>A 거래처</td>
+                                <td>1000</td>
+                                <td><button class="company-order-output">출력</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>1</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>1</td>
+                                <td>@twitter</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+
+</body>
+</html>

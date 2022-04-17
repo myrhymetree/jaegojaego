@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Locale;
+
 @Controller
 @RequestMapping("/order")
 public class OrderController {
@@ -39,6 +41,22 @@ public class OrderController {
     public ModelAndView companyOrderRegist(ModelAndView mv) {
 
         mv.setViewName("/order/companyOrderRegist");
+
+        return mv;
+    }
+
+    @PostMapping("companyorderregist")
+    public ModelAndView companyOrderApplicationList(ModelAndView mv, Locale locale) {
+
+        mv.setViewName("/order/companyApplicationList");
+
+        return mv;
+    }
+
+    @GetMapping("franchiseorderregist")
+    public ModelAndView franchiseOrderRegist(ModelAndView mv) {
+
+        mv.setViewName("/order/franchiseOrderRegist");
 
         return mv;
     }
