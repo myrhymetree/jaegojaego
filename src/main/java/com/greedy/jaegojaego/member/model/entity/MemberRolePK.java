@@ -14,7 +14,7 @@ import java.util.List;
 @Embeddable
 public class MemberRolePK implements Serializable {
 
-    @JoinColumn(name = "MEMBER_NO")
+    @Column(name = "MEMBER_NO")
     private int memberNo;
 
     @Column(name = "AUTHORITY_CODE")

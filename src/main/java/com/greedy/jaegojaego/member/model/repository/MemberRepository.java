@@ -1,9 +1,12 @@
 package com.greedy.jaegojaego.member.model.repository;
 
 import com.greedy.jaegojaego.member.model.entity.Member;
+import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Integer> {
@@ -13,5 +16,10 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     @Query(value = "SELECT a.memberNo FROM Member a WHERE a.memberId = ?1")
     Integer duplicationCheckId(String memberId);
+
+
+//    MemberRole findMemberRoleByMemberNo(int memberNo);
+
+    List<MemberRole> findByMemberNo(int memberNo);
 }
 

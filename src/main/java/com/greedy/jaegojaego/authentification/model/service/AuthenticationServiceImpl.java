@@ -13,24 +13,35 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
+@SessionAttributes("loginMember")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
+    private final ModelAndView mv;
 
     @Autowired
-    public AuthenticationServiceImpl(MemberRepository memberRepository, ModelMapper modelMapper) {
+    public AuthenticationServiceImpl(MemberRepository memberRepository, ModelMapper modelMapper, ModelAndView mv) {
 
         this.memberRepository = memberRepository;
         this.modelMapper = modelMapper;
+        this.mv = mv;
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Member member = memberRepository.findMemberByMemberId(username);
@@ -39,16 +50,41 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(member == null) {
             throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
         }
+
+        List<MemberRole> memberRoleList = member.getMemberRoleList();
+
+//        List<MemberRole> memberRoleList = memberRepository.findByMemberNo(member.getMemberNo());
+        System.out.println("memberRole = " + memberRoleList);
+
         MemberDTO loginMember =  modelMapper.map(member, MemberDTO.class);
 
-//        MemberRole memberRole = member.getMemberRole();
+        mv.addObject("loginMember", loginMember);
 
-//        MemberRoleDTO memberRoleDTO = modelMapper.map(memberRole, MemberRoleDTO.class);
+//        MemberRoleDTO memberRoleDTO = modelMapper.map(memberRoleList, MemberRoleDTO.class);
+
+        List<MemberRoleDTO> memberRoleDTOList = memberRoleList.stream().map(memberRole -> modelMapper.map(memberRole, MemberRoleDTO.class)).collect(Collectors.toList());
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority(loginMember.getAuthority().getAuthorityName()));
+        authorities.add(new SimpleGrantedAuthority(memberRoleDTOList.get(0).getAuthority().getAuthorityName()));
 
         return new CustomUser(loginMember, authorities);
+    }
+
+    @Override
+    public Map<String, List<String>> getPermitListMap() {
+
+        Map<String, List<String>> permitListMap = new HashMap<>();
+        List<String> adminPermitList = new ArrayList<>();
+        List<String> memberPermitList = new ArrayList<>();
+
+        adminPermitList.add("/member/regist");
+
+        memberPermitList.add("/member/myInfo");
+
+        permitListMap.put("adminPermitList", adminPermitList);
+        permitListMap.put("memberPermitList", memberPermitList);
+
+        return permitListMap;
     }
 }

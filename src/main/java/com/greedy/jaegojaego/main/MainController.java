@@ -4,13 +4,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class MainController {
 
-    @GetMapping({"/", "/main"})
-    public String mainView() {
+    @GetMapping("/")
+    public String loginView(HttpServletRequest request) {
 
-        return "main/main";
+        System.out.println("session : " + request.getSession().getAttribute("loginMember"));
+
+        if(request.getSession().getAttribute("loginMember") == null) {
+
+            return "member/login";
+
+        } else {
+
+            return "main/main";
+        }
     }
 
     @PostMapping(value = "/")
@@ -18,4 +29,5 @@ public class MainController {
 
         return "redirect:/";
     }
+
 }
