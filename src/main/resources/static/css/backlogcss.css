@@ -1,18 +1,27 @@
 .chartAreaWhiteBoard {
-
     border: 0.5px solid gray;
     position: absolute;
     left:2%;
-    top: 11%;
-    height: 250px;
+    top: 17%;
+    height: 230px;
     width: 1260px;
+    background: white;
+}
+
+.whiteboardForCalendar {
+    border: 0.5px solid gray;
+    position: absolute;
+    left:-0.1%;
+    top: -0.5%;
+    height: 600px;
+    width: 1262px;
     background: white;
 }
 
 .backlogListWhiteboard {
     border: 0.5px solid gray;
     position: absolute;
-    top: 48%;
+    top: 51%;
     left: 2%;
     height: 350px;
     width: 1260px;
@@ -30,9 +39,8 @@
 .moveButton {
     position: absolute;
     left: 2%;
-    top: 45%;
+    top: 48%;
 }
-
 
 .calendar-button {
     position: absolute;
@@ -49,7 +57,7 @@
 
 .barGraph {
     border: 0.5px solid gray;
-    height: 230px;
+    height: 215px;
     width: 650px;
     position: absolute;
     left: 1%;
@@ -58,10 +66,19 @@
 
 .circleGraph {
     border: 0.5px solid gray;
-    height: 230px;
+    height: 215px;
     width: 400px;
     position:absolute;
     left: 57%;
+    top: 3%;
+}
+
+.barGraphForOut {
+    border: 0.5px solid gray;
+    height: 215px;
+    width: 1050px;
+    position: absolute;
+    left: 5%;
     top: 3%;
 }
 
@@ -77,12 +94,17 @@
     top: 3%;
 }
 
+.itemListForOutBarGraph {
+    position: absolute;
+    left: 80%;
+    top: 3%;
+}
+
 .YearCircleGraph {
     position: absolute;
     left: 76%;
     top: 3%;
 }
-
 
 .itemList {
     position: absolute;
