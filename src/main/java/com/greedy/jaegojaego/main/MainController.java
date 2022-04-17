@@ -1,8 +1,11 @@
 package com.greedy.jaegojaego.main;
 
+import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,16 +15,19 @@ public class MainController {
     @GetMapping("/")
     public String loginView(HttpServletRequest request) {
 
-        System.out.println("session : " + request.getSession().getAttribute("loginMember"));
-
-        if(request.getSession().getAttribute("loginMember") == null) {
-
-            return "member/login";
-
-        } else {
-
+//        MemberDTO loginMember = (MemberDTO) request.getSession().getAttribute("loginMember");
+//
+//        System.out.println("session : " + loginMember);
+//
+//        if(loginMember == null) {
+//
+//            return "member/login";
+//
+//        } else {
+//
+//            return "main/main";
+//        }
             return "main/main";
-        }
     }
 
     @PostMapping(value = "/")

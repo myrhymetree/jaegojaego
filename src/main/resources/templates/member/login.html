@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
 
-    <link th:href="@{css/animate.css}" rel="stylesheet">
-    <link th:href="@{css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 
-    <link th:href="@{css/plugins/iCheck/custom.css}" rel="stylesheet">
-    <link th:href="@{css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
 </head>
 <body class="gray-bg">
 
 <!-- 컨텐츠 작성 영역 -->
-
 
 <div align="center">
 
@@ -31,11 +30,11 @@
         <form class="m-t" role="form" method="post" action="/member/login" id="loginForm">
 <!--                <span class="col-md-9">-->
 <!--                        <span class="form-check abc-radio abc-radio-info form-check-inline">-->
-<!--                            <input class="form-check-input" type="radio" id="inlineRadio1" value="option1" name="radioInline" checked="">-->
+<!--                            <input class="form-check-input" type="radio" id="inlineRadio1" value="1" name="authority" checked="">-->
 <!--                            <label class="form-check-label" for="inlineRadio1"> 본사 직원 </label>-->
 <!--                        </span>-->
 <!--                        <span class="form-check abc-radio abc-radio-info form-check-inline">-->
-<!--                            <input class="form-check-input" type="radio" id="inlineRadio2" value="option2" name="radioInline">-->
+<!--                            <input class="form-check-input" type="radio" id="inlineRadio2" value="3" name="authority">-->
 <!--                            <label class="form-check-label" for="inlineRadio2"> 가맹점 </label>-->
 <!--                        </span>-->
 <!--                </span>-->
@@ -59,12 +58,12 @@
 
 
 <!-- Mainly scripts -->
-<script th:src="@{js/jquery-3.1.1.min.js}"></script>
-<script th:src="@{js/popper.min.js}"></script>
-<script th:src="@{js/bootstrap.js}"></script>
+<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
 
 <!-- iCheck -->
-<script th:src="@{js/plugins/iCheck/icheck.min.js}"></script>
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
 <script>
     $(document).ready(function () {
         $('.i-checks').iCheck({
@@ -74,9 +73,5 @@
     });
 </script>
 
-
-
-
-<th:block th:replace="/common/footer.html"></th:block>
 </body>
 </html>

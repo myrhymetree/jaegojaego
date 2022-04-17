@@ -1,11 +1,20 @@
 package com.greedy.jaegojaego.authentification.model.dto;
 
+import com.greedy.jaegojaego.member.model.dto.AuthorityDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.member.model.dto.MemberRoleDTO;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.List;
 
+@Setter
+@Getter
+@ToString
 public class CustomUser extends User {
 
     private int memberNo;
@@ -20,10 +29,16 @@ public class CustomUser extends User {
     private String officeDivision;
     private String memberDivision;
 
+    private List<AuthorityDTO> authorityList;
+
     public CustomUser(MemberDTO member, Collection<? extends GrantedAuthority> authorities) {
         super(member.getMemberId(), member.getMemberPwd(), authorities);
 
         setDetails(member);
+
+        System.out.println("[ROLE_ADMIN]".equals(authorities));
+
+        System.out.println("authorities는 " + authorities);
     }
 
     private void setDetails(MemberDTO member) {
@@ -37,5 +52,6 @@ public class CustomUser extends User {
         this.franchiseDivision = member.getFranchiseDivision();
         this.officeDivision = member.getOfficeDivision();
         this.memberDivision = member.getMemberDivision();
+        this.authorityList = member.getAuthorityDTOList();
     }
 }

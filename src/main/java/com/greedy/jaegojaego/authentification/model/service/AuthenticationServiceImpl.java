@@ -66,7 +66,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority(memberRoleDTOList.get(0).getAuthority().getAuthorityName()));
+        for(int i = 0; i < memberRoleDTOList.size(); i++) {
+            authorities.add(new SimpleGrantedAuthority(memberRoleDTOList.get(i).getAuthority().getAuthorityName()));
+        }
+        System.out.println(authorities);
 
         return new CustomUser(loginMember, authorities);
     }
@@ -77,13 +80,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Map<String, List<String>> permitListMap = new HashMap<>();
         List<String> adminPermitList = new ArrayList<>();
         List<String> memberPermitList = new ArrayList<>();
+        List<String> franchisePermitList = new ArrayList<>();
 
-        adminPermitList.add("/member/regist");
-
-        memberPermitList.add("/member/myInfo");
+        memberPermitList.add("/");
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("memberPermitList", memberPermitList);
+        permitListMap.put("franchisePermitList", franchisePermitList);
 
         return permitListMap;
     }

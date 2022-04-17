@@ -2,6 +2,8 @@ package com.greedy.jaegojaego.member.model.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -22,5 +24,5 @@ public class MemberDTO {
     private String officeDivision;
     private String memberDivision;
 
-    private AuthorityDTO authority;
+    private List<AuthorityDTO> authorityDTOList;
 }

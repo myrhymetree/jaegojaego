@@ -49,15 +49,16 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
         System.out.println("permitListMap = " + permitListMap);
         List<String> adminPermitList = permitListMap.get("adminPermitList");
         List<String> memberPermitList = permitListMap.get("memberPermitList");
+        List<String> franchisePermitList = permitListMap.get("franchisePermitList");
 
         adminPermitList.forEach(url -> System.out.println("admin permit list : " + url));
         memberPermitList.forEach(url -> System.out.println("member permit list : " + url));
 
         http.csrf().disable()
                 .authorizeHttpRequests()
-//                .antMatchers("/member/login").permitAll()
-//                .antMatchers(memberPermitList.toArray(new String[memberPermitList.size()])).hasAnyRole("ROLE_MEMBER", "ROLE_ADMIN")
-//                .antMatchers(adminPermitList.toArray(new String[adminPermitList.size()])).hasRole("ROLE_ADMIN")
+                .antMatchers(memberPermitList.toArray(new String[memberPermitList.size()])).hasAnyRole("MEMBER", "ADMIN")
+                .antMatchers(adminPermitList.toArray(new String[adminPermitList.size()])).hasRole("ADMIN")
+                .antMatchers(franchisePermitList.toArray(new String[adminPermitList.size()])).hasRole("FRANCHISE")
                 .anyRequest().permitAll()
             .and()
                 .formLogin()
