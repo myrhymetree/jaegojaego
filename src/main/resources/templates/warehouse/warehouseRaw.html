@@ -18,7 +18,7 @@
     <div class="col-lg-3">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>입고, 입하 상세 정보</h5>
+                <h5>가공 대기 창고</h5>
             </div>
             <div class="ibox-content">
                 <h1 class="no-margins">3건</h1>
@@ -44,7 +44,7 @@
 <!-- 테이블 시작 -->
 <div class="ibox-content">
 
-    <h2>입고 정보</h2>
+    <h2>가공 대기 창고</h2>
 
     <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
            placeholder="Search in table">
@@ -73,6 +73,9 @@
             <td>Win 95+</td>
             <td>4</td>
             <td>입하 대기</td>
+            <td>
+                <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
+            </td>
         </tr>
         <tr>
             <td>1</td>
@@ -83,7 +86,11 @@
             <td>Win 95+</td>
             <td>5</td>
             <td>입고 완료</td>
+            <td>
+                <button type="button" class="btn btn-w-m btn-primary" onclick="location.href='/warehouseDetail'">상세 조회</button>
+            </td>
         </tr>
+
         </tfoot>
     </table>
 </div>
