@@ -9876,3 +9876,12 @@ body.md-skin {
 .menu-path > a {
     color: black;
 }
+
+/* body content 영역 설정 */
+.body-container {
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-right: 1%;
+    background-color: white;
+    height: 85%;
+}
