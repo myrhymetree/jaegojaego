@@ -1,0 +1,9 @@
+.menuListWhiteBoard {
+    border: 0.5px solid gray;
+    position: absolute;
+    left:2%;
+    top: 11%;
+    height: 650px;
+    width: 400px;
+    background: white;
+}

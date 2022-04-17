@@ -1,0 +1,34 @@
+/* 공지사항 css 파일 */
+
+.search-area {
+    position: relative;
+    text-align: center;
+    width: 20%;
+    margin-left: 10%;
+    padding-top: 2%;
+}
+
+.search-area input {
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid black;
+    margin: 10px 0;
+    padding: 10px 12px;
+}
+
+.fa-search {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    margin: 0;
+}
+
+#boardTable {
+    /*margin-top: 5%;*/
+    margin: 5% auto;
+    width: 90%;
+}
+
+#boardTable th {
+    font-size: 20px;
+}
