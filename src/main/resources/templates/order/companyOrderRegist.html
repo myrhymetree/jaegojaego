@@ -13,7 +13,25 @@
             margin-bottom: 10px;
             border: none;
             cursor: pointer;
+            color: white;
         }
+
+        .order-table {
+            border: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .order-table tr, th, td {
+            border: none;
+        }
+
+        .order-select-item {
+            margin-top: 30px;
+            background-color: rgba(169, 169, 169, 0.4);
+            height: 300px;
+        }
+
     </style>
 </head>
 
@@ -22,32 +40,38 @@
     <div th:replace="/common/header.html"></div>
 
     <div class="ibox ">
-        <div class="ibox-title">
+        <div class="body-header">
+            <div class="menu-title">발주 신청</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 본사 발주 관리 / <a th:href="@{/order/companyorderregist}" style="font-weight: bold">발주 신청</a></div>
+        </div>
+        <div class="ibox-title" style="margin-top: 30px">
             <h2 style="font-weight: bold">물품 찾기</h2>
         </div>
         <div class="ibox-content">
             <p style="color: rgba(255, 0, 0, 0.3); font-weight: bold">
                 * 찾으실 물품의 카테고리/이름을 통해 검색할 수 있습니다. *
             </p>
-            <input type="text" placeholder="item..." data-provide="typeahead" data-source='["item 1","item 2","item 3"]' class="form-control" />
-            <form action="/order/companyorderregist" type="post">
-                <div class="m-t-sm">
-                    <table border="none" align="center">
-                        <tr style="font-weight: bold; border: none">
-                            <th>물품 명</th>
-                            <th>물품 가격</th>
-                            <th>물품 수량</th>
+            <input type="text" placeholder="물품 카테고리/이름을 입력해주세요." data-provide="typeahead" data-source='["커피","빵","기타"]' class="form-control" />
+            <form action="/order/companyorderregist" method="post">
+                <div class="order-select-item">
+                    <table border="none" align="center" class="order-table">
+                        <tr>
+                            <th style="width: 400px">물품 명</th>
+                            <th style="width: 200px">물품 공급가</th>
+                            <th style="width: 150px">물품 수량</th>
+                            <th>가격</th>
                             <th>거래처 선택</th>
                         </tr>
-                        <tr style="border: none">
+                        <tr>
                             <td>지로스팅 커피 1kg(1차 매핑된 이름)</td>
                             <td>7000</td>
-                            <td><input type="number" minlength="1"></td>
+                            <td><input type="number" min="1" style="width: 80px"></td>
+                            <td>300000</td>
                             <td>
-                                <!--<select>
+                                <select style="width: 200px; text-align: center">
                                     <option selected value="A">A 거래처</option>
                                     <option value="B">B 거래처</option>
-                                </select>-->
+                                </select>
                             </td>
                         </tr>
                     </table>
@@ -55,7 +79,6 @@
                 <button class="order-regist-ok-btn" id="registOk" type="submit">발주</button>
             </form>
         </div>
-
     </div>
 
     <th:block th:replace="/common/footer.html"></th:block>
