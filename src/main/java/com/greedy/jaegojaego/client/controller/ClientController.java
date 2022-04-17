@@ -19,7 +19,7 @@ public class ClientController {
     @GetMapping("/list")
     public ModelAndView clientList(){
 
-        return new ModelAndView("/client/clientList")
+        return new ModelAndView("/client/clientList");
     }
 
 }
