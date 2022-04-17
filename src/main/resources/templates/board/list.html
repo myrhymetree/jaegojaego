@@ -15,26 +15,39 @@
     </div>
 
     <div class="body-container">
+        <br>
+        <br>
         <div class="search-area">
-            <i class="fas fa-search"></i>
-            <input type="text" name="search" placeholder="검색">
-            <button>검색</button>
+            <div class="search-img"><i class="fas fa-search fa-2x"></i></div>
+            <div class="searchBox"><input type="text" name="search" placeholder="검색" th:style="${'font-size: 1.2rem;'}"></div>
         </div>
+        <button class="searchBtn btn btn-w-m btn-primary">검색</button>
+        <button class="registBtn btn btn-w-m btn-primary">등록</button>
+        <button class="deleteBtn btn btn-w-m btn-primary">삭제</button>
 
-        <table id="boardTable">
-            <tr align="center">
-                <th class="boardCheckbox"><input id="headCheckbox" type="checkbox"></th>
-                <th>No</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>조회수</th>
-                <th>작성자</th>
-            </tr>
+        <table class="table table-striped table-bordered table-hover dataTables-example" th:style="${'text-align:center; width:90%; margin: 2% auto;'}">
+            <thead>
+                <tr>
+                    <th class="boardCheckbox"><input id="boardHeadCheckbox" type="checkbox"></th>
+                    <th>No</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>작성자</th>
+                </tr>
+            </thead>
 
-            <!-- 게시판 정보 받아와서 표시 -->
-            <tr>
-
-            </tr>
+            <!-- board와 로그인 정보를 가져와서 값 채우기 -->
+            <tbody>
+                <tr>
+                    <td class="boardCheckbox"><input class="boardOneCheckbox" type="checkbox"></td>
+                    <td>1</td>
+                    <td>1번째 테스트 공지사항 글입니다.</td>
+                    <td>2022-04-17</td>
+                    <td>1</td>
+                    <td>이태준</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
