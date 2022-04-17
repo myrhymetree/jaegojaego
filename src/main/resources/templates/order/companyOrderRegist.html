@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .order-regist-ok-btn {
+            width: 65px;
+            height: 30px;
+            background-color: rgba(255, 0, 0, 0.7);
+            margin-top: 20px;
+            margin-left: 1180px;
+            margin-bottom: 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div th:replace="/common/header.html"></div>
+
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h2 style="font-weight: bold">물품 찾기</h2>
+        </div>
+        <div class="ibox-content">
+            <p style="color: rgba(255, 0, 0, 0.3); font-weight: bold">
+                * 찾으실 물품의 카테고리/이름을 통해 검색할 수 있습니다. *
+            </p>
+            <input type="text" placeholder="item..." data-provide="typeahead" data-source='["item 1","item 2","item 3"]' class="form-control" />
+            <form action="/order/companyorderregist" type="post">
+                <div class="m-t-sm">
+                    <table border="none" align="center">
+                        <tr style="font-weight: bold; border: none">
+                            <th>물품 명</th>
+                            <th>물품 가격</th>
+                            <th>물품 수량</th>
+                            <th>거래처 선택</th>
+                        </tr>
+                        <tr style="border: none">
+                            <td>지로스팅 커피 1kg(1차 매핑된 이름)</td>
+                            <td>7000</td>
+                            <td><input type="number" minlength="1"></td>
+                            <td>
+                                <!--<select>
+                                    <option selected value="A">A 거래처</option>
+                                    <option value="B">B 거래처</option>
+                                </select>-->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button class="order-regist-ok-btn" id="registOk" type="submit">발주</button>
+            </form>
+        </div>
+
+    </div>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>
