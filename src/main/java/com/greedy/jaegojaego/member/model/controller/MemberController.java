@@ -24,6 +24,14 @@ public class MemberController {
 
     }
 
+    @GetMapping("myInfo")
+    public ModelAndView findMyInfo(ModelAndView mv) {
+
+        mv.setViewName("member/myInfoModal");
+
+        return mv;
+    }
+
     @GetMapping("regist")
     public ModelAndView sendRegistView() {
 
