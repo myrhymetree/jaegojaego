@@ -21,11 +21,11 @@
     <div class="chartAreaWhiteBoard">
         <button class="button calendar-button" id="calendarButton">일정한눈에보기</button>
 
+
         <!-- 캘린더 부분 -->
         <div class="calendar-modal" id="calendarModal" style="display: none;">
             <button class="button calendarback-button" id="backcalendarButton">차트보기</button>
-
-            <div class="ibox ">
+            <div class="ibox">
                 <div class="ibox-title">
                     <h4 style="font-weight: bold; margin-left: 5px;">입고처리된날짜가 반영된 일정</h4>
                 </div>
@@ -36,11 +36,43 @@
             </div>
         </div>
 
+        <!-- 출고 켯을 때 차트 부분 -->
+        <div class="chart-modalForOut" id="charModalForOut" style="display: none;">
+            <div class="barGraphForOut">
+                <h4 style="font-weight: bold; margin-left: 5px;">각 물품당 이슈발생빈도</h4>
+                <select class="itemListForOutBarGraph">
+                    <option value="지로스팅">지로스팅 원두 1kg</option>
+                </select>
+                <select class="yearOutBarGraph">
+                    <option value="2022">2022</option>
+                </select>
+                <div class="month january">1</div>
+                <div class="month february">2</div>
+                <div class="month march">3</div>
+                <div class="month april">4</div>
+                <div class="month may">5</div>
+                <div class="month june">6</div>
+                <div class="month july">7</div>
+                <div class="month august">8</div>
+                <div class="month september">9</div>
+                <div class="month october">10</div>
+                <div class="month november">11</div>
+                <div class="month december">12</div>
+            </div>
+        </div>
 
-        <!-- 차트 부분 -->
-        <div class="chart-modal" id="chartModal"style="display: block;">
+
+        <!-- 입고 켯을 때 차트 부분 -->
+        <div class="chart-modalForIn" id="chartModalForIn"style="display: block;">
             <div class="barGraph">
                 <h4 style="font-weight: bold; margin-left: 5px;">각 물품 구매량 증/감소율</h4>
+
+                    <select class="itemListForBarGraph">
+                        <!-- 나중에 물품별로 불러오게 해야함(2022까지) -->
+                        <option value="지로스팅">지로스팅 원두 1kg</option>
+                        <!-- selectbox로 년도 보여준다. -->
+                    </select>
+
                     <select class="yearBarGraph">
                         <!-- 나중에 년도별로 불러오게 해야함(2022까지) -->
                         <option value="2022">2022</option>
@@ -67,7 +99,7 @@
                 <h4 style="font-weight: bold; margin-left: 5px;">품목별 각 거래처 구매율</h4>
                 <select class="YearCircleGraph">
                     <!-- 나중에 년도별로 불러오게 해야함(2022까지) -->
-                    <option value="2022">2022</option>
+                    <option value="20221">2022년 1월</option>
                 </select>
                 <select class="itemList">
                     <option value="지로스팅 1kg">지로스팅 원두 1kg</option>
@@ -103,76 +135,79 @@
 
             <!-- 입고백로그 목록 -->
             <div class="releasebacklog-modal" id="releasebacklogModal" style="display: block;">
+                <select class="itemListForReleasebacklog">
+                    <!-- 동적 생성? 으로 만들어야 함-->
+                    <option>지로스팅 원두 1kg</option>
+                </select>
                 <div class="ibox">
-                    <div class="ibox-title">
-                        <h3 style="font-weight: bold; margin-left: 5px;">본사 입고물품 백로그</h3>
-                    </div>
+                    <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 입고물품 백로그</h3>
                     <div class="ibox-content">
                         <div class="table-responsive">
+                           <!-- 동적생성?인가 그걸로 나중에 만들어야 함 이건 예시일뿐-->
                             <table class="table table-striped table-bordered table-hover dataTables-example" >
                                 <thead>
                                 <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
+                                    <th>물품번호</th>
+                                    <th>물품명</th>
+                                    <th>거래처명</th>
+                                    <th>입고완료처리일자</th>
+                                    <th>개수</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr class="gradeX">
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 4.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td class="center">4</td>
-                                    <td class="center">X</td>
+                                    <td>FN-DK-1001-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>마계커피</td>
+                                    <td class="center">2022.04.05</td>
+                                    <td class="center">200</td>
                                 </tr>
                                 <tr class="gradeC">
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 5.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td class="center">5</td>
-                                    <td class="center">C</td>
+                                    <td>FK-SF-1432-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>인도커피</td>
+                                    <td class="center">2022.03.28</td>
+                                    <td class="center">100</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 5.5
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td class="center">5.5</td>
-                                    <td class="center">A</td>
+                                    <td>RD-FS-1042-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>포항커피</td>
+                                    <td class="center">2022.03.24</td>
+                                    <td class="center">150</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 6
-                                    </td>
-                                    <td>Win 98+</td>
-                                    <td class="center">6</td>
-                                    <td class="center">A</td>
+                                    <td>SF-DAS-1002-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>지로커피</td>
+                                    <td class="center">2022.03.20</td>
+                                    <td class="center">350</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 7</td>
-                                    <td>Win XP SP2+</td>
-                                    <td class="center">7</td>
-                                    <td class="center">A</td>
+                                    <td>FD-DW-1204-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>두둣커피</td>
+                                    <td class="center">2022.03.15</td>
+                                    <td class="center">400</td>
+                                </tr>
+                                <tr class="gradeA">
+                                    <td>GR-BD-BX-200-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>브루커피</td>
+                                    <td class="center">2022.03.10</td>
+                                    <td class="center">100</td>
                                 </tr>
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                                </tfoot>
+
+<!--                                <tfoot> 뭔지모르겠지만 일단 놔둠-->
+<!--                                <tr>-->
+<!--                                    <th>Rendering engine</th>-->
+<!--                                    <th>Browser</th>-->
+<!--                                    <th>Platform(s)</th>-->
+<!--                                    <th>Engine version</th>-->
+<!--                                    <th>CSS grade</th>-->
+<!--                                </tr>-->
+<!--                                </tfoot>-->
                             </table>
                         </div>
 
@@ -184,9 +219,7 @@
             <!-- 출고백로그 목록 -->
             <div class="inwarehousebaklog-modal" id="inwarehousebacklogModal" style="display: none;">
                 <div class="ibox">
-                    <div class="ibox-title">
-                        <h3 style="font-weight: bold; margin-left: 5px;">본사 이슈출고 백로그</h3>
-                    </div>
+                        <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 이슈출고 백로그</h3>
                     <div class="ibox-content">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -270,22 +303,32 @@
 
 
 <script>
-   document.getElementById("calendarButton").onclick = function () {
+
+    document.getElementById("calendarButton").onclick = function () {
        document.getElementById("calendarModal").style.display = "block";
-       document.getElementById("chartModal").style.display = "none";
+       document.getElementById("chartModalForIn").style.display = "none";
+       document.getElementById("releasebacklogModal").style.display = "block";
+       document.getElementById("inwarehousebacklogModal").style.display = "none";
    }
    document.getElementById("backcalendarButton").onclick = function () {
        document.getElementById("calendarModal").style.display = "none";
-       document.getElementById("chartModal").style.display = "block";
+       document.getElementById("chartModalForIn").style.display = "block";
+       document.getElementById("releasebacklogModal").style.display = "block";
+       document.getElementById("inwarehousebacklogModal").style.display = "none";
    }
    document.getElementById("releasebacklogButton").onclick = function () {
        document.getElementById("releasebacklogModal").style.display = "block";
        document.getElementById("inwarehousebacklogModal").style.display = "none";
+
    }
    document.getElementById("inwarehousebacklogButton").onclick = function () {
        document.getElementById("releasebacklogModal").style.display = "none";
        document.getElementById("inwarehousebacklogModal").style.display = "block";
+       document.getElementById("charModalForOut").style.display = "block";
+       document.getElementById("chartModalForIn").style.display = "none";
    }
+
+
 
 </script>
 </body>
