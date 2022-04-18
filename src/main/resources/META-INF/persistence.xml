@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit name="jpatest">
+
+<!--        <mapping-file>/META-INF/category-query.xml</mapping-file>-->
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
+            <property name="javax.persistence.jdbc.user" value="C##JAEGOJAEGO"/>
+            <property name="javax.persistence.jdbc.password" value="JAEGOJAEGO"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@oracle.team-greedy.com:1521:xe"/>
+
+            <!-- jpa 4버전일 때 설정해야 할 거. 5버전에서는 굳이 설정 안해줘도 된다. -->
+            <!-- 오라클 방언 설정 -->
+<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>-->
+
+            <!-- 실행되는 쿼리를 눈으로 확인하기 위한 설정 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+        </properties>
+    </persistence-unit>
+</persistence>
