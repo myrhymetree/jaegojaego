@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
-    <link th:href="@{/css/backlogcss.css}" rel="stylesheet">
+    <link th:href="@{/css/backlog/backlogcss.css}" rel="stylesheet">
 
     <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{font-awesome/css/font-awesome.css}" rel="stylesheet">
@@ -13,14 +13,14 @@
     <link th:href="@{css/style.css}" rel="stylesheet">
 
 </head>
-<body style="overflow: hidden">
+<body>
 
 <th:block th:include="/common/header.html"></th:block>
 
     <div class="ibox">
         <div class="body-header">
-            <div class="menu-title">백로그</div>
-            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / <a th:href="@{/backlog/list}">백로그</a></div>
+            <div class="menu-title">백로그 관리</div>
+            <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/backlog/list}">백로그 관리</a></div>
         </div>
     <div>
 
@@ -47,7 +47,7 @@
         <!-- 출고 켯을 때 차트 부분 -->
         <div class="chart-modalForOut" id="charModalForOut" style="display: none;">
             <div class="barGraphForOut">
-                <h4 style="font-weight: bold; margin-left: 5px;">각 물품당 이슈발생빈도</h4>
+                <h4 style="font-weight: bold; margin-left: 5px;">물품당 이슈발생빈도</h4>
                 <select class="itemListForOutBarGraph">
                     <option value="지로스팅">로스팅된 지로스팅 원두 1kg</option>
                 </select>
@@ -171,35 +171,35 @@
                                     <td class="center">200</td>
                                 </tr>
                                 <tr class="gradeC">
-                                    <td>FK-SF-1432-1</td>
+                                    <td>FN-DK-1001-1</td>
                                     <td>지로스팅 원두 1kg</td>
                                     <td>인도커피</td>
                                     <td class="center">2022.03.28</td>
                                     <td class="center">100</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>RD-FS-1042-1</td>
+                                    <td>FN-DK-1001-1</td>
                                     <td>지로스팅 원두 1kg</td>
                                     <td>포항커피</td>
                                     <td class="center">2022.03.24</td>
                                     <td class="center">150</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>SF-DAS-1002-1</td>
+                                    <td>FN-DK-1001-1</td>
                                     <td>지로스팅 원두 1kg</td>
                                     <td>지로커피</td>
                                     <td class="center">2022.03.20</td>
                                     <td class="center">350</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>FD-DW-1204-1</td>
+                                    <td>FN-DK-1001-1</td>
                                     <td>지로스팅 원두 1kg</td>
                                     <td>두둣커피</td>
                                     <td class="center">2022.03.15</td>
                                     <td class="center">400</td>
                                 </tr>
                                 <tr class="gradeA">
-                                    <td>GR-BD-BX-200-1</td>
+                                    <td>FN-DK-1001-1</td>
                                     <td>지로스팅 원두 1kg</td>
                                     <td>브루커피</td>
                                     <td class="center">2022.03.10</td>

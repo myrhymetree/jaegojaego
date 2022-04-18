@@ -60,7 +60,7 @@
     height: 215px;
     width: 650px;
     position: absolute;
-    left: 1%;
+    left: 2%;
     top: 3%;
 }
 
@@ -88,6 +88,12 @@
     top: 3%;
 }
 
+.yearOutBarGraph {
+    position: absolute;
+    left: 93%;
+    top: 3%;
+}
+
 .itemListForBarGraph {
     position: absolute;
     left: 69%;
@@ -96,7 +102,7 @@
 
 .itemListForOutBarGraph {
     position: absolute;
-    left: 80%;
+    left: 75%;
     top: 3%;
 }
 
@@ -105,6 +111,8 @@
     left: 76%;
     top: 3%;
 }
+
+
 
 .itemList {
     position: absolute;

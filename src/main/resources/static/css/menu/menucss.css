@@ -1,0 +1,132 @@
+.menuListWhiteBoard {
+    border: 0.5px solid gray;
+    position: absolute;
+    left:1%;
+    top: 18%;
+    height: 610px;
+    width: 400px;
+    background: white;
+}
+
+.selectOneMenuWhiteboard {
+    border: 0.5px solid gray;
+    position: absolute;
+    left:32%;
+    top: 18%;
+    height: 610px;
+    width: 880px;
+    background: white;
+}
+
+.OneMenuWhiteboard {
+    border: 0.5px solid gray;
+    position: absolute;
+    left:32%;
+    top: 18%;
+    height: 610px;
+    width: 880px;
+    background: white;
+}
+
+.modal-layer {
+    position: relative;
+    top:-108%;
+    left:-80.5%;
+    width: 1340px;
+    height: 637px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.menuRegistModal {
+    position: absolute;
+    border: 0.5px solid gray;
+    height: 400px;
+    width: 500px;
+    background: white;
+    border-radius: 5px 5px 5px 5px ;
+}
+
+.menuModifyModal {
+    position: absolute;
+    border: 0.5px solid gray;
+    height: 400px;
+    width: 500px;
+    background: white;
+    border-radius: 5px 5px 5px 5px ;
+}
+
+.forz-index {
+    position: absolute;
+    top:30%;
+    left: 30.5%;
+    z-index: 1050
+}
+
+.menuRegistForm {
+    position: relative;
+    top: 5%;
+    left: 23%;
+}
+
+.menuModifytForm {
+    position: relative;
+    top: 5%;
+    left: 23%;
+}
+
+.rawMaterialList {
+    position: relative;
+    top: 27%;
+    height: 100px;
+    width: 300px;
+    background: white;
+    border: 0.5px solid gray;
+}
+
+.button {
+    background: #1AB394;
+    color: white;
+    border: none;
+    box-shadow: 1px 1px gray;
+    cursor: pointer;
+}
+
+.registMenuButton {
+    position: absolute;
+    top: 1.5%;
+    left: 60%;
+}
+
+.registMenuCancelButton {
+    position: relative;
+    top: 30%;
+    left: 25%;
+    margin-top: 20px;
+}
+
+.modifyMenuSubmitButton {
+    position: relative;
+    top: 30%;
+    left: 15%;
+}
+
+
+.modifyMenuCancelButton {
+    position: relative;
+    top: 30%;
+    left: 25%;
+    margin-top: 20px;
+}
+
+.registMenuSubmitButton {
+    position: relative;
+    top: 30%;
+    left: 15%;
+}
+
+.modifyMenuButton {
+    position: absolute;
+    top: 1.5%;
+    left: 80%;
+}

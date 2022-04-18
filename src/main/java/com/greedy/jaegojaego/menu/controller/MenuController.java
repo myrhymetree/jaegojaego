@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/menu")
 public class MenuController {
 
-    @GetMapping("/list")
+   @GetMapping("/list")
     public String moveMenuList() {
-        return "menu/menu";
-    }
 
-
+       System.out.println("이게 나오긴하냐");
+       return "menu/menuList";
+   }
 
 }
-
-
