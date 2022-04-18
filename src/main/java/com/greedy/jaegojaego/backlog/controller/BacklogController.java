@@ -5,15 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/backlog")
+@RequestMapping("backlog")
 public class BacklogController {
 
-    @GetMapping("list")
+   @GetMapping("list")
     public String backlogPage() {
 
-        return "backlog/backlog";
-    }
-
-
+       return "backlog/backlogList";
+   }
 
 }
