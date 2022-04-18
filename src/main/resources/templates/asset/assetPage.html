@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <th:block th:include="/common/header.html"></th:block>
+
+    <div class="body-header">
+        <div class="menu-title">자산 관리</div>
+        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/asset}">자산 관리</a></div>
+    </div>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>
