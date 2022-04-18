@@ -85,8 +85,6 @@
     </div>
 
 
-
-
     <!-- 메뉴리스트 및 등록 -->
     <div class="menuListWhiteBoard">
         <div class="ibox">
@@ -106,95 +104,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="gradeX">
-                            <td>1</td>
-                            <td>아이스 아메리카노</td>
-                            <td>3,500</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeC" id="test">
-                            <td>2</td>
-                            <td>카페라떼</td>
-                            <td>4,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>3</td>
-                            <td>카라멜 마끼야또</td>
-                            <td>4,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>4</td>
-                            <td>헤이즐넛 아메리카노</td>
-                            <td>4,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>5</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>6</td>
-                            <td>에스프레소</td>
-                            <td>2,000</td>
-                            <td class="center">Y</td>
-                        </tr>
+                            <tr th:each="menu : ${ menuList }">
+                                <td th:text="${ menu.menuNo }"></td>
+                                <td th:text="${ menu.menuName }"></td>
+                                <td th:text="${ menu.menuPrice }"></td>
+                                <td th:text="${ menu.menuOrderableStatus }"></td>
+                            </tr>
                         </tbody>
-
-                        <!--                                <tfoot> 뭔지모르겠지만 일단 놔둠-->
-                        <!--                                <tr>-->
-                        <!--                                    <th>Rendering engine</th>-->
-                        <!--                                    <th>Browser</th>-->
-                        <!--                                    <th>Platform(s)</th>-->
-                        <!--                                    <th>Engine version</th>-->
-                        <!--                                    <th>CSS grade</th>-->
-                        <!--                                </tr>-->
-                        <!--                                </tfoot>-->
                     </table>
                 </div>
 
@@ -231,69 +147,59 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="gradeX">
-                            <td>로스팅된 지로스팅 원두 1kg</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>로스팅된 지로스팅 원두 1kg</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>남부장 우유(예시)</td>
-                            <td>200ml</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>예시</td>
-                            <td>10g</td>
-                        </tr>
+                            <tr class="gradeX">
+                                <td>로스팅된 지로스팅 원두 1kg</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeC">
+                                <td>로스팅된 지로스팅 원두 1kg</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>남부장 우유(예시)</td>
+                                <td>200ml</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
                         </tbody>
-
-                        <!--                                <tfoot> 뭔지모르겠지만 일단 놔둠-->
-                        <!--                                <tr>-->
-                        <!--                                    <th>Rendering engine</th>-->
-                        <!--                                    <th>Browser</th>-->
-                        <!--                                    <th>Platform(s)</th>-->
-                        <!--                                    <th>Engine version</th>-->
-                        <!--                                    <th>CSS grade</th>-->
-                        <!--                                </tr>-->
-                        <!--                                </tfoot>-->
                     </table>
                 </div>
 
