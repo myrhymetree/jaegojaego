@@ -9,6 +9,11 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
+<div class="body-header">
+    <div class="menu-title">입고, 입하 처리</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/list}">입고, 입하 처리</a></div>
+</div>
+
 <!-- 컨텐츠 작성 영역 -->
 
 <br>
@@ -54,6 +59,7 @@
         <tr>
             <th>No</th>
             <th>입고 번호</th>
+            <th>입고 구분</th>
             <th>카테고리</th>
             <th>품번</th>
             <th>품명</th>
@@ -64,40 +70,56 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>2</td>
-            <td>20222022</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>4</td>
-            <td>입하 대기</td>
+        <tr th:each="warehouse : ${ warehouseList }">
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseNo }"></td>
             <td>
                 <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
             </td>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>20222023</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>5</td>
-            <td>입고 완료</td>
-            <td>
-                <button type="button" class="btn btn-w-m btn-primary" onclick="href='/warehouse/warehouse/detail'">상세 조회</button>
-<!--                <li><a href="/warehouse/list">입고, 입하 처리</a></li>-->
-            </td>
-        </tr>
+
+            <!--
+                    </tr>
+                        <td>2</td>
+                        <td>20222022</td>
+                        <td>가맹점 발주</td>
+                        <td>Win 95+</td>
+                        <td>Win 95+</td>
+                        <td>Win 95+</td>
+                        <td>Win 95+</td>
+                        <td>4</td>
+                        <td>입하 대기</td>
+                        <td>
+                            <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>20222023</td>
+                        <td>가맹점 이슈</td>
+                        <td>Win 95+</td>
+                        <td>Win 95+</td>
+                        <td>Win 95+</td>
+                        <td>Win 95+</td>
+                        <td>5</td>
+                        <td>입고 완료</td>
+                        <td>
+                            <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>
+                        </td>
+                    </tr>
+            -->
 
         </tfoot>
     </table>
 </div>
 <!-- 테이블 끝 -->
-
-
 
 
 <div class="footer">
