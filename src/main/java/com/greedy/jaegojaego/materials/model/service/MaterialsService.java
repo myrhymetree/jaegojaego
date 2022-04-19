@@ -18,5 +18,7 @@ public class MaterialsService {
     }
 
     public List<MaterialsDTO> findMaterialsList() {
+
+        return null;
     }
 }
