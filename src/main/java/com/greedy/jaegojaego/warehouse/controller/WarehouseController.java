@@ -1,12 +1,15 @@
 package com.greedy.jaegojaego.warehouse.controller;
 
 import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
+import com.greedy.jaegojaego.warehouse.entity.Warehouse;
 import com.greedy.jaegojaego.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/warehouse")
@@ -24,7 +27,13 @@ public class WarehouseController {
     @GetMapping("/list")
     public ModelAndView warehouseList(ModelAndView mv) {
 
-        WarehouseDTO warehouseList = warehouseService.findAllWarehouseList();
+        List<WarehouseDTO> warehouseList = warehouseService.findAllWarehouseList();
+
+        System.out.println("warehouseList = " + warehouseList);
+        
+        for(WarehouseDTO list : warehouseList) {
+            System.out.println("list : " + list);
+        }
 
         mv.addObject("warehouseList", warehouseList);
         mv.setViewName("/warehouse/warehouseList");

@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,11 +22,11 @@ public class WarehouseService {
         this.modelMapper = modelMapper;
     }
 
-    public WarehouseDTO findAllWarehouseList() {
+    public List<WarehouseDTO> findAllWarehouseList() {
 
-//        Warehouse warehouseList = warehouseRepository.findAllWarehouseList();
-//
-//        return modelMapper.map(warehouseList, WarehouseDTO.class);
-        return null;
+        List<Warehouse> warehouseList = warehouseRepository.findAll();
+
+        return warehouseList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
     }
+
 }
