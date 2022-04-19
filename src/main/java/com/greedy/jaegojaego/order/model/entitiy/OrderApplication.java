@@ -1,10 +1,8 @@
 package com.greedy.jaegojaego.order.model.entitiy;
 
-import com.greedy.jaegojaego.client.entity.OrderClient;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "orderApplication")

@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.order.model.entitiy;
 
-import com.greedy.jaegojaego.item.model.entity.OrderItemInfo;
 import lombok.*;
 
 import javax.persistence.*;

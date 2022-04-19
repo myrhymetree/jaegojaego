@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.order.model.dto;
 
-import com.greedy.jaegojaego.client.dto.OrderClientDTO;
 import lombok.*;
 
 import java.util.List;

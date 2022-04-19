@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.order.model.dto;
 
-import com.greedy.jaegojaego.item.model.dto.OrderItemInfoDTO;
 import lombok.*;
 
 @Setter
