@@ -1,8 +1,6 @@
 package com.greedy.jaegojaego.menu.entity;
 
-import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
-import com.greedy.jaegojaego.materials.model.entity.Materials;
-import com.greedy.jaegojaego.menu.dto.MenuDTO;
+
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.menu.dto;
 
-import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
 
 import java.util.List;
 
@@ -9,11 +8,11 @@ public class RawMaterialDTO {
     private String rawMaterialName;
     private int rawMaterialCapacity;
     private MenuDTO menuNo;
-    private List<MaterialsDTO> materialNo;
+    private List<RawMaterialDTO> materialNo;
 
     public RawMaterialDTO() {}
 
-    public RawMaterialDTO(String rawMaterialName, int rawMaterialCapacity, MenuDTO menuNo, List<MaterialsDTO> materialNo) {
+    public RawMaterialDTO(String rawMaterialName, int rawMaterialCapacity, MenuDTO menuNo, List<RawMaterialDTO> materialNo) {
         this.rawMaterialName = rawMaterialName;
         this.rawMaterialCapacity = rawMaterialCapacity;
         this.menuNo = menuNo;
@@ -44,11 +43,11 @@ public class RawMaterialDTO {
         this.menuNo = menuNo;
     }
 
-    public List<MaterialsDTO> getMaterialNo() {
+    public List<RawMaterialDTO> getMaterialNo() {
         return materialNo;
     }
 
-    public void setMaterialNo(List<MaterialsDTO> materialNo) {
+    public void setMaterialNo(List<RawMaterialDTO> materialNo) {
         this.materialNo = materialNo;
     }
 
