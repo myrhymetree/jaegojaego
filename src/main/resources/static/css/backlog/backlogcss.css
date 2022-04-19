@@ -18,6 +18,10 @@
     background: white;
 }
 
+.dataTableH3 {
+    position: absolute;
+}
+
 .backlogListWhiteboard {
     border: 0.5px solid gray;
     position: absolute;
@@ -123,7 +127,7 @@
 .itemListForReleasebacklog {
     position: absolute;
     left: 14%;
-    top: 3%;
+    top: 1%;
 }
 
 .month {
