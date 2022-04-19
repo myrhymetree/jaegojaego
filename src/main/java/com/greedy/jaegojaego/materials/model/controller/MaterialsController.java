@@ -19,7 +19,7 @@ public class MaterialsController {
         this.materialsService = materialsService;
     }
 
-    @GetMapping("/productList")
+    @GetMapping("/productlist")
     public ModelAndView MaterialsList(ModelAndView mv) {
 
         mv.setViewName("materials/productList");
