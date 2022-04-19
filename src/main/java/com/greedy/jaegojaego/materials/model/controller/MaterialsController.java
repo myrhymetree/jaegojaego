@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.materials.model.controller;
 
-import com.greedy.jaegojaego.materials.model.entity.Materials;
 import com.greedy.jaegojaego.materials.model.service.MaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

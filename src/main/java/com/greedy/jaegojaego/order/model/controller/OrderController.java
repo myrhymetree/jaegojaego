@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.order.model.controller;
 
+import com.greedy.jaegojaego.order.model.dto.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -24,6 +26,11 @@ public class OrderController {
     @GetMapping("/companyorderlist")
     public ModelAndView selectCompanyOrderList(ModelAndView mv) {
 
+        List<CompanyOrderHistoryDTO> companyOrderList = orderService.selectCompanyOrderList();
+
+        companyOrderList.forEach(System.out::println);
+
+        mv.addObject("companyOrderList", companyOrderList);
         mv.setViewName("/order/companyOrderList");
 
         return mv;

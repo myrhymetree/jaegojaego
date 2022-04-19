@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class EmployeeInfo implements Serializable {
 
     @Column(name = "OFFICE_PHONE_NUMBER")
-    private int phone;
+    private String phone;
 
     @Id
     @Column(name = "MEMBER_NO")
