@@ -4,6 +4,7 @@ import com.greedy.jaegojaego.company.model.entity.OrderCompanyAccount;
 import com.greedy.jaegojaego.item.model.entity.OrderItemInfo;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "ClientContractItem")
 @Table(name = "CLIENT_CONTRACT_ITEM")

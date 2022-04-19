@@ -12,15 +12,13 @@ import lombok.*;
 public class OrderApplicationItemDTO {
 
     private OrderApplicationDTO orderApplication;
-    private int clientContractItemNo;
     private int orderApplicationItemAmount;
     private OrderClientContractItemDTO clientContractItem;
 
     @Override
     public String toString() {
         return "OrderApplicationItemDTO{" +
-                "clientContractItemNo=" + clientContractItemNo +
-                ", orderApplicationItemAmount=" + orderApplicationItemAmount +
+                "orderApplicationItemAmount=" + orderApplicationItemAmount +
                 ", clientContractItem=" + clientContractItem +
                 '}';
     }

@@ -13,15 +13,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/*@IdClass(OrderApplicationItemPK.class)*/
 public class OrderApplicationItem implements Serializable {
 
     @Id
     @ManyToOne
     @JoinColumn(name = "ORDER_APPLICATION_NO")
     private OrderApplication orderApplication;
-
-    @Column(name = "CLIENT_CONTRACT_ITEM_NO")
-    private int orderClientContractItemNo;
 
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
@@ -34,8 +32,7 @@ public class OrderApplicationItem implements Serializable {
     @Override
     public String toString() {
         return "OrderApplicationItem{" +
-                "orderClientContractItemNo=" + orderClientContractItemNo +
-                ", orderApplicationItemAmount=" + orderApplicationItemAmount +
+                "orderApplicationItemAmount=" + orderApplicationItemAmount +
                 ", orderClientContractItem=" + orderClientContractItem +
                 '}';
     }

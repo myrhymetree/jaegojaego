@@ -26,7 +26,6 @@ public class OrderService {
 
         List<CompanyOrderHistory> companyOrderHistoryList = companyOrderHistoryRepository.findAll();
 
-
         return companyOrderHistoryList.stream().map(companyOrder -> modelMapper.map(companyOrder, CompanyOrderHistoryDTO.class)).collect(Collectors.toList());
 
     }

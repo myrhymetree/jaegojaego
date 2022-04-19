@@ -27,7 +27,7 @@ public class CompanyOrderHistory {
             strategy = GenerationType.SEQUENCE,
             generator = "COMPANY_ORDER_HISTORY_SEQ_GENERATOR"
     )
-    private int companyOrderHisotryNo;
+    private int companyOrderHistoryNo;
 
     @Column(name = "COMPANY_ORDER_HISTORY_CREATED_DATE")
     private java.sql.Date companyOrderHistoryCreatedDate;
@@ -47,7 +47,7 @@ public class CompanyOrderHistory {
     @Override
     public String toString() {
         return "CompanyOrderHistory{" +
-                "companyOrderHisotryNo=" + companyOrderHisotryNo +
+                "companyOrderHistoryNo=" + companyOrderHistoryNo +
                 ", companyOrderHistoryCreatedDate=" + companyOrderHistoryCreatedDate +
                 ", companyAccount=" + orderCompanyAccount +
                 ", companyOrderItemList=" + companyOrderItemList +
