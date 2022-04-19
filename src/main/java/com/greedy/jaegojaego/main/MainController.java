@@ -12,21 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MainController {
 
-    @GetMapping("/")
-    public String loginView(HttpServletRequest request) {
+    @GetMapping({"/","/main"})
+    public String loginView() {
 
-//        MemberDTO loginMember = (MemberDTO) request.getSession().getAttribute("loginMember");
-//
-//        System.out.println("session : " + loginMember);
-//
-//        if(loginMember == null) {
-//
-//            return "member/login";
-//
-//        } else {
-//
-//            return "main/main";
-//        }
             return "main/main";
     }
 

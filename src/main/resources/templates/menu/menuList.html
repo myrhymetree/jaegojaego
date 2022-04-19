@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+
+    <link th:href="@{/css/menu/menucss.css}" rel="stylesheet">
+
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{font-awesome/css/font-awesome.css}" rel="stylesheet">
+
+    <link th:href="@{css/animate.css}" rel="stylesheet">
+    <link th:href="@{css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <th:block th:include="/common/header.html"></th:block>
+
+    <div class="ibox">
+        <div class="body-header">
+            <div class="menu-title">메뉴 관리</div>
+            <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/menu/list}">메뉴관리</a></div>
+        </div>
+        <div>
+
+    <!-- 메뉴등록 모달창 -->
+    <div class="forz-index" id="forz-index" style="display: none;">
+    <div class="menuRegistModal" id="menuRegistModal">
+        <h1 align="center" style="color: #1ab394">메뉴 등록</h1>
+        <form class="menuRegistForm">
+            *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName"><br>
+            *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice"><br>
+            *<label>판매여부 : </label>&nbsp;
+            <select class="menuStatus">
+                <option value="Y">Y</option>
+                <option value="N">N</option>
+            </select><br>
+            *<label>원재료 선택 : </label>&nbsp;
+            <select>
+                <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
+                <option>원재료를 선택해주세요!</option>
+                <option>로스팅된 지로스팅 원두 1kg</option>
+                <option>남부장우유</option>
+                <option>등등등</option>
+                <option>등등등</option>
+            </select>
+            <div class="rawMaterialList" id="rawMaterialList"></div>
+            <button class="button registMenuSubmitButton" type="submit">등록</button>
+            <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
+        </form>
+
+        <div class="modal-layer"></div>
+    </div>
+    </div>
+
+
+    <!-- 메뉴수정 모달창 -->
+    <div class="forz-index" id="forz-indexForModify" style="display: none;">
+        <div class="menuModifyModal" id="menuModalForModify">
+            <h1 align="center" style="color: #1ab394">메뉴 수정</h1>
+            <form class="menuModifytForm">
+                *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify"><br>
+                *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify"><br>
+                *<label>판매여부 : </label>&nbsp;
+                <select class="menuStatus">
+                    <option value="Y">Y</option>
+                    <option value="N">N</option>
+                </select><br>
+                *<label>원재료 선택 : </label>&nbsp;
+                <select>
+                    <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
+                    <option>원재료를 선택해주세요!</option>
+                    <option>로스팅된 지로스팅 원두 1kg</option>
+                    <option>남부장우유</option>
+                    <option>등등등</option>
+                    <option>등등등</option>
+                </select>
+                <div class="rawMaterialList" id="rawMaterialListForModify"></div>
+                <button class="button modifyMenuSubmitButton" type="submit">수정</button>
+                <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
+            </form>
+
+            <div class="modal-layer"></div>
+        </div>
+    </div>
+
+
+    <!-- 메뉴리스트 및 등록 -->
+    <div class="menuListWhiteBoard">
+        <div class="ibox">
+            <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">메뉴 목록</h3>
+                <button class="button registMenuButton" id="registMenuButton">메뉴 등록</button>
+                <button class="button modifyMenuButton" id="modifyMenuButton">메뉴 수정</button>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <!-- 동적생성?인가 그걸로 나중에 만들어야 함 이건 예시일뿐-->
+                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>메뉴명</th>
+                            <th>메뉴가격</th>
+                            <th>판매여부</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="menu : ${ menuList }">
+                                <td th:text="${ menu.menuNo }"></td>
+                                <td th:text="${ menu.menuName }"></td>
+                                <td th:text="${ menu.menuPrice }"></td>
+                                <td th:text="${ menu.menuOrderableStatus }"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- 메뉴보기 상세보기 (default의 경우)-->
+    <div class="OneMenuWhiteboard" id="defualtOneMenu" style="display: block;">
+        <br><br><br><br><br><br><br><br><br><br><br>
+        <h1 align="center">상세보기할 메뉴를 선택해주세요! </h1>
+    </div>
+
+    <!-- 메뉴보기 상세보기 (눌렀을 경우) -->
+    <div class="selectOneMenuWhiteboard" id="selectOneMenu" style="display: none;" >
+        <div class="ibox">
+            <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">[카페라떼]의 원재료 목록</h3>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <!-- 동적생성?인가 그걸로 나중에 만들어야 함 이건 예시일뿐-->
+                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <thead>
+                        <tr>
+                            <th>원재료명</th>
+                            <th>용량</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td>로스팅된 지로스팅 원두 1kg</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeC">
+                                <td>로스팅된 지로스팅 원두 1kg</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>남부장 우유(예시)</td>
+                                <td>200ml</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>예시</td>
+                                <td>10g</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <th:block th:replace="/common/footer.html"></th:block>
+<script>
+    document.getElementById("test").onclick = function() {
+        document.getElementById("selectOneMenu").style.display = "block";
+        document.getElementById("defualtOneMenu").style.display = "none";
+    }
+
+    document.getElementById("registMenuButton").onclick = function() {
+        document.getElementById("forz-index").style.display = "block";
+    }
+
+    document.getElementById("registMenuCancelButton").onclick = function() {
+        document.getElementById("forz-index").style.display = "none";
+    }
+
+    document.getElementById("modifyMenuButton").onclick = function() {
+        document.getElementById("forz-indexForModify").style.display = "block";
+    }
+
+    document.getElementById("modifyMenuCancelButtonForModify").onclick = function () {
+        document.getElementById("forz-indexForModify").style.display = "none";
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/outWarehouse/outWarehouse.css}">
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<!-- 컨텐츠 작성 영역 -->
+<div class="body-header">
+    <div class="menu-title">출고 관리</div>
+    <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/franchiseorder/}">가맹점 발주 관리</a> / <a th:href="@{/outwarehouse/list}">출고 관리</a></div>
+</div>
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>전체 출고</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">3건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출하 완료</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">2건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content" th:style="${'width:98%; margin:0 auto;'}">
+
+    <h2>출고 정보</h2>
+
+    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+           placeholder="Search in table">
+
+    <table class="outWarehouseTbl footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>출고 번호</th>
+            <th>작업상태</th>
+            <th>작업 처리일자</th>
+            <th>목적지(가맹점명)</th>
+            <th>상세 정보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>2</td>
+            <td class="outWarehouseNo">20222022</td>
+            <td>출하 대기</td>
+            <td>2022-04-14</td>
+            <td>서울 강남 2호점</td>
+            <td>
+                <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${outWarehouseNo}')|">상세 조회</button>
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>20222023</td>
+            <td>출하 완료</td>
+            <td>2022-04-11</td>
+            <td>서울 강남 1호점</td>
+            <td>
+                <button type="button" class="detailBtn btn btn-w-m btn-primary" onclick="location.href='/outwarehouse/detail'">상세 조회</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+
+<th:block th:replace="/common/footer.html"></th:block>
+
+<script>
+    function viewDetail(num) {
+        let No = num;
+        location.href="/outwarehouse/detail";
+    }
+</script>
+</body>
+</html>
