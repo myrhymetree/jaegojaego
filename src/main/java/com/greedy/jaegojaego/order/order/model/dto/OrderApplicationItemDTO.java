@@ -1,6 +1,10 @@
-package com.greedy.jaegojaego.order.model.dto;
+package com.greedy.jaegojaego.order.order.model.dto;
 
 
+<<<<<<< HEAD:src/main/java/com/greedy/jaegojaego/order/model/dto/OrderApplicationItemDTO.java
+=======
+import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
+>>>>>>> origin/feature/order:src/main/java/com/greedy/jaegojaego/order/order/model/dto/OrderApplicationItemDTO.java
 import lombok.*;
 
 @Setter

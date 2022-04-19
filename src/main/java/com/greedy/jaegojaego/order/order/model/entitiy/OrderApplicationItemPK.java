@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy;
 
 import lombok.*;
 

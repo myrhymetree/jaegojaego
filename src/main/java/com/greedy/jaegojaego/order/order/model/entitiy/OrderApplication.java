@@ -1,5 +1,9 @@
-package com.greedy.jaegojaego.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy;
 
+<<<<<<< HEAD:src/main/java/com/greedy/jaegojaego/order/model/entitiy/OrderApplication.java
+=======
+import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
+>>>>>>> origin/feature/order:src/main/java/com/greedy/jaegojaego/order/order/model/entitiy/OrderApplication.java
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,7 +48,6 @@ public class OrderApplication {
     public String toString() {
         return "OrderApplication{" +
                 "orderApplicationNo=" + orderApplicationNo +
-                ", companyOrderHistory=" + companyOrderHistory +
                 ", client=" + orderClient +
                 ", orderApplicationList=" + orderApplicationItemList +
                 '}';

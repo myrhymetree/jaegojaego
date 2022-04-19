@@ -1,5 +1,9 @@
-package com.greedy.jaegojaego.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy;
 
+<<<<<<< HEAD:src/main/java/com/greedy/jaegojaego/order/model/entitiy/OrderApplicationItem.java
+=======
+import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
+>>>>>>> origin/feature/order:src/main/java/com/greedy/jaegojaego/order/order/model/entitiy/OrderApplicationItem.java
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +26,9 @@ public class OrderApplicationItem implements Serializable {
 
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
+
+    @Column(name = "CLIENT_CONTRACT_ITEM_NO")
+    private int orderClientContractItemNo;
 
     @Id
     @ManyToOne

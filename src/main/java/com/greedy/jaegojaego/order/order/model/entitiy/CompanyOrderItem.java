@@ -1,5 +1,9 @@
-package com.greedy.jaegojaego.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy;
 
+<<<<<<< HEAD:src/main/java/com/greedy/jaegojaego/order/model/entitiy/CompanyOrderItem.java
+=======
+import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
+>>>>>>> origin/feature/order:src/main/java/com/greedy/jaegojaego/order/order/model/entitiy/CompanyOrderItem.java
 import lombok.*;
 
 import javax.persistence.*;
