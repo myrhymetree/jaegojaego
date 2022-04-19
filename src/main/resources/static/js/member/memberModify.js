@@ -27,6 +27,9 @@
             password: {
                 minlength: 8,
                 maxlength: 15
+            },
+            email: {
+                email: true
             }
         }
     });
