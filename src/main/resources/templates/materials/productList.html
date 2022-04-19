@@ -4,317 +4,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
 
-    <!-- FooTable -->
-    <link th:href="@{css/plugins/footable/footable.core.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
 
-    <link th:href="@{css/animate.css}" rel="stylesheet">
-    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 
-
+<style>
+    .bg{ background-color: white;
+        height: 300px;
+    }
+</style>
 </head>
 <body>
-<th:block th:include="/common/header.html"></th:block>
+    <th:block th:include="/common/header.html"></th:block>
 
-<!-- 컨텐츠 작성 영역 -->
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>자재관리</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/materials/productList}">자재관리</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a th:href="@{/materials/productList}"><strong>자재목록</strong></a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
 
-    <div id="wrapper">
+    <!-- 시작 -->
+    <div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+        <div class="pace-progress-inner"></div>
+    </div>
+        <div class="pace-activity"></div>
+    </div>
 
-        <div class="wrapper wrapper-content animated fadeInRight">
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>Simple FooTable with pagination, sorting and filter</h5>
-
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#" class="dropdown-item">Config option 1</a>
-                                    </li>
-                                    <li><a href="#" class="dropdown-item">Config option 2</a>
-                                    </li>
-                                </ul>
-                                <a class="close-link">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>자재 조회</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
                         </div>
-                        <div class="ibox-content">
-                            <input type="text" class="form-control form-control-sm m-b-xs" id="filter" placeholder="Search in table">
+                    </div>
 
-                            <table class="footable table table-stripped footable-loaded default" data-page-size="8" data-filter="#filter">
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover dataTables-example" >
                                 <thead>
-                                <tr>
-                                    <th class="footable-visible footable-sortable footable-first-column">Rendering engine<span class="footable-sort-indicator"></span></th>
-                                    <th class="footable-visible footable-sortable">Browser<span class="footable-sort-indicator"></span></th>
-                                    <th data-hide="phone,tablet" class="footable-sortable footable-visible" style="">Platform(s)<span class="footable-sort-indicator"></span></th>
-                                    <th data-hide="phone,tablet" class="footable-sortable footable-visible" style="">Engine version<span class="footable-sort-indicator"></span></th>
-                                    <th data-hide="phone,tablet" class="footable-sortable footable-visible footable-last-column" style="">CSS grade<span class="footable-sort-indicator"></span></th>
-                                </tr>
+                                    <tr>
+                                        <th>자재 번호</th>
+                                        <th>자재 품번</th>
+                                        <th>자재 품명</th>
+                                        <th>카테고리</th>
+                                        <th>구분</th>
+                                        <th>판매가격</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="gradeX footable-even" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Trident</td>
-                                    <td class="footable-visible">Internet
-                                        Explorer 4.0
-                                    </td>
-                                    <td class="footable-visible" style="">Win 95+</td>
-                                    <td class="center footable-visible" style="">4</td>
-                                    <td class="center footable-visible footable-last-column" style="">X</td>
-                                </tr>
-                                <tr class="gradeC footable-odd" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Trident</td>
-                                    <td class="footable-visible">Internet
-                                        Explorer 5.0
-                                    </td>
-                                    <td class="footable-visible" style="">Win 95+</td>
-                                    <td class="center footable-visible" style="">5</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Trident</td>
-                                    <td class="footable-visible">Internet
-                                        Explorer 5.5
-                                    </td>
-                                    <td class="footable-visible" style="">Win 95+</td>
-                                    <td class="center footable-visible" style="">5.5</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Gecko</td>
-                                    <td class="footable-visible">Netscape Navigator 9</td>
-                                    <td class="footable-visible" style="">Win 98+ / OSX.2+</td>
-                                    <td class="center footable-visible" style="">1.8</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-
-                                <tr class="gradeA footable-even" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Webkit</td>
-                                    <td class="footable-visible">Safari 1.3</td>
-                                    <td class="footable-visible" style="">OSX.3</td>
-                                    <td class="center footable-visible" style="">312.8</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Webkit</td>
-                                    <td class="footable-visible">Safari 2.0</td>
-                                    <td class="footable-visible" style="">OSX.4+</td>
-                                    <td class="center footable-visible" style="">419.3</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Webkit</td>
-                                    <td class="footable-visible">Safari 3.0</td>
-                                    <td class="footable-visible" style="">OSX.4+</td>
-                                    <td class="center footable-visible" style="">522.1</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Webkit</td>
-                                    <td class="footable-visible">OmniWeb 5.5</td>
-                                    <td class="footable-visible" style="">OSX.4+</td>
-                                    <td class="center footable-visible" style="">420</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Webkit</td>
-                                    <td class="footable-visible">iPod Touch / iPhone</td>
-                                    <td class="footable-visible" style="">iPod</td>
-                                    <td class="center footable-visible" style="">420.1</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Webkit</td>
-                                    <td class="footable-visible">S60</td>
-                                    <td class="footable-visible" style="">S60</td>
-                                    <td class="center footable-visible" style="">413</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 7.0</td>
-                                    <td class="footable-visible" style="">Win 95+ / OSX.1+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 7.5</td>
-                                    <td class="footable-visible" style="">Win 95+ / OSX.2+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 8.0</td>
-                                    <td class="footable-visible" style="">Win 95+ / OSX.2+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 8.5</td>
-                                    <td class="footable-visible" style="">Win 95+ / OSX.2+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 9.0</td>
-                                    <td class="footable-visible" style="">Win 95+ / OSX.3+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 9.2</td>
-                                    <td class="footable-visible" style="">Win 88+ / OSX.3+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera 9.5</td>
-                                    <td class="footable-visible" style="">Win 88+ / OSX.3+</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Opera for Wii</td>
-                                    <td class="footable-visible" style="">Wii</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Nokia N800</td>
-                                    <td class="footable-visible" style="">N800</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Presto</td>
-                                    <td class="footable-visible">Nintendo DS browser</td>
-                                    <td class="footable-visible" style="">Nintendo DS</td>
-                                    <td class="center footable-visible" style="">8.5</td>
-                                    <td class="center footable-visible footable-last-column" style="">C/A<sup>1</sup></td>
-                                </tr>
-                                <tr class="gradeC footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>KHTML</td>
-                                    <td class="footable-visible">Konqureror 3.1</td>
-                                    <td class="footable-visible" style="">KDE 3.1</td>
-                                    <td class="center footable-visible" style="">3.1</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>KHTML</td>
-                                    <td class="footable-visible">Konqureror 3.3</td>
-                                    <td class="footable-visible" style="">KDE 3.3</td>
-                                    <td class="center footable-visible" style="">3.3</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>KHTML</td>
-                                    <td class="footable-visible">Konqureror 3.5</td>
-                                    <td class="footable-visible" style="">KDE 3.5</td>
-                                    <td class="center footable-visible" style="">3.5</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeX footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Tasman</td>
-                                    <td class="footable-visible">Internet Explorer 4.5</td>
-                                    <td class="footable-visible" style="">Mac OS 8-9</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">X</td>
-                                </tr>
-                                <tr class="gradeC footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Tasman</td>
-                                    <td class="footable-visible">Internet Explorer 5.1</td>
-                                    <td class="footable-visible" style="">Mac OS 7.6-9</td>
-                                    <td class="center footable-visible" style="">1</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeC footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Tasman</td>
-                                    <td class="footable-visible">Internet Explorer 5.2</td>
-                                    <td class="footable-visible" style="">Mac OS 8-X</td>
-                                    <td class="center footable-visible" style="">1</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeA footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">NetFront 3.1</td>
-                                    <td class="footable-visible" style="">Embedded devices</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeA footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">NetFront 3.4</td>
-                                    <td class="footable-visible" style="">Embedded devices</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">A</td>
-                                </tr>
-                                <tr class="gradeX footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">Dillo 0.8</td>
-                                    <td class="footable-visible" style="">Embedded devices</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">X</td>
-                                </tr>
-                                <tr class="gradeX footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">Links</td>
-                                    <td class="footable-visible" style="">Text only</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">X</td>
-                                </tr>
-                                <tr class="gradeX footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">Lynx</td>
-                                    <td class="footable-visible" style="">Text only</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">X</td>
-                                </tr>
-                                <tr class="gradeC footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">IE Mobile</td>
-                                    <td class="footable-visible" style="">Windows Mobile 6</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeC footable-even" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Misc</td>
-                                    <td class="footable-visible">PSP browser</td>
-                                    <td class="footable-visible" style="">PSP</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">C</td>
-                                </tr>
-                                <tr class="gradeU footable-odd" style="display: none;">
-                                    <td class="footable-visible footable-first-column"><span class="footable-toggle"></span>Other browsers</td>
-                                    <td class="footable-visible">All others</td>
-                                    <td class="footable-visible" style="">-</td>
-                                    <td class="center footable-visible" style="">-</td>
-                                    <td class="center footable-visible footable-last-column" style="">U</td>
-                                </tr>
+                                    <tr class="gradeX">
+                                        <td>Trident</td>
+                                        <td>Internet</td>
+                                        <td>Win 95+</td>
+                                        <td class="center">4</td>
+                                        <td class="center">X</td>
+                                        <td class="center">X</td>
+                                    </tr>
+                                    <tr th:each="materials : ${materialsList}">
+                                        <td th:text="${materials.idx}"></td>
+                                        <td th:text="${materials.idx}"></td>
+                                        <td th:text="${materials.idx}"></td>
+                                        <td th:text="${materials.idx}"></td>
+                                        <td th:text="${materials.idx}"></td>
+                                        <td th:text="${materials.idx}"></td>
+                                    </tr>
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="5" class="footable-visible">
-                                        <ul class="pagination float-right"><li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li><li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li><li class="footable-page active"><a data-page="0" href="#">1</a></li><li class="footable-page"><a data-page="1" href="#">2</a></li><li class="footable-page"><a data-page="2" href="#">3</a></li><li class="footable-page"><a data-page="3" href="#">4</a></li><li class="footable-page"><a data-page="4" href="#">5</a></li><li class="footable-page-arrow"><a data-page="next" href="#next">›</a></li><li class="footable-page-arrow"><a data-page="last" href="#last">»</a></li></ul>
-                                    </td>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -322,23 +98,52 @@
             </div>
         </div>
     </div>
+
+
+
+
     <th:blockpi th:replace="/common/footer.html"></th:blockpi>
 
-    <!-- FooTable -->
-    <script th:src="@{js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
 
+    <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function() {
 
-            $('.footable').footable();
-            $('.footable2').footable();
+        // Upgrade button class name
+        $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
+
+        $(document).ready(function(){
+            $('.dataTables-example').DataTable({
+                pageLength: 25,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
+
+                    {extend: 'print',
+                        customize: function (win){
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ]
+
+            });
 
         });
 
     </script>
+
     <script>
         (function() {
-            var ws = new WebSocket('ws://' + window.location.host + '/jb-server-page?reloadServiceClientId=15');
+            var ws = new WebSocket('ws://' + window.location.host + '/jb-server-page?reloadServiceClientId=7');
             ws.onmessage = function (msg) {
                 if (msg.data === 'reload') {
                     window.location.reload();
@@ -371,5 +176,6 @@
             };
         })();
     </script>
+
 </body>
 </html>
