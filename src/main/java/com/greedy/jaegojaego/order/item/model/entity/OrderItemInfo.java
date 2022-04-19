@@ -1,11 +1,11 @@
 package com.greedy.jaegojaego.order.item.model.entity;
 
-import com.greedy.jaegojaego.materials.model.entity.OrderMaterialCategory;
+import com.greedy.jaegojaego.order.material.model.entity.OrderMaterialCategory;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Entity(name = "itemInfo")
+@Entity(name = "orderItemInfo")
 @Table(name = "ITEM_INFO")
 @SequenceGenerator(
         name = "ITEM_INFO_SEQ_GENERATOR",

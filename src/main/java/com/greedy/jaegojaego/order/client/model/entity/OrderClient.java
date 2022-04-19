@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity(name = "Client")
+@Entity(name = "orderClient")
 @Table(name = "CLIENT")
 @SequenceGenerator(
         name = "CLIENT_SEQ_GENERATOR",

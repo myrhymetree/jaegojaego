@@ -1,15 +1,13 @@
 package com.greedy.jaegojaego.order.order.model.entitiy;
 
-<<<<<<< HEAD:src/main/java/com/greedy/jaegojaego/order/model/entitiy/OrderApplicationItem.java
-=======
+
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
->>>>>>> origin/feature/order:src/main/java/com/greedy/jaegojaego/order/order/model/entitiy/OrderApplicationItem.java
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "OrderApplicationItem")
+@Entity(name = "orderApplicationItem")
 @Table(name = "ORDER_APPLICATION_ITEM")
 @Setter
 @Getter

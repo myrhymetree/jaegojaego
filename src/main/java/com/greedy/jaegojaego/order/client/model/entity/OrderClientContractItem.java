@@ -5,7 +5,7 @@ import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 
 import javax.persistence.*;
 
-@Entity(name = "ClientContractItem")
+@Entity(name = "orderClientContractItem")
 @Table(name = "CLIENT_CONTRACT_ITEM")
 @SequenceGenerator(
         name = "CLIENT_CONTRACT_ITEM_SEQ_GENERATOR",

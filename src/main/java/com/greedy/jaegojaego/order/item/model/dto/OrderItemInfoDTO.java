@@ -1,6 +1,6 @@
 package com.greedy.jaegojaego.order.item.model.dto;
 
-import com.greedy.jaegojaego.materials.model.dto.OrderMateiralCategoryDTO;
+import com.greedy.jaegojaego.order.material.model.dto.OrderMaterialCategoryDTO;
 import lombok.*;
 
 @Setter
@@ -13,7 +13,7 @@ public class OrderItemInfoDTO {
     private int itemInfoNo;
     private String itemInfoName;
     private String itemInfoItemSerialNo;
-    private OrderMateiralCategoryDTO materialCategory;
+    private OrderMaterialCategoryDTO materialCategory;
     private String itemInfoStatusYn;
 
     @Override
