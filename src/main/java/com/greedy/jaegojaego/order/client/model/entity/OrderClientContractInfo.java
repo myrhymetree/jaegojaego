@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity(name = "ClientContractInfo")
+@Entity(name = "orderClientContractInfo")
 @Table(name = "CLIENT_CONTRACT_INFO")
 @SequenceGenerator(
         name = "CLIENT_CONTRACT_INFO_SEQ_GENERATOR",

@@ -1,9 +1,7 @@
 package com.greedy.jaegojaego.order.order.model.dto;
 
-<<<<<<< HEAD:src/main/java/com/greedy/jaegojaego/order/model/dto/CompanyOrderItemDTO.java
-=======
+
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
->>>>>>> origin/feature/order:src/main/java/com/greedy/jaegojaego/order/order/model/dto/CompanyOrderItemDTO.java
 import lombok.*;
 
 @Setter
