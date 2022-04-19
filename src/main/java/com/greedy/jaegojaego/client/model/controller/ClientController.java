@@ -1,7 +1,5 @@
-package com.greedy.jaegojaego.client.controller;
+package com.greedy.jaegojaego.client.model.controller;
 
-import com.greedy.jaegojaego.client.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +13,18 @@ public class ClientController {
     public ModelAndView clientList(ModelAndView mv) {
 
         mv.setViewName("/client/clientList");
+
+        return mv;
+    }
+
+
+
+
+
+    @GetMapping("/productlist")
+    public ModelAndView clientContractItemList(ModelAndView mv) {
+
+        mv.setViewName("/client/clientContractItemList");
 
         return mv;
     }
