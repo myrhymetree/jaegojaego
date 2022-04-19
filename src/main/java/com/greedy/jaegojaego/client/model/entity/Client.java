@@ -40,7 +40,7 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
-    public ClientMember clientMember;
+    public ClientMember clientMemberName;
 
     @Column(name = "CLIENT_CREATED_DATE")
     public Date clientCreatedDate;
@@ -48,16 +48,20 @@ public class Client {
     @Column(name = "CLIENT_PAYMENT_METHOD")
     public String clientPaymentMethod;
 
-    public Client(int clientNo, String cleintName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, ClientMember clientMember, Date clientCreatedDate, String clientPaymentMethod) {
+    public Client(int clientNo, String cleintName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, ClientMember clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
         this.clientNo = clientNo;
         this.cleintName = cleintName;
         this.clientCbrNo = clientCbrNo;
         this.clientRepresentativeName = clientRepresentativeName;
         this.clientRepresentativePhone = clientRepresentativePhone;
         this.clientRepresentativeEmail = clientRepresentativeEmail;
-        this.clientMember = clientMember;
+        this.clientMemberName = clientMemberName;
         this.clientCreatedDate = clientCreatedDate;
         this.clientPaymentMethod = clientPaymentMethod;
+    }
+
+    public Client() {
+
     }
 
     public int getClientNo() {
@@ -108,12 +112,12 @@ public class Client {
         this.clientRepresentativeEmail = clientRepresentativeEmail;
     }
 
-    public ClientMember getClientMember() {
-        return clientMember;
+    public ClientMember getClientMemberName() {
+        return clientMemberName;
     }
 
-    public void setClientMember(ClientMember clientMember) {
-        this.clientMember = clientMember;
+    public void setClientMemberName(ClientMember clientMemberName) {
+        this.clientMemberName = clientMemberName;
     }
 
     public Date getClientCreatedDate() {
@@ -141,7 +145,7 @@ public class Client {
                 ", clientRepresentativeName='" + clientRepresentativeName + '\'' +
                 ", clientRepresentativePhone='" + clientRepresentativePhone + '\'' +
                 ", clientRepresentativeEmail='" + clientRepresentativeEmail + '\'' +
-                ", clientMember=" + clientMember +
+                ", clientMemberName=" + clientMemberName +
                 ", clientCreatedDate=" + clientCreatedDate +
                 ", clientPaymentMethod='" + clientPaymentMethod + '\'' +
                 '}';
