@@ -16,4 +16,35 @@ public class MaterialsCategory {
     @Column(name = "MATERIAL_CATEGORY_NAME")
     private String materialCategoryName;
 
+    public MaterialsCategory() {
+    }
+
+    public MaterialsCategory(int materialCategoryNo, String materialCategoryName) {
+        this.materialCategoryNo = materialCategoryNo;
+        this.materialCategoryName = materialCategoryName;
+    }
+
+    public int getMaterialCategoryNo() {
+        return materialCategoryNo;
+    }
+
+    public void setMaterialCategoryNo(int materialCategoryNo) {
+        this.materialCategoryNo = materialCategoryNo;
+    }
+
+    public String getMaterialCategoryName() {
+        return materialCategoryName;
+    }
+
+    public void setMaterialCategoryName(String materialCategoryName) {
+        this.materialCategoryName = materialCategoryName;
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialsCategory{" +
+                "materialCategoryNo=" + materialCategoryNo +
+                ", materialCategoryName='" + materialCategoryName + '\'' +
+                '}';
+    }
 }

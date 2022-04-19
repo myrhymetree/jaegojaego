@@ -34,4 +34,66 @@ public class Materials {
 
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemStatus;
+
+    public Materials() {
+    }
+
+    public Materials(int itemInfoNo, String itemInfoName, String itemSerialNo, MaterialsCategory materialCategory, String itemStatus) {
+        this.itemInfoNo = itemInfoNo;
+        this.itemInfoName = itemInfoName;
+        this.itemSerialNo = itemSerialNo;
+        this.materialCategory = materialCategory;
+        this.itemStatus = itemStatus;
+    }
+
+    public int getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(int itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public String getItemInfoName() {
+        return itemInfoName;
+    }
+
+    public void setItemInfoName(String itemInfoName) {
+        this.itemInfoName = itemInfoName;
+    }
+
+    public String getItemSerialNo() {
+        return itemSerialNo;
+    }
+
+    public void setItemSerialNo(String itemSerialNo) {
+        this.itemSerialNo = itemSerialNo;
+    }
+
+    public MaterialsCategory getMaterialCategory() {
+        return materialCategory;
+    }
+
+    public void setMaterialCategory(MaterialsCategory materialCategory) {
+        this.materialCategory = materialCategory;
+    }
+
+    public String getItemStatus() {
+        return itemStatus;
+    }
+
+    public void setItemStatus(String itemStatus) {
+        this.itemStatus = itemStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Materials{" +
+                "itemInfoNo=" + itemInfoNo +
+                ", itemInfoName='" + itemInfoName + '\'' +
+                ", itemSerialNo='" + itemSerialNo + '\'' +
+                ", materialCategory=" + materialCategory +
+                ", itemStatus='" + itemStatus + '\'' +
+                '}';
+    }
 }

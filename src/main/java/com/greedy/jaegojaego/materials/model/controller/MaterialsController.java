@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.materials.model.controller;
 
+import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
 import com.greedy.jaegojaego.materials.model.entity.Materials;
 import com.greedy.jaegojaego.materials.model.service.MaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/materials")
@@ -22,8 +25,9 @@ public class MaterialsController {
     @GetMapping("/productList")
     public ModelAndView MaterialsList(ModelAndView mv) {
 
+        List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
 
-
+        mv.addObject("materialsList", materialsList);
         mv.setViewName("materials/productList");
 
         return mv;

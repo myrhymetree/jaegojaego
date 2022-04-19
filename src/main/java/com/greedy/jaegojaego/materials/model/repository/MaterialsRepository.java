@@ -1,4 +1,5 @@
 package com.greedy.jaegojaego.materials.model.repository;
 
-public class MaterialsRepository {
+
+public interface MaterialsRepository extends {
 }
