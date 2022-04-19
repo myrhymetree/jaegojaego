@@ -1,6 +1,7 @@
 package com.greedy.jaegojaego.menu.service;
 
 import com.greedy.jaegojaego.menu.dto.MenuDTO;
+import com.greedy.jaegojaego.menu.dto.RawMaterialDTO;
 import com.greedy.jaegojaego.menu.entity.Menu;
 import com.greedy.jaegojaego.menu.repository.MenuRepository;
 import org.modelmapper.ModelMapper;
@@ -30,5 +31,10 @@ public class MenuService {
 
         return menuList.stream().map(menu -> modelMapper.map(menu, MenuDTO.class)).collect(Collectors.toList());
 
+    }
+
+    public List<RawMaterialDTO> selectOneMenu() {
+
+        return null;
     }
 }
