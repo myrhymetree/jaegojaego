@@ -21,7 +21,7 @@ public class FranchiseInfo {
     private String representativeName;
 
     @Column(name = "FRANCHISE_REPRESENTATIVE_PHONE")
-    private int representativePhone;
+    private String representativePhone;
 
     @Column(name = "FRANCHISE_REPRESENTATIVE_EMAIL")
     private String representativeEmail;
@@ -30,7 +30,7 @@ public class FranchiseInfo {
     private String branchName;
 
     @Column(name = "FRANCHISE_BUSINESS_REGISTRATION_NO")
-    private int businessRegistrationNo;
+    private String businessRegistrationNo;
 
     @Column(name = "FRANCHISE_ADDRESS")
     private String address;
@@ -45,7 +45,7 @@ public class FranchiseInfo {
     private int bankAccountAttachmentNo;
 
     @Column(name = "BANK_ACCOUNT_NO")
-    private int bankAccountNo;
+    private String bankAccountNo;
 
     @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO")
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -57,7 +57,7 @@ public class FranchiseInfo {
     private Member writedMember;
 
     @Column(name = "FRANCHISE_PHONE")
-    private int phone;
+    private String phone;
 
     @Override
     public String toString() {
