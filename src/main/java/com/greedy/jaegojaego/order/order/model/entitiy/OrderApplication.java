@@ -44,6 +44,7 @@ public class OrderApplication {
     @Override
     public String toString() {
         return "OrderApplication{" +
+                "CompanyOrderHistoryNo" + companyOrderHistory.getCompanyOrderHistoryNo() +
                 "orderApplicationNo=" + orderApplicationNo +
                 ", client=" + orderClient +
                 ", orderApplicationList=" + orderApplicationItemList +

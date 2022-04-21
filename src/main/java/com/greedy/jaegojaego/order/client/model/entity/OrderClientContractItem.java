@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.order.client.model.entity;
 
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +14,11 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderClientContractItem {
 
     @Id

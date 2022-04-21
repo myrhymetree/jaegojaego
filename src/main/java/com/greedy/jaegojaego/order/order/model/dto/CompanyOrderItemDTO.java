@@ -18,7 +18,8 @@ public class CompanyOrderItemDTO {
     @Override
     public String toString() {
         return "CompanyOrderItemDTO{" +
-                "itemInfo=" + itemInfo +
+                "companyOrderHistoryNo=" + companyOrderHistory.getCompanyOrderHistoryNo() +
+                ", itemInfo=" + itemInfo +
                 ", companyOrderItemAmount=" + companyOrderItemAmount +
                 '}';
     }

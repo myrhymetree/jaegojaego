@@ -21,7 +21,8 @@ public class OrderApplicationDTO {
     @Override
     public String toString() {
         return "OrderApplicationDTO{" +
-                "orderApplicationNo=" + orderApplicationNo +
+                "CompanyOrderHistoryNo=" + companyOrderHistory.getCompanyOrderHistoryNo() +
+                ", orderApplicationNo=" + orderApplicationNo +
                 ", client=" + client +
                 ", orderApplicationItemList=" + orderApplicationItemList +
                 '}';

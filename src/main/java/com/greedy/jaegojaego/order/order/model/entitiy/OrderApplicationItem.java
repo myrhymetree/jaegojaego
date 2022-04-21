@@ -14,7 +14,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-/*@IdClass(OrderApplicationItemPK.class)*/
 public class OrderApplicationItem implements Serializable {
 
     @Id
@@ -24,9 +23,6 @@ public class OrderApplicationItem implements Serializable {
 
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
-
-    @Column(name = "CLIENT_CONTRACT_ITEM_NO")
-    private int orderClientContractItemNo;
 
     @Id
     @ManyToOne
