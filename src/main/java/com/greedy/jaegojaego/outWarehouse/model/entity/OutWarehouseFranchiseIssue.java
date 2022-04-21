@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseFranchiseIssue {
 
     @Id
@@ -33,6 +28,38 @@ public class OutWarehouseFranchiseIssue {
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
+
+    public OutWarehouseFranchiseIssue() {}
+
+    public OutWarehouseFranchiseIssue(int franchiseIssueNo, String franchiseIssueStatus, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+        this.franchiseIssueNo = franchiseIssueNo;
+        this.franchiseIssueStatus = franchiseIssueStatus;
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
+
+    public int getFranchiseIssueNo() {
+        return franchiseIssueNo;
+    }
+
+    public String getFranchiseIssueStatus() {
+        return franchiseIssueStatus;
+    }
+
+    public OutWarehouseFranchiseInfo getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
+    }
+
+    public void setFranchiseIssueNo(int franchiseIssueNo) {
+        this.franchiseIssueNo = franchiseIssueNo;
+    }
+
+    public void setFranchiseIssueStatus(String franchiseIssueStatus) {
+        this.franchiseIssueStatus = franchiseIssueStatus;
+    }
+
+    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
 
     @Override
     public String toString() {

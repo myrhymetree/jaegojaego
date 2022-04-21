@@ -7,11 +7,6 @@ import java.io.Serializable;
 
 @Entity(name = "OutWarehouseMaterialManufacture")
 @Table(name = "MATERIAL_MANUFACTURE")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseMaterialManufacture implements Serializable {
 
     @Id
@@ -21,6 +16,29 @@ public class OutWarehouseMaterialManufacture implements Serializable {
 
     @Column(name = "MATERIAL_MANUFACTURE_SUBDIVISION_UNIT")
     private int materialManufactureSubdivisionUnit;
+
+    public OutWarehouseMaterialManufacture() {}
+
+    public OutWarehouseMaterialManufacture(OutWarehouseMaterials itemInfoNo, int materialManufactureSubdivisionUnit) {
+        this.itemInfoNo = itemInfoNo;
+        this.materialManufactureSubdivisionUnit = materialManufactureSubdivisionUnit;
+    }
+
+    public OutWarehouseMaterials getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public int getMaterialManufactureSubdivisionUnit() {
+        return materialManufactureSubdivisionUnit;
+    }
+
+    public void setItemInfoNo(OutWarehouseMaterials itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public void setMaterialManufactureSubdivisionUnit(int materialManufactureSubdivisionUnit) {
+        this.materialManufactureSubdivisionUnit = materialManufactureSubdivisionUnit;
+    }
 
     @Override
     public String toString() {

@@ -15,11 +15,6 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouse {
 
     @Id
@@ -30,11 +25,11 @@ public class OutWarehouse {
     @Column(name = "OUT_WAREHOUSE_NO")
     private int outWarehouseNo;
 
-    @Column(name = "FRANCHISE_BRANCH_NAME")
-    private String franchiseBranchName;
-
-    @Column(name = "FRANCHISE_ADDRESS")
-    private String franchiseAddress;
+//    @Column(name = "FRANCHISE_BRANCH_NAME")
+//    private String franchiseBranchName;
+//
+//    @Column(name = "FRANCHISE_ADDRESS")
+//    private String franchiseAddress;
 
     @Column(name = "OUT_WAREHOUSE_WORKING_STATUS_NAME")
     private String outWarehouseWorkingStatusName;
@@ -45,9 +40,9 @@ public class OutWarehouse {
     @Column(name = "OUT_WAREHOUSE_TOTAL_OUT_ITEM_AMOUNT")
     private int outWarehouseTotalOutItemAmount;
 
-//    @ManyToOne
-//    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-//    private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
+    @ManyToOne
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
 
 //    @ManyToOne
 //    @JoinColumn(name = "FRANCHISE_ORDER_NO")
@@ -57,6 +52,74 @@ public class OutWarehouse {
 //    @JoinColumn(name = "FRANCHISE_ISSUE_NO")
 //    private OutWarehouseFranchiseIssue franchiseIssueNo;
 
+    public OutWarehouse() {}
+
+    public OutWarehouse(int outWarehouseNo, String franchiseBranchName, String franchiseAddress, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate, int outWarehouseTotalOutItemAmount, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+        this.outWarehouseNo = outWarehouseNo;
+//        this.franchiseBranchName = franchiseBranchName;
+//        this.franchiseAddress = franchiseAddress;
+        this.outWarehouseWorkingStatusName = outWarehouseWorkingStatusName;
+        this.outWarehouseWorkingFinishedDate = outWarehouseWorkingFinishedDate;
+        this.outWarehouseTotalOutItemAmount = outWarehouseTotalOutItemAmount;
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
+
+    public int getOutWarehouseNo() {
+        return outWarehouseNo;
+    }
+
+//    public String getFranchiseBranchName() {
+//        return franchiseBranchName;
+//    }
+//
+//    public String getFranchiseAddress() {
+//        return franchiseAddress;
+//    }
+
+    public String getOutWarehouseWorkingStatusName() {
+        return outWarehouseWorkingStatusName;
+    }
+
+    public Date getOutWarehouseWorkingFinishedDate() {
+        return outWarehouseWorkingFinishedDate;
+    }
+
+    public int getOutWarehouseTotalOutItemAmount() {
+        return outWarehouseTotalOutItemAmount;
+    }
+
+    public OutWarehouseFranchiseInfo getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
+    }
+
+    public void setOutWarehouseNo(int outWarehouseNo) {
+        this.outWarehouseNo = outWarehouseNo;
+    }
+
+//    public void setFranchiseBranchName(String franchiseBranchName) {
+//        this.franchiseBranchName = franchiseBranchName;
+//    }
+//
+//    public void setFranchiseAddress(String franchiseAddress) {
+//        this.franchiseAddress = franchiseAddress;
+//    }
+
+    public void setOutWarehouseWorkingStatusName(String outWarehouseWorkingStatusName) {
+        this.outWarehouseWorkingStatusName = outWarehouseWorkingStatusName;
+    }
+
+    public void setOutWarehouseWorkingFinishedDate(Date outWarehouseWorkingFinishedDate) {
+        this.outWarehouseWorkingFinishedDate = outWarehouseWorkingFinishedDate;
+    }
+
+    public void setOutWarehouseTotalOutItemAmount(int outWarehouseTotalOutItemAmount) {
+        this.outWarehouseTotalOutItemAmount = outWarehouseTotalOutItemAmount;
+    }
+
+    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
+
     @Override
     public String toString() {
         return "OutWarehouse{" +
@@ -65,7 +128,8 @@ public class OutWarehouse {
 //                ", franchiseAddress='" + franchiseAddress + '\'' +
                 ", outWarehouseWorkingStatusName='" + outWarehouseWorkingStatusName + '\'' +
                 ", outWarehouseWorkingFinishedDate=" + outWarehouseWorkingFinishedDate +
-                ", outWarehouseTotalItemAmount=" + outWarehouseTotalOutItemAmount +
+                ", outWarehouseTotalOutItemAmount=" + outWarehouseTotalOutItemAmount +
+                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 '}';
     }
 }
