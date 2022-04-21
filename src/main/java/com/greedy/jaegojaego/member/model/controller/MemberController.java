@@ -1,12 +1,15 @@
 package com.greedy.jaegojaego.member.model.controller;
 
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.member.model.dto.departmentDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/member")
@@ -24,24 +27,13 @@ public class MemberController {
 
     }
 
-    @GetMapping("/password")
-    public String memberPassword() {
+    @GetMapping("/regist")
+    public ModelAndView sendRegistView(ModelAndView mv) {
 
-        return "/member/password1";
-    }
-
-    @GetMapping("myInfo")
-    public ModelAndView findMyInfo(ModelAndView mv) {
-
-        mv.setViewName("member/myInfoModal");
+//        mv.addObject()
+        mv.setViewName("/");
 
         return mv;
-    }
-
-    @GetMapping("regist")
-    public ModelAndView sendRegistView() {
-
-        return new ModelAndView("/member/regist");
     }
 
     @PostMapping("/regist")
@@ -57,17 +49,32 @@ public class MemberController {
         return mv;
     }
 
-    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
-    @ResponseBody
-    public String duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
+//    @GetMapping(value = "/department", produces = "application/json; charset=UTF-8")
+//    @ResponseBody
+//    public List<departmentDTO> findAllDepartment() {
+//
+//        return memberService.findAllDepartment();
+//    }
 
-        String resultMessage = "중복아님";
+//    @GetMapping("/list")
+//    public ModelAndView findMemberList(ModelAndView mv) {
+//
+//        mv.setViewName("/member/list");
+//
+//        return mv;
+//    }
 
-        /* 아이디가 조회되면 true 반환, 중복이라는 의미*/
-        if(memberService.duplicationCheckId(memberId)) {
-            resultMessage = "중복";
-        }
-
-        return resultMessage;
-    }
+//    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
+//    @ResponseBody
+//    public String duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
+//
+//        String resultMessage = "중복아님";
+//
+//        /* 아이디가 조회되면 true 반환, 중복이라는 의미*/
+//        if(memberService.duplicationCheckId(memberId)) {
+//            resultMessage = "중복";
+//        }
+//
+//        return resultMessage;
+//    }
 }

@@ -20,13 +20,13 @@ public class Client {
             strategy = GenerationType.SEQUENCE,
             generator = "CLIENT_SEQ_GENERATOR"
     )
-    @Column(name = "CLEINT_NO")
+    @Column(name = "CLIENT_NO")
     private int clientNo;
 
     @Column(name = "CLIENT_NAME")
     public String cleintName;
 
-    @Column(name = "CLIENT_CRETIFICATE_OF_BUSINESS_REGISTRATION_NO")
+    @Column(name = "CLIENT_CERTIFICATE_OF_BUSINESS_REGISTRATION_NO")
     public String clientCbrNo;
 
     @Column(name = "CLIENT_REPRESENTATIVE_NAME")

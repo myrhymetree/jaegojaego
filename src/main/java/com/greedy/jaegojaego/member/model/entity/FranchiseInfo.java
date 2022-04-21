@@ -35,15 +35,6 @@ public class FranchiseInfo {
     @Column(name = "FRANCHISE_ADDRESS")
     private String address;
 
-    @JoinColumn(name = "REGISTRATION_ATTACHMENT_NO")
-    private int registrationAttachmentNo;
-    
-    @JoinColumn(name = "CONTRACT_ATTACHMENT_NO")
-    private int contractAttachmentNo;
-
-    @JoinColumn(name = "BANK_ACCOUNT_ATTACHMENT_NO")
-    private int bankAccountAttachmentNo;
-
     @Column(name = "BANK_ACCOUNT_NO")
     private String bankAccountNo;
 
@@ -52,9 +43,9 @@ public class FranchiseInfo {
     private Member supervisorNo;
 
 
-    @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER")
+    @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER_NO")
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private Member writedMember;
+    private Member writedMemberNo;
 
     @Column(name = "FRANCHISE_PHONE")
     private String phone;
@@ -69,12 +60,9 @@ public class FranchiseInfo {
                 ", branchName='" + branchName + '\'' +
                 ", businessRegistrationNo=" + businessRegistrationNo +
                 ", address='" + address + '\'' +
-                ", registrationAttachmentNo=" + registrationAttachmentNo +
-                ", contractAttachmentNo=" + contractAttachmentNo +
-                ", bankAccountAttachmentNo=" + bankAccountAttachmentNo +
                 ", bankAccountNo=" + bankAccountNo +
                 ", supervisorNo=" + supervisorNo +
-                ", writedMember=" + writedMember +
+                ", writedMember=" + writedMemberNo +
                 ", phone=" + phone +
                 '}';
     }

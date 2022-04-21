@@ -1,5 +1,6 @@
  $(document).ready(function(){
 
+     <!-- password meter -->
     var options1 = {};
     options1.ui = {
         container: "#pwd-container1",
@@ -14,6 +15,7 @@
 
     $('.example1').pwstrength(options1);
 
+    <!-- input mask, validation(password equality, length, email validation) -->
     $("#modifyForm").ready().validate({
         errorPlacement: function (error, element) {
             element.before(error);

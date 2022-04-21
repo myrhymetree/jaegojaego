@@ -6,6 +6,7 @@ import javax.naming.Name;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +40,13 @@ public class Member implements Serializable {
             generator = "MEMBER_SEQ_GENERATOR"
     )
     @Column(name = "MEMBER_NO")
-    private int memberNo;
+    private Integer memberNo;
+    //int를 지양하는 이유 : int는 0을 담을 수 있기 때문이다, Integer는 보통 10억바이트 정도만 담을 수 있기때문에 보통은 Long이 권장됨
+    //데이터가 많이 쌓여있을 때 Integer -> Long으로 바꾸면 여러 문제가 생길 수 있다
+
+    @OneToOne
+    @JoinColumn(name = "MEMBER_NO")
+    private EmployeeInfo employeeInfo;
 
     @Column(name = "MEMBER_ID")
     private String memberId;        //id라고 명시를 해줘야 쿼리문을 쓰는게 아닌 자동으로 jpa가 취급해줌
@@ -53,11 +60,13 @@ public class Member implements Serializable {
     @Column(name = "MEMBER_PWD_INIT_STATUS")
     private String memberPwdInitStatus;
 
+    //    @Temporal(TemporalType.TIMESTAMP)     //LocalDateTime(java8부터 지원)을 사용하기 때문에 사용할 필요없음, Temporal 사용이유 : DB에 시간, 날짜를 저장하기 위해서
     @Column(name = "MEMBER_CREATED_DATE")
-    private java.sql.Date memberCreatedDate;
+    private LocalDateTime memberCreatedDate;
 
+//    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "MEMBER_REMOVED_DATE")
-    private java.sql.Date memberRemovedDate;
+    private LocalDateTime memberRemovedDate;
 
     @Column(name = "MEMBER_REMOVE_STATUS")
     private String memberRemoveStatus;

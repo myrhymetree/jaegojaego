@@ -33,8 +33,8 @@ public class MemberService {
         memberRepository.save(modelMappper.map(newMember, Member.class));
     }
 
-    public boolean                                                      duplicationCheckId(String memberId) {
-
-        return memberRepository.duplicationCheckId(memberId) != null;
-    }
+//    public boolean                                                      duplicationCheckId(String memberId) {
+//
+//        return memberRepository.duplicationCheckId(memberId) != null;
+//    }
 }
