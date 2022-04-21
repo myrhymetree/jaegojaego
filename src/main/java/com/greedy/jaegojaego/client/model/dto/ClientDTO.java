@@ -1,54 +1,25 @@
-package com.greedy.jaegojaego.client.model.entity;
+package com.greedy.jaegojaego.client.model.dto;
 
-import org.springframework.stereotype.Controller;
+import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "Client")
-@Table(name = "CLIENT")
-@SequenceGenerator(
-        name = "CLIENT_SEQ_GENERATOR",
-        sequenceName = "SEQ_CLIENT_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
-public class Client {
+public class ClientDTO {
 
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "CLIENT_SEQ_GENERATOR"
-    )
-    @Column(name = "CLIENT_NO")
     private int clientNo;
+    private String clientName;
+    private String clientCbrNo;
+    private String clientRepresentativeName;
+    private String clientRepresentativePhone;
+    private String clientRepresentativeEmail;
+    private MemberDTO clientMemberName;
+    private Date clientCreatedDate;
+    private String clientPaymentMethod;
 
-    @Column(name = "CLIENT_NAME")
-    public String clientName;
+    public ClientDTO(){}
 
-    @Column(name = "CLIENT_CERTIFICATE_OF_BUSINESS_REGISTRATION_NO")
-    public String clientCbrNo;
+    public ClientDTO(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, MemberDTO clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
 
-    @Column(name = "CLIENT_REPRESENTATIVE_NAME")
-    public String clientRepresentativeName;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_PHONE")
-    public String clientRepresentativePhone;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_EMAIL")
-    public String clientRepresentativeEmail;
-
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_NO")
-    public ClientMember clientMemberName;
-
-    @Column(name = "CLIENT_CREATED_DATE")
-    public Date clientCreatedDate;
-
-    @Column(name = "CLIENT_PAYMENT_METHOD")
-    public String clientPaymentMethod;
-
-    public Client(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, ClientMember clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
         this.clientNo = clientNo;
         this.clientName = clientName;
         this.clientCbrNo = clientCbrNo;
@@ -58,10 +29,6 @@ public class Client {
         this.clientMemberName = clientMemberName;
         this.clientCreatedDate = clientCreatedDate;
         this.clientPaymentMethod = clientPaymentMethod;
-    }
-
-    public Client() {
-
     }
 
     public int getClientNo() {
@@ -76,7 +43,7 @@ public class Client {
         return clientName;
     }
 
-    public void setClientName(String cleintName) {
+    public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
@@ -112,11 +79,11 @@ public class Client {
         this.clientRepresentativeEmail = clientRepresentativeEmail;
     }
 
-    public ClientMember getClientMemberName() {
+    public MemberDTO getClientMemberName() {
         return clientMemberName;
     }
 
-    public void setClientMemberName(ClientMember clientMemberName) {
+    public void setClientMemberName(MemberDTO clientMemberName) {
         this.clientMemberName = clientMemberName;
     }
 
@@ -138,7 +105,7 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
+        return "ClientDTO{" +
                 "clientNo=" + clientNo +
                 ", clientName='" + clientName + '\'' +
                 ", clientCbrNo='" + clientCbrNo + '\'' +
