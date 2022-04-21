@@ -19,7 +19,7 @@ public class OutWarehouseItem {
             strategy = GenerationType.SEQUENCE,
             generator = "OUT_WAREHOUSE_ITEM_NO_SEQ_GENERATOR"
     )
-    @JoinColumn(name = "OUT_WAREHOUSE_ITEM_NO")
+    @Column(name = "OUT_WAREHOUSE_ITEM_NO")
     private int outWarehouseItemNo;
 
     @ManyToOne

@@ -73,22 +73,22 @@ public class OutWarehouseTests {
     @Test
     public void 출고_목록_상세_조회_테스트() {
 
-//        int outWarehouseNo = 1;
-//
-//        String query = "SELECT * " +
-//                "        FROM OUT_WAREHOUSE_ITEM A\n " +
-////                "        JOIN ITEM_WAREHOUSE B ON (A.ITEM_WAREHOUSE_NO = B.ITEM_WAREHOUSE_NO)\n " +
-////                "        JOIN ITEM_INFO C ON (B.ITEM_INFO_NO = C.ITEM_INFO_NO)\n " +
-////                "        JOIN MATERIAL_CATEGORY D ON (C.MATERIAL_CATEGORY_NO = D.MATERIAL_CATEGORY_NO)\n " +
-////                "        JOIN OUT_WAREHOUSE E ON (A.OUT_WAREHOUSE_NO = E.OUT_WAREHOUSE_NO)\n " +
-////                "        JOIN FRANCHISE_INFO F ON (E.FRANCHISE_REPRESENTATIVE_NO = F.FRANCHISE_REPRESENTATIVE_NO)\n " +
-//                "       WHERE A.OUT_WAREHOUSE_NO = ?";
-//
-//        List<OutWarehouseItem> outWarehouseItemList = entityManager.createNativeQuery(query, OutWarehouseItem.class)
-//                .setParameter(1, outWarehouseNo)
-//                .getResultList();
-//
-//        assertNotNull(outWarehouseItemList);
-//        outWarehouseItemList.forEach(System.out::println);
+        int outWarehouseNo = 1;
+
+        String query = "SELECT * " +
+                "        FROM OUT_WAREHOUSE_ITEM A\n " +
+                "        JOIN ITEM_WAREHOUSE B ON (A.ITEM_WAREHOUSE_NO = B.ITEM_WAREHOUSE_NO)\n " +
+                "        JOIN ITEM_INFO C ON (B.ITEM_INFO_NO = C.ITEM_INFO_NO)\n " +
+                "        JOIN MATERIAL_CATEGORY D ON (C.MATERIAL_CATEGORY_NO = D.MATERIAL_CATEGORY_NO)\n " +
+                "        JOIN OUT_WAREHOUSE E ON (A.OUT_WAREHOUSE_NO = E.OUT_WAREHOUSE_NO)\n " +
+                "        JOIN FRANCHISE_INFO F ON (E.FRANCHISE_REPRESENTATIVE_NO = F.FRANCHISE_REPRESENTATIVE_NO)\n " +
+                "       WHERE A.OUT_WAREHOUSE_NO = ?";
+
+        List<OutWarehouseItem> outWarehouseItemList = entityManager.createNativeQuery(query, OutWarehouseItem.class)
+                .setParameter(1, outWarehouseNo)
+                .getResultList();
+
+        assertNotNull(outWarehouseItemList);
+        outWarehouseItemList.forEach(System.out::println);
     }
 }

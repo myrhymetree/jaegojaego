@@ -62,8 +62,13 @@ public class OutWarehouseController {
     @GetMapping("/detail/{outWarehouseNo}")
     public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
 
-        List<OutWarehouseDetailListDTO> outWarehouseDetailListDTO = outWarehouseService.findOutItemsList(outWarehouseNo);
+        List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findOutItemsList(outWarehouseNo);
 
+        for(OutWarehouseDetailListDTO detailList : outWarehouseDetailList) {
+            System.out.println("detailList = " + detailList);
+        }
+        
+        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
         mv.setViewName("/outWarehouse/detail");
 
         return mv;
