@@ -38,7 +38,7 @@ public class MenuController {
 
     @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public String selectOneMenu(ModelAndView mv, HttpServletRequest request, int menuNo) {
+    public String selectOneMenu(int menuNo) {
 
         /* 각 메뉴의 원재료 상세조회 */
         List<RawMaterialDTO> rawMaterialList = menuService.selectOneMenu(menuNo);
