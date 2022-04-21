@@ -1,4 +1,4 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-public class WarehouseOrderClientContractInfo {
+public class WarehouseClientContractInfo {
 }

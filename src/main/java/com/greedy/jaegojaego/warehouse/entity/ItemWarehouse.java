@@ -14,31 +14,24 @@ public class ItemWarehouse implements Serializable {
     @Column(name = "ITEM_WAREHOUSE_NO")
     private int itemWarehouseNo;
 
-    @Id
     @Column(name = "ITEM_WAREHOUSE_DIVISION")
     private String itemWarehouseDivision;
 
-    @Id
     @Column(name = "ITEM_WAREHOUSE_AMOUNT")
     private int itemWarehouseAmount;
 
-    @Id
     @Column(name = "ITEM_WAREHOUSE_REAL_AMOUNT")
     private int itemWarehouseRealAmount;
 
-    @Id
     @Column(name = "ITEM_INFO_NO")
     private int itemInfoNo;
 
-    @Id
     @Column(name = "IN_WAREHOUSE_DIVISION_NO")
     private int inWarehouseDivisionNo;
 
-    @Id
     @Column(name = "OUT_WAREHOUSE_DIVISION_NO")
     private int outWarehouseDivisionNo;
 
-    @Id
     @Column(name = "ITEM_WAREHOUSE_QUALITY_STATUS")
     private String itemWarehouseQualityStatus;
 
