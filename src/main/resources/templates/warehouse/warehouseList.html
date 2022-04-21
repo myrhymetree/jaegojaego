@@ -9,13 +9,18 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
+<div class="body-header">
+    <div class="menu-title">입고, 입하 처리</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/list}">입고, 입하 처리</a></div>
+</div>
+
 <!-- 컨텐츠 작성 영역 -->
 
 <br>
 
 <!-- 상단박스 시작 -->
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>전체 입고</h5>
@@ -27,7 +32,19 @@
         </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>입고 진행중</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">2건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>입고 완료</h5>
@@ -46,70 +63,42 @@
 
     <h2>입고, 입하 처리</h2>
 
-    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
-           placeholder="Search in table">
-
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
             <th>No</th>
             <th>입고 번호</th>
-            <th>카테고리</th>
-            <th>품번</th>
-            <th>품명</th>
-            <th>품목</th>
+            <th>입고 종류</th>
             <th>발주 일시</th>
+            <th>발주 물품 종류 개수</th>
             <th>작업 상태</th>
             <th>상세 정보</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>2</td>
-            <td>20222022</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>4</td>
-            <td>입하 대기</td>
+        <tr th:each="warehouse : ${ warehouseList }">
+            <td th:text="${ warehouse.warehouseNo }"></td>                                                              <!-- pk입고 구분 번호 (sequence)-->
+            <td th:text="${ warehouse.warehouseNo }"></td>                                                              <!-- 받아온 정보에 입고 번호 부여 -->
+            <td th:text="${ warehouse.warehouseNo }"></td>                                                              <!-- 입고 종류 -->
+            <td th:text="${ warehouse.orderHistoryNo.companyOrderHistoryCreatedDate }"></td>                            <!-- 발주 일시 (fk로 받아옴) -->
+            <td th:text="${ warehouse.warehouseNo }"></td>                                                              <!-- 물품 종류 개수 (fk로 받아옴) -->     <!-- 물품의 개수는 orderApplicationItemAmount -->
+            <td th:text="${ warehouse.warehouseWorkingName }"></td>                                                     <!-- 작업상태 (fk로 받아옴) -->
             <td>
-                <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
+<!--                <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>-->
+                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouseNo}')|">상세 조회</button>
             </td>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>20222023</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>5</td>
-            <td>입고 완료</td>
-            <td>
-                <button type="button" class="btn btn-w-m btn-primary" onclick="href='/warehouse/warehouse/detail'">상세 조회</button>
-<!--                <li><a href="/warehouse/list">입고, 입하 처리</a></li>-->
-            </td>
-        </tr>
-
         </tfoot>
     </table>
 </div>
 <!-- 테이블 끝 -->
 
-
-
-
-<div class="footer">
-    <div class="float-right">
-        10GB of <strong>250GB</strong> Free.
-    </div>
-    <div>
-        <strong>Copyright</strong> Example Company &copy; 2014-2018
-    </div>
-</div>
-
-
+<script>
+    function viewDetail(num) {
+        let No = num;
+        location.href="/warehouse/detail";
+    }
+</script>
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
 </html>

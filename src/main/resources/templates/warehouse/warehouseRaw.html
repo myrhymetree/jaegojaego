@@ -9,13 +9,18 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
+<div class="body-header">
+    <div class="menu-title">가공 대기 창고</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/raw}">가공 대기 창고</a></div>
+</div>
+
 <!-- 컨텐츠 작성 영역 -->
 
 <br>
 
 <!-- 상단박스 시작 -->
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>가공 대기 창고</h5>
@@ -27,7 +32,7 @@
         </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>입고 완료</h5>

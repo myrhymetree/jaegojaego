@@ -24,6 +24,12 @@ public class MemberController {
 
     }
 
+    @GetMapping("/password")
+    public String memberPassword() {
+
+        return "/member/password1";
+    }
+
     @GetMapping("myInfo")
     public ModelAndView findMyInfo(ModelAndView mv) {
 

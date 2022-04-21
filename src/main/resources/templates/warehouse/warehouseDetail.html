@@ -9,31 +9,60 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
+<div class="body-header">
+    <div class="menu-title">입고, 입하 처리 상세 보기</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/detail}">입고, 입하 처리 상세 보기</a></div>
+</div>
+
 <!-- 컨텐츠 작성 영역 -->
 
 <br>
 
 <!-- 상단박스 시작 -->
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>입고, 입하 상세 정보</h5>
+                <h5>입하 대기 시작일</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">3건</h1>
+                <h1 class="no-margins">2022.02.22</h1>
                 <br>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>입하 작업 시작일</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">2022.02.22</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>입고 작업 시작일</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">2022.02.22</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
                 <h5>입고 완료</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">2건</h1>
+                <h1 class="no-margins">2022.02.22</h1>
                 <br>
             </div>
         </div>
@@ -46,8 +75,17 @@
 
     <h2>입고 정보</h2>
 
-    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
-           placeholder="Search in table">
+    <!-- 상태변경 selectbox 시작 -->
+    <div class="ibox-content">
+        <select th:style="${'width:10%; height:2rem; text-align:center; font-size:1rem;'}" class="form-control">
+            <option value="1">입하 대기</option>
+            <option value="2">입하 작업</option>
+            <option value="3">입고 작업</option>
+            <option value="4">입고 완료</option>
+        </select>
+        <button class="modifyBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
+    </div>
+    <!-- 상태변경 selectbox 종료 -->
 
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
@@ -64,6 +102,19 @@
         </tr>
         </thead>
         <tbody>
+<!--        <tr th:each="warehouse : ${ warehouseList }">-->
+<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; pk입고 구분 번호 (sequence)&ndash;&gt;-->
+<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 받아온 정보에 입고 번호 부여 &ndash;&gt;-->
+<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 입고 종류 &ndash;&gt;-->
+<!--            <td th:text="${ warehouse.orderHistoryNo.companyOrderHistoryCreatedDate }"></td>                            &lt;!&ndash; 발주 일시 (fk로 받아옴) &ndash;&gt;-->
+<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 물품 종류 개수 (fk로 받아옴) &ndash;&gt;     &lt;!&ndash; 물품의 개수는 orderApplicationItemAmount &ndash;&gt;-->
+<!--            <td th:text="${ warehouse.warehouseWorkingName }"></td>                                                     &lt;!&ndash; 작업상태 (fk로 받아옴) &ndash;&gt;-->
+<!--            <td>-->
+<!--                &lt;!&ndash;                <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>&ndash;&gt;-->
+<!--                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouseNo}')|">상세 조회</button>-->
+<!--            </td>-->
+<!--        </tr>-->
+
         <tr>
             <td>2</td>
             <td>20222022</td>
@@ -82,7 +133,7 @@
             <td>Win 95+</td>
             <td>Win 95+</td>
             <td>5</td>
-            <td>입고 완료</td>
+            <td>입하 대기</td>
         </tr>
         </tfoot>
     </table>

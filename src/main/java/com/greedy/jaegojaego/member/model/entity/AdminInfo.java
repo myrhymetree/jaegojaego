@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class AdminInfo implements Serializable {
 
     @Column(name = "COMPANY_PHONE_NUMBER")
-    private int companyPhoneNumber;
+    private String companyPhoneNumber;
 
     @Id
     @Column(name = "MEMBER_NO")
