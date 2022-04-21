@@ -3,7 +3,7 @@ package com.greedy.jaegojaego.menu.entity;
 import javax.persistence.*;
 
 @Entity(name = "menuMaterialsCategory")
-@Table(name = "TBL_MATERIAL_CATEGORY")
+@Table(name = "MATERIAL_CATEGORY")
 @SequenceGenerator(
         name = "MENUMATERIALCATEGORY_SEQ_GENERATOR",
         sequenceName = "SEQ_MENUMATERIALCATEGORY_NO",

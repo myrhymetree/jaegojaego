@@ -1,20 +1,26 @@
 package com.greedy.jaegojaego.menu.entity;
 
-
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "rawMaterial")
-@Table(name = "TBL_FINISHED_PRODUCT_CONFIGURATION_ITEM")
+@Table(name = "FINISHED_PRODUCT_CONFIGURATION_ITEM")
+@IdClass(RawMaterialPK.class)
 public class RawMaterial implements Serializable {
 
-    //pk,fk
+    //pk,fk -> 얘가 참조하는애의 pk를 fk로 받아오고 식별자 공유
     @Id
     @ManyToOne
     @JoinColumn(name = "FINISHED_PRODUCT_MENU_NO")
-    private Menu menuNo;
+    private Menu menuNoforRaw;
+
+    //pk, fk -> 다른 참조하는 애를 fk로 받아옴\
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "ITEM_INFO_NO")
+    private MenuFranchiseOrderableItem itemInfoNo;
+//    private List<MenuFranchiseOrderableItem> itemInfoNo;
 
     @Column(name = "FINISHED_PRODUCT_CONFIGURATION_ITEM_NAME")
     private String rawMaterialName;
@@ -22,26 +28,30 @@ public class RawMaterial implements Serializable {
     @Column(name = "FINISHED_PRODUCT_CONFIGURATION_ITEM_CAPACITY")
     private int rawMaterialCapacity;
 
-    //fk
-    @OneToMany
-    @JoinColumn(name = "ITEM_INFO_NO")
-    private List<RawMaterial> materialNo;
 
     public RawMaterial() {}
 
-    public RawMaterial(Menu menuNo, String rawMaterialName, int rawMaterialCapacity, List<RawMaterial> materialNo) {
-        this.menuNo = menuNo;
+    public RawMaterial(Menu menuNoforRaw, MenuFranchiseOrderableItem itemInfoNo, String rawMaterialName, int rawMaterialCapacity) {
+        this.menuNoforRaw = menuNoforRaw;
+        this.itemInfoNo = itemInfoNo;
         this.rawMaterialName = rawMaterialName;
         this.rawMaterialCapacity = rawMaterialCapacity;
-        this.materialNo = materialNo;
     }
 
-    public Menu getMenuNo() {
-        return menuNo;
+    public Menu getMenuNoforRaw() {
+        return menuNoforRaw;
     }
 
-    public void setMenuNo(Menu menuNo) {
-        this.menuNo = menuNo;
+    public void setMenuNoforRaw(Menu menuNoforRaw) {
+        this.menuNoforRaw = menuNoforRaw;
+    }
+
+    public MenuFranchiseOrderableItem getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(MenuFranchiseOrderableItem itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
     }
 
     public String getRawMaterialName() {
@@ -60,21 +70,13 @@ public class RawMaterial implements Serializable {
         this.rawMaterialCapacity = rawMaterialCapacity;
     }
 
-    public List<RawMaterial> getMaterialNo() {
-        return materialNo;
-    }
-
-    public void setMaterialNo(List<RawMaterial> materialNo) {
-        this.materialNo = materialNo;
-    }
-
     @Override
     public String toString() {
         return "RawMaterial{" +
-                "menuNo=" + menuNo +
+                "menuNoforRaw=" + menuNoforRaw +
+                ", itemInfoNo=" + itemInfoNo +
                 ", rawMaterialName='" + rawMaterialName + '\'' +
                 ", rawMaterialCapacity=" + rawMaterialCapacity +
-                ", materialNo=" + materialNo +
                 '}';
     }
 }
