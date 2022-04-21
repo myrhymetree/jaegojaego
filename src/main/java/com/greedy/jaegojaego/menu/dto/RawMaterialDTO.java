@@ -7,16 +7,18 @@ public class RawMaterialDTO {
 
     private String rawMaterialName;
     private int rawMaterialCapacity;
-    private MenuDTO menuNo;
-    private List<RawMaterialDTO> materialNo;
+    private MenuDTO menuNoforRaw;
+    private MenuFranchiseOrderableItemDTO itemInfoNo; //이게 그냥 Menu뭐시기그것만 하는지 List인지 헷갈리네
+                //결국에는 자재명/자재품번(자재내부의 컬럼들 여러개사용해야함) 받아야하잫ㄴ아? 음..일단
+//    private List<MenuFranchiseOrderableItemDTO> itemInfoNo;
 
     public RawMaterialDTO() {}
 
-    public RawMaterialDTO(String rawMaterialName, int rawMaterialCapacity, MenuDTO menuNo, List<RawMaterialDTO> materialNo) {
+    public RawMaterialDTO(String rawMaterialName, int rawMaterialCapacity, MenuDTO menuNoforRaw, MenuFranchiseOrderableItemDTO itemInfoNo) {
         this.rawMaterialName = rawMaterialName;
         this.rawMaterialCapacity = rawMaterialCapacity;
-        this.menuNo = menuNo;
-        this.materialNo = materialNo;
+        this.menuNoforRaw = menuNoforRaw;
+        this.itemInfoNo = itemInfoNo;
     }
 
     public String getRawMaterialName() {
@@ -35,20 +37,20 @@ public class RawMaterialDTO {
         this.rawMaterialCapacity = rawMaterialCapacity;
     }
 
-    public MenuDTO getMenuNo() {
-        return menuNo;
+    public MenuDTO getMenuNoforRaw() {
+        return menuNoforRaw;
     }
 
-    public void setMenuNo(MenuDTO menuNo) {
-        this.menuNo = menuNo;
+    public void setMenuNoforRaw(MenuDTO menuNoforRaw) {
+        this.menuNoforRaw = menuNoforRaw;
     }
 
-    public List<RawMaterialDTO> getMaterialNo() {
-        return materialNo;
+    public MenuFranchiseOrderableItemDTO getItemInfoNo() {
+        return itemInfoNo;
     }
 
-    public void setMaterialNo(List<RawMaterialDTO> materialNo) {
-        this.materialNo = materialNo;
+    public void setItemInfoNo(MenuFranchiseOrderableItemDTO itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
     }
 
     @Override
@@ -56,8 +58,8 @@ public class RawMaterialDTO {
         return "RawMaterialDTO{" +
                 "rawMaterialName='" + rawMaterialName + '\'' +
                 ", rawMaterialCapacity=" + rawMaterialCapacity +
-                ", menuNo=" + menuNo +
-                ", materialNo=" + materialNo +
+                ", menuNoforRaw=" + menuNoforRaw +
+                ", itemInfoNo=" + itemInfoNo +
                 '}';
     }
 }

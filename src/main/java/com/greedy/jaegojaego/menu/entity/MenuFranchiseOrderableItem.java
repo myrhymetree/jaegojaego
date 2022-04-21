@@ -7,31 +7,31 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "menuFranchiseOrderableItem")
-@Table(name = "TBL_FRANCHISE_ORDERABLE_ITEM")
+@Table(name = "FRANCHISE_ORDERABLE_ITEM")
 public class MenuFranchiseOrderableItem implements Serializable {
 
     //얘가 pk/fk
     @Id
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
-    private MenuMaterial menuMaterialsNo;
+    private MenuMaterialManufacture itemInfoNo;
 
     @Column(name = "FRANCHISE_ORDERABLE_ITEM_PRICE")
     private int franchiseOrderableItemPrice;
 
     public MenuFranchiseOrderableItem() {}
 
-    public MenuFranchiseOrderableItem(MenuMaterial menuMaterialsNo, int franchiseOrderableItemPrice) {
-        this.menuMaterialsNo = menuMaterialsNo;
+    public MenuFranchiseOrderableItem(MenuMaterialManufacture itemInfoNo, int franchiseOrderableItemPrice) {
+        this.itemInfoNo = itemInfoNo;
         this.franchiseOrderableItemPrice = franchiseOrderableItemPrice;
     }
 
-    public MenuMaterial getMenuMaterialsNo() {
-        return menuMaterialsNo;
+    public MenuMaterialManufacture getItemInfoNo() {
+        return itemInfoNo;
     }
 
-    public void setMenuMaterialsNo(MenuMaterial menuMaterialsNo) {
-        this.menuMaterialsNo = menuMaterialsNo;
+    public void setItemInfoNo(MenuMaterialManufacture itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
     }
 
     public int getFranchiseOrderableItemPrice() {
@@ -45,7 +45,7 @@ public class MenuFranchiseOrderableItem implements Serializable {
     @Override
     public String toString() {
         return "MenuFranchiseOrderableItem{" +
-                "menuMaterialsNo=" + menuMaterialsNo +
+                "itemInfoNo=" + itemInfoNo +
                 ", franchiseOrderableItemPrice=" + franchiseOrderableItemPrice +
                 '}';
     }
