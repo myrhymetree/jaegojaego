@@ -63,19 +63,19 @@ public class FranchiseInfo {
     public String toString() {
         return "FranchiseInfo{" +
                 "representativeNo=" + representativeNo +
-                ", representativeName='" + representativeName + '\'' +
-                ", representativePhone=" + representativePhone +
-                ", representativeEmail='" + representativeEmail + '\'' +
+//                ", representativeName='" + representativeName + '\'' +
+//                ", representativePhone=" + representativePhone +
+//                ", representativeEmail='" + representativeEmail + '\'' +
                 ", branchName='" + branchName + '\'' +
-                ", businessRegistrationNo=" + businessRegistrationNo +
+//                ", businessRegistrationNo=" + businessRegistrationNo +
                 ", address='" + address + '\'' +
-                ", registrationAttachmentNo=" + registrationAttachmentNo +
-                ", contractAttachmentNo=" + contractAttachmentNo +
-                ", bankAccountAttachmentNo=" + bankAccountAttachmentNo +
-                ", bankAccountNo=" + bankAccountNo +
-                ", supervisorNo=" + supervisorNo +
-                ", writedMember=" + writedMember +
-                ", phone=" + phone +
+//                ", registrationAttachmentNo=" + registrationAttachmentNo +
+//                ", contractAttachmentNo=" + contractAttachmentNo +
+//                ", bankAccountAttachmentNo=" + bankAccountAttachmentNo +
+//                ", bankAccountNo=" + bankAccountNo +
+//                ", supervisorNo=" + supervisorNo +
+//                ", writedMember=" + writedMember +
+//                ", phone=" + phone +
                 '}';
     }
 }

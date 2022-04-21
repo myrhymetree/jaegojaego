@@ -1,10 +1,16 @@
 package com.greedy.jaegojaego;
 
+import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouse;
+//import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseExpandsOutWarehouseStatusHistory;
+//import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseExpandsOutWarehouseStatusHistory;
 import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OutWarehouseTests {
 
@@ -35,4 +41,37 @@ public class OutWarehouseTests {
     public void test_작동_확인() {
 
     }
+
+    @Test
+    public void 출고_목록_조회_테스트() {
+
+        //given
+
+        //when
+        String query = "SELECT A.OUT_WAREHOUSE_NO, A.OUT_WAREHOUSE_WORKING_FINISHED_DATE, A.OUT_WAREHOUSE_WORKING_STATUS_NAME, " +
+                "              B.FRANCHISE_BRANCH_NAME, B.FRANCHISE_ADDRESS, " +
+                "              A.OUT_WAREHOUSE_TOTAL_OUT_ITEM_AMOUNT\n" +
+                "         FROM OUT_WAREHOUSE A\n" +
+                "         JOIN FRANCHISE_INFO B ON (A.FRANCHISE_REPRESENTATIVE_NO = B.FRANCHISE_REPRESENTATIVE_NO)\n" +
+                "        ORDER BY A.OUT_WAREHOUSE_NO DESC";
+
+        List<OutWarehouse> outWarehouseList =
+                entityManager.createNativeQuery(query, OutWarehouse.class).getResultList();
+
+        //then
+        assertNotNull(outWarehouseList);
+        outWarehouseList.forEach(System.out::println);
+    }
+
+//    @Test
+//    public void 출고_목록_합치기_조회_테스트() {
+//
+//        String jpql = "SELECT a FROM OutWarehouseExpandsOutWarehouseStatusHistory a";
+//
+//        List<OutWarehouseExpandsOutWarehouseStatusHistory> list =
+//                entityManager.createQuery(jpql, OutWarehouseExpandsOutWarehouseStatusHistory.class).getResultList();
+//
+//        assertNotNull(list);
+//        list.forEach(System.out::println);
+//    }
 }
