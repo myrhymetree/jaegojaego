@@ -45,15 +45,9 @@ public class OutWarehouse {
     @Column(name = "OUT_WAREHOUSE_TOTAL_OUT_ITEM_AMOUNT")
     private int outWarehouseTotalOutItemAmount;
 
-//    @Column(name = "OUT_WAREHOUSE_DIVISION")
-//    private int outWarehouseDivision;
-
 //    @ManyToOne
 //    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
 //    private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
-//
-//    @OneToMany(mappedBy = "outWarehouseDivisionNo")
-//    private List<OutWarehouseStatusHistory> outWarehouseStatusHistoryList;
 
 //    @ManyToOne
 //    @JoinColumn(name = "FRANCHISE_ORDER_NO")
@@ -67,8 +61,8 @@ public class OutWarehouse {
     public String toString() {
         return "OutWarehouse{" +
                 "outWarehouseNo=" + outWarehouseNo +
-                ", franchiseBranchName='" + franchiseBranchName + '\'' +
-                ", franchiseAddress='" + franchiseAddress + '\'' +
+//                ", franchiseBranchName='" + franchiseBranchName + '\'' +
+//                ", franchiseAddress='" + franchiseAddress + '\'' +
                 ", outWarehouseWorkingStatusName='" + outWarehouseWorkingStatusName + '\'' +
                 ", outWarehouseWorkingFinishedDate=" + outWarehouseWorkingFinishedDate +
                 ", outWarehouseTotalItemAmount=" + outWarehouseTotalOutItemAmount +
