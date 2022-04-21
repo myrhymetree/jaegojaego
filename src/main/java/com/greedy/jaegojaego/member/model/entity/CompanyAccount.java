@@ -1,11 +1,18 @@
 package com.greedy.jaegojaego.member.model.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Entity(name = "companyAccount")
 @Table(name = "COMPANY_ACCOUNT")
-public class CompanyAccount {
+public class CompanyAccount extends Member {
 
     @Id
     @Column(name = "MEMBER_NO")
@@ -19,6 +26,9 @@ public class CompanyAccount {
 
     @Column(name = "MEMBER_CELLPHONE")
     private String memberCellPhone;
+
+    @Column(name = "OFFICE_PHONE_NUMBER")
+    private String officePhoneNumber;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_DEPARTMENT")

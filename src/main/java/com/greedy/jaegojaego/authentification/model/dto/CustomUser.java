@@ -9,6 +9,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,10 +21,10 @@ public class CustomUser extends User {
     private int memberNo;
     private String memberId;
     private String memberPwd;
-    private java.sql.Date memberPwdUpdateDate;
+    private LocalDateTime memberPwdUpdateDate;
     private String memberPwdInitStatus;
-    private java.sql.Date memberCreatedDate;
-    private java.sql.Date memberRemovedDate;
+    private LocalDateTime memberCreatedDate;
+    private LocalDateTime memberRemovedDate;
     private String memberRemoveStatus;
     private String franchiseDivision;
     private String officeDivision;

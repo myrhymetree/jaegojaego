@@ -1,7 +1,6 @@
 package com.greedy.jaegojaego.config;
 
 import com.greedy.jaegojaego.authentification.model.service.AuthenticationService;
-import com.greedy.jaegojaego.authentification.model.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

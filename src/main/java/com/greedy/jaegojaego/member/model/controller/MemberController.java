@@ -1,14 +1,17 @@
 package com.greedy.jaegojaego.member.model.controller;
 
+import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
-import com.greedy.jaegojaego.member.model.dto.departmentDTO;
+import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -16,10 +19,12 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
         this.memberService = memberService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/login")
@@ -30,8 +35,8 @@ public class MemberController {
     @GetMapping("/regist")
     public ModelAndView sendRegistView(ModelAndView mv) {
 
-//        mv.addObject()
-        mv.setViewName("/");
+
+        mv.setViewName("/member/regist");
 
         return mv;
     }
@@ -39,22 +44,27 @@ public class MemberController {
     @PostMapping("/regist")
     public ModelAndView registMember(ModelAndView mv, MemberDTO newMember, RedirectAttributes rttr) {
 
-//        newMember.getPhone();
+        newMember.setMemberPwd(passwordEncoder.encode(newMember.getMemberPwd()));
+        newMember.setMemberCreatedDate(LocalDateTime.now());
+        newMember.setMemberPwdInitStatus("Y");
+        newMember.setMemberRemoveStatus("Y");
+
+        System.out.println("NewMember" + newMember);
 
         memberService.registNewMember(newMember);
 
         rttr.addFlashAttribute("registSuccessMessage", "회원가입에 성공하셨습니다.");
-        mv.setViewName("redirect:/");
+        mv.setViewName("redirect:/member/regist");
 
         return mv;
     }
 
-//    @GetMapping(value = "/department", produces = "application/json; charset=UTF-8")
-//    @ResponseBody
-//    public List<departmentDTO> findAllDepartment() {
-//
-//        return memberService.findAllDepartment();
-//    }
+    @GetMapping(value = "/department", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<DepartmentDTO> findAllDepartment() {
+
+        return memberService.findDepartmentAll();
+    }
 
 //    @GetMapping("/list")
 //    public ModelAndView findMemberList(ModelAndView mv) {

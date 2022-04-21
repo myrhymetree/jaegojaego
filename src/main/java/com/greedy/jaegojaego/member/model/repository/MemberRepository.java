@@ -1,7 +1,9 @@
 package com.greedy.jaegojaego.member.model.repository;
 
+import com.greedy.jaegojaego.member.model.entity.Department;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 //    MemberRole findMemberRoleByMemberNo(int memberNo);
 
     List<MemberRole> findByMemberNo(int memberNo);
+
+
 }
 

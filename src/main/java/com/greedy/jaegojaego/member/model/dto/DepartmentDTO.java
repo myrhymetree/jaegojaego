@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class departmentDTO {
+public class DepartmentDTO {
 
     private Integer departmentNo;
     private String departmentName;

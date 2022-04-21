@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "MEMBER")
 @SequenceGenerator(
         name = "MEMBER_SEQ_GENERATOR",
-        sequenceName = "SEQ_MEMBER_NO",
+        sequenceName = "MEMBER_NO",
         initialValue = 1,
         allocationSize = 1
 )
@@ -23,8 +23,9 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Member implements Serializable {
+@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "MEMBER_DIVISION")
+public abstract class Member implements Serializable{
 
 //    @ElementCollection(fetch = FetchType.LAZY)
 //    @Builder.Default
@@ -44,9 +45,19 @@ public class Member implements Serializable {
     //int를 지양하는 이유 : int는 0을 담을 수 있기 때문이다, Integer는 보통 10억바이트 정도만 담을 수 있기때문에 보통은 Long이 권장됨
     //데이터가 많이 쌓여있을 때 Integer -> Long으로 바꾸면 여러 문제가 생길 수 있다
 
-    @OneToOne
-    @JoinColumn(name = "MEMBER_NO")
-    private EmployeeInfo employeeInfo;
+    /* 일대일 정리 :
+    * 주 테이블에 외래 키
+    * - 주 객체가 대상 객체의 참조를 가지는 것처럼 주 테이블에 외래키를 두고 대상 테이블을 찾음
+    * - JPA 매핑 편리
+    * 장점 : 주 테이블만 조회해도 대상 테이블의 데이터가 있는지 확인 가능
+    * 단점 : 값이 없으면 외래 키에 null 허용 */
+//    @OneToOne
+//    @JoinColumn(name = "MEMBER_NO")
+//    private EmployeeInfo employeeInfo;
+//
+//    @OneToOne
+//    @JoinColumn(name = "MEMBER_NO")
+//    private CompanyAccount companyAccount;
 
     @Column(name = "MEMBER_ID")
     private String memberId;        //id라고 명시를 해줘야 쿼리문을 쓰는게 아닌 자동으로 jpa가 취급해줌
@@ -55,9 +66,9 @@ public class Member implements Serializable {
     private String memberPwd;
 
     @Column(name = "MEMBER_PWD_UPDATE_DATE")
-    private java.sql.Date memberPwdUpdateDate;
+    private LocalDateTime memberPwdUpdateDate;
 
-    @Column(name = "MEMBER_PWD_INIT_STATUS")
+    @Column(name = "MEMBER_PWD_INIT_STATUS", columnDefinition = "varchar2(1) default 'N'")
     private String memberPwdInitStatus;
 
     //    @Temporal(TemporalType.TIMESTAMP)     //LocalDateTime(java8부터 지원)을 사용하기 때문에 사용할 필요없음, Temporal 사용이유 : DB에 시간, 날짜를 저장하기 위해서

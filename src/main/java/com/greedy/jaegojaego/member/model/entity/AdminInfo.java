@@ -12,7 +12,7 @@ import java.io.Serializable;
 @ToString
 @Entity(name = "AdminInfo")
 @Table(name = "ADMIN_INFO")
-public class AdminInfo implements Serializable {
+public class AdminInfo extends Member {
 
     @Column(name = "COMPANY_PHONE_NUMBER")
     private String companyPhoneNumber;
