@@ -2,6 +2,8 @@ package com.greedy.jaegojaego.order.order.model.dto;
 
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientDTO;
 
+import java.sql.Date;
+
 public class CompanyOrderDetailDTO {
 
     private String itemName;
@@ -11,10 +13,11 @@ public class CompanyOrderDetailDTO {
     private int companyOrderHistoryNo;
     private int orderApplicationNo;
     private int clientNo;
+    private java.sql.Date orderCreatedDate;
 
     public CompanyOrderDetailDTO() {}
 
-    public CompanyOrderDetailDTO(String itemName, int itemAmount, int itemPrice, String clientName, int companyOrderHistoryNo, int orderApplicationNo, int clientNo) {
+    public CompanyOrderDetailDTO(String itemName, int itemAmount, int itemPrice, String clientName, int companyOrderHistoryNo, int orderApplicationNo, int clientNo, Date orderCreatedDate) {
         this.itemName = itemName;
         this.itemAmount = itemAmount;
         this.itemPrice = itemPrice;
@@ -22,6 +25,7 @@ public class CompanyOrderDetailDTO {
         this.companyOrderHistoryNo = companyOrderHistoryNo;
         this.orderApplicationNo = orderApplicationNo;
         this.clientNo = clientNo;
+        this.orderCreatedDate = orderCreatedDate;
     }
 
     public String getItemName() {
@@ -80,6 +84,14 @@ public class CompanyOrderDetailDTO {
         this.clientNo = clientNo;
     }
 
+    public Date getOrderCreatedDate() {
+        return orderCreatedDate;
+    }
+
+    public void setOrderCreatedDate(Date orderCreatedDate) {
+        this.orderCreatedDate = orderCreatedDate;
+    }
+
     @Override
     public String toString() {
         return "CompanyOrderDetailDTO{" +
@@ -90,6 +102,7 @@ public class CompanyOrderDetailDTO {
                 ", companyOrderHistoryNo=" + companyOrderHistoryNo +
                 ", orderApplicationNo=" + orderApplicationNo +
                 ", clientNo=" + clientNo +
+                ", orderCreatedDate=" + orderCreatedDate +
                 '}';
     }
 }

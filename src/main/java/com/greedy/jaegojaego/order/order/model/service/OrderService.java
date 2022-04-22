@@ -58,7 +58,7 @@ public class OrderService {
 
             if(clientNo == companyOrderHistory.getOrderApplicationList().get(i).getOrderClient().getClientNo()) {
 
-                orderApplicationList.add(i, companyOrderHistory.getOrderApplicationList().get(i));
+                orderApplicationList.add(companyOrderHistory.getOrderApplicationList().get(i));
             }
         }
 

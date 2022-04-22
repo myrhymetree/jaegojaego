@@ -243,6 +243,7 @@ public class OrderController {
         CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
         companyOrderDetail.setCompanyOrderHistoryNo(orderApplicationList.get(0).getCompanyOrderHistory().getCompanyOrderHistoryNo());
         companyOrderDetail.setClientName(orderApplicationList.get(0).getClient().getClientName());
+        companyOrderDetail.setOrderCreatedDate(orderApplicationList.get(0).getCompanyOrderHistory().getCompanyOrderHistoryCreatedDate());
 
         mv.addObject("orderApplication", orderApplicationList);
         mv.addObject("companyOrderDetail", companyOrderDetail);

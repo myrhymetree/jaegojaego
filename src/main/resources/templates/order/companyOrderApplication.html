@@ -3,13 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .item-collection-area {
+            width: 500px;
+            height: 400px;
+            background-color: darkgrey;
+            position: relative;
+            float: left;
+        }
+    </style>
 </head>
 <body>
     <div th:replace="/common/header.html"></div>
 
-    <div class="body-header">
-        <div class="menu-title">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</div>
-        <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
+    <div class="ibox ">
+        <div class="body-header">
+            <div class="menu-title">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
+        </div>
+
+        <div class="row justify-content-md-center" style="margin-top: 50px">
+            <div class="col-lg-10">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="float-right">
+                            <button class="btn btn-primary btn-xs" type="button">Download</button>
+                        </div>
+                        <div class="text-center article-title">
+                            <h1 style="font-weight: bold">
+                                발주 신청서
+                            </h1>
+                        </div>
+                        <div class="item-collection-title" style="background-color: red">
+                            <div>
+                                <span style="font-size: 20px; margin-left: 250px">신청 일자</span>
+                                <span style="font-size: 20px; margin-left: 100px"><th:block th:text="${ companyOrderDetail.orderCreatedDate }"></th:block></span>
+                            </div>
+                            <div style="margin-top: 30px">
+                                <span style="font-size: 20px; margin-left: 250px">신청 물품</span>
+                                <span class="item-collection-area"></span>
+                            </div>
+                        </div>
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <th:block th:replace="/common/footer.html"></th:block>
