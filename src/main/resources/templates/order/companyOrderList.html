@@ -15,6 +15,18 @@
             width: 45px;
             height: 25px;
         }
+
+        .company-order-detail-modal-body-table {
+            text-align: center;
+            border-collapse:collapse;
+            width: 100%;
+        }
+
+        .company-order-detail-modal-body-table th, td {
+            border: none;
+        }
+
+
     </style>
 </head>
 <body>
@@ -72,7 +84,7 @@
                                     </th:block>
                                 </td>
                                 <td>
-                                    <button class="order-application-output-btn">출력</button>
+                                    <button class="order-application-output-btn" id="order-application-output-btn">출력</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -85,26 +97,66 @@
                         </tfoot>
                     </table>
                 </div>
-                <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true">
+
+                <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
                     <div class="modal-dialog">
-                        <div class="modal-content animated fadeIn">
+                        <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                <h4 class="modal-title">Modal title</h4>
-                                <small>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">내역 상세</h4>
+                                <small id="company-order-detail-modal-small" style="margin-right: 30px;"></small>
                             </div>
                             <div class="modal-body">
-                                <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                    printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                                    remaining essentially unchanged.</p>
+                                <table class="company-order-detail-modal-body-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>물품 이름</th>
+                                            <th>수량</th>
+                                            <th>금액</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="company-order-detail-table-tbody">
+
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="company-order-detail-modal-ok-btn">확인</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none">
+                    <div class="modal-dialog">
+                        <div class="modal-content animated bounceInRight">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">발주신청서 선택</h4>
+                                <small class="font-bold" style="color:red;">* 출력할 거래처를 선택해주세요. *</small>
+                            </div>
+                            <div class="modal-body">
+                                <table class="company-order-detail-modal-body-table">
+                                    <thead>
+                                        <tr>
+                                            <td>No</td>
+                                            <td>거래처명</td>
+                                            <td>발주 신청서</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="output-modal-body">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="output-modal-close-btn" data-dismiss="modal">닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -118,10 +170,18 @@
             $('.footable').footable();
             $('.footable2').footable();
 
+            $(document).on('click', '#order-application-move-btn', function() {
+                const companyOrderHistoryNo = this.parentNode.parentNode.children[0].value;
+                const clientNo = this.parentNode.parentNode.children[1].value;
+
+                location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
+            })
+
         });
 
         if(document.querySelectorAll("#company-order-history-tr td")) {
             const $tds = document.querySelectorAll("#company-order-history-tr td");
+
             for(let i = 0; i < $tds.length; i++) {
 
                 $tds[i].onmouseenter = function() {
@@ -135,6 +195,8 @@
 
                 $tds[i].onclick = function() {
 
+                    $("#company-order-detail-table-tbody").empty();
+
                     $.ajax({
                         url: '/order/selectcompanyorderdetail',
                         type: 'get',
@@ -143,12 +205,34 @@
                         },
                         dataType: "json",
                         success: function(data) {
-                            console.log(data);
+
+                            let companyOrderTableBody = '';
+
+                            let index = 1;
+
+                            if(data != null) {
+                                for(list in data) {
+
+                                    companyOrderTableBody += '<tr>';
+                                    companyOrderTableBody += '<td>' + index + '</td>';
+                                    companyOrderTableBody += '<td>' + data[list].itemName + '</td>';
+                                    companyOrderTableBody += '<td>' + data[list].itemAmount + '</td>';
+                                    companyOrderTableBody += '<td>' + data[list].itemPrice + '</td>';
+                                    companyOrderTableBody += '</tr>';
+
+                                    index++;
+                                }
+                            }
+
+                            $("#company-order-detail-table-tbody").append(companyOrderTableBody);
+
                         },
                         error: function(xhr) {
                             alert("오류 발생");
                         }
-                    })
+                    });
+
+                    document.getElementById("company-order-detail-modal-small").innerText = this.parentNode.children[1].innerText + " 발주 내역";
 
                     // fetch("/order/selectcompanyorderdetail?companyOrderHistoryNo=" + this.parentNode.children[0].value)
                     //     .then(response => response.json())
@@ -163,8 +247,78 @@
 
                 }
 
+                // this.parentNode.children[5].onclick = function(e) {
+                //     e.stopPropagation();
+                // }
+
             }
         }
+
+        const $outputBtn = document.querySelectorAll("#order-application-output-btn");
+        const $outputModalBody = $("#output-modal-body");
+
+        for(let i = 0; i < $outputBtn.length; i++) {
+
+            $outputBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+
+                $outputModalBody.empty();
+
+                document.getElementById("myModal").style.display = 'block';
+
+                $.ajax({
+                    url: "/order/selectonecompanyorderapplicationlist",
+                    type: "get",
+                    data: {
+                        "companyOrderHistoryNo": this.parentNode.parentNode.children[0].value
+                    },
+                    dataType: "json",
+                    success: function(data) {
+
+                        console.log(data);
+
+                        let orderDetailModalTbody = '';
+
+                        let index = 1;
+
+                        if(data != null) {
+
+                            for(list in data) {
+
+                                orderDetailModalTbody += '<tr>';
+                                orderDetailModalTbody += "<input type='hidden' value='" + data[list].companyOrderHistoryNo + "' name='companyOrderHistoryNo'>"
+                                orderDetailModalTbody += "<input type='hidden' value='" + data[list].clientNo + "' name='clientNo'>"
+                                orderDetailModalTbody += '<td>' + index + '</td>';
+                                orderDetailModalTbody += '<td>' + data[list].clientName + '</td>';
+                                orderDetailModalTbody += '<td><button class="order-application-output-btn" id="order-application-move-btn">출력</button></td>';
+                                orderDetailModalTbody += '</tr>';
+
+                                index++;
+
+
+                            }
+
+                        }
+
+                        $("#output-modal-body").append(orderDetailModalTbody);
+
+                    },
+                    error: function(xhr) {
+                        alert("연결 실패");
+                    }
+                });
+
+            }
+
+        }
+
+        document.getElementById("output-modal-close-btn").onclick = function() {
+
+            document.getElementById("myModal").style.display = 'none';
+
+        }
+
 
     </script>
 

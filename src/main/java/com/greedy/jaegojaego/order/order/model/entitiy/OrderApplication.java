@@ -14,11 +14,6 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OrderApplication {
 
     @Id
@@ -40,6 +35,48 @@ public class OrderApplication {
     @OneToMany
     @JoinColumn(name = "ORDER_APPLICATION_NO")
     private List<OrderApplicationItem> orderApplicationItemList;
+
+    public OrderApplication() {
+    }
+
+    public OrderApplication(int orderApplicationNo, CompanyOrderHistory companyOrderHistory, OrderClient orderClient, List<OrderApplicationItem> orderApplicationItemList) {
+        this.orderApplicationNo = orderApplicationNo;
+        this.companyOrderHistory = companyOrderHistory;
+        this.orderClient = orderClient;
+        this.orderApplicationItemList = orderApplicationItemList;
+    }
+
+    public int getOrderApplicationNo() {
+        return orderApplicationNo;
+    }
+
+    public void setOrderApplicationNo(int orderApplicationNo) {
+        this.orderApplicationNo = orderApplicationNo;
+    }
+
+    public CompanyOrderHistory getCompanyOrderHistory() {
+        return companyOrderHistory;
+    }
+
+    public void setCompanyOrderHistory(CompanyOrderHistory companyOrderHistory) {
+        this.companyOrderHistory = companyOrderHistory;
+    }
+
+    public OrderClient getOrderClient() {
+        return orderClient;
+    }
+
+    public void setOrderClient(OrderClient orderClient) {
+        this.orderClient = orderClient;
+    }
+
+    public List<OrderApplicationItem> getOrderApplicationItemList() {
+        return orderApplicationItemList;
+    }
+
+    public void setOrderApplicationItemList(List<OrderApplicationItem> orderApplicationItemList) {
+        this.orderApplicationItemList = orderApplicationItemList;
+    }
 
     @Override
     public String toString() {

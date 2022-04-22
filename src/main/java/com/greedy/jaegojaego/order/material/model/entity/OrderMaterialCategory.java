@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OrderMaterialCategory {
 
     @Id
@@ -29,6 +24,30 @@ public class OrderMaterialCategory {
 
     @Column(name = "MATERIAL_CATEGORY_NAME")
     private String materialCategoryName;
+
+    public OrderMaterialCategory() {
+    }
+
+    public OrderMaterialCategory(int materialCategoryNo, String materialCategoryName) {
+        this.materialCategoryNo = materialCategoryNo;
+        this.materialCategoryName = materialCategoryName;
+    }
+
+    public int getMaterialCategoryNo() {
+        return materialCategoryNo;
+    }
+
+    public void setMaterialCategoryNo(int materialCategoryNo) {
+        this.materialCategoryNo = materialCategoryNo;
+    }
+
+    public String getMaterialCategoryName() {
+        return materialCategoryName;
+    }
+
+    public void setMaterialCategoryName(String materialCategoryName) {
+        this.materialCategoryName = materialCategoryName;
+    }
 
     @Override
     public String toString() {

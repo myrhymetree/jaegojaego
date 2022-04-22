@@ -5,12 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderDetailDTO;
 import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderItemDTO;
 import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,8 +76,6 @@ public class OrderController {
 
                 if(companyOrderHistoryNo == orderApplicationList.get(i).getCompanyOrderHistory().getCompanyOrderHistoryNo()) {
 
-                    System.out.println("companyOrderHistoryNo = " + companyOrderHistoryNo);
-
                     price += orderApplicationList.get(i).getOrderApplicationItemList().get(j).getOrderApplicationItemAmount()
                             * orderApplicationList.get(i).getOrderApplicationItemList().get(j).getClientContractItem().getClientContractItemSupplyPrice();
 
@@ -107,7 +107,7 @@ public class OrderController {
 
     @GetMapping(value = "/selectcompanyorderdetail", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public String selectCompanyOrderDetail(ModelAndView mv, HttpServletRequest request) throws JsonProcessingException {
+    public String selectCompanyOrderDetail(HttpServletRequest request) {
 
         int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
 
@@ -137,6 +137,26 @@ public class OrderController {
 
         }
 
+        List<CompanyOrderDetailDTO> companyOrderDetailList = new ArrayList<>();
+
+        for(int i = 0; i < companyOrderHistory.getCompanyOrderItemList().size(); i++) {
+
+            CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
+
+            for(int key : equalItem.keySet()){
+
+                if(companyOrderHistory.getCompanyOrderItemList().get(i).getItemInfo().getItemInfoNo() == key) {
+                    companyOrderDetail.setItemName(companyOrderHistory.getCompanyOrderItemList().get(i).getItemInfo().getItemInfoName());
+                    companyOrderDetail.setItemPrice(equalItem.get(key));
+                    companyOrderDetail.setItemAmount(companyOrderHistory.getCompanyOrderItemList().get(i).getCompanyOrderItemAmount());
+                }
+
+            }
+
+            companyOrderDetailList.add(companyOrderDetail);
+
+        }
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .setPrettyPrinting()
@@ -145,13 +165,39 @@ public class OrderController {
                 .disableHtmlEscaping()
                 .create();
 
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        mv.addObject("equalItem", objectMapper.writeValueAsString(equalItem));
-//        mv.addObject("itemInfo", objectMapper.writeValueAsString(companyOrderHistory.getCompanyOrderItemList()));
-//        mv.setViewName("jsonView");
+        return gson.toJson(companyOrderDetailList);
+    }
 
-        return gson.toJson(equalItem);
+    @GetMapping(value ="selectonecompanyorderapplicationlist", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String selectOneCompanyOrderApplicationList(HttpServletRequest request) {
+
+        int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
+
+        CompanyOrderHistoryDTO companyOrderHistory = orderService.selectCompanyOrderHistoryDetail(companyOrderHistoryNo);
+
+        List<CompanyOrderDetailDTO> companyOrderDetailList = new ArrayList<>();
+
+        for(int i = 0; i < companyOrderHistory.getOrderApplicationList().size(); i++) {
+
+            CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
+            companyOrderDetail.setCompanyOrderHistoryNo(companyOrderHistoryNo);
+            companyOrderDetail.setClientName(companyOrderHistory.getOrderApplicationList().get(i).getClient().getClientName());
+            companyOrderDetail.setClientNo(companyOrderHistory.getOrderApplicationList().get(i).getClient().getClientNo());
+
+            companyOrderDetailList.add(i, companyOrderDetail);
+
+        }
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(companyOrderDetailList);
     }
 
     @GetMapping("/franchiseorderlist")
@@ -171,7 +217,7 @@ public class OrderController {
     }
 
     @PostMapping("companyorderregist")
-    public ModelAndView companyOrderApplicationList(ModelAndView mv, Locale locale) {
+    public ModelAndView selectCompanyOrderApplicationList(ModelAndView mv, Locale locale) {
 
         mv.setViewName("/order/companyApplicationList");
 
@@ -182,6 +228,25 @@ public class OrderController {
     public ModelAndView franchiseOrderRegist(ModelAndView mv) {
 
         mv.setViewName("/order/franchiseOrderRegist");
+
+        return mv;
+    }
+
+    @GetMapping("companyorderapplicationdetail")
+    public ModelAndView companyOrderApplicationDetail(ModelAndView mv, HttpServletRequest request) {
+
+        int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
+        int clientNo = Integer.parseInt(request.getParameter("clientNo"));
+
+        List<OrderApplicationDTO> orderApplicationList = orderService.selectOrderApplicationDetail(companyOrderHistoryNo, clientNo);
+
+        CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
+        companyOrderDetail.setCompanyOrderHistoryNo(orderApplicationList.get(0).getCompanyOrderHistory().getCompanyOrderHistoryNo());
+        companyOrderDetail.setClientName(orderApplicationList.get(0).getClient().getClientName());
+
+        mv.addObject("orderApplication", orderApplicationList);
+        mv.addObject("companyOrderDetail", companyOrderDetail);
+        mv.setViewName("/order/companyOrderApplication");
 
         return mv;
     }
