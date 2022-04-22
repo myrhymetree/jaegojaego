@@ -3,11 +3,6 @@ package com.greedy.jaegojaego.order.item.model.dto;
 import com.greedy.jaegojaego.order.material.model.dto.OrderMaterialCategoryDTO;
 import lombok.*;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OrderItemInfoDTO {
 
     private int itemInfoNo;
@@ -15,6 +10,57 @@ public class OrderItemInfoDTO {
     private String itemInfoItemSerialNo;
     private OrderMaterialCategoryDTO materialCategory;
     private String itemInfoStatusYn;
+
+    public OrderItemInfoDTO() {
+    }
+
+    public OrderItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategoryDTO materialCategory, String itemInfoStatusYn) {
+        this.itemInfoNo = itemInfoNo;
+        this.itemInfoName = itemInfoName;
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+        this.materialCategory = materialCategory;
+        this.itemInfoStatusYn = itemInfoStatusYn;
+    }
+
+    public int getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(int itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public String getItemInfoName() {
+        return itemInfoName;
+    }
+
+    public void setItemInfoName(String itemInfoName) {
+        this.itemInfoName = itemInfoName;
+    }
+
+    public String getItemInfoItemSerialNo() {
+        return itemInfoItemSerialNo;
+    }
+
+    public void setItemInfoItemSerialNo(String itemInfoItemSerialNo) {
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+    }
+
+    public OrderMaterialCategoryDTO getMaterialCategory() {
+        return materialCategory;
+    }
+
+    public void setMaterialCategory(OrderMaterialCategoryDTO materialCategory) {
+        this.materialCategory = materialCategory;
+    }
+
+    public String getItemInfoStatusYn() {
+        return itemInfoStatusYn;
+    }
+
+    public void setItemInfoStatusYn(String itemInfoStatusYn) {
+        this.itemInfoStatusYn = itemInfoStatusYn;
+    }
 
     @Override
     public String toString() {

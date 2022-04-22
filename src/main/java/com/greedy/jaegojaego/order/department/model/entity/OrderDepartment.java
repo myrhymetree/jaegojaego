@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OrderDepartment {
 
     @Id
@@ -29,6 +24,30 @@ public class OrderDepartment {
 
     @Column(name = "DEPARTMENT_NAME")
     private String deptName;
+
+    public OrderDepartment() {
+    }
+
+    public OrderDepartment(int deptNo, String deptName) {
+        this.deptNo = deptNo;
+        this.deptName = deptName;
+    }
+
+    public int getDeptNo() {
+        return deptNo;
+    }
+
+    public void setDeptNo(int deptNo) {
+        this.deptNo = deptNo;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
 
     @Override
     public String toString() {

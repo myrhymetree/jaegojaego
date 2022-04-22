@@ -26,7 +26,7 @@ public class MenuMaterial {
     @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
 
-    @Column(name = "ITEM_INFO_SERIAL_NO")
+    @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
     private String itemInfoSerialNo;
 
     @Column(name = "ITEM_INFO_STATUS_YN")

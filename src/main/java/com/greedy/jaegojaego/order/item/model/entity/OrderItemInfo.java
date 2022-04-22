@@ -13,11 +13,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OrderItemInfo {
 
     @Id
@@ -40,6 +35,57 @@ public class OrderItemInfo {
 
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemInfoStatusYn;
+
+    public OrderItemInfo() {
+    }
+
+    public OrderItemInfo(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategory orderMaterialCategory, String itemInfoStatusYn) {
+        this.itemInfoNo = itemInfoNo;
+        this.itemInfoName = itemInfoName;
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+        this.orderMaterialCategory = orderMaterialCategory;
+        this.itemInfoStatusYn = itemInfoStatusYn;
+    }
+
+    public int getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(int itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public String getItemInfoName() {
+        return itemInfoName;
+    }
+
+    public void setItemInfoName(String itemInfoName) {
+        this.itemInfoName = itemInfoName;
+    }
+
+    public String getItemInfoItemSerialNo() {
+        return itemInfoItemSerialNo;
+    }
+
+    public void setItemInfoItemSerialNo(String itemInfoItemSerialNo) {
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+    }
+
+    public OrderMaterialCategory getOrderMaterialCategory() {
+        return orderMaterialCategory;
+    }
+
+    public void setOrderMaterialCategory(OrderMaterialCategory orderMaterialCategory) {
+        this.orderMaterialCategory = orderMaterialCategory;
+    }
+
+    public String getItemInfoStatusYn() {
+        return itemInfoStatusYn;
+    }
+
+    public void setItemInfoStatusYn(String itemInfoStatusYn) {
+        this.itemInfoStatusYn = itemInfoStatusYn;
+    }
 
     @Override
     public String toString() {
