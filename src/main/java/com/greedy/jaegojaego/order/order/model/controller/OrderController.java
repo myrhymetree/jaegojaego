@@ -5,10 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderDetailDTO;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderItemDTO;
-import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
+import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
+import com.greedy.jaegojaego.order.order.model.dto.*;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -239,6 +237,17 @@ public class OrderController {
         int clientNo = Integer.parseInt(request.getParameter("clientNo"));
 
         List<OrderApplicationDTO> orderApplicationList = orderService.selectOrderApplicationDetail(companyOrderHistoryNo, clientNo);
+        List<OrderApplicationItemDTO> orderApplicationItemList = new ArrayList<>();
+
+        for(int i = 0; i < orderApplicationList.size(); i++) {
+
+            for(int j = 0; j < orderApplicationList.get(i).getOrderApplicationItemList().size(); j++) {
+
+               OrderApplicationItemDTO orderApplicationItem = new OrderApplicationItemDTO();
+               orderApplicationItem = orderApplicationList.get(i).getOrderApplicationItemList().get(j);
+               orderApplicationItemList.add(orderApplicationItem);
+            }
+        }
 
         CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
         companyOrderDetail.setCompanyOrderHistoryNo(orderApplicationList.get(0).getCompanyOrderHistory().getCompanyOrderHistoryNo());
@@ -247,6 +256,7 @@ public class OrderController {
 
         mv.addObject("orderApplication", orderApplicationList);
         mv.addObject("companyOrderDetail", companyOrderDetail);
+        mv.addObject("orderApplicationItemList", orderApplicationItemList);
         mv.setViewName("/order/companyOrderApplication");
 
         return mv;
