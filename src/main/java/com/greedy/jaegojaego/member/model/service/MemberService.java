@@ -3,15 +3,16 @@ package com.greedy.jaegojaego.member.model.service;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
-import com.greedy.jaegojaego.member.model.dto.NewMemberDTO;
 import com.greedy.jaegojaego.member.model.entity.*;
 import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
+import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,14 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DepartmentRepository departmentRepository;
+    private final MemberRoleRepository memberRoleRepository;
     private final ModelMapper modelMappper;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository, ModelMapper modelMappper) {
+    public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository, MemberRoleRepository memberRoleRepository, ModelMapper modelMappper) {
         this.memberRepository = memberRepository;
         this.departmentRepository = departmentRepository;
+        this.memberRoleRepository = memberRoleRepository;
         this.modelMappper = modelMappper;
     }
 
@@ -39,19 +42,25 @@ public class MemberService {
     @Transactional
     public void registNewMember(CompanyAccountDTO newMember) {
 
-        MemberRolePK memberRolePK = new MemberRolePK();
-        memberRolePK.setAuthorityCode(2);
+
 
         Department department = departmentRepository.findByDepartmentNo(newMember.getDepartment().getDepartmentNo());
+
         DepartmentDTO departmentDTO = modelMappper.map(department, DepartmentDTO.class);
 
         newMember.setDepartment(departmentDTO);
-        System.out.println("newMember : " + newMember);
-        System.out.println("newMember : " + newMember);
-        System.out.println("newMember : " + newMember);
-        System.out.println("newMember : " + newMember);
 
-        memberRepository.save(modelMappper.map(newMember, CompanyAccount.class));
+        CompanyAccount member = modelMappper.map(newMember, CompanyAccount.class);
+
+        CompanyAccount member1 = memberRepository.save(member);
+
+        MemberRolePK memberRolePK  = new MemberRolePK();
+        memberRolePK.setAuthorityCode(2);
+        memberRolePK.setMemberNo(member1.getMemberNo());
+        MemberRole memberRole = new MemberRole();
+        memberRole.setMemberRolePK(memberRolePK);
+
+        memberRoleRepository.save(memberRole);
 
 //        Member member = new Member();
 //        CompanyAccount companyAccount = new CompanyAccount();
@@ -67,8 +76,8 @@ public class MemberService {
         return departmentList.stream().map(department -> modelMappper.map(department, DepartmentDTO.class)).collect(Collectors.toList());
     }
 
-//    public boolean                                                      duplicationCheckId(String memberId) {
-//
-//        return memberRepository.duplicationCheckId(memberId) != null;
-//    }
+    public boolean duplicationCheckId(String memberId) {
+
+        return memberRepository.duplicationCheckId(memberId) != null;
+    }
 }

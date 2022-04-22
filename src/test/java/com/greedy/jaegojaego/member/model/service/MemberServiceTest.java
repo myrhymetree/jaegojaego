@@ -45,9 +45,9 @@ class MemberServiceTest {
 
         /* 상속관계에 의해서 자식 객체로 부모객체에 데이터를 입력할 수 있다. */
         CompanyAccount companyAccount = new CompanyAccount();
-        companyAccount.setDepatment(department);
+        companyAccount.setDepartment(department);
         companyAccount.setMemberName("박성준");
-        companyAccount.setMemberId("블라블라5");
+        companyAccount.setMemberId("블라블라7");
         companyAccount.setMemberPwd(passwordEncoder.encode("0000"));
         companyAccount.setMemberPwdInitStatus("Y");
         companyAccount.setMemberCreatedDate(LocalDateTime.now());

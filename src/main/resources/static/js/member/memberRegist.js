@@ -31,6 +31,9 @@ $(document).ready(function(){
                 minlength: 8,
                 maxlength: 15,
                 empty: true
+            },
+            name: {
+                empty: true
             }
         }
     });
@@ -64,6 +67,7 @@ $(function () {
             $('#memberId').val('');
             $('#memberPwd').val('');
             $('#email').val('');
+            $('#memberName').val('');
 
         },
         error:function (xhr) {
@@ -78,16 +82,11 @@ $(function () {
         success: function (data) {
             const $idContainer = $("#idContainer");
 
-            $departmentNo.append($("<option>"))
+            $idContainer.append($("<option>"))
 
             for (let index in data) {
-                $departmentNo.append($("<option>").val(data[index].departmentNo).text(data[index].departmentName));
+                $idContainer.append($("<option>").val(data[index].departmentNo).text(data[index].departmentName));
             }
-
-            $('#memberId').val('');
-            $('#memberPwd').val('');
-            $('#email').val('');
-            $('#memberName').val('');
 
         },
         error:function (xhr) {
@@ -96,3 +95,32 @@ $(function () {
     });
 });
 
+$(function() {
+    $("input[name='memberId']").on("change", function (){
+       let memberId = $("memberId").val();
+
+       $.ajax({
+           data : {
+               memberId : memberId
+           },
+           url: "/member/duplicationId/{memberId}",
+           success: function (data) {
+               if(memberId == "") {
+                   $("#duplicationText").css("color", "Green");
+                   $("#duplicationText").text("아이디를 입력하세요")
+               } else if(data == '0') {
+                   $("#duplicationText").css("color", "Green");
+                   $("#duplicationText").text("사용 가능한 아이디 입니다");
+               } else if(data == '1') {
+                   $("#duplicationText").css("color", "Red");
+                   $("#duplicationText").text("이미 사용중인 아이디 입니다");
+               }
+
+           },
+           error: function (error) {
+                alert("error : " + error);
+           }
+
+       });
+    });
+});

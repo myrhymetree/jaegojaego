@@ -76,17 +76,12 @@ public class MemberController {
 //        return mv;
 //    }
 
-//    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
-//    @ResponseBody
-//    public String duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
-//
-//        String resultMessage = "중복아님";
-//
-//        /* 아이디가 조회되면 true 반환, 중복이라는 의미*/
-//        if(memberService.duplicationCheckId(memberId)) {
-//            resultMessage = "중복";
-//        }
-//
-//        return resultMessage;
-//    }
+    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
+    @ResponseBody
+    public ModelAndView duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
+
+        mv.addObject("duplication", memberService.duplicationCheckId(memberId));
+
+        return mv;
+    }
 }

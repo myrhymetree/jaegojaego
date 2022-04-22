@@ -21,14 +21,7 @@ spring:
     properties:
       hibernate:
         '[format_sql]': true
-        hql:
-          bulk_id_strategy=org:
-            hibernate:
-              hql:
-                spi:
-                  id:
-                    inline:
-                      InlineIdsInClauseBulkIdStrategy
+
     hibernate:
       ddl-auto: none
 
