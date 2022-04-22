@@ -47,7 +47,7 @@ class MemberServiceTest {
         CompanyAccount companyAccount = new CompanyAccount();
         companyAccount.setDepatment(department);
         companyAccount.setMemberName("박성준");
-        companyAccount.setMemberId("블라블라3");
+        companyAccount.setMemberId("블라블라5");
         companyAccount.setMemberPwd(passwordEncoder.encode("0000"));
         companyAccount.setMemberPwdInitStatus("Y");
         companyAccount.setMemberCreatedDate(LocalDateTime.now());
@@ -55,6 +55,8 @@ class MemberServiceTest {
         companyAccount.setOfficeDivision("직원");
         companyAccount.setMemberDivision("본사");
         companyAccount.setOfficePhoneNumber("02-0000-0001");
+        companyAccount.setMemberCellPhone("01090000000");
+        companyAccount.setMemberEmail("dfdfdlk@jaegojaego.com");
 
         companyAccountRepository.save(companyAccount);
     }

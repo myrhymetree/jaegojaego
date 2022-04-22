@@ -11,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @ToString
+@EqualsAndHashCode
 @Entity(name = "AuthorityAccessMenu")
 @Table(name = "AUTHORITY_ACCESS_MENU")
 public class AuthorityAccessMenu implements Serializable {

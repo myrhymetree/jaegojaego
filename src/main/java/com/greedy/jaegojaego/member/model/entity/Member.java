@@ -21,7 +21,6 @@ import java.util.Set;
 )
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "MEMBER_DIVISION")
@@ -94,6 +93,8 @@ public abstract class Member implements Serializable{
     @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false)
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
+
+    public Member() {}
 
     @Override
     public String toString() {

@@ -42,12 +42,14 @@ public class MemberController {
     }
 
     @PostMapping("/regist")
-    public ModelAndView registMember(ModelAndView mv, MemberDTO newMember, RedirectAttributes rttr) {
+    public ModelAndView registMember(ModelAndView mv, CompanyAccountDTO newMember, RedirectAttributes rttr) {
 
         newMember.setMemberPwd(passwordEncoder.encode(newMember.getMemberPwd()));
         newMember.setMemberCreatedDate(LocalDateTime.now());
         newMember.setMemberPwdInitStatus("Y");
         newMember.setMemberRemoveStatus("Y");
+        newMember.setOfficeDivision("직원");
+        newMember.setMemberDivision("본사");
 
         System.out.println("NewMember" + newMember);
 

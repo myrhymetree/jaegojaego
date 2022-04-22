@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.member.model.service;
 
+import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.NewMemberDTO;
@@ -36,12 +37,21 @@ public class MemberService {
     }
 
     @Transactional
-    public void registNewMember(MemberDTO newMember) {
+    public void registNewMember(CompanyAccountDTO newMember) {
 
         MemberRolePK memberRolePK = new MemberRolePK();
         memberRolePK.setAuthorityCode(2);
 
-        memberRepository.save(modelMappper.map(newMember, Member.class));
+        Department department = departmentRepository.findByDepartmentNo(newMember.getDepartment().getDepartmentNo());
+        DepartmentDTO departmentDTO = modelMappper.map(department, DepartmentDTO.class);
+
+        newMember.setDepartment(departmentDTO);
+        System.out.println("newMember : " + newMember);
+        System.out.println("newMember : " + newMember);
+        System.out.println("newMember : " + newMember);
+        System.out.println("newMember : " + newMember);
+
+        memberRepository.save(modelMappper.map(newMember, CompanyAccount.class));
 
 //        Member member = new Member();
 //        CompanyAccount companyAccount = new CompanyAccount();

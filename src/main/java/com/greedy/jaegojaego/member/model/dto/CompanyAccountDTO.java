@@ -7,8 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
-public class CompanyAccountDTO {
+public class CompanyAccountDTO extends NewMemberDTO {
 
     private Integer memberNo;
     private String memberName;
@@ -16,5 +15,5 @@ public class CompanyAccountDTO {
     private String memberCellPhone;
     private String officePhoneNumber;
 
-    private DepartmentDTO departmentDTO;
+    private DepartmentDTO department;
 }
