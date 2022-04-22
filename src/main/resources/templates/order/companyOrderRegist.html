@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
@@ -51,35 +52,122 @@
             <p style="color: rgba(255, 0, 0, 0.3); font-weight: bold">
                 * 찾으실 물품의 카테고리/이름을 통해 검색할 수 있습니다. *
             </p>
-            <input type="text" placeholder="물품 카테고리/이름을 입력해주세요." data-provide="typeahead" data-source='["커피","빵","기타"]' class="form-control" />
+            <div>
+                <input type="text" placeholder="물품 카테고리/이름을 입력해주세요." id="searchItems" style="width: 800px">
+            </div>
             <form action="/order/companyorderregist" method="post">
                 <div class="order-select-item">
                     <table border="none" align="center" class="order-table">
-                        <tr>
-                            <th style="width: 400px">물품 명</th>
-                            <th style="width: 200px">물품 공급가</th>
-                            <th style="width: 150px">물품 수량</th>
-                            <th>가격</th>
-                            <th>거래처 선택</th>
-                        </tr>
-                        <tr>
-                            <td>지로스팅 커피 1kg(1차 매핑된 이름)</td>
-                            <td>7000</td>
-                            <td><input type="number" min="1" style="width: 80px"></td>
-                            <td>300000</td>
-                            <td>
-                                <select style="width: 200px; text-align: center">
-                                    <option selected value="A">A 거래처</option>
-                                    <option value="B">B 거래처</option>
-                                </select>
-                            </td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th style="width: 400px">물품 명</th>
+                                <th style="width: 200px">물품 공급가</th>
+                                <th style="width: 150px">물품 수량</th>
+                                <th>가격</th>
+                                <th>거래처 선택</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>지로스팅 커피 1kg(1차 매핑된 이름)</td>
+                                <td>7000</td>
+                                <td><input type="number" min="1" style="width: 80px"></td>
+                                <td>300000</td>
+                                <td>
+                                    <select style="width: 200px; text-align: center">
+                                        <option selected value="A">A 거래처</option>
+                                        <option value="B">B 거래처</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
                 <button class="order-regist-ok-btn" id="registOk" type="submit">발주</button>
             </form>
         </div>
     </div>
+
+    <script>
+
+        let searchItemsValue;
+        let selectItems =  [];
+
+        //input에 입력 값 변경에 반응하는 이벤트
+        $("#searchItems").on("propertychange change keyup paste input", function() {
+
+            // 현재 변경된 데이터 셋팅
+            searchItemsValue = $(this).val();
+
+        });
+
+        $(function() {
+           $("#searchItems").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/order/searchitems',
+                        data : {
+                            searchValue: searchItemsValue,
+                            selectItems: selectItems
+                        },
+                        traditional: true,
+                        dataType: 'json',
+                        success: function(data) {
+
+                            response(
+                                $.map(data, function(item) {
+                                    return {
+                                        value : item
+                                    }
+                                })
+                            )
+
+                        },
+                        error: function(xhr) {
+                            alert("연결 실패!");
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    selectItemValue = ui.item.value.itemInfoName;
+
+                    selectItemNo = ui.item.value.itemInfoNo;
+
+                    selectItems.push(selectItemNo);
+
+                    console.log(ui.item.value.itemInfoName);
+
+                    if(selectItemValue != null) {
+
+                        document.getElementById('searchItems').value = "";
+
+                    }
+                },
+                focus: function(event, ui) {
+                    return false;
+                },
+                minLength: 1,
+                autoFocus: true,
+                classes: {
+                    'ui-autocomplete': 'highlight'
+                },
+                delay: 100,
+                position: { my: 'right top', at: 'right bottom' },
+                close: function(event, ui) {
+                    document.getElementById('searchItems').value = "";
+                }
+           }).autocomplete('instance')._renderItem = function(ul, item) {
+               return $('<ol style="float: right">')
+                   .append('<div style="background-color: white; width: 800px;">' + item.value.itemInfoName + '</div>')
+                   .appendTo(ul);
+           };
+        });
+
+
+
+    </script>
+
 
     <th:block th:replace="/common/footer.html"></th:block>
 </body>

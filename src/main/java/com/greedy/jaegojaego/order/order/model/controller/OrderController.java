@@ -6,15 +6,13 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
+import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
 import com.greedy.jaegojaego.order.order.model.dto.*;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -262,5 +260,29 @@ public class OrderController {
         return mv;
     }
 
+    @GetMapping(value = "/searchitems", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String searchItems(HttpServletRequest request) {
+
+        String searchItem = request.getParameter("searchValue");
+
+        String[] selectItems = null;
+
+        if(request.getParameterValues("selectItems") != null) {
+
+            selectItems = request.getParameterValues("selectItems");
+        }
+
+        List<OrderItemInfoDTO> orderItemInfoList = orderService.selectOrderItemInfoList(searchItem, selectItems);
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(orderItemInfoList);
+    }
 
 }

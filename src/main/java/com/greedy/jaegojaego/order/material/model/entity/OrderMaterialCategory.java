@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "MATERIAL_CATEGORY")
 @SequenceGenerator(
         name = "MATERIAL_CATEGORY_SEQ_GENERATOR",
-        sequenceName = "COMPANY_ORDER_HISTORY_NO",
+        sequenceName = "MATERIAL_CATEGORY_NO",
         initialValue = 1,
         allocationSize = 1
 )
