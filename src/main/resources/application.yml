@@ -13,6 +13,7 @@ spring:
       auto-commit: false
 
 # jpa config
+# ddl-auto: validate 혹은 ddl-auto: none만 사용하세요, create, crate-drop, update, drop 사용 시 엔티티와 매핑된 모든 테이블 삭제됨(절대 사용하지 마세요)
   jpa:
     generate-ddl: false
     show-sql: true
@@ -20,8 +21,10 @@ spring:
     properties:
       hibernate:
         '[format_sql]': true
+    hibernate:
+      ddl-auto: none
 
-#Live Reload 기능 활성화
+  #Live Reload 기능 활성화
   devtools:
     livereload:
       enabled: true
