@@ -4,27 +4,27 @@
     left:1%;
     top: 18%;
     height: 610px;
-    width: 400px;
+    width: 450px;
     background: white;
 }
 
 .selectOneMenuWhiteboard {
     border: 0.5px solid gray;
     position: absolute;
-    left:32%;
+    left:37%;
     top: 18%;
     height: 610px;
-    width: 880px;
+    width: 800px;
     background: white;
 }
 
 .OneMenuWhiteboard {
     border: 0.5px solid gray;
     position: absolute;
-    left:32%;
+    left:37%;
     top: 18%;
     height: 610px;
-    width: 880px;
+    width: 800px;
     background: white;
 }
 
@@ -95,7 +95,19 @@
 .registMenuButton {
     position: absolute;
     top: 1.5%;
+    left: 40%;
+}
+
+.modifyMenuButton {
+    position: absolute;
+    top: 1.5%;
     left: 60%;
+}
+
+.deleteMenuButton {
+    position: absolute;
+    top: 1.5%;
+    left: 80%;
 }
 
 .registMenuCancelButton {
@@ -125,8 +137,3 @@
     left: 15%;
 }
 
-.modifyMenuButton {
-    position: absolute;
-    top: 1.5%;
-    left: 80%;
-}

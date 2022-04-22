@@ -1,15 +1,21 @@
 package com.greedy.jaegojaego.menu.repository;
 
-import com.greedy.jaegojaego.menu.entity.RawMaterial;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 @DataJpaTest
-@SpringBootTest
-public interface MenuRepositoryTests extends JpaRepository<RawMaterial, Integer> {
+public class MenuRepositoryTests {
+
+    @Test
+    public void initTest() {
+
+    }
+
+    @Test
+    @DisplayName("레파지토리 상세조회용 메소드 테스트")
+    public void selectOneMenuTest() {
 
 
-
-
+    }
 }

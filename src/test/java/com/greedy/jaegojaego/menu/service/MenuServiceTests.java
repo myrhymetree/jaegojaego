@@ -9,46 +9,55 @@ import com.greedy.jaegojaego.menu.repository.RawMaterialRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = { JpaConfiguration.class, JaegojaegoApplication.class, BeanConfiguration.class, JpaConfiguration.class })
+@ContextConfiguration(classes = {JpaConfiguration.class, JaegojaegoApplication.class, BeanConfiguration.class, JaegojaegoApplication.class})
+@SpringBootTest
 public class MenuServiceTests {
 
     @Autowired
     private MenuRepository menuRepository;
+
+    @Autowired
     private RawMaterialRepository rawMaterialRepository;
 
+
     @Test
-    @DisplayName("목록 상세조회 서비스 테스트")
-    public void selectOneMenu() {
+    public void initTest() {
 
-        //given
-        int menuNo = 1;
-
-        //when
-        List<String> stringList = rawMaterialRepository.selectStringList(menuNo);
-        List<Integer> intList = rawMaterialRepository.selectintList(menuNo);
-
-        List<RawMaterial> rawMaterialList = new ArrayList<>();
-        for(int i = 0;  i < stringList.size(); i++) {
-
-            RawMaterial rawMaterial = new RawMaterial();
-
-            rawMaterial.setRawMaterialName(stringList.get(i));
-            rawMaterial.setRawMaterialCapacity(intList.get(i));
-
-            rawMaterialList.add(rawMaterial);
-        }
-
-        //then
-        assertNotNull(rawMaterialList);
     }
 
+    @Test
+    @DisplayName("레파지토리 상세조회용 메소드 테스트")
+    public void selectOneMenuTest() {
+//
+//        //given
+//        int menuNo = 1;
+//
+//        //when
+//        List<Integer> rawMaterialIntList = rawMaterialRepository.selectintList(menuNo, pageable);
+//        List<String> rawMaterialStringList = rawMaterialRepository.selectStringList(menuNo, pageable);
+//
+//        List<RawMaterial> rawMaterialList = new ArrayList<>();
+//        for(int i = 0;  i < rawMaterialStringList.size(); i++) {
+//
+//            RawMaterial rawMaterial = new RawMaterial();
+//
+//            rawMaterial.setRawMaterialName(rawMaterialStringList.get(i));
+//            rawMaterial.setRawMaterialCapacity(rawMaterialIntList.get(i));
+//
+//            rawMaterialList.add(rawMaterial);
+//        }
+//
+//        assertNotNull(rawMaterialIntList);
+//        assertNotNull(rawMaterialStringList);
+//        assertNotNull(rawMaterialList);
 
+    }
 }
