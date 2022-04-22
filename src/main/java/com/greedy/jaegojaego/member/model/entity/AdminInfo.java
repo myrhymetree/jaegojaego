@@ -11,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @Entity(name = "AdminInfo")
+@EqualsAndHashCode
 @Table(name = "ADMIN_INFO")
 public class AdminInfo extends Member {
 

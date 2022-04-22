@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity(name = "companyAccount")
+@EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
 public class CompanyAccount extends Member {
 
@@ -32,5 +33,6 @@ public class CompanyAccount extends Member {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_DEPARTMENT")
-    private Department depatment;
+    private Department department;
+
 }

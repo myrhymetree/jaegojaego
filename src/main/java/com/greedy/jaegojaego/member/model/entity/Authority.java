@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Builder
 @ToString
 @Entity(name = "Authority")
+@EqualsAndHashCode
 @Table(name = "AUTHORITY")
 public class Authority {
 

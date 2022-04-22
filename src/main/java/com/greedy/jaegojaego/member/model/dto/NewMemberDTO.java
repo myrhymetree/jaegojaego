@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.member.model.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -9,12 +10,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
-public class NewMemberDTO {
+public abstract class NewMemberDTO {
 
-    private int memberNo;
+    private Integer memberNo;
     private String memberId;
     private String memberPwd;
+    private LocalDateTime memberPwdUpdateDate;
+    private String memberPwdInitStatus;
+    private LocalDateTime memberCreatedDate;
+    private LocalDateTime memberRemovedDate;
+    private String memberRemoveStatus;
 
     private String franchiseDivision;
     private String officeDivision;

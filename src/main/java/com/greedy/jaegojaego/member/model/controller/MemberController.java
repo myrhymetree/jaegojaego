@@ -42,12 +42,14 @@ public class MemberController {
     }
 
     @PostMapping("/regist")
-    public ModelAndView registMember(ModelAndView mv, MemberDTO newMember, RedirectAttributes rttr) {
+    public ModelAndView registMember(ModelAndView mv, CompanyAccountDTO newMember, RedirectAttributes rttr) {
 
         newMember.setMemberPwd(passwordEncoder.encode(newMember.getMemberPwd()));
         newMember.setMemberCreatedDate(LocalDateTime.now());
         newMember.setMemberPwdInitStatus("Y");
         newMember.setMemberRemoveStatus("Y");
+        newMember.setOfficeDivision("직원");
+        newMember.setMemberDivision("본사");
 
         System.out.println("NewMember" + newMember);
 
@@ -74,17 +76,12 @@ public class MemberController {
 //        return mv;
 //    }
 
-//    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
-//    @ResponseBody
-//    public String duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
-//
-//        String resultMessage = "중복아님";
-//
-//        /* 아이디가 조회되면 true 반환, 중복이라는 의미*/
-//        if(memberService.duplicationCheckId(memberId)) {
-//            resultMessage = "중복";
-//        }
-//
-//        return resultMessage;
-//    }
+    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
+    @ResponseBody
+    public ModelAndView duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
+
+        mv.addObject("duplication", memberService.duplicationCheckId(memberId));
+
+        return mv;
+    }
 }
