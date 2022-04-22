@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="/common/header.html"></div>
+
+    <div class="body-header">
+        <div class="menu-title">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</div>
+        <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
+    </div>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

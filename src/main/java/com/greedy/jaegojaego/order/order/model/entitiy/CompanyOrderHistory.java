@@ -5,6 +5,7 @@ import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity(name = "companyOrderHistory")
@@ -15,11 +16,6 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class CompanyOrderHistory {
 
     @Id
@@ -44,6 +40,57 @@ public class CompanyOrderHistory {
     @OneToMany
     @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
     private List<OrderApplication> orderApplicationList;
+
+    public CompanyOrderHistory() {
+    }
+
+    public CompanyOrderHistory(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccount orderCompanyAccount, List<CompanyOrderItem> companyOrderItemList, List<OrderApplication> orderApplicationList) {
+        this.companyOrderHistoryNo = companyOrderHistoryNo;
+        this.companyOrderHistoryCreatedDate = companyOrderHistoryCreatedDate;
+        this.orderCompanyAccount = orderCompanyAccount;
+        this.companyOrderItemList = companyOrderItemList;
+        this.orderApplicationList = orderApplicationList;
+    }
+
+    public int getCompanyOrderHistoryNo() {
+        return companyOrderHistoryNo;
+    }
+
+    public void setCompanyOrderHistoryNo(int companyOrderHistoryNo) {
+        this.companyOrderHistoryNo = companyOrderHistoryNo;
+    }
+
+    public Date getCompanyOrderHistoryCreatedDate() {
+        return companyOrderHistoryCreatedDate;
+    }
+
+    public void setCompanyOrderHistoryCreatedDate(Date companyOrderHistoryCreatedDate) {
+        this.companyOrderHistoryCreatedDate = companyOrderHistoryCreatedDate;
+    }
+
+    public OrderCompanyAccount getOrderCompanyAccount() {
+        return orderCompanyAccount;
+    }
+
+    public void setOrderCompanyAccount(OrderCompanyAccount orderCompanyAccount) {
+        this.orderCompanyAccount = orderCompanyAccount;
+    }
+
+    public List<CompanyOrderItem> getCompanyOrderItemList() {
+        return companyOrderItemList;
+    }
+
+    public void setCompanyOrderItemList(List<CompanyOrderItem> companyOrderItemList) {
+        this.companyOrderItemList = companyOrderItemList;
+    }
+
+    public List<OrderApplication> getOrderApplicationList() {
+        return orderApplicationList;
+    }
+
+    public void setOrderApplicationList(List<OrderApplication> orderApplicationList) {
+        this.orderApplicationList = orderApplicationList;
+    }
 
     @Override
     public String toString() {

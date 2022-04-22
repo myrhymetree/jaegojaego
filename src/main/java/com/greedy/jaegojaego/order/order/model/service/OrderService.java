@@ -1,7 +1,9 @@
 package com.greedy.jaegojaego.order.order.model.service;
 
 import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
+import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.entitiy.CompanyOrderHistory;
+import com.greedy.jaegojaego.order.order.model.entitiy.OrderApplication;
 import com.greedy.jaegojaego.order.order.model.entitiy.OrderApplicationItem;
 import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderHistoryRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +40,28 @@ public class OrderService {
 
     }
 
+    @Transactional
     public CompanyOrderHistoryDTO selectCompanyOrderHistoryDetail(int companyOrderHistoryNo) {
 
         CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
 
         return modelMapper.map(companyOrderHistory, CompanyOrderHistoryDTO.class);
+    }
+
+    public List<OrderApplicationDTO> selectOrderApplicationDetail(int companyOrderHistoryNo, int clientNo) {
+
+        CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
+
+        List<OrderApplication> orderApplicationList = new ArrayList<>();
+
+        for(int i = 0; i < companyOrderHistory.getOrderApplicationList().size(); i++) {
+
+            if(clientNo == companyOrderHistory.getOrderApplicationList().get(i).getOrderClient().getClientNo()) {
+
+                orderApplicationList.add(i, companyOrderHistory.getOrderApplicationList().get(i));
+            }
+        }
+
+        return orderApplicationList.stream().map(orderApplication -> modelMapper.map(orderApplication, OrderApplicationDTO.class)).collect(Collectors.toList());
     }
 }
