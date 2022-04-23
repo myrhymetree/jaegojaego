@@ -1,9 +1,6 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "itemWarehouse")
@@ -23,28 +20,30 @@ public class ItemWarehouse implements Serializable {
     @Column(name = "ITEM_WAREHOUSE_REAL_AMOUNT")
     private int itemWarehouseRealAmount;
 
-    @Column(name = "ITEM_INFO_NO")
-    private int itemInfoNo;
+    @ManyToOne
+    @JoinColumn(name = "ITEM_INFO_NO")
+    private WarehouseItemInfo itemInfoNo;
 
-    @Column(name = "IN_WAREHOUSE_DIVISION_NO")
-    private int inWarehouseDivisionNo;
+    @ManyToOne
+    @JoinColumn(name = "IN_WAREHOUSE_NO")
+    private Warehouse inWarehouseNo;
 
-    @Column(name = "OUT_WAREHOUSE_DIVISION_NO")
-    private int outWarehouseDivisionNo;
+    @Column(name = "OUT_WAREHOUSE_NO")
+    private int outWarehouseNo;
 
     @Column(name = "ITEM_WAREHOUSE_QUALITY_STATUS")
     private String itemWarehouseQualityStatus;
 
     public ItemWarehouse() {}
 
-    public ItemWarehouse(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, int itemWarehouseRealAmount, int itemInfoNo, int inWarehouseDivisionNo, int outWarehouseDivisionNo, String itemWarehouseQualityStatus) {
+    public ItemWarehouse(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, int itemWarehouseRealAmount, WarehouseItemInfo itemInfoNo, Warehouse inWarehouseNo, int outWarehouseNo, String itemWarehouseQualityStatus) {
         this.itemWarehouseNo = itemWarehouseNo;
         this.itemWarehouseDivision = itemWarehouseDivision;
         this.itemWarehouseAmount = itemWarehouseAmount;
         this.itemWarehouseRealAmount = itemWarehouseRealAmount;
         this.itemInfoNo = itemInfoNo;
-        this.inWarehouseDivisionNo = inWarehouseDivisionNo;
-        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+        this.inWarehouseNo = inWarehouseNo;
+        this.outWarehouseNo = outWarehouseNo;
         this.itemWarehouseQualityStatus = itemWarehouseQualityStatus;
     }
 
@@ -80,28 +79,28 @@ public class ItemWarehouse implements Serializable {
         this.itemWarehouseRealAmount = itemWarehouseRealAmount;
     }
 
-    public int getItemInfoNo() {
+    public WarehouseItemInfo getItemInfoNo() {
         return itemInfoNo;
     }
 
-    public void setItemInfoNo(int itemInfoNo) {
+    public void setItemInfoNo(WarehouseItemInfo itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
     }
 
-    public int getInWarehouseDivisionNo() {
-        return inWarehouseDivisionNo;
+    public Warehouse getInWarehouseNo() {
+        return inWarehouseNo;
     }
 
-    public void setInWarehouseDivisionNo(int inWarehouseDivisionNo) {
-        this.inWarehouseDivisionNo = inWarehouseDivisionNo;
+    public void setInWarehouseNo(Warehouse inWarehouseNo) {
+        this.inWarehouseNo = inWarehouseNo;
     }
 
-    public int getOutWarehouseDivisionNo() {
-        return outWarehouseDivisionNo;
+    public int getOutWarehouseNo() {
+        return outWarehouseNo;
     }
 
-    public void setOutWarehouseDivisionNo(int outWarehouseDivisionNo) {
-        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+    public void setOutWarehouseNo(int outWarehouseNo) {
+        this.outWarehouseNo = outWarehouseNo;
     }
 
     public String getItemWarehouseQualityStatus() {
@@ -120,8 +119,8 @@ public class ItemWarehouse implements Serializable {
                 ", itemWarehouseAmount=" + itemWarehouseAmount +
                 ", itemWarehouseRealAmount=" + itemWarehouseRealAmount +
                 ", itemInfoNo=" + itemInfoNo +
-                ", inWarehouseDivisionNo=" + inWarehouseDivisionNo +
-                ", outWarehouseDivisionNo=" + outWarehouseDivisionNo +
+                ", inWarehouseNo=" + inWarehouseNo +
+                ", outWarehouseNo=" + outWarehouseNo +
                 ", itemWarehouseQualityStatus='" + itemWarehouseQualityStatus + '\'' +
                 '}';
     }

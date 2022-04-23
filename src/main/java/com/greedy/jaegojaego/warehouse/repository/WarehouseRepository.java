@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.warehouse.repository;
 
+import com.greedy.jaegojaego.warehouse.dto.WarehouseInItemDTO;
 import com.greedy.jaegojaego.warehouse.entity.Warehouse;
 import org.springframework.data.jpa.repository.JpaRepository;
 

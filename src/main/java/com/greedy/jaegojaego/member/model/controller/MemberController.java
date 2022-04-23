@@ -1,16 +1,27 @@
 package com.greedy.jaegojaego.member.model.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +44,13 @@ public class MemberController {
     }
 
     @GetMapping("/regist")
-    public ModelAndView sendRegistView(ModelAndView mv) {
+    public ModelAndView sendRegistView(ModelAndView mv, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        System.out.println("userDetails = " + customUser);
+
+        System.out.println(customUser.getMemberNo());
 
 
         mv.setViewName("/member/regist");
@@ -42,12 +59,14 @@ public class MemberController {
     }
 
     @PostMapping("/regist")
-    public ModelAndView registMember(ModelAndView mv, MemberDTO newMember, RedirectAttributes rttr) {
+    public ModelAndView registMember(ModelAndView mv, CompanyAccountDTO newMember, RedirectAttributes rttr) {
 
         newMember.setMemberPwd(passwordEncoder.encode(newMember.getMemberPwd()));
         newMember.setMemberCreatedDate(LocalDateTime.now());
         newMember.setMemberPwdInitStatus("Y");
         newMember.setMemberRemoveStatus("Y");
+        newMember.setOfficeDivision("직원");
+        newMember.setMemberDivision("본사");
 
         System.out.println("NewMember" + newMember);
 
@@ -74,17 +93,27 @@ public class MemberController {
 //        return mv;
 //    }
 
-//    @GetMapping(name = "/duplication/{memberId}", produces = "text/plain; charset=UTF-8")
-//    @ResponseBody
-//    public String duplicationIdCheck(ModelAndView mv, @PathVariable String memberId) {
-//
-//        String resultMessage = "중복아님";
-//
-//        /* 아이디가 조회되면 true 반환, 중복이라는 의미*/
-//        if(memberService.duplicationCheckId(memberId)) {
-//            resultMessage = "중복";
-//        }
-//
-//        return resultMessage;
-//    }
+    @GetMapping(value = "/duplication", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ModelAndView duplicationIdCheck(ModelAndView mv, HttpServletRequest request) {
+
+        String memberId = request.getParameter("memberId");
+
+        request.getSession().getAttribute("loginMember");
+        System.out.println("memberId = " + memberId);
+
+        System.out.println("memberId : "  + memberId);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        boolean status =  memberService.duplicationCheckId(memberId);
+        mv.addObject("duplication", gson.toJson(status));
+        return mv;
+    }
 }

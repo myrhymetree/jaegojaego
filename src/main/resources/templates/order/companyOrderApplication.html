@@ -3,13 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .item-collection-area {
+            width: 500px;
+            height: 250px;
+            background-color: #d3d3d3;
+            margin-left: 490px;
+
+        }
+
+        .item-collection-left {
+            font-size: 20px;
+            margin-left: 250px;
+        }
+
+        .item-collection-right {
+            font-size: 20px;
+            margin-left: 150px;
+        }
+
+        .item-collection-area-items {
+            border-collapse: collapse;
+            width: 100%;
+            margin-left: 30px;
+            font-size: 15px;
+        }
+
+    </style>
 </head>
 <body>
     <div th:replace="/common/header.html"></div>
 
-    <div class="body-header">
-        <div class="menu-title">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</div>
-        <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
+    <div class="ibox ">
+        <div class="body-header">
+            <div class="menu-title">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
+        </div>
+
+        <div class="row justify-content-md-center" style="margin-top: 50px">
+            <div class="col-lg-10">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="float-right">
+                            <button class="btn btn-primary btn-xs" type="button">Download</button>
+                        </div>
+                        <div class="text-center article-title">
+                            <h1 style="font-weight: bold">
+                                발주 신청서
+                            </h1>
+                        </div>
+                        <div class="item-collection-title">
+
+                            <span class="item-collection-left">업체명</span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ companyOrderDetail.clientName }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">업체 주소</span>
+                            <span class="item-collection-right"><th:block th:text="${ orderApplication.get(0).client.clientAddress }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">업체 대표자 전화번호</span>
+                            <span class="item-collection-right" style="margin-left: 45px"><th:block th:text="${ orderApplication.get(0).client.clientRepresentativePhone }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">업체 대표자 이메일</span>
+                            <span class="item-collection-right" style="margin-left: 65px"><th:block th:text="${ orderApplication.get(0).client.clientRepresentativeEmail }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">담당자</span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.memberName }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">담당자 전화번호</span>
+                            <span class="item-collection-right" style="margin-left: 90px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.cellphone }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">신청 일자</span>
+                            <span class="item-collection-right"><th:block th:text="${ companyOrderDetail.orderCreatedDate }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left" style="float: left">신청 물품</span>
+                            <div class="item-collection-area">
+                                <br>
+                                <table class="item-collection-area-items">
+                                    <tbody>
+                                        <tr th:each="items : ${ orderApplicationItemList }">
+                                            <td th:text="${ items.clientContractItem.clientContractItemName }"></td>
+                                            <td th:text="${ items.orderApplicationItemAmount + '개' }"></td>
+                                            <td th:text="${ items.clientContractItem.clientContractItemSupplyPrice } + '원(개)'"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br><br>
+                            <span class="item-collection-left">배송지</span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).getCompanyOrderHistory().companyAccount.email }"></th:block></span>
+
+                        </div>
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <th:block th:replace="/common/footer.html"></th:block>

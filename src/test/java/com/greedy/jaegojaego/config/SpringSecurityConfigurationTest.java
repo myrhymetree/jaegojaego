@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +47,11 @@ class SpringSecurityConfigurationTest {
         System.out.println("matchResult = " + matchResult);
 
         assertTrue(matchResult);
+    }
+
+    @Test
+    public void 로그인세션정보찾기(Principal principal) {
+        System.out.println("principal.getName() = " + principal.getName());
     }
 
 

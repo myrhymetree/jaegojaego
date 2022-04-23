@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class MemberDTO {
 
-    private int memberNo;
+    private Integer memberNo;
     private String memberId;
     private String memberPwd;
     private LocalDateTime memberPwdUpdateDate;

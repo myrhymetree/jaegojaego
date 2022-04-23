@@ -21,8 +21,8 @@ import java.util.Set;
 )
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "MEMBER_DIVISION")
 public abstract class Member implements Serializable{
@@ -75,7 +75,6 @@ public abstract class Member implements Serializable{
     @Column(name = "MEMBER_CREATED_DATE")
     private LocalDateTime memberCreatedDate;
 
-//    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "MEMBER_REMOVED_DATE")
     private LocalDateTime memberRemovedDate;
 
@@ -94,6 +93,12 @@ public abstract class Member implements Serializable{
     @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false)
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
+
+//    @OneToOne
+//    @JoinColumn(name = "MEMBER_NO")
+//    private MemberRole memberRole;
+
+    public Member() {}
 
     @Override
     public String toString() {

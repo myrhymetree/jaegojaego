@@ -1,26 +1,25 @@
 package com.greedy.jaegojaego.order.order.model.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderDetailDTO;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderItemDTO;
-import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
+import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
+import com.greedy.jaegojaego.authentification.model.service.AuthenticationService;
+import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
+import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
+import com.greedy.jaegojaego.order.order.model.dto.*;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpRequest;
 import java.util.*;
 
 @Controller
@@ -28,10 +27,14 @@ import java.util.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final AuthenticationService authenticationService;
+    private final MessageSource messageSource;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, AuthenticationService authenticationService, MessageSource messageSource) {
         this.orderService = orderService;
+        this.authenticationService = authenticationService;
+        this.messageSource= messageSource;
     }
 
     @GetMapping("/companyorderlist")
@@ -217,7 +220,25 @@ public class OrderController {
     }
 
     @PostMapping("companyorderregist")
-    public ModelAndView selectCompanyOrderApplicationList(ModelAndView mv, Locale locale) {
+    public ModelAndView registCompanyOrder(ModelAndView mv, HttpServletRequest request) {
+
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        User loadUser = (User) principal;
+//
+//        CustomUser user = (CustomUser) authenticationService.loadUserByUsername(loadUser.getUsername());
+
+//        System.out.println(user.getMemberNo());
+
+        MemberDTO member = (MemberDTO) request.getSession().getAttribute("loginMember");
+
+        String[] itemAmount = request.getParameterValues("itemAmount");
+        String[] clientNo = request.getParameterValues("clientItemInfoNo");
+        String[] itemInfoNo = request.getParameterValues("itemInfoNo");
+
+        System.out.println(member.getMemberNo());
+
+        orderService.insertCompanyOrder(itemAmount, clientNo, itemInfoNo, member.getMemberNo());
 
         mv.setViewName("/order/companyApplicationList");
 
@@ -239,17 +260,60 @@ public class OrderController {
         int clientNo = Integer.parseInt(request.getParameter("clientNo"));
 
         List<OrderApplicationDTO> orderApplicationList = orderService.selectOrderApplicationDetail(companyOrderHistoryNo, clientNo);
+        List<OrderApplicationItemDTO> orderApplicationItemList = new ArrayList<>();
+
+        for(int i = 0; i < orderApplicationList.size(); i++) {
+
+            for(int j = 0; j < orderApplicationList.get(i).getOrderApplicationItemList().size(); j++) {
+
+               OrderApplicationItemDTO orderApplicationItem = new OrderApplicationItemDTO();
+               orderApplicationItem = orderApplicationList.get(i).getOrderApplicationItemList().get(j);
+               orderApplicationItemList.add(orderApplicationItem);
+            }
+        }
 
         CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
         companyOrderDetail.setCompanyOrderHistoryNo(orderApplicationList.get(0).getCompanyOrderHistory().getCompanyOrderHistoryNo());
         companyOrderDetail.setClientName(orderApplicationList.get(0).getClient().getClientName());
+        companyOrderDetail.setOrderCreatedDate(orderApplicationList.get(0).getCompanyOrderHistory().getCompanyOrderHistoryCreatedDate());
 
         mv.addObject("orderApplication", orderApplicationList);
         mv.addObject("companyOrderDetail", companyOrderDetail);
+        mv.addObject("orderApplicationItemList", orderApplicationItemList);
         mv.setViewName("/order/companyOrderApplication");
 
         return mv;
     }
 
+    @GetMapping(value = "/searchitems", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String searchItems(HttpServletRequest request) {
+
+        String searchItem = request.getParameter("searchValue");
+
+        List<OrderItemInfoDTO> orderItemInfoList = orderService.selectOrderItemInfoList(searchItem);
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(orderItemInfoList);
+    }
+
+    @GetMapping(value = "selectclientitemlist", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String selectClientItemList(HttpServletRequest request) {
+
+        int itemInfoNo = Integer.parseInt(request.getParameter("itemInfoNo"));
+
+        List<OrderClientContractItemDTO> orderClientContractItemList = orderService.selectClientContractItemList(itemInfoNo);
+
+        Gson gson = new Gson();
+
+        return gson.toJson(orderClientContractItemList);
+    }
 
 }

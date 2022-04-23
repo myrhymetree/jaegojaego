@@ -19,6 +19,13 @@
     <link th:href="@{/css/animate.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
 
+    <script>
+        const successMessage = "[[${ successMessage }]]";
+        if(successMessage) {
+            alert(successMessage);
+        }
+    </script>
+
 </head>
 <body class="md-skin">
 <th:block th:include="/member/myInfoModal.html"></th:block>

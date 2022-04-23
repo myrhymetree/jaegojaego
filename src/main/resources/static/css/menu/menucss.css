@@ -11,7 +11,7 @@
 .selectOneMenuWhiteboard {
     border: 0.5px solid gray;
     position: absolute;
-    left:37%;
+    left: 37%;
     top: 18%;
     height: 610px;
     width: 800px;
@@ -28,58 +28,64 @@
     background: white;
 }
 
+.menuModifyModal {
+    position: absolute;
+    border: 0.5px solid gray;
+    height: 500px;
+    width: 500px;
+    background: white;
+    border-radius: 5px 5px 5px 5px ;
+}
+
+.menuRegistModal {
+    position: absolute;
+    border: 0.5px solid gray;
+    height: 500px;
+    width: 500px;
+    background: white;
+    border-radius: 5px 5px 5px 5px ;
+}
+
 .modal-layer {
     position: relative;
-    top:-108%;
-    left:-80.5%;
+    top: -68%;
+    left:-78%;
     width: 1340px;
     height: 637px;
     background: rgba(0, 0, 0, 0.5);
     z-index: -1;
 }
 
-.menuRegistModal {
-    position: absolute;
-    border: 0.5px solid gray;
-    height: 400px;
-    width: 500px;
-    background: white;
-    border-radius: 5px 5px 5px 5px ;
-}
-
-.menuModifyModal {
-    position: absolute;
-    border: 0.5px solid gray;
-    height: 400px;
-    width: 500px;
-    background: white;
-    border-radius: 5px 5px 5px 5px ;
-}
-
 .forz-index {
     position: absolute;
-    top:30%;
-    left: 30.5%;
+    top: 25%;
+    left: 30%;
     z-index: 1050
 }
 
 .menuRegistForm {
     position: relative;
+    height: 200px;
     top: 5%;
     left: 23%;
 }
 
 .menuModifytForm {
     position: relative;
+    height: 200px;
     top: 5%;
     left: 23%;
 }
 
+.materialCategoryForRegist {
+    position: relative;
+}
+
 .rawMaterialList {
     position: relative;
-    top: 27%;
-    height: 100px;
-    width: 300px;
+    right: 13%;
+    height: 200px;
+    width: 400px;
     background: white;
     border: 0.5px solid gray;
 }
@@ -110,30 +116,54 @@
     left: 80%;
 }
 
+/*#test {*/
+/*    position: absolute;*/
+/*    left: 17%;*/
+/*    top: 35%;*/
+/*    width: 30px;*/
+/*    height: 30px;*/
+/*}*/
+
 .registMenuCancelButton {
     position: relative;
-    top: 30%;
     left: 25%;
-    margin-top: 20px;
+    margin-top: 8px;
 }
 
 .modifyMenuSubmitButton {
     position: relative;
-    top: 30%;
     left: 15%;
 }
 
 
 .modifyMenuCancelButton {
     position: relative;
-    top: 30%;
-    left: 25%;
-    margin-top: 20px;
+    left: 15%;
+    margin-top: 8px;
+    margin-left: 40px;
 }
 
 .registMenuSubmitButton {
     position: relative;
-    top: 30%;
     left: 15%;
 }
 
+#oneRawMaterial {
+    margin: 3px;
+    display: inline-block;
+    font-size: 5px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+
+#rawMaterialDeleteButton {
+    background-image: url("../../images/xButton.png");
+    border: 1px solid black;
+    margin-left: 3px;
+    margin-top: 3px;
+    margin-right :3px;
+    border-radius: 3px;
+    width: 17px;
+    height: 14px;
+    display: inline-block;
+}

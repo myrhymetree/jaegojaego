@@ -6,6 +6,7 @@ import com.greedy.jaegojaego.member.model.dto.MemberRoleDTO;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Data
 @SessionAttributes("loginMember")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -68,9 +70,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         for(int i = 0; i < memberRoleDTOList.size(); i++) {
             authorities.add(new SimpleGrantedAuthority(memberRoleDTOList.get(i).getAuthority().getAuthorityName()));
         }
-        System.out.println(authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
+        System.out.println("authorities :" + authorities);
 
-        return new CustomUser(loginMember, authorities);
+        CustomUser customUser = new CustomUser(loginMember, authorities);
+
+        return customUser;
     }
 
     @Override
@@ -82,6 +93,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> franchisePermitList = new ArrayList<>();
 
         memberPermitList.add("/");
+
+        adminPermitList.add("/member/regist");
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("memberPermitList", memberPermitList);

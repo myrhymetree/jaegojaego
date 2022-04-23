@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.member.model.repository;
 
+import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
