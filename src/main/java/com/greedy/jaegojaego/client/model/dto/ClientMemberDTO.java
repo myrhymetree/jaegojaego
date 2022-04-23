@@ -1,27 +1,15 @@
-package com.greedy.jaegojaego.client.model.entity;
+package com.greedy.jaegojaego.client.model.dto;
 
-import lombok.*;
+public class ClientMemberDTO {
 
-import javax.persistence.*;
-
-@Entity(name = "Client_Member")
-@Table(name = "COMPANY_ACCOUNT")
-public class ClientMember {
-
-    @Id
-    @Column(name = "MEMBER_NO")
     private int clientMemberNo;
-
-    @Column(name = "MEMBER_NAME")
     private String clientMemberName;
 
-    public ClientMember(int clientMemberNo, String clientMemberName) {
+    public ClientMemberDTO(){}
+
+    public ClientMemberDTO(int clientMemberNo, String clientMemberName) {
         this.clientMemberNo = clientMemberNo;
         this.clientMemberName = clientMemberName;
-    }
-
-    public ClientMember() {
-
     }
 
     public int getClientMemberNo() {
@@ -42,11 +30,9 @@ public class ClientMember {
 
     @Override
     public String toString() {
-        return "ClientMember{" +
+        return "ClientMemberDTO{" +
                 "clientMemberNo=" + clientMemberNo +
                 ", clientMemberName='" + clientMemberName + '\'' +
                 '}';
     }
 }
-
-
