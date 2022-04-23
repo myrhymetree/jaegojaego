@@ -6,101 +6,111 @@
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+
     <link th:href="@{/css/menu/menucss.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
 
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+
 </head>
 <body>
-    <th:block th:replace="/common/header.html"></th:block>
+<th:block th:replace="/common/header.html"></th:block>
 
-    <div class="ibox">
-        <div class="body-header">
-            <div class="menu-title">메뉴 관리</div>
-            <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/menu/list}">메뉴관리</a></div>
+<div class="ibox">
+    <div class="body-header">
+        <div class="menu-title">메뉴 관리</div>
+        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/menu/list}">메뉴관리</a></div>
+    </div>
+    <div>
+
+        <!-- 메뉴등록 모달창 -->
+        <div class="forz-index" id="forz-index" style="display: none;">
+            <div class="menuRegistModal" id="menuRegistModal">
+                <h1 align="center" style="color: #1ab394">메뉴 등록</h1>
+                <form class="menuRegistForm" method="post"  action="/menu/regist">
+                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName"><br>
+                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice"><br>
+                    *<label>판매여부 : </label>&nbsp;
+                    <select class="menuStatus" name="menuOrderableStatus">
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select><br>
+                    *<label>원재료 선택 : </label>&nbsp;
+                        <select name="itemInfoNo" class="materialCategoryForRegist" id="materialCategoryForRegist" onchange="addRawMaterial(this.value, this.options[this.selectedIndex].text);">
+                            <!-- 동적생성으로 -->
+                        </select><br>
+                    *<label>용량 : </label>
+                        <select name="materialCapacity" class="materialCapacity" id="materialCapacity" onchange="addRawMaterialToDiv(this.value, this.options[this.selectedIndex].text);">
+                            <!-- 위에랑 select 연관 : 고정 (위에가 선택되면 얘가 10g/20g/30g/40g/50g/60g .. /100g까지 생기게!! -->
+                        </select><br><br>
+                        <div class="rawMaterialList" id="rawMaterialList">
+                                <!-- 누르면 생기게 -->
+                        </div>
+                    <button class="button registMenuSubmitButton" type="submit">등록</button>
+                    <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
+                </form>
+
+                <div class="modal-layer"></div>
+            </div>
         </div>
-        <div>
-
-    <!-- 메뉴등록 모달창 -->
-    <div class="forz-index" id="forz-index" style="display: none;">
-    <div class="menuRegistModal" id="menuRegistModal">
-        <h1 align="center" style="color: #1ab394">메뉴 등록</h1>
-        <form class="menuRegistForm">
-            *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName"><br>
-            *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice"><br>
-            *<label>판매여부 : </label>&nbsp;
-            <select class="menuStatus">
-                <option value="Y">Y</option>
-                <option value="N">N</option>
-            </select><br>
-            *<label>원재료 선택 : </label>&nbsp;
-            <select>
-                <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
-                <option>원재료를 선택해주세요!</option>
-                <option>로스팅된 지로스팅 원두 1kg</option>
-                <option>남부장우유</option>
-                <option>등등등</option>
-                <option>등등등</option>
-            </select>
-            <div class="rawMaterialList" id="rawMaterialList"></div>
-            <button class="button registMenuSubmitButton" type="submit">등록</button>
-            <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
-        </form>
-
-        <div class="modal-layer"></div>
-    </div>
-    </div>
 
 
-    <!-- 메뉴수정 모달창 -->
-    <div class="forz-index" id="forz-indexForModify" style="display: none;">
-        <div class="menuModifyModal" id="menuModalForModify">
-            <h1 align="center" style="color: #1ab394">메뉴 수정</h1>
-            <form class="menuModifytForm">
-                *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify"><br>
-                *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify"><br>
-                *<label>판매여부 : </label>&nbsp;
-                <select class="menuStatus">
-                    <option value="Y">Y</option>
-                    <option value="N">N</option>
-                </select><br>
-                *<label>원재료 선택 : </label>&nbsp;
-                <select>
-                    <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
-                    <option>원재료를 선택해주세요!</option>
-                    <option>로스팅된 지로스팅 원두 1kg</option>
-                    <option>남부장우유</option>
-                    <option>등등등</option>
-                    <option>등등등</option>
-                </select>
-                <div class="rawMaterialList" id="rawMaterialListForModify"></div>
-                <button class="button modifyMenuSubmitButton" type="submit">수정</button>
-                <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
-            </form>
 
-            <div class="modal-layer"></div>
+
+        <!-- 메뉴수정 모달창 -->
+        <div class="forz-index" id="forz-indexForModify" style="display: none;">
+            <div class="menuModifyModal" id="menuModalForModify">
+                <h1 align="center" style="color: #1ab394">메뉴 수정</h1>
+                <form class="menuModifytForm" method="post">
+                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify"><br>
+                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify"><br>
+                    *<label>판매여부 : </label>&nbsp;
+                    <select class="menuStatus">
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select><br>
+                    *<label>원재료 선택 : </label>&nbsp;
+                    <select name="materialCategoryForModify" id="materialCategoryForModify">
+                        <option>원재료를 선택해주세요!</option>
+                        <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
+                    </select><br>
+                    *<labe>용량 : </labe>
+                    <select class="materialCapacity" id="materialCapacityForModify">
+                        <!-- 위에랑 select 연관 : 고정 (위에가 선택되면 얘가 10g/20g/30g/40g/50g/60g .. /100g까지 생기게!! -->
+                        <option>위쪽먼저선택ㄱ</option>
+                    </select><br><br>
+                    <div class="rawMaterialList" id="rawMaterialListForModify">
+                        <!-- 원재료 선택 select 할때 여기에도 동적 생성으로 추가되야함 -->
+                    </div>
+                    <button class="button" type="submit">수정</button>
+                    <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
+                </form>
+
+                <div class="modal-layer"></div>
+            </div>
         </div>
-    </div>
 
 
-    <!-- 메뉴리스트 및 등록 -->
-    <div class="menuListWhiteBoard">
-        <div class="ibox">
-            <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">메뉴 목록</h3>
+        <!-- 메뉴리스트 목록 -->
+        <div class="menuListWhiteBoard">
+            <div class="ibox">
+                <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">메뉴 목록</h3>
                 <button class="button registMenuButton" id="registMenuButton">메뉴 등록</button>
                 <button class="button modifyMenuButton" id="modifyMenuButton">메뉴 수정</button>
                 <button class="button deleteMenuButton" id="deleteMenuButton">메뉴 삭제</button>
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover dataTables-example" id="menuTable">
-                        <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>메뉴명</th>
-                            <th>메뉴가격</th>
-                            <th>판매여부</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example" id="menuTable">
+                            <thead>
+                            <tr>
+                                <th>번호</th>
+                                <th>메뉴명</th>
+                                <th>메뉴가격</th>
+                                <th>판매여부</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             <tr th:each="menu : ${ menuList }">
                                 <input type="hidden" th:value="${ menu.menuNo }" id="menuNo" name="menuNo">
                                 <td th:text="${ menu.menuNo }"></td>
@@ -108,251 +118,310 @@
                                 <td th:text="${ menu.menuPrice }"></td>
                                 <td th:text="${ menu.menuOrderableStatus }"></td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            </tbody>
+                        </table>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <!-- 메뉴보기 상세보기 (default의 경우)-->
-    <div class="OneMenuWhiteboard" id="defualtOneMenu" style="display: block;">
-        <br><br><br><br><br><br><br><br><br><br><br>
-        <h1 align="center">상세보기할 메뉴를 선택해주세요! </h1>
-    </div>
+        <!-- 메뉴보기 상세보기 (default의 경우)-->
+        <div class="OneMenuWhiteboard" id="defualtOneMenu" style="display: block;">
+            <br><br><br><br><br><br><br><br><br><br><br>
+            <h1 align="center">상세보기할 메뉴를 선택해주세요! </h1>
+        </div>
 
-    <!-- 메뉴보기 상세보기 (눌렀을 경우) -->
-    <div class="selectOneMenuWhiteboard" id="selectOneMenu" style="display: none;" >
-        <div class="ibox">
-            <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;" id="menuNameWhenClickEachMenu">
-            </h3>
+        <!-- 메뉴보기 상세보기 (눌렀을 경우) -->
+        <div class="selectOneMenuWhiteboard" id="selectOneMenu" style="display: none;" >
+            <div class="ibox">
+                <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;" id="menuNameWhenClickEachMenu">
+                </h3>
 
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <!-- success 시 ajax로 table 동적 생성? -->
-                    <table class="table table-striped table-bordered table-hover dataTables-example-customizing" >
-                        <thead>
-                        <tr>
-                            <th>원재료명</th>
-                            <th>용량</th>
-                        </tr>
-                        </thead>
-                        <tbody id="selectOneMenuTbody">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <!-- success 시 ajax로 table 동적 생성? -->
+                        <table class="table table-striped table-bordered table-hover dataTables-example-customizing" >
+                            <thead>
+                            <tr>
+                                <th>원재료명</th>
+                                <th>용량</th>
+                            </tr>
+                            </thead>
+                            <tbody id="selectOneMenuTbody">
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-
             </div>
         </div>
-    </div>
+
+        <input type="hidden" id="materialsArray" name="materialsArray">
 
 
-    <th:block th:replace="/common/footer.html"></th:block>
-<script>
+        <th:block th:replace="/common/footer.html"></th:block>
 
-    document.getElementById("registMenuButton").onclick = function() {
-        document.getElementById("forz-index").style.display = "block";
-    }
+        <script>
 
-    document.getElementById("registMenuCancelButton").onclick = function() {
-        document.getElementById("forz-index").style.display = "none";
-    }
-
-    document.getElementById("modifyMenuButton").onclick = function() {
-        document.getElementById("forz-indexForModify").style.display = "block";
-    }
-
-    document.getElementById("modifyMenuCancelButtonForModify").onclick = function () {
-        document.getElementById("forz-indexForModify").style.display = "none";
-    }
-
-    if(document.querySelectorAll("#menuTable tbody tr")) {
-        const $tr = document.querySelectorAll("#menuTable tbody tr");
-
-        for(let i = 0; i < $tr.length; i++) {
-
-            $tr[i].onmouseenter = function() {
-                this.parentNode.style.cursor = "pointer";
-                this.parentNode.style.color = "gray";
+            const successMessage = "[[${ successMessage }]]";
+            if(successMessage) {
+                alert(successMessage);
             }
 
-            $tr[i].onclick = function() {
+            document.getElementById("registMenuButton").onclick = function() {
+                document.getElementById("forz-index").style.display = "block";
+            }
 
-                /* 기.억.해 */
-                let test = document.getElementById("menuNameWhenClickEachMenu");
-                const $menuNo = this.children[0].value;
+            document.getElementById("registMenuCancelButton").onclick = function() {
+                document.getElementById("forz-index").style.display = "none";
+            }
 
-                test.innerText = this.children[2].innerText + '의 원재료 목록';
+            document.getElementById("modifyMenuButton").onclick = function() {
+                document.getElementById("forz-indexForModify").style.display = "block";
+            }
+
+            document.getElementById("modifyMenuCancelButtonForModify").onclick = function () {
+                document.getElementById("forz-indexForModify").style.display = "none";
+            }
 
 
+            <!-- 원재료 목록 불러오기 -->
+            $(function () {
+               $.ajax({
+                   url: "/menu/materialcategory",
+                   success: function(data) {
+                       const $materialCategoryForRegist = $("#materialCategoryForRegist");
+                       $materialCategoryForRegist.html("");
+                       $materialCategoryForRegist.append($("<option>").text("옵션을 선택해주세요!"));
 
-                $.ajax ({
-                    url: '/menu/selectonemenu',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {"menuNo":this.children[0].value},
-                    success: function(data) {
+                       for(let list in data) {
+                           $materialCategoryForRegist.append($("<option>").val(data[list].itemInfoNo).text(data[list].itemInfoName));
+                       }
+                   },
+                   error: function(xhr) {
+                       alert("에러가 발생하였습니다. 다시 시도해주세요");
+                   }
 
-                        let materialTbody = '';
-                        const page = data.paging;
-                        const rawList = data.rawMaterialList;
+               });
+            });
 
-                        console.log(page);
-                        console.log(rawList);
-                        for(list in rawList) {
-                            materialTbody += '<tr>';
-                            materialTbody += '<td>' + data[list].rawMaterialName + '</td>';
-                            materialTbody += '<td>' + data[list].rawMaterialCapacity + 'g' + '</td>';
-                            materialTbody += '</tr>';
-                        }
+            const $rawMaterialList = $("#rawMaterialList");
+            const $materialCapacity = $("#materialCapacity");
+            const testArray = [];
 
-                        $('#selectOneMenuTbody').empty();
-                        $('#selectOneMenuTbody').append(materialTbody);
-                    },
-                    error: function(xhr) {
-                        alert("실패" + xhr);
+            function addRawMaterial(value, text) {
+                const capacity = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"];
+
+                    $materialCapacity.html("");
+
+                for(x in capacity) {
+                    const opt = document.createElement("option");
+                    opt.innerText = text + '/' + capacity[x] + 'g';
+                    opt.value = text + '/' + capacity[x];
+                    $materialCapacity.append(opt);
+
+                }
+            }
+
+            function addRawMaterialToDiv(value, text) {
+                const obj = document.getElementById("rawMaterialList");
+                const oneRawMaterial = document.createElement("div");
+                const deleteButton = document.createElement("div"); //얘도 같이 생성되게 해서
+
+                oneRawMaterial.innerHTML = text;
+                oneRawMaterial.setAttribute("id","oneRawMaterial");//새롭게 만들어지는 div태그에 id값 저장
+                oneRawMaterial.align = "center";
+
+                deleteButton.setAttribute("id", "rawMaterialDeleteButton");
+
+                obj.appendChild(oneRawMaterial);//body에 자식 태그로 추가.
+                oneRawMaterial.appendChild(deleteButton);
+
+                testArray.push(oneRawMaterial.innerText);
+                console.log("배열배열!! : " +testArray);
+                $("#materialsArray").innerText = testArray;
+
+
+                deleteButton.onclick = function(){
+                    this.parentNode.remove();
+                };
+
+                // $rawMaterialList.append($("<div>").val(this.value).text(this.text).css().append($("</div>")));
+            }
+
+
+            <!-- 메뉴 클릭시 상세보기용 -->
+            if(document.querySelectorAll("#menuTable tbody tr")) {
+                const $tr = document.querySelectorAll("#menuTable tbody tr");
+
+                for(let i = 0; i < $tr.length; i++) {
+
+                    $tr[i].onmouseenter = function() {
+                        this.parentNode.style.cursor = "pointer";
+                        this.parentNode.style.color = "gray";
                     }
+
+                    $tr[i].onclick = function() {
+
+                        /* 기.억.해 */
+                        let test = document.getElementById("menuNameWhenClickEachMenu");
+                        const $menuNo = this.children[0].value;
+
+                        test.innerText = this.children[2].innerText + '의 원재료 목록';
+
+                        <!-- 원래 ajax -->
+                        $.ajax ({
+                           url: '/menu/selectonemenu',
+                           type: 'GET',
+                            dataType: 'json',
+                            data: {"menuNo":this.children[0].value},
+                            success: function(data) {
+                                    let materialTbody = '';
+                                    if(data != null) {
+                                        for(list in data) {
+
+                                            materialTbody += '<tr>';
+                                            materialTbody += '<td>' + data[list].rawMaterialName + '</td>';
+                                            materialTbody += '<td>' + data[list].rawMaterialCapacity + 'g' + '</td>';
+                                            materialTbody += '</tr>';
+                                        }
+                                    }
+                                    $('#selectOneMenuTbody').empty();
+                                    $('#selectOneMenuTbody').append(materialTbody);
+
+                            },
+                            error: function(xhr) {
+                                alert("실패" + xhr);
+                            }
+
+                        });
+
+                        document.getElementById("selectOneMenu").style.display = "block";
+                        document.getElementById("defualtOneMenu").style.display = "none";
+
+                    }
+
+                }
+            }
+
+        </script>
+        <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
+        <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+        <script>
+            $(".select2_demo_1").select2({
+                theme: 'bootstrap4',
+            });
+            $(".select2_demo_2").select2({
+                theme: 'bootstrap4',
+            });
+            $(".select2_demo_3").select2({
+                theme: 'bootstrap4',
+                placeholder: "Select a state",
+                allowClear: true
+            });
+
+            // Upgrade button class name
+            $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
+
+            $(document).ready(function(){
+                $('.dataTables-example').DataTable({
+                    pageLength: 9,
+                    responsive: true,
+                    lengthChange: false,
+                    info: false,
+                    dom: '<"html5buttons"B>lTfgitp',
+                    buttons: [
+                        // { extend: 'copy'},
+                        // {extend: 'csv'},
+                        // {extend: 'excel', title: 'ExampleFile'},
+                        // {extend: 'pdf', title: 'ExampleFile'},
+
+                        {extend: '',
+                            customize: function (win){
+                                $(win.document.body).addClass('white-bg');
+                                $(win.document.body).css('font-size', '10px');
+
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            }
+                        }
+                    ]
 
                 });
-                document.getElementById("selectOneMenu").style.display = "block";
-                document.getElementById("defualtOneMenu").style.display = "none";
 
-            }
+            });
 
-        }
-    }
+            <!--  좀따 안되면 풀기!(datatable) -->
+            $(document).ready(function(){
+                $('.dataTables-example-customizing').DataTable({
+                    pageLength: 10,
+                    searching: false,
+                    ordering: false,
+                    paging: true,
+                    // responsive: true,
+                    lengthChange: false,
+                    info: false,
+                    // dom: '<"html5buttons"B>lTfgitp',
+                    buttons: [
+                        // { extend: 'copy'},
+                        // {extend: 'csv'},
+                        // {extend: 'excel', title: 'ExampleFile'},
+                        // {extend: 'pdf', title: 'ExampleFile'},
 
-</script>
-<script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
-<script>
+                        {extend: '',
+                            customize: function (win){
+                                $(win.document.body).addClass('white-bg');
+                                $(win.document.body).css('font-size', '10px');
 
-    // Upgrade button class name
-    $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            }
+                        }
+                    ]
 
-    $(document).ready(function(){
-        $('.dataTables-example').DataTable({
-            pageLength: 9,
-            responsive: true,
-            lengthChange: false,
-            info: false,
-            dom: '<"html5buttons"B>lTfgitp',
-            buttons: [
-                // { extend: 'copy'},
-                // {extend: 'csv'},
-                // {extend: 'excel', title: 'ExampleFile'},
-                // {extend: 'pdf', title: 'ExampleFile'},
+                });
 
-                {extend: '',
-                    customize: function (win){
-                        $(win.document.body).addClass('white-bg');
-                        $(win.document.body).css('font-size', '10px');
-
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    }
-                }
-            ]
-
-        });
-
-    });
-
-    <!--  좀따 안되면 풀기!(datatable) -->
-    // $(document).ready(function(){
-    //     $('.dataTables-example-customizing').DataTable({
-    //         pageLength: 10,
-    //         searching: false,
-    //         ordering: false,
-    //         paging: true,
-    //         // responsive: true,
-    //         lengthChange: false,
-    //         info: false,
-    //         // dom: '<"html5buttons"B>lTfgitp',
-    //         buttons: [
-    //             // { extend: 'copy'},
-    //             // {extend: 'csv'},
-    //             // {extend: 'excel', title: 'ExampleFile'},
-    //             // {extend: 'pdf', title: 'ExampleFile'},
-    //
-    //             {extend: '',
-    //                 customize: function (win){
-    //                     $(win.document.body).addClass('white-bg');
-    //                     $(win.document.body).css('font-size', '10px');
-    //
-    //                     $(win.document.body).find('table')
-    //                         .addClass('compact')
-    //                         .css('font-size', 'inherit');
-    //                 }
-    //             }
-    //         ]
-    //
-    //     });
-    //
-    // });
+            });
 
 
-    //
-    // // fetch- 나중에 해보기 ㅇㅇ
-    // console.log($menuNo);
-    // let url = '/menu/selectonemenu';
-    //
-    // fetch("/menu/selectonemenu?menuNo=" +  this.children[0].value)
-    //     .then(res => res.json())
-    //     .then(res => {
-    //             console.log("성공ㅇ !!!");
-    //             var materialTbody = '';
-    //             if(data != null) {
-    //
-    //                 for(list in text) {
-    //
-    //                     materialTbody += '<tr>';
-    //                     materialTbody += '<td>' + data[list].name + '</td>';
-    //                     materialTbody += '<td>' + data[list].capacity + '</td>';
-    //                     materialTbody += '</tr>';
-    //                 }
-    //             }
-    //         // $('#selectOneMenuTbody').empty();
-    //         // $('#selectOneMenuTbody').append(materialTbody);
-    // })
-    // .catch(err => {
-    //     alert("에러 : " + err);
-    // })
-
-
-    <!-- 원래 ajax -->
-    // $.ajax ({
-    //    url: '/menu/selectonemenu',
-    //    type: 'GET',
-    //     dataType: 'json',
-    //     data: {"menuNo":this.children[0].value},
-    //     success: function(data) {
-    //             let materialTbody = '';
-    //             if(data != null) {
-    //                 for(list in data) {
-    //
-    //                     materialTbody += '<tr>';
-    //                     materialTbody += '<td>' + data[list].rawMaterialName + '</td>';
-    //                     materialTbody += '<td>' + data[list].rawMaterialCapacity + 'g' + '</td>';
-    //                     materialTbody += '</tr>';
-    //                 }
-    //             }
-    //             $('#selectOneMenuTbody').empty();
-    //             $('#selectOneMenuTbody').append(materialTbody);
-    //
-    //     },
-    //     error: function(xhr) {
-    //         alert("실패" + xhr);
-    //     }
-    //
-    // });
+            //
+            // // fetch- 나중에 해보기 ㅇㅇ
+            // console.log($menuNo);
+            // let url = '/menu/selectonemenu';
+            //
+            // fetch("/menu/selectonemenu?menuNo=" +  this.children[0].value)
+            //     .then(res => res.json())
+            //     .then(res => {
+            //             console.log("성공ㅇ !!!");
+            //             var materialTbody = '';
+            //             if(data != null) {
+            //
+            //                 for(list in text) {
+            //
+            //                     materialTbody += '<tr>';
+            //                     materialTbody += '<td>' + data[list].name + '</td>';
+            //                     materialTbody += '<td>' + data[list].capacity + '</td>';
+            //                     materialTbody += '</tr>';
+            //                 }
+            //             }
+            //         // $('#selectOneMenuTbody').empty();
+            //         // $('#selectOneMenuTbody').append(materialTbody);
+            // })
+            // .catch(err => {
+            //     alert("에러 : " + err);
+            // })
 
 
 
 
-</script>
+
+
+        </script>
 </body>
 </html>
