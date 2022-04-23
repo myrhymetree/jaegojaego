@@ -3,22 +3,18 @@ package com.greedy.jaegojaego.menu.controller;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.greedy.jaegojaego.common.paging.Pagenation;
-import com.greedy.jaegojaego.common.paging.PagingButtonInfo;
 import com.greedy.jaegojaego.menu.dto.MenuDTO;
+import com.greedy.jaegojaego.menu.dto.MenuMaterialsDTO;
 import com.greedy.jaegojaego.menu.dto.RawMaterialDTO;
 import com.greedy.jaegojaego.menu.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -30,6 +26,8 @@ import java.util.Map;
  * 2022/04/19 (이소현) 메뉴 관리 페이지 이동
  * 2022/04/20 (이소현) 메뉴 목록 조회, 메뉴 상세 조회
  * 2022/04/21 (이소현) 메뉴 상세 조회 비동기 페이징
+ * 2022/04/21 (이소현) 메뉴 상세 조회 비동기 페이징 다시 시도
+ * 2022/04/23 (이소현) 메뉴 등록
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -58,43 +56,77 @@ public class MenuController {
    }
 
 
-//   @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
-//    @ResponseBody
-//    public String selectOneMenu(int menuNo) {
-//
-//        /* 각 메뉴의 원재료 상세조회 */
-//        List<RawMaterialDTO> rawMaterialList = menuService.selectOneMenu(menuNo);
-//
-//        Gson gson = new GsonBuilder()
-//                .setDateFormat("yyyy-MM-dd")
-//                .setPrettyPrinting()
-//                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-//                .serializeNulls()
-//                .disableHtmlEscaping()
-//                .create();
-//
-//        return gson.toJson(rawMaterialList);
-//   }
-
-   /* 비동기방식(ajax) 페이징 */
     @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ModelAndView selectOneMenu(ModelAndView mv, int menuNo, @PageableDefault Pageable pageable) {
+    public String selectOneMenu(int menuNo) {
 
-        //나중에 페이징 시도(ajax때매 mv.addObejct) 이거떄매 음
-        Page<RawMaterialDTO> rawMaterialList = menuService.selectOneMenuForPaging(menuNo, pageable);
+        /* 각 메뉴의 원재료 상세조회 */
+        List<RawMaterialDTO> rawMaterialList = menuService.selectOneMenu(menuNo);
 
-        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(rawMaterialList);
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
 
-        mv.addObject("paging", paging);
-        mv.addObject("rawMaterialList", rawMaterialList);
-        mv.setViewName("menu/menuList");
+        return gson.toJson(rawMaterialList);
+   }
 
-        System.out.println("============================");
-        System.out.println(rawMaterialList);
-        System.out.println(paging);
+//   /* 비동기방식(ajax) 페이징 */
+//    @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
+//    @ResponseBody
+//    public ModelAndView selectOneMenu(ModelAndView mv, int menuNo, @PageableDefault Pageable pageable) {
+//
+//        Page<RawMaterialDTO> rawMaterialList = menuService.selectOneMenuForPaging(menuNo, pageable);
+//
+//        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(rawMaterialList);
+//
+//        mv.addObject("paging", paging);
+//        mv.addObject("rawMaterialList", rawMaterialList);
+//        mv.setViewName("menu/menuList");
+//
+//        System.out.println("============================");
+//        System.out.println(rawMaterialList);
+//        System.out.println(paging);
+//
+//        return mv;
+//   }
+
+    @GetMapping(value = "/materialcategory", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<MenuMaterialsDTO> findRawMaterialList() {
+
+        return menuService.findRawMaterialList();
+    }
+
+    @PostMapping("/regist")
+    public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr) {
+
+        //여러개인 경우는.. ?
+        String materialNameAndCapacityList = request.getParameter("materialsArray");
+        System.out.println("배여ㅓㄹ배열 : " + materialNameAndCapacityList);
+
+        String materialNameAndCapacity = request.getParameter("materialCapacity");
+
+        String capacity = materialNameAndCapacity.substring(materialNameAndCapacity.indexOf("/") + 1);
+        String materialName = materialNameAndCapacity.substring(1,materialNameAndCapacity.indexOf("/"));
+
+        System.out.println("이름 : " + materialName);
+        System.out.println("나오냐 : " + capacity);
+
+        System.out.println("menu : " + menu);
+        System.out.println("menuMaterial : " + menuMaterial);
+
+        MenuMaterialsDTO materialForRegist = new MenuMaterialsDTO();
+
+//        materialForRegist.setItemInfoName(materialNameAndCapacity.replace());
+//
+
 
         return mv;
-   }
+    }
+
 
 }
