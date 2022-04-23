@@ -75,7 +75,6 @@ public abstract class Member implements Serializable{
     @Column(name = "MEMBER_CREATED_DATE")
     private LocalDateTime memberCreatedDate;
 
-//    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "MEMBER_REMOVED_DATE")
     private LocalDateTime memberRemovedDate;
 

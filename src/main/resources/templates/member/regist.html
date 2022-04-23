@@ -7,6 +7,9 @@
     <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
 
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
 </head>
 <body>
     <th:block th:include="/common/header.html"></th:block>
@@ -43,7 +46,7 @@
                     <input type="text" class="form-control" id="memberName" name="memberName" placeholder="이름을 입력하세요">
                 </div>
 
-                <select class="select2_demo_3 form-control m-b" name="department.departmentNo" id="departmentNo">
+                <select class="select2_demo_3 form-control m-b" name="department.departmentNo" id="department" required>
 
                 </select>
 
@@ -56,7 +59,7 @@
                     <input type="email"  name="memberEmail" class="form-control" placeholder="이메일을 입력하세요">
                 </div>
 
-                <button type="submit" class="btn btn-primary block full-width m-b">등록</button>
+                <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
 
             </form>
             <button type="button" class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#registMultipleModal">계정 일괄 생성</button>
@@ -87,6 +90,9 @@
 
     <!-- Select2 -->
     <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+    <!-- Sweet alert -->
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
 </body>
 </html>

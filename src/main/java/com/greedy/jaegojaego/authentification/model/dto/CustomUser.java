@@ -3,11 +3,10 @@ package com.greedy.jaegojaego.authentification.model.dto;
 import com.greedy.jaegojaego.member.model.dto.AuthorityDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberRoleDTO;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -16,7 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class CustomUser extends User {
+public class CustomUser extends User implements UserDetails {
 
     private int memberNo;
     private String memberId;
