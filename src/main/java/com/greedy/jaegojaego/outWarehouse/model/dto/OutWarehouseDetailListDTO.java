@@ -5,6 +5,7 @@ import java.sql.Date;
 public class OutWarehouseDetailListDTO {
 
     private int outWarehouseItemNo;
+    private int outWarehouseNo;
     private String itemInfoItemSerialNo;
     private String materialCategoryName;
     private String itemInfoName;
@@ -16,7 +17,7 @@ public class OutWarehouseDetailListDTO {
 
     public OutWarehouseDetailListDTO() {}
 
-    public OutWarehouseDetailListDTO(int outWarehouseItemNo, String itemInfoItemSerialNo, String materialCategoryName, String itemInfoName, int outWarehouseItemAmount, String franchiseBranchName, String franchiseAddress, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate) {
+    public OutWarehouseDetailListDTO(int outWarehouseItemNo, int outWarehouseNo, String itemInfoItemSerialNo, String materialCategoryName, String itemInfoName, int outWarehouseItemAmount, String franchiseBranchName, String franchiseAddress, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate) {
         this.outWarehouseItemNo = outWarehouseItemNo;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
         this.materialCategoryName = materialCategoryName;
@@ -30,6 +31,10 @@ public class OutWarehouseDetailListDTO {
 
     public int getOutWarehouseItemNo() {
         return outWarehouseItemNo;
+    }
+
+    public int getOutWarehouseNo() {
+        return outWarehouseNo;
     }
 
     public String getItemInfoItemSerialNo() {
@@ -68,6 +73,10 @@ public class OutWarehouseDetailListDTO {
         this.outWarehouseItemNo = outWarehouseItemNo;
     }
 
+    public void setOutWarehouseNo(int outWarehouseNo) {
+        this.outWarehouseNo = outWarehouseNo;
+    }
+
     public void setItemInfoItemSerialNo(String itemInfoItemSerialNo) {
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
     }
@@ -104,7 +113,8 @@ public class OutWarehouseDetailListDTO {
     public String toString() {
         return "OutWarehouseDetailListDTO{" +
                 "outWarehouseItemNo=" + outWarehouseItemNo +
-                ", itemInfoItemSerialNo=" + itemInfoItemSerialNo +
+                ", outWarehouseNo=" + outWarehouseNo +
+                ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
                 ", materialCategoryName='" + materialCategoryName + '\'' +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", outWarehouseItemAmount=" + outWarehouseItemAmount +

@@ -24,7 +24,7 @@
                 <h5>출고 번호</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">2022022</h1>
+                <h1 class="no-margins" th:text="${ outWarehouseDetailList.get(0).outWarehouseNo }"></h1>
                 <br>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <h5>출고 물품 목록 수</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">3개</h1>
+                <h1 class="no-margins" th:text="${ itemListCnt } + 개"></h1>
                 <br>
             </div>
         </div>
@@ -56,7 +56,7 @@
             <option value="3">출하 작업</option>
             <option value="4">출하 완료</option>
         </select>
-        <button class="modifyBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
+        <button class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
     <br>
     <br>
 
@@ -69,44 +69,35 @@
             <th>품명</th>
             <th>출고 수량</th>
             <th>목적지(가맹점명)</th>
+            <th>목적지(가맹점 주소)</th>
             <th>작업 처리상태</th>
             <th>작업 처리일자</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>3</td>
-            <td>-</td>
-            <td>-</td>
-            <td>로스팅된 지로스팅 커피 원두 1kg</td>
-            <td>100</td>
-            <td>서울 강남 2호점</td>
-            <td>출고 대기</td>
-            <td>2022-04-15</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>-</td>
-            <td>-</td>
-            <td>로스팅된 인도 커피 원두 1kg</td>
-            <td>50</td>
-            <td>서울 강남 2호점</td>
-            <td>출고 대기</td>
-            <td>2022-04-15</td>
-        </tr><tr>
-            <td>1</td>
-            <td>-</td>
-            <td>-</td>
-            <td>로스팅된 브루주아 커피 원두 1kg</td>
-            <td>100</td>
-            <td>서울 강남 2호점</td>
-            <td>출고 대기</td>
-            <td>2022-04-15</td>
+        <tr th:each="outWarehouseDetail,num : ${ outWarehouseDetailList }">
+            <td th:text="${ num.size - num.index }"></td>
+            <td th:text="${ outWarehouseDetail.itemInfoItemSerialNo }"></td>
+            <td th:text="${ outWarehouseDetail.materialCategoryName }"></td>
+            <td th:text="${ outWarehouseDetail.itemInfoName }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseItemAmount }"></td>
+            <td th:text="${ outWarehouseDetail.franchiseBranchName }"></td>
+            <td th:text="${ outWarehouseDetail.franchiseAddress }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseWorkingStatusName }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseWorkingFinishedDate }"></td>
         </tr>
         </tbody>
     </table>
 </div>
 <!-- 테이블 끝 -->
+<script>
+    const modifyBtn = document.getElementsByClassName("modifyBtn");
+    // const
+
+    modifyBtn.onclick = async function() {
+        console.log("check");
+    }
+</script>
 
 <th:block th:replace="/common/footer.html"></th:block>
 </body>

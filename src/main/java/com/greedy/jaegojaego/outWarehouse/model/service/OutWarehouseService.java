@@ -62,11 +62,28 @@ public class OutWarehouseService {
 
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<OutWarehouseItem> outWarehouseItemList = outWarehouseDetailRespository.findByOutWarehouseNo(outWarehouseNo);
+        List<OutWarehouseDetailListDTO> outWarehouseDetailList = new ArrayList<>();
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        outWarehouseItemList.forEach(System.out::println);
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//        outWarehouseItemList.forEach(System.out::println);
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-        return outWarehouseItemList.stream().map(outWarehouseItem -> modelMapper.map(outWarehouseItem, OutWarehouseDetailListDTO.class)).collect(Collectors.toList());
+        for(int i = 0; i < outWarehouseItemList.size(); i++) {
+            OutWarehouseDetailListDTO outWarehouseDetail = new OutWarehouseDetailListDTO();
+            outWarehouseDetail.setOutWarehouseItemNo(outWarehouseItemList.get(i).getOutWarehouseItemNo());
+            outWarehouseDetail.setOutWarehouseNo((outWarehouseItemList.get(i).getOutWarehouseNo().getOutWarehouseNo()));
+            outWarehouseDetail.setItemInfoItemSerialNo(outWarehouseItemList.get(i).getItemWarehouseNo().getItemInfoNo().getItemInfoItemSerialNo());
+            outWarehouseDetail.setMaterialCategoryName(outWarehouseItemList.get(i).getItemWarehouseNo().getItemInfoNo().getMaterialCategoryNo().getMaterialCategoryName());
+            outWarehouseDetail.setItemInfoName(outWarehouseItemList.get(i).getItemWarehouseNo().getItemInfoNo().getItemInfoName());
+            outWarehouseDetail.setOutWarehouseItemAmount(outWarehouseItemList.get(i).getOutWarehouseItemAmount());
+            outWarehouseDetail.setFranchiseBranchName(outWarehouseItemList.get(i).getOutWarehouseNo().getFranchiseRepresentativeNo().getFranchiseBranchName());
+            outWarehouseDetail.setFranchiseAddress(outWarehouseItemList.get(i).getOutWarehouseNo().getFranchiseRepresentativeNo().getFranchiseAddress());
+            outWarehouseDetail.setOutWarehouseWorkingStatusName(outWarehouseItemList.get(i).getOutWarehouseNo().getOutWarehouseWorkingStatusName());
+            outWarehouseDetail.setOutWarehouseWorkingFinishedDate(outWarehouseItemList.get(i).getOutWarehouseNo().getOutWarehouseWorkingFinishedDate());
+
+            outWarehouseDetailList.add(outWarehouseDetail);
+        }
+
+        return outWarehouseDetailList;
     }
 }

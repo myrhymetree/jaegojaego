@@ -16,6 +16,7 @@ public interface OutWarehouseDetailRespository extends JpaRepository<OutWarehous
             "         JOIN a.itemWarehouseNo c " +
             "         JOIN b.franchiseRepresentativeNo d " +
             "         JOIN c.itemInfoNo e " +
-            "         JOIN e.materialCategoryNo f")
+            "         JOIN e.materialCategoryNo f " +
+            "        WHERE a.outWarehouseNo.outWarehouseNo = :outWarehouseNo")
     List<OutWarehouseItem> findByOutWarehouseNo(int outWarehouseNo);
 }
