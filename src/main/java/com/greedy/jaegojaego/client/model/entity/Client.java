@@ -1,9 +1,11 @@
 package com.greedy.jaegojaego.client.model.entity;
 
+import lombok.*;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "Client")
 @Table(name = "CLIENT")
@@ -24,37 +26,41 @@ public class Client {
     private int clientNo;
 
     @Column(name = "CLIENT_NAME")
-    public String clientName;
+    private String clientName;
 
     @Column(name = "CLIENT_CERTIFICATE_OF_BUSINESS_REGISTRATION_NO")
-    public String clientCbrNo;
+    private String clientCbrNo;
 
     @Column(name = "CLIENT_REPRESENTATIVE_NAME")
-    public String clientRepresentativeName;
+    private String clientRepresentativeName;
 
     @Column(name = "CLIENT_REPRESENTATIVE_PHONE")
-    public String clientRepresentativePhone;
+    private String clientRepresentativePhone;
 
     @Column(name = "CLIENT_REPRESENTATIVE_EMAIL")
-    public String clientRepresentativeEmail;
+    private String clientRepresentativeEmail;
+
+    @Column(name = "CLIENT_ADDRESS")
+    private String clientAddress;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
-    public ClientMember clientMemberName;
+    private ClientMember clientMemberName;
 
     @Column(name = "CLIENT_CREATED_DATE")
-    public Date clientCreatedDate;
+    private Date clientCreatedDate;
 
     @Column(name = "CLIENT_PAYMENT_METHOD")
-    public String clientPaymentMethod;
+    private String clientPaymentMethod;
 
-    public Client(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, ClientMember clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
+    public Client(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, String clientAddress, ClientMember clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
         this.clientNo = clientNo;
         this.clientName = clientName;
         this.clientCbrNo = clientCbrNo;
         this.clientRepresentativeName = clientRepresentativeName;
         this.clientRepresentativePhone = clientRepresentativePhone;
         this.clientRepresentativeEmail = clientRepresentativeEmail;
+        this.clientAddress = clientAddress;
         this.clientMemberName = clientMemberName;
         this.clientCreatedDate = clientCreatedDate;
         this.clientPaymentMethod = clientPaymentMethod;
@@ -76,7 +82,7 @@ public class Client {
         return clientName;
     }
 
-    public void setClientName(String cleintName) {
+    public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
@@ -136,6 +142,14 @@ public class Client {
         this.clientPaymentMethod = clientPaymentMethod;
     }
 
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(String clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -145,6 +159,7 @@ public class Client {
                 ", clientRepresentativeName='" + clientRepresentativeName + '\'' +
                 ", clientRepresentativePhone='" + clientRepresentativePhone + '\'' +
                 ", clientRepresentativeEmail='" + clientRepresentativeEmail + '\'' +
+                ", clientAddress='" + clientAddress + '\'' +
                 ", clientMemberName=" + clientMemberName +
                 ", clientCreatedDate=" + clientCreatedDate +
                 ", clientPaymentMethod='" + clientPaymentMethod + '\'' +

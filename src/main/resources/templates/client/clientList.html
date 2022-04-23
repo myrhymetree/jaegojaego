@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <title>거래처 리스트</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/client/clientcss.css}">
 </head>
-<body>
+<body style="overflow: hidden; max-height: 90%;">
 <th:block th:include="/common/header.html"></th:block>
 
     <div class="body-header">
@@ -14,7 +15,7 @@
         <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처정보</div>
     </div>
 
-        <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="wrapper wrapper-content animated fadeInRight" style="overflow-x: hidden !important;">
             <div class="row">
                 <div class="col-sm-8">
                     <div class="ibox">
@@ -35,11 +36,22 @@
                                     <div id="tab-1" class="tab-pane active">
                                         <div class="full-height-scroll">
                                             <div class="table-responsive">
-                                                <table class="table table-striped table-hover">
+                                                <table class="table table-striped table-hover" id="clientDetail">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>번호</td>
+                                                        <td>회사명</td>
+                                                        <td>대표자명</td>
+                                                        <td>  </td>
+                                                        <td>전화번호</td>
+                                                        <!--<td></td>
+                                                        <td></td>-->
+                                                    </tr>
+                                                    </thead>
                                                     <tbody>
                                                     <tr th:each="client : ${ clientList }">
                                                         <td th:text="${ client.clientNo }"></td>
-                                                        <td th:text="${ client.clientName }"><a href="#contact-1>" class="client-link"></a></td>
+                                                        <td><a class="client-link"><th:block th:text="${ client.clientName }"></th:block></a></td>
                                                         <td th:text="${ client.clientRepresentativeName }"></td>
                                                         <td class="contact-type"><i class="fa fa-phone"> </i></td>
                                                         <td th:text="${ client.clientRepresentativePhone }"></td>
@@ -48,87 +60,29 @@
                                                     </tr>
                                                     </tbody>
                                                 </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                <div id="paging" align="center">
+                                                    <!— 맨 앞으로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/list?page=' + @{${ paging.startPage }} + '\''"
+                                                            th:disabled="${ clientList.first }"><<</button>
 
-                                </div>
+                                                    <!— 이전 페이지로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/list?page=' + @{${ paging.currentPage - 1 }} + '\''"
+                                                            th:disabled="${ clientList.first }"><</button>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="ibox selected">
+                                                    <!— 숫자 버튼 —>
+                                                    <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                                                        <button th:onclick="'location.href=\'/client/list?page=' + @{${ page }} + '\''"
+                                                                th:text="${ page }"
+                                                                th:disabled="${ paging.currentPage eq page }"></button>
+                                                    </th:block>
 
-                        <div class="ibox-content">
-                            <div class="tab-content">
-                                <div id="contact-1>" class="tab-pane active">
-                                            <strong style="line-height:20px; vertical-align: center; font-size: 20px;">회사 정보 <span class="label label-primary" style="float: right;">계약상태</span></strong><br><br>
-                                            <ul class="list-group clear-list">
-                                                <li class="list-group-item fist-item">
-                                                    <span class="float-right"> 인도커피</span>
-                                                    회사명 :
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="float-right"> 110-83-123123 </span>
-                                                    사업자등록번호 :
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="float-right"> 서울시 강남구 @@@@ </span>
-                                                    회사 주소 :
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="float-right"> IndiaPark@gmail.com </span>
-                                                    계약 기간 :
-                                                </li>
-                                            </ul>
-                                    </div>
-                                    <div class="client-detail">
-                                        <div class="full-height-scroll">
-                                            <hr style="background-color: darkseagreen; height: 5px">
-                                            <strong style="font-size: 20px;">대표자 정보</strong><br><br>
+                                                    <!— 다음 페이지로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/list?page=' + @{${ paging.currentPage + 1 }} + '\''"
+                                                            th:disabled="${ clientList.last }">></button>
 
-                                            <ul class="list-group clear-list">
-                                                <li class="list-group-item fist-item">
-                                                    <span class="float-right"> 박성준 </span>
-                                                    대표자명 :
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="float-right"> 010-1234-5678 </span>
-                                                    대표자 연락처 :
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="float-right"> IndiaPark@gmail.com </span>
-                                                    대표자 이메일 :
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <span class="float-right"> IndiaPark@gmail.com </span>
-                                                    계약 기간 :
-                                                </li>
-                                            </ul>
-
-                                            <hr style="background-color: darkseagreen; height: 5px">
-                                            <strong style="font-size: 20px;">납품 품목</strong>
-                                            <br><br>
-                                            <p>
-                                               커피
-                                            </p>
-                                            <hr style="background-color: darkseagreen; height: 5px">
-                                            <a>최후 수정자 : </a>
-                                            <hr style="background-color: darkseagreen; height: 5px">
-                                            <strong style="font-size: 20px;">거래처 메모</strong>
-                                            <br><br>
-                                            <div id="vertical-timeline01" class="vertical-container dark-timeline">
-                                                <div class="vertical-timeline-block">
-                                                    <div class="vertical-timeline-icon gray-bg">
-                                                        <i class="fa fa-coffee"></i>
-                                                    </div>
-                                                    <div class="vertical-timeline-content">
-                                                        <p>신규 업체 등록
-                                                        </p>
-                                                        <span class="vertical-date small text-muted"> 2:10 pm - 12.06.2014 <br>입력인 : 윤기주</span>
-                                                    </div>
+                                                    <!— 맨 마지막으로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/list?page=' + @{${ paging.endPage }} + '\''"
+                                                            th:disabled="${ clientList.last }">>></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -138,8 +92,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-4">
+                    <div class="clientScroll">
+                        <div id="clientDetailArea" class="ibox-content" style="overflow: auto; margin-bottom: 20px;">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
 <!-- Mainly scripts -->
 <script src="js/jquery-3.1.1.min.js"></script>
@@ -153,6 +112,7 @@
 <script src="js/plugins/pace/pace.min.js"></script>
 
 <script>
+/*
 
     $(document).ready(function(){
 
@@ -164,6 +124,108 @@
 
     });
 
+*/
+</script>
+<script>
+    if(document.querySelectorAll("#clientDetail")){
+        let $tds = document.querySelectorAll("#clientDetail td");
+        for (let i = 0; i < $tds.length; i++){
+            $tds[i].onmouseenter = function(){
+                this.parentNode.style.cursor = "pointer";
+            }
+
+            $tds[i].onclick = function() {
+                let clientNo = this.parentNode.children[0].innerText;
+                $.ajax({
+                    type : 'get',
+                    url : "/client/detail",
+                    data : {
+                        clientNo: clientNo
+                    },
+                    dataType: "json",
+                    async : true,
+                    success : function(data){
+                        console.log("에이젝스 실행 성공");
+
+                        $('#clientDetailArea').empty();
+
+                        var body = '';
+
+                        body += '<div class="tab-content">';
+                        body += '<div id="|#contact-' + data.clientNo + '|" class="tab-pane active">';
+                        body += '<strong style="line-height:20px; vertical-align: center; font-size: 20px;">회사 정보 <span class="label label-primary" style="float: right;">계약상태</span></strong><br><br>';
+                        body += '<ul class="list-group clear-list">';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientName + '</span>회사명 : </li>';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientCbrNo + '</span>사업자등록증</li>';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientAddress + '</span>회사 주소 : </li>';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientContractStartDate + ' ~ ' + data.clientContractEndDate + '</span>계약 기간 : </li></ul></div></div>';
+                        body += '<div class="client-detail"><div class="full-height-scroll">';
+                        body += '<hr style="background-color: darkseagreen; height: 5px">';
+                        body += '<strong style="font-size: 20px;">대표자 정보</strong><br><br>';
+                        body += '<ul class="list-group clear-list">';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.ClientRepresentativeName + '</span> 대표자 명 : </li>';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientRepresentativePhone + '</span> 대표자 연락처 : </li>';
+                        body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientRepresentativeEmail + '</span> 대표자 이메일 : </li></ul>';
+                        body += '<hr style="background-color: darkseagreen; height: 5px">';
+                        body += '<strong style="font-size: 20px;">납품 품목</strong><br><br>';
+                        body += '<p>' + data.clientContractItemCategory + '</p>';
+                        body += '<hr style="background-color: darkseagreen; height: 5px">';
+                        body += '<a>최후 수정자 : ' + data.clientMemberName.clientMemberName + ' </a>';
+                        body += '<hr style="background-color: darkseagreen; height: 5px">';
+                        body += '<strong style="font-size: 20px;">거래처 메모</strong><br><br>';
+                        body += '<details><summary class="clientMemoOpen" >메모 열기</summary>'
+                        body += '<div id="clientMemoBody">메모 내용</div></details>'
+
+                        $('#clientDetailArea').append(body);
+
+                        $(".clientMemoOpen").click(function (){
+
+                            let clientNo = data.clientNo;
+                            console.log("clientNo : " + clientNo);
+
+                            $.ajax({
+                                type: 'get',
+                                url: "/client/memo",
+                                data : {
+                                    clientNo: clientNo
+                                },
+                                dataType: "json",
+                                async : true,
+                                success : function(data){
+                                    console.log("메모 에이젝스 실행 성공")
+
+                                    $('#clientMemoBody').empty()
+
+                                    for(let i = 0; i < data.length; i++){
+                                        var body = '';
+
+                                        body += '<a>'
+                                        body += '<div id="vertical-timeline01" class="vertical-container dark-timeline">';
+                                        body += '<div class="vertical-timeline-block"><div class="vertical-timeline-icon gray-bg"><i class="fa fa-coffee"></i></div>';
+                                        body += '<div class="vertical-timeline-content">'
+                                        body += '<p style="min-height: 20px;">' + data[i].clientMemoBody + '</p>'
+                                        body += '<div style="text-align: right"><span class="vertical-date small text-muted" style="width: 100%;">' + data[i].clientMemoWritedDate +'<br>'
+                                        body += '입력자 : ' + data[i].clientMemoWriter + '</span></div></div></a>'
+
+                                        $('#clientMemoBody').append(body);
+                                    }
+
+                                    $('#')
+                                },
+                                error : function(xhr) {
+                                    console.log("메모 에이젝스 실행 실패");
+                                }
+                            });
+                        });
+                    },
+                    error : function(xhr) {
+                        console.log("에이젝스 실행 실패");
+                        console.log(xhr);
+                    }
+                });
+            }
+        }
+    }
 
 </script>
 

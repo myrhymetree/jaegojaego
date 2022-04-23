@@ -3,7 +3,6 @@ package com.greedy.jaegojaego.client.model.dto;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 
 import java.util.Date;
-
 public class ClientDTO {
 
     private int clientNo;
