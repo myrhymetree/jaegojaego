@@ -35,7 +35,7 @@ public class WarehouseOrderApplication {
 
     @ManyToOne
     @JoinColumn(name = "CLIENT_NO")
-    private OrderClient orderClient;
+    private WarehouseClient orderClient;
 
     @OneToMany
     @JoinColumn(name = "ORDER_APPLICATION_NO")

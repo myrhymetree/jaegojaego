@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +17,7 @@ public class WarehouseCompanyOrderItem implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
-    private OrderItemInfo orderItemInfo;
+    private WarehouseItemInfo warehouseItemInfo;
 
     @Id
     @ManyToOne
@@ -31,7 +30,7 @@ public class WarehouseCompanyOrderItem implements Serializable {
     @Override
     public String toString() {
         return "CompanyOrderItem{" +
-                "itemInfo=" + orderItemInfo +
+                "itemInfo=" + warehouseItemInfo +
                 ", companyOrderItemAmount=" + companyOrderItemAmount +
                 '}';
     }

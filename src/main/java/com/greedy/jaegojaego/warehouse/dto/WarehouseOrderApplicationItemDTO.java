@@ -1,24 +1,48 @@
 package com.greedy.jaegojaego.warehouse.dto;
 
-import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
-import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
-import lombok.*;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class WarehouseOrderApplicationItemDTO {
 
-    private OrderApplicationDTO orderApplication;
+    private WarehouseOrderApplicationDTO orderApplication;
     private int orderApplicationItemAmount;
-    private OrderClientContractItemDTO clientContractItem;
+    private int clientContractItem;
+
+    public WarehouseOrderApplicationItemDTO() {}
+
+    public WarehouseOrderApplicationItemDTO(WarehouseOrderApplicationDTO orderApplication, int orderApplicationItemAmount, int clientContractItem) {
+        this.orderApplication = orderApplication;
+        this.orderApplicationItemAmount = orderApplicationItemAmount;
+        this.clientContractItem = clientContractItem;
+    }
+
+    public WarehouseOrderApplicationDTO getOrderApplication() {
+        return orderApplication;
+    }
+
+    public void setOrderApplication(WarehouseOrderApplicationDTO orderApplication) {
+        this.orderApplication = orderApplication;
+    }
+
+    public int getOrderApplicationItemAmount() {
+        return orderApplicationItemAmount;
+    }
+
+    public void setOrderApplicationItemAmount(int orderApplicationItemAmount) {
+        this.orderApplicationItemAmount = orderApplicationItemAmount;
+    }
+
+    public int getClientContractItem() {
+        return clientContractItem;
+    }
+
+    public void setClientContractItem(int clientContractItem) {
+        this.clientContractItem = clientContractItem;
+    }
 
     @Override
     public String toString() {
-        return "OrderApplicationItemDTO{" +
-                "orderApplicationItemAmount=" + orderApplicationItemAmount +
+        return "WarehouseOrderApplicationItemDTO{" +
+                "orderApplication=" + orderApplication +
+                ", orderApplicationItemAmount=" + orderApplicationItemAmount +
                 ", clientContractItem=" + clientContractItem +
                 '}';
     }
