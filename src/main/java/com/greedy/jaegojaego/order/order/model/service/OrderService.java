@@ -1,5 +1,8 @@
 package com.greedy.jaegojaego.order.order.model.service;
 
+import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
+import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
+import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractItemRepository;
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
@@ -27,15 +30,18 @@ public class OrderService {
     private final ModelMapper modelMapper;
     private final OrderItemWarehouseRepository orderItemWarehouseRepository;
     private final OrderItemInfoRepository orderItemInfoRepository;
+    private final OrderClientContractItemRepository orderClientContractItemRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
-            , OrderItemWarehouseRepository orderItemWarehouseRepository, OrderItemInfoRepository orderItemInfoRepository) {
+            , OrderItemWarehouseRepository orderItemWarehouseRepository, OrderItemInfoRepository orderItemInfoRepository
+            , OrderClientContractItemRepository orderClientContractItemRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
         this.orderItemWarehouseRepository = orderItemWarehouseRepository;
         this.orderItemInfoRepository = orderItemInfoRepository;
+        this.orderClientContractItemRepository = orderClientContractItemRepository;
 
     }
 
@@ -52,6 +58,7 @@ public class OrderService {
     public CompanyOrderHistoryDTO selectCompanyOrderHistoryDetail(int companyOrderHistoryNo) {
 
         CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
+
 
         return modelMapper.map(companyOrderHistory, CompanyOrderHistoryDTO.class);
     }
@@ -77,30 +84,48 @@ public class OrderService {
         return orderApplicationList.stream().map(orderApplication -> modelMapper.map(orderApplication, OrderApplicationDTO.class)).collect(Collectors.toList());
     }
 
-    public List<OrderItemInfoDTO> selectOrderItemInfoList(String searchItem, String[] selectItems) {
-
-        System.out.println("searchItem = " + searchItem);
+    public List<OrderItemInfoDTO> selectOrderItemInfoList(String searchItem) {
 
         List<OrderItemInfo> orderItemInfoList = orderItemInfoRepository.selectByItemInfoNameContaining(searchItem);
 
-        List<OrderItemInfo> resultItemInfoList = new ArrayList<>();
+        return orderItemInfoList.stream().map(orderItemInfo -> modelMapper.map(orderItemInfo, OrderItemInfoDTO.class)).collect(Collectors.toList());
+    }
 
-        if(orderItemInfoList != null && selectItems != null) {
+    public List<OrderClientContractItemDTO> selectClientContractItemList(int itemInfoNo) {
 
-            for(Iterator<OrderItemInfo> searchItemInfo = orderItemInfoList.iterator(); searchItemInfo.hasNext(); ) {
+        List<OrderClientContractItem> orderClientContractItemList = orderClientContractItemRepository.selectClientContractItemList(itemInfoNo);
 
-                OrderItemInfo itemInfo = searchItemInfo.next();
+        return orderClientContractItemList.stream().map(orderClientContractItem -> modelMapper.map(orderClientContractItem, OrderClientContractItemDTO.class)).collect(Collectors.toList());
+    }
 
-                for(int i = 0; i < selectItems.length; i++) {
+//    @Transactional
+    public void insertCompanyOrder(String[] itemAmount, String[] clientNo, String[] itemInfoNo, int memberNo) {
 
-                    if(itemInfo.getItemInfoNo() == Integer.parseInt(selectItems[i])) {
-                        resultItemInfoList.add(itemInfo);
-                    }
-                }
+        List<Integer> totalItemInfo = new ArrayList<>();
+        List<Integer> totalItemAmount = new ArrayList<>();
+
+        int equalItemCheck = 0;
+
+        for(String item : itemInfoNo){
+            if(!totalItemInfo.contains(Integer.parseInt(item))){
+                totalItemInfo.add(Integer.parseInt(item));
             }
-            return resultItemInfoList.stream().map(orderItemInfo -> modelMapper.map(orderItemInfo, OrderItemInfoDTO.class)).collect(Collectors.toList());
         }
 
-        return orderItemInfoList.stream().map(orderItemInfo -> modelMapper.map(orderItemInfo, OrderItemInfoDTO.class)).collect(Collectors.toList());
+        for(int i = 0; i < itemInfoNo.length; i++) {
+            for(int j = 0; j < totalItemInfo.size(); j++) {
+
+                if(Integer.parseInt(itemInfoNo[i]) == totalItemInfo.get(j) && totalItemAmount != null) {
+                    totalItemAmount.set(j, totalItemInfo.get(j) + Integer.parseInt(itemAmount[i]));
+                } else {
+                    totalItemAmount.add(j, Integer.parseInt(itemAmount[j]));
+                }
+
+            }
+        }
+
+        totalItemInfo.forEach(System.out::println);
+        totalItemAmount.forEach(System.out::println);
+
     }
 }
