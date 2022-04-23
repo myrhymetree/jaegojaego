@@ -223,11 +223,11 @@
 
             $(document).on('change', '#select-client-selectbox', function() {
 
-                let idx = $("#select-client-selectbox option").index( $("#select-client-selectbox option:selected") );
+                let idx = this.selectedIndex;
 
-                document.getElementById("clientItemInfoNo").value = itemForClientList[idx].clientContractItemNo;
-                document.getElementById("item-price").innerText = itemForClientList[idx].clientContractItemSupplyPrice;
-                document.getElementById("company-order-itemInfoNo").value = itemForClientList[idx].orderItemInfo.itemInfoNo;
+                this.parentNode.parentNode.children[4].children[0].value = itemForClientList[idx].clientContractItemNo;
+                this.parentNode.parentNode.children[4].children[1].value = itemForClientList[idx].orderItemInfo.itemInfoNo;
+                this.parentNode.parentNode.children[1].innerText = itemForClientList[idx].clientContractItemSupplyPrice;
 
             });
 
@@ -253,7 +253,6 @@
             });
 
             let confirmCount = 0;
-            let checkItemAmount = 0;
 
             $(document).on('click', '.sa-button-container .confirm', function() {
 
@@ -265,14 +264,24 @@
                 } else {
 
                     let checkItemAmount = 0;
+                    let checkClient = 0;
 
                     const $itemAmount = document.querySelectorAll("#item-amount");
+                    const $clientItemInfoNo = document.querySelectorAll("#clientItemInfoNo");
+                    const $itemNo = document.querySelectorAll("#company-order-itemInfoNo");
+
+                    for(let i = 0; i < $clientItemInfoNo.length - 1; i++) {
+                        for(let j = i + 1; j < $clientItemInfoNo.length; j++) {
+                            if($clientItemInfoNo[i].value == $clientItemInfoNo[j].value && $itemNo[i].value == $itemNo[j].value) {
+                                checkClient = 1;
+                                break;
+                            }
+                        }
+                    }
 
                     for(let i = 0; i < $itemAmount.length; i++) {
 
                         let amountInt = $itemAmount[i].value * 1;
-
-                        console.log(amountInt);
 
                         if(amountInt < 1) {
                             checkItemAmount = 1;
@@ -285,6 +294,11 @@
                         swal({
                             title: "발주 신청 실패!",
                             text: "선택된 발주 신청 물품 중\n수량이 입력되지 않은 물품이 존재합니다.\n확인부탁드립니다."
+                        });
+                    } else if(checkClient == 1) {
+                        swal({
+                            title: "발주 신청 실패!",
+                            text: "같은 물품에 중복된 거래처가 존재합니다.\n확인부탁드립니다."
                         });
                     } else {
                         confirmCount++;
