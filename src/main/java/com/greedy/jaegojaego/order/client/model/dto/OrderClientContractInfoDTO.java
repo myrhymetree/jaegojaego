@@ -10,17 +10,17 @@ public class OrderClientContractInfoDTO {
     private java.sql.Date clientContractInfoStartDate;
     private java.sql.Date clientContractInfoEndDate;
     private String clientContractInfoStatus;
-    private int clientNo;
+    private OrderClientDTO orderClient;
 
     public OrderClientContractInfoDTO() {
     }
 
-    public OrderClientContractInfoDTO(int clientContractInfoNo, Date clientContractInfoStartDate, Date clientContractInfoEndDate, String clientContractInfoStatus, int clientNo) {
+    public OrderClientContractInfoDTO(int clientContractInfoNo, Date clientContractInfoStartDate, Date clientContractInfoEndDate, String clientContractInfoStatus, OrderClientDTO orderClient) {
         this.clientContractInfoNo = clientContractInfoNo;
         this.clientContractInfoStartDate = clientContractInfoStartDate;
         this.clientContractInfoEndDate = clientContractInfoEndDate;
         this.clientContractInfoStatus = clientContractInfoStatus;
-        this.clientNo = clientNo;
+        this.orderClient = orderClient;
     }
 
     public int getClientContractInfoNo() {
@@ -55,22 +55,22 @@ public class OrderClientContractInfoDTO {
         this.clientContractInfoStatus = clientContractInfoStatus;
     }
 
-    public int getClientNo() {
-        return clientNo;
+    public OrderClientDTO getOrderClient() {
+        return orderClient;
     }
 
-    public void setClientNo(int clientNo) {
-        this.clientNo = clientNo;
+    public void setOrderClient(OrderClientDTO orderClient) {
+        this.orderClient = orderClient;
     }
 
     @Override
     public String toString() {
-        return "ClientContractInfoDTO{" +
+        return "OrderClientContractInfoDTO{" +
                 "clientContractInfoNo=" + clientContractInfoNo +
                 ", clientContractInfoStartDate=" + clientContractInfoStartDate +
                 ", clientContractInfoEndDate=" + clientContractInfoEndDate +
                 ", clientContractInfoStatus='" + clientContractInfoStatus + '\'' +
-                ", clientNo=" + clientNo +
+                ", orderClient=" + orderClient +
                 '}';
     }
 }
