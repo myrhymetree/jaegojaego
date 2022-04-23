@@ -1,24 +1,48 @@
 package com.greedy.jaegojaego.warehouse.dto;
 
-import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
-import lombok.*;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class WarehouseCompanyOrderItemDTO {
 
-    private OrderItemInfoDTO itemInfo;
-    private CompanyOrderHistoryDTO companyOrderHistory;
+    private WarehouseItemInfoDTO itemInfo;
+    private WarehouseCompanyOrderHistoryDTO companyOrderHistory;
     private int companyOrderItemAmount;
+
+    public WarehouseCompanyOrderItemDTO() {}
+
+    public WarehouseCompanyOrderItemDTO(WarehouseItemInfoDTO itemInfo, WarehouseCompanyOrderHistoryDTO companyOrderHistory, int companyOrderItemAmount) {
+        this.itemInfo = itemInfo;
+        this.companyOrderHistory = companyOrderHistory;
+        this.companyOrderItemAmount = companyOrderItemAmount;
+    }
+
+    public WarehouseItemInfoDTO getItemInfo() {
+        return itemInfo;
+    }
+
+    public void setItemInfo(WarehouseItemInfoDTO itemInfo) {
+        this.itemInfo = itemInfo;
+    }
+
+    public WarehouseCompanyOrderHistoryDTO getCompanyOrderHistory() {
+        return companyOrderHistory;
+    }
+
+    public void setCompanyOrderHistory(WarehouseCompanyOrderHistoryDTO companyOrderHistory) {
+        this.companyOrderHistory = companyOrderHistory;
+    }
+
+    public int getCompanyOrderItemAmount() {
+        return companyOrderItemAmount;
+    }
+
+    public void setCompanyOrderItemAmount(int companyOrderItemAmount) {
+        this.companyOrderItemAmount = companyOrderItemAmount;
+    }
 
     @Override
     public String toString() {
-        return "CompanyOrderItemDTO{" +
+        return "WarehouseCompanyOrderItemDTO{" +
                 "itemInfo=" + itemInfo +
+                ", companyOrderHistory=" + companyOrderHistory +
                 ", companyOrderItemAmount=" + companyOrderItemAmount +
                 '}';
     }

@@ -1,59 +1,25 @@
-package com.greedy.jaegojaego.warehouse.entity;
+package com.greedy.jaegojaego.warehouse.dto;
 
-import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
-import lombok.*;
+import com.greedy.jaegojaego.order.company.model.dto.OrderCompanyAccountDTO;
 
-import javax.persistence.*;
 import java.sql.Date;
 
-@Entity(name = "warehouseClient")
-@Table(name = "CLIENT")
-@SequenceGenerator(
-        name = "CLIENT_SEQ_GENERATOR",
-        sequenceName = "CLIENT_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
-public class WarehouseClient {
+public class WarehouseClientDTO {
 
-    @Id
-    @Column(name = "CLIENT_NO")
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "CLIENT_SEQ_GENERATOR"
-    )
     private int clientNo;
-
-    @Column(name = "CLIENT_NAME")
     private String clientName;
-
-    @Column(name = "CLIENT_CERTIFICATE_OF_BUSINESS_REGISTRATION_NO")
     private String clientCetificateOfBusinessRegistrationNo;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_NAME")
     private String clientRepresentativeName;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_PHONE")
     private String clientRepresentativePhone;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_EMAIL")
     private String clientRepresentativeEmail;
-
-    @Column(name = "CLIENT_ADDRESS")
     private String clientAddress;
-
-    @Column(name = "MEMBER_NO")
-    private int warehouseCompanyAccount;
-
-    @Column(name = "CLIENT_CREATED_DATE")
+    private OrderCompanyAccountDTO companyAccount;
     private java.sql.Date clientCreatedDate;
-
-    @Column(name = "CLIENT_PAYMENT_METHOD")
     private String clientPaymentMethod;
 
-    public WarehouseClient() {}
+    public WarehouseClientDTO() {}
 
-    public WarehouseClient(int clientNo, String clientName, String clientCetificateOfBusinessRegistrationNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, String clientAddress, int warehouseCompanyAccount, Date clientCreatedDate, String clientPaymentMethod) {
+    public WarehouseClientDTO(int clientNo, String clientName, String clientCetificateOfBusinessRegistrationNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, String clientAddress, OrderCompanyAccountDTO companyAccount, Date clientCreatedDate, String clientPaymentMethod) {
         this.clientNo = clientNo;
         this.clientName = clientName;
         this.clientCetificateOfBusinessRegistrationNo = clientCetificateOfBusinessRegistrationNo;
@@ -61,7 +27,7 @@ public class WarehouseClient {
         this.clientRepresentativePhone = clientRepresentativePhone;
         this.clientRepresentativeEmail = clientRepresentativeEmail;
         this.clientAddress = clientAddress;
-        this.warehouseCompanyAccount = warehouseCompanyAccount;
+        this.companyAccount = companyAccount;
         this.clientCreatedDate = clientCreatedDate;
         this.clientPaymentMethod = clientPaymentMethod;
     }
@@ -122,12 +88,12 @@ public class WarehouseClient {
         this.clientAddress = clientAddress;
     }
 
-    public int getWarehouseCompanyAccount() {
-        return warehouseCompanyAccount;
+    public OrderCompanyAccountDTO getCompanyAccount() {
+        return companyAccount;
     }
 
-    public void setWarehouseCompanyAccount(int warehouseCompanyAccount) {
-        this.warehouseCompanyAccount = warehouseCompanyAccount;
+    public void setCompanyAccount(OrderCompanyAccountDTO companyAccount) {
+        this.companyAccount = companyAccount;
     }
 
     public Date getClientCreatedDate() {
@@ -148,7 +114,7 @@ public class WarehouseClient {
 
     @Override
     public String toString() {
-        return "WarehouseClient{" +
+        return "WarehouseClientDTO{" +
                 "clientNo=" + clientNo +
                 ", clientName='" + clientName + '\'' +
                 ", clientCetificateOfBusinessRegistrationNo='" + clientCetificateOfBusinessRegistrationNo + '\'' +
@@ -156,7 +122,7 @@ public class WarehouseClient {
                 ", clientRepresentativePhone='" + clientRepresentativePhone + '\'' +
                 ", clientRepresentativeEmail='" + clientRepresentativeEmail + '\'' +
                 ", clientAddress='" + clientAddress + '\'' +
-                ", warehouseCompanyAccount=" + warehouseCompanyAccount +
+                ", companyAccount=" + companyAccount +
                 ", clientCreatedDate=" + clientCreatedDate +
                 ", clientPaymentMethod='" + clientPaymentMethod + '\'' +
                 '}';

@@ -90,68 +90,39 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
-            <th>No</th>
             <th>입고 번호</th>
-            <th>카테고리</th>
+            <th>품목</th>
             <th>품번</th>
             <th>품명</th>
-            <th>품목</th>
             <th>발주 일시</th>
+            <th>주문 수량</th>
+            <th>입하 수량</th>
+            <th>입고 수량</th>
+            <th>거래처</th>
             <th>작업 상태</th>
-            <th>상세 정보</th>
+            <th>작업 처리 일자</th>
         </tr>
         </thead>
         <tbody>
-<!--        <tr th:each="warehouse : ${ warehouseList }">-->
-<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; pk입고 구분 번호 (sequence)&ndash;&gt;-->
-<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 받아온 정보에 입고 번호 부여 &ndash;&gt;-->
-<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 입고 종류 &ndash;&gt;-->
-<!--            <td th:text="${ warehouse.orderHistoryNo.companyOrderHistoryCreatedDate }"></td>                            &lt;!&ndash; 발주 일시 (fk로 받아옴) &ndash;&gt;-->
-<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 물품 종류 개수 (fk로 받아옴) &ndash;&gt;     &lt;!&ndash; 물품의 개수는 orderApplicationItemAmount &ndash;&gt;-->
-<!--            <td th:text="${ warehouse.warehouseWorkingName }"></td>                                                     &lt;!&ndash; 작업상태 (fk로 받아옴) &ndash;&gt;-->
-<!--            <td>-->
-<!--                &lt;!&ndash;                <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>&ndash;&gt;-->
-<!--                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouseNo}')|">상세 조회</button>-->
-<!--            </td>-->
-<!--        </tr>-->
-
-        <tr>
-            <td>2</td>
-            <td>20222022</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>4</td>
-            <td>입하 대기</td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>20222023</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>5</td>
-            <td>입하 대기</td>
+        <tr th:each="warehouse : ${ warehouseDetailList }">
+            <td th:text="${ warehouse.warehouseNo }"></td>
+            <td th:text="${ warehouse.warehouseMaterialCategoryName }"></td>
+            <td th:text="${ warehouse.warehouseItemInfoItemSerialNo }"></td>
+            <td th:text="${ warehouse.warehouseItemInfoName }"></td>
+            <td th:text="${ warehouse.warehouseOrderDate }"></td>
+            <td th:text="${ warehouse.warehouseCompanyOrderItemAmount }"></td>
+            <td th:text="${ warehouse.warehouseCompanyOrderItemAmount }"></td>
+            <td th:text="${ warehouse.warehouseCompanyOrderItemAmount }"></td>
+<!--            <td th:text="${ warehouse.warehouseCheckAmount }"></td>-->
+<!--            <td th:text="${ warehouse.warehouseInAmount }"></td>-->
+            <td th:text="${ warehouse.warehouseClientName }"></td>
+            <td th:text="${ warehouse.warehouseWorkingStatus }"></td>
+            <td th:text="${ warehouse.warehouseDate }"></td>
         </tr>
         </tfoot>
     </table>
 </div>
 <!-- 테이블 끝 -->
-
-
-
-
-<div class="footer">
-    <div class="float-right">
-        10GB of <strong>250GB</strong> Free.
-    </div>
-    <div>
-        <strong>Copyright</strong> Example Company &copy; 2014-2018
-    </div>
-</div>
-
 
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
