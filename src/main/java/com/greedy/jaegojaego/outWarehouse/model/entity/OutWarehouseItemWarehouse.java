@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseItemWarehouse {
 
     @Id
@@ -38,8 +33,58 @@ public class OutWarehouseItemWarehouse {
     private OutWarehouseMaterials itemInfoNo;
 
     @ManyToOne
-    @JoinColumn(name = "OUT_WAREHOUSE_DIVISION_NO")
-    private OutWarehouse outWarehouseDivisionNo;
+    @JoinColumn(name = "OUT_WAREHOUSE_NO")
+    private OutWarehouse outWarehouseNo;
+
+    public OutWarehouseItemWarehouse() {}
+
+    public OutWarehouseItemWarehouse(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, OutWarehouseMaterials itemInfoNo, OutWarehouse outWarehouseNo) {
+        this.itemWarehouseNo = itemWarehouseNo;
+        this.itemWarehouseDivision = itemWarehouseDivision;
+        this.itemWarehouseAmount = itemWarehouseAmount;
+        this.itemInfoNo = itemInfoNo;
+        this.outWarehouseNo = outWarehouseNo;
+    }
+
+    public int getItemWarehouseNo() {
+        return itemWarehouseNo;
+    }
+
+    public String getItemWarehouseDivision() {
+        return itemWarehouseDivision;
+    }
+
+    public int getItemWarehouseAmount() {
+        return itemWarehouseAmount;
+    }
+
+    public OutWarehouseMaterials getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public OutWarehouse getOutWarehouseNo() {
+        return outWarehouseNo;
+    }
+
+    public void setItemWarehouseNo(int itemWarehouseNo) {
+        this.itemWarehouseNo = itemWarehouseNo;
+    }
+
+    public void setItemWarehouseDivision(String itemWarehouseDivision) {
+        this.itemWarehouseDivision = itemWarehouseDivision;
+    }
+
+    public void setItemWarehouseAmount(int itemWarehouseAmount) {
+        this.itemWarehouseAmount = itemWarehouseAmount;
+    }
+
+    public void setItemInfoNo(OutWarehouseMaterials itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public void setOutWarehouseNo(OutWarehouse outWarehouseNo) {
+        this.outWarehouseNo = outWarehouseNo;
+    }
 
     @Override
     public String toString() {
@@ -48,7 +93,7 @@ public class OutWarehouseItemWarehouse {
                 ", itemWarehouseDivision='" + itemWarehouseDivision + '\'' +
                 ", itemWarehouseAmount=" + itemWarehouseAmount +
                 ", itemInfoNo=" + itemInfoNo +
-                ", outWarehouseDivisionNo=" + outWarehouseDivisionNo +
+                ", outWarehouseDivisionNo=" + outWarehouseNo +
                 '}';
     }
 }

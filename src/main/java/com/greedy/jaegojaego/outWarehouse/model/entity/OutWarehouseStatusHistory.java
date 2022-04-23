@@ -13,10 +13,6 @@ import java.sql.Date;
         sequenceName = "OUT_WAREHOUSE_STATUS_HISTORY_NO"
 )
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @IdClass(OutWarehouseStatusHistoryId.class)
 public class OutWarehouseStatusHistory {
 
@@ -37,6 +33,56 @@ public class OutWarehouseStatusHistory {
 
     @Column(name = "OUT_WAREHOUSE_STATUS_AMOUNT")
     private int outWarehouseStatusAmount;
+
+    public OutWarehouseStatusHistory() {}
+
+    public OutWarehouseStatusHistory(int outWarehouseStatusHistoryNo, OutWarehouse outWarehouseDivisionNo, String outWarehouseStatusName, Date outWarehouseStatusDate, int outWarehouseStatusAmount) {
+        this.outWarehouseStatusHistoryNo = outWarehouseStatusHistoryNo;
+        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+        this.outWarehouseStatusName = outWarehouseStatusName;
+        this.outWarehouseStatusDate = outWarehouseStatusDate;
+        this.outWarehouseStatusAmount = outWarehouseStatusAmount;
+    }
+
+    public int getOutWarehouseStatusHistoryNo() {
+        return outWarehouseStatusHistoryNo;
+    }
+
+    public OutWarehouse getOutWarehouseDivisionNo() {
+        return outWarehouseDivisionNo;
+    }
+
+    public String getOutWarehouseStatusName() {
+        return outWarehouseStatusName;
+    }
+
+    public Date getOutWarehouseStatusDate() {
+        return outWarehouseStatusDate;
+    }
+
+    public int getOutWarehouseStatusAmount() {
+        return outWarehouseStatusAmount;
+    }
+
+    public void setOutWarehouseStatusHistoryNo(int outWarehouseStatusHistoryNo) {
+        this.outWarehouseStatusHistoryNo = outWarehouseStatusHistoryNo;
+    }
+
+    public void setOutWarehouseDivisionNo(OutWarehouse outWarehouseDivisionNo) {
+        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+    }
+
+    public void setOutWarehouseStatusName(String outWarehouseStatusName) {
+        this.outWarehouseStatusName = outWarehouseStatusName;
+    }
+
+    public void setOutWarehouseStatusDate(Date outWarehouseStatusDate) {
+        this.outWarehouseStatusDate = outWarehouseStatusDate;
+    }
+
+    public void setOutWarehouseStatusAmount(int outWarehouseStatusAmount) {
+        this.outWarehouseStatusAmount = outWarehouseStatusAmount;
+    }
 
     @Override
     public String toString() {

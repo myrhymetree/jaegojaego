@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseFranchiseOrder {
 
     @Id
@@ -31,4 +26,29 @@ public class OutWarehouseFranchiseOrder {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
 
+    public OutWarehouseFranchiseOrder() {}
+
+    public int getFranchiseOrderNo() {
+        return franchiseOrderNo;
+    }
+
+    public OutWarehouseFranchiseInfo getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
+    }
+
+    public void setFranchiseOrderNo(int franchiseOrderNo) {
+        this.franchiseOrderNo = franchiseOrderNo;
+    }
+
+    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
+
+    @Override
+    public String toString() {
+        return "OutWarehouseFranchiseOrder{" +
+                "franchiseOrderNo=" + franchiseOrderNo +
+                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
+                '}';
+    }
 }

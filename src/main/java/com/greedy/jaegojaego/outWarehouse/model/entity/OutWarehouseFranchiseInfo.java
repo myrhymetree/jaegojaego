@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseFranchiseInfo {
 
     @Id
@@ -32,6 +27,38 @@ public class OutWarehouseFranchiseInfo {
 
     @Column(name = "FRANCHISE_ADDRESS")
     private String franchiseAddress;
+
+    public OutWarehouseFranchiseInfo() {}
+
+    public OutWarehouseFranchiseInfo(int franchiseRepresentativeNo, String franchiseBranchName, String franchiseAddress) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+        this.franchiseBranchName = franchiseBranchName;
+        this.franchiseAddress = franchiseAddress;
+    }
+
+    public int getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
+    }
+
+    public String getFranchiseBranchName() {
+        return franchiseBranchName;
+    }
+
+    public String getFranchiseAddress() {
+        return franchiseAddress;
+    }
+
+    public void setFranchiseRepresentativeNo(int franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
+
+    public void setFranchiseBranchName(String franchiseBranchName) {
+        this.franchiseBranchName = franchiseBranchName;
+    }
+
+    public void setFranchiseAddress(String franchiseAddress) {
+        this.franchiseAddress = franchiseAddress;
+    }
 
     @Override
     public String toString() {

@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseMaterials {
 
     @Id
@@ -39,4 +34,65 @@ public class OutWarehouseMaterials {
 
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemInfoStatusYN;
+
+    public OutWarehouseMaterials() {}
+
+    public OutWarehouseMaterials(int itemInfoNo, String itemInfoItemSerialNo, String itemInfoName, OutWarehouseMaterialCategory materialCategoryNo, String itemInfoStatusYN) {
+        this.itemInfoNo = itemInfoNo;
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+        this.itemInfoName = itemInfoName;
+        this.materialCategoryNo = materialCategoryNo;
+        this.itemInfoStatusYN = itemInfoStatusYN;
+    }
+
+    public int getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public String getItemInfoItemSerialNo() {
+        return itemInfoItemSerialNo;
+    }
+
+    public String getItemInfoName() {
+        return itemInfoName;
+    }
+
+    public OutWarehouseMaterialCategory getMaterialCategoryNo() {
+        return materialCategoryNo;
+    }
+
+    public String getItemInfoStatusYN() {
+        return itemInfoStatusYN;
+    }
+
+    public void setItemInfoNo(int itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public void setItemInfoItemSerialNo(String itemInfoItemSerialNo) {
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+    }
+
+    public void setItemInfoName(String itemInfoName) {
+        this.itemInfoName = itemInfoName;
+    }
+
+    public void setMaterialCategoryNo(OutWarehouseMaterialCategory materialCategoryNo) {
+        this.materialCategoryNo = materialCategoryNo;
+    }
+
+    public void setItemInfoStatusYN(String itemInfoStatusYN) {
+        this.itemInfoStatusYN = itemInfoStatusYN;
+    }
+
+    @Override
+    public String toString() {
+        return "OutWarehouseMaterials{" +
+                "itemInfoNo=" + itemInfoNo +
+                ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
+                ", itemInfoName='" + itemInfoName + '\'' +
+                ", materialCategoryNo=" + materialCategoryNo +
+                ", itemInfoStatusYN='" + itemInfoStatusYN + '\'' +
+                '}';
+    }
 }

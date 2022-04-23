@@ -7,17 +7,26 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "FRANCHISE_ORDERABLE_ITEM")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseFranchiseOrderableItem implements Serializable {
 
     @Id
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
     private OutWarehouseMaterials itemInfoNo;
+
+    public OutWarehouseFranchiseOrderableItem() {}
+
+    public OutWarehouseFranchiseOrderableItem(OutWarehouseMaterials itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public OutWarehouseMaterials getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(OutWarehouseMaterials itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
 
     @Override
     public String toString() {

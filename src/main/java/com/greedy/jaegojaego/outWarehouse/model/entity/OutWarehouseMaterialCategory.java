@@ -12,11 +12,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class OutWarehouseMaterialCategory {
 
     @Id
@@ -29,6 +24,29 @@ public class OutWarehouseMaterialCategory {
 
     @Column(name = "MATERIAL_CATEGORY_NAME")
     private String materialCategoryName;
+
+    public OutWarehouseMaterialCategory() {}
+
+    public OutWarehouseMaterialCategory(int materialCategoryNo, String materialCategoryName) {
+        this.materialCategoryNo = materialCategoryNo;
+        this.materialCategoryName = materialCategoryName;
+    }
+
+    public int getMaterialCategoryNo() {
+        return materialCategoryNo;
+    }
+
+    public String getMaterialCategoryName() {
+        return materialCategoryName;
+    }
+
+    public void setMaterialCategoryNo(int materialCategoryNo) {
+        this.materialCategoryNo = materialCategoryNo;
+    }
+
+    public void setMaterialCategoryName(String materialCategoryName) {
+        this.materialCategoryName = materialCategoryName;
+    }
 
     @Override
     public String toString() {
