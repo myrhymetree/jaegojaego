@@ -26,24 +26,24 @@
     <div class="middle-box text-center loginscreen   animated fadeInDown">
 
             <h3>임직원 계정등록</h3>
-            <form class="m-t" id="registForm" role="form" action="/member/regist" method="post">
+            <form class="m-t" id="registForm" role="form" action="/member/regist" method="post" onsubmit="preSubmit()">
                 <div class="form-group" id="idContainer">
-                    <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요.">
-                    <label id="duplicationText">[]</label>
+                    <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
+                    <label id="duplicationText"></label>
                 </div>
                     <div id="pwd-container2">
                         <div class="form-group">
-                            <input type="password" class="form-control example2" id="memberPwd" name="memberPwd" placeholder="비밀번호를 입력하세요">
+                            <input type="password" class="form-control example2" id="memberPwd" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
                         </div>
                         <div class="form-group">
                             <div class="pwstrength_viewport_progress"></div>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="비밀번호를 한번 더 입력하세요">
+                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="비밀번호를 한번 더 입력하세요" required>
                         </div>
                     </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="memberName" name="memberName" placeholder="이름을 입력하세요">
+                    <input type="text" class="form-control" id="memberName" name="memberName" placeholder="이름을 입력하세요" required>
                 </div>
 
                 <select class="select2_demo_3 form-control m-b" name="department.departmentNo" id="department" required>
@@ -59,7 +59,7 @@
                     <input type="email"  name="memberEmail" class="form-control" placeholder="이메일을 입력하세요">
                 </div>
 
-                <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
+                <button type="button" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
 
             </form>
             <button type="button" class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#registMultipleModal">계정 일괄 생성</button>

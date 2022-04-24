@@ -42,8 +42,6 @@ public class MemberService {
     @Transactional
     public void registNewMember(CompanyAccountDTO newMember) {
 
-
-
         Department department = departmentRepository.findByDepartmentNo(newMember.getDepartment().getDepartmentNo());
 
         DepartmentDTO departmentDTO = modelMappper.map(department, DepartmentDTO.class);
@@ -52,11 +50,11 @@ public class MemberService {
 
         CompanyAccount member = modelMappper.map(newMember, CompanyAccount.class);
 
-        CompanyAccount member1 = memberRepository.save(member);
+        CompanyAccount registedMember = memberRepository.save(member);
 
         MemberRolePK memberRolePK  = new MemberRolePK();
         memberRolePK.setAuthorityCode(2);
-        memberRolePK.setMemberNo(member1.getMemberNo());
+        memberRolePK.setMemberNo(registedMember.getMemberNo());
         MemberRole memberRole = new MemberRole();
         memberRole.setMemberRolePK(memberRolePK);
 
@@ -78,6 +76,8 @@ public class MemberService {
 
     public boolean duplicationCheckId(String memberId) {
 
-        return memberRepository.duplicationCheckId(memberId) != null;
+        boolean status = memberRepository.existsByMemberId(memberId);
+
+        return status;
     }
 }
