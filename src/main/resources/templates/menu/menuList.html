@@ -12,9 +12,10 @@
 
     <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
 
 </head>
-<body>
+<body style="overflow: hidden">
 <th:block th:replace="/common/header.html"></th:block>
 
 <div class="ibox">
@@ -28,11 +29,11 @@
         <div class="forz-index" id="forz-index" style="display: none;">
             <div class="menuRegistModal" id="menuRegistModal">
                 <h1 align="center" style="color: #1ab394">메뉴 등록</h1>
-                <form class="menuRegistForm" method="post"  action="/menu/regist">
-                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName"><br>
-                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice"><br>
+                <form class="menuRegistForm" id="menuRegistForm" method="post"  action="/menu/regist">
+                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName" name="menuName"><br>
+                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice" name="menuPrice"><br>
                     *<label>판매여부 : </label>&nbsp;
-                    <select class="menuStatus" name="menuOrderableStatus">
+                    <select class="menuStatus" name="menuOrderableStatus" id="menuStatus">
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select><br>
@@ -47,9 +48,11 @@
                         <div class="rawMaterialList" id="rawMaterialList">
                                 <!-- 누르면 생기게 -->
                         </div>
-                    <button class="button registMenuSubmitButton" type="submit">등록</button>
+                    <input type="hidden" name="materialsArrayv[]" id="material_list" value="">
+                    <input type="hidden" name="itemInfoArray[]" id="itemInfo_list" value="">
                     <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
                 </form>
+                    <button class="button registMenuSubmitButton demo3">등록</button>
 
                 <div class="modal-layer"></div>
             </div>
@@ -64,7 +67,7 @@
                 <h1 align="center" style="color: #1ab394">메뉴 수정</h1>
                 <form class="menuModifytForm" method="post">
                     *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify"><br>
-                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify"><br>
+                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify" name="menuPrice"><br>
                     *<label>판매여부 : </label>&nbsp;
                     <select class="menuStatus">
                         <option value="Y">Y</option>
@@ -159,17 +162,11 @@
             </div>
         </div>
 
-        <input type="hidden" id="materialsArray" name="materialsArray">
 
 
         <th:block th:replace="/common/footer.html"></th:block>
 
         <script>
-
-            const successMessage = "[[${ successMessage }]]";
-            if(successMessage) {
-                alert(successMessage);
-            }
 
             document.getElementById("registMenuButton").onclick = function() {
                 document.getElementById("forz-index").style.display = "block";
@@ -210,7 +207,8 @@
 
             const $rawMaterialList = $("#rawMaterialList");
             const $materialCapacity = $("#materialCapacity");
-            const testArray = [];
+            const comma = ',';
+
 
             function addRawMaterial(value, text) {
                 const capacity = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"];
@@ -220,7 +218,8 @@
                 for(x in capacity) {
                     const opt = document.createElement("option");
                     opt.innerText = text + '/' + capacity[x] + 'g';
-                    opt.value = text + '/' + capacity[x];
+                    opt.value = value;
+                    // opt.value = text + '/' + capacity[x];
                     $materialCapacity.append(opt);
 
                 }
@@ -231,8 +230,9 @@
                 const oneRawMaterial = document.createElement("div");
                 const deleteButton = document.createElement("div"); //얘도 같이 생성되게 해서
 
-                oneRawMaterial.innerHTML = text;
-                oneRawMaterial.setAttribute("id","oneRawMaterial");//새롭게 만들어지는 div태그에 id값 저장
+                oneRawMaterial.innerHTML = text + ',';
+                oneRawMaterial.setAttribute("id","oneRawMaterial");
+                oneRawMaterial.value = value; // value에
                 oneRawMaterial.align = "center";
 
                 deleteButton.setAttribute("id", "rawMaterialDeleteButton");
@@ -240,17 +240,41 @@
                 obj.appendChild(oneRawMaterial);//body에 자식 태그로 추가.
                 oneRawMaterial.appendChild(deleteButton);
 
-                testArray.push(oneRawMaterial.innerText);
-                console.log("배열배열!! : " +testArray);
-                $("#materialsArray").innerText = testArray;
 
+                console.log("oneRawMaterial : " + oneRawMaterial.value);
+                console.log("자재번호들 되는지 : " + value);
 
-                deleteButton.onclick = function(){
+                let itemInfoList = new Array();
+                let listForMaterialList = new Array();
+
+                itemInfoList.push(oneRawMaterial.value); //안쌓이고
+                listForMaterialList.push($('div[id=oneRawMaterial]').text());
+                // itemInfoList.push($('div[id=oneRawMaterial]').value); //얘도 안쌓여
+
+                $("#itemInfo_list").val(itemInfoList);
+                $("#material_list").val(listForMaterialList);
+
+                console.log("푸시되는 이름/용량 : " + listForMaterialList);
+                console.log("푸시되는 자재번호 : " + itemInfoList);  //왜 안쌓이지?
+
+                deleteButton.onclick = function() {
                     this.parentNode.remove();
+                    console.log("삭제한 애의 배열 번호? : " + this.parentNode);
+                    // listForMaterialList.splice( , 1); // delete시
+
                 };
 
                 // $rawMaterialList.append($("<div>").val(this.value).text(this.text).css().append($("</div>")));
             }
+
+            // function getMaterialList() {
+            //     let list = new Array();
+            //     $("div[id=oneRawMaterial]").each(function(index, item) {
+            //         list.push($(item).val());
+            //     });
+            //     $("#material_list").val(list);
+            //     console.log("되냐 : " + document.getElementById(material_list));
+            // }
 
 
             <!-- 메뉴 클릭시 상세보기용 -->
@@ -310,8 +334,65 @@
         </script>
         <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
         <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+        <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
         <script>
+            $('.demo3').click(function () {
+                swal({
+                    title: "메뉴 등록하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+                    swal("등록 완료!", "메뉴 등록이 완료되었습니다.", "success");
+                });
+            });
+
+            let confirmCount = 0;
+            let checkMenuAmount = 0;
+
+            $(document).on('click', '.sa-button-container .confirm', function() {
+                if($("#menuName")[0].children.length == 1 /*&& $("#menuPrice")[0].children.length == 0
+                && $("#menuStatus")[0].children.length == 0 && $("#rawMaterialList")[0].children.length == 0*/) {
+                    swal("메뉴 등록 실패!", "필수 항목이 입력되지 않았습니다.\n필수 항목을 모두 입력해주세요.", "error");
+                } else {
+                    let checkMenuAmount = 0;
+
+                    const $menuRawMaterialAmount = document.querySelectorAll("#rawMaterialList");
+
+                    for (let i = 0; i < $menuRawMaterialAmount.length; i++) {
+
+                        let amountInt = $menuRawMaterialAmount[i].value * 1;
+
+                        console.log("amountInt : " + amountInt)
+
+                        if (amountInt < 1) {
+                            checkMenuAmount = 1;
+                            break;
+                        }
+                    }
+
+                    if (checkMenuAmount == 1) {
+                        swal("발주 신청 실패!", "이게뭘까?", "warning")
+                    } else {
+                        confirmCount++;
+                    }
+
+                }
+
+                if(confirmCount == 2) {
+
+                    $("#menuRegistForm").submit();
+                }
+
+            });
+
+
+
+
             $(".select2_demo_1").select2({
                 theme: 'bootstrap4',
             });

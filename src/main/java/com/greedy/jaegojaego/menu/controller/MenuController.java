@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -104,26 +105,12 @@ public class MenuController {
     @PostMapping("/regist")
     public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr) {
 
-        //여러개인 경우는.. ?
-        String materialNameAndCapacityList = request.getParameter("materialsArray");
-        System.out.println("배여ㅓㄹ배열 : " + materialNameAndCapacityList);
+        String materialNameAndCapacityList = request.getParameter("materialsArrayv[]");
+        System.out.println("배열? : " + materialNameAndCapacityList);
 
-        String materialNameAndCapacity = request.getParameter("materialCapacity");
+        menuService.registMenu(menu, menuMaterial, materialNameAndCapacityList);
 
-        String capacity = materialNameAndCapacity.substring(materialNameAndCapacity.indexOf("/") + 1);
-        String materialName = materialNameAndCapacity.substring(1,materialNameAndCapacity.indexOf("/"));
-
-        System.out.println("이름 : " + materialName);
-        System.out.println("나오냐 : " + capacity);
-
-        System.out.println("menu : " + menu);
-        System.out.println("menuMaterial : " + menuMaterial);
-
-        MenuMaterialsDTO materialForRegist = new MenuMaterialsDTO();
-
-//        materialForRegist.setItemInfoName(materialNameAndCapacity.replace());
-//
-
+        mv.setViewName("redirect:/menu/list");
 
         return mv;
     }

@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,5 +105,42 @@ public class MenuService {
         rawMaterialList.forEach(System.out::println);
 
         return rawMaterialList.stream().map(menuMaterial -> modelMapper.map(menuMaterial, MenuMaterialsDTO.class)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String materialNameAndCapacityList) {
+
+        String[] rawMaterialList = materialNameAndCapacityList.split(",");
+        // rawMaterialList[0] = 루누아나 원두 1kg/60g
+        List<String[]> stringList = new ArrayList<>();
+        // stringList[0] = 루누아나 원두
+        // stringList[1] = 60g
+
+        //그 원두3개잖아? 3개당 자재번호도 3개네 그럼
+        //
+
+
+        for(int i = 0; i < rawMaterialList.length; i++) { //3개
+            String[] oneRawMaterial = rawMaterialList[i].split("/");
+
+            stringList.add(oneRawMaterial);
+        }
+
+        for(String[] array : stringList) { //stringList = 2
+
+            System.out.println("제발 : " + array[0]);
+            System.out.println("제발 : " + array[1]);
+        }
+
+        System.out.println("menu : " + menu);
+        System.out.println("menuMaterial : " + menuMaterial);
+
+        RawMaterialDTO rawMaterial = new RawMaterialDTO();
+
+
+        //총 2가지 insert가 필요!
+        //1. menuRepository.save(menu);
+        //2. 그 메뉴에 해당하는 -> itemInfo(자재번호) / 메뉴재료이름 / 용량(용량은 받아와야하는게 맞는데) / 메뉴번호(만들어진거 갖고올거고)
+
     }
 }
