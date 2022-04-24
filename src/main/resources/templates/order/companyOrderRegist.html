@@ -105,6 +105,8 @@
         });
 
         let itemForClientList = [];
+        let itemListCount = 0;
+        let allItemList = [];
 
         $(function() {
            $("#searchItems").autocomplete({
@@ -163,6 +165,8 @@
                                     itemForClientList.push(data[list]);
 
                                 }
+
+                                allItemList[itemListCount] = itemForClientList;
                             }
 
                         },
@@ -192,6 +196,10 @@
                     companyOrderRegistItemTableBody += '<td>'
                     companyOrderRegistItemTableBody += '<input type="hidden" name="clientItemInfoNo" id="clientItemInfoNo" value="' + itemForClientList[0].clientContractItemNo + '">'
                     companyOrderRegistItemTableBody += '<input type="hidden" name="itemInfoNo" id="company-order-itemInfoNo" value="' + itemForClientList[0].orderItemInfo.itemInfoNo + '">'
+                    companyOrderRegistItemTableBody += '<input type="hidden" name="clientNo" id="company-order-clientNo" value="' + itemForClientList[0].clientContractInfo.orderClient.clientNo + '">'
+                    companyOrderRegistItemTableBody += '<input type="hidden" id="itemListCount" value="' + itemListCount + '">';
+
+                    itemListCount++;
 
                     companyOrderRegistItemTableBody += '<button class="item-select-cancel-btn" id="item-select-cancel-btn" type="button">x</button></td>';
                     companyOrderRegistItemTableBody += '</tr>';
@@ -224,16 +232,17 @@
             $(document).on('change', '#select-client-selectbox', function() {
 
                 let idx = this.selectedIndex;
+                let countIndex = this.parentNode.parentNode.children[4].children[3].value;
 
-                this.parentNode.parentNode.children[4].children[0].value = itemForClientList[idx].clientContractItemNo;
-                this.parentNode.parentNode.children[4].children[1].value = itemForClientList[idx].orderItemInfo.itemInfoNo;
-                this.parentNode.parentNode.children[1].innerText = itemForClientList[idx].clientContractItemSupplyPrice;
+                this.parentNode.parentNode.children[4].children[0].value = allItemList[countIndex][idx].clientContractItemNo;
+                this.parentNode.parentNode.children[4].children[1].value = allItemList[countIndex][idx].orderItemInfo.itemInfoNo;
+                this.parentNode.parentNode.children[4].children[2].value = allItemList[countIndex][idx].clientContractInfo.orderClient.clientNo;
+                this.parentNode.parentNode.children[1].innerText = allItemList[countIndex][idx].clientContractItemSupplyPrice;
 
             });
 
             $(document).on('click', '#item-select-cancel-btn', function() {
 
-                console.log(this.parentNode);
                 this.parentNode.parentNode.remove();
 
             });

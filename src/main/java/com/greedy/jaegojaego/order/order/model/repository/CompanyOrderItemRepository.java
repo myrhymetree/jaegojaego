@@ -18,10 +18,10 @@ public interface CompanyOrderItemRepository extends JpaRepository<CompanyOrderIt
             "       ) " +
             "       VALUES " +
             "       ( " +
-            "         ?2" +
-            "       , COMPANY_ORDER_HISTORY_NO.CURRVAL " +
-            "       , ?1" +
+            "         ?2 " +
+            "       , ?3 " +
+            "       , ?1 " +
             "       )", nativeQuery = true
     )
-    void insertCompanyOrderItem(int itemNo, Integer itemAmount);
+    void insertCompanyOrderItem(int itemNo, Integer itemAmount, int companyOrderHistoryNo);
 }

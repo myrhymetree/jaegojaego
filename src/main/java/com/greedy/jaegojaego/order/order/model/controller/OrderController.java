@@ -225,8 +225,9 @@ public class OrderController {
         String[] itemAmount = request.getParameterValues("itemAmount");
         String[] clientItemNo = request.getParameterValues("clientItemInfoNo");
         String[] itemInfoNo = request.getParameterValues("itemInfoNo");
+        String[] clientNo = request.getParameterValues("clientNo");
 
-        orderService.insertCompanyOrder(itemAmount, clientItemNo, itemInfoNo, customUser.getMemberNo());
+        orderService.insertCompanyOrder(itemAmount, clientItemNo, itemInfoNo, customUser.getMemberNo(), clientNo);
 
         mv.setViewName("/order/companyApplicationList");
 

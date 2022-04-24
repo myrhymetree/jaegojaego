@@ -1,6 +1,7 @@
 package com.greedy.jaegojaego.order.order.model.service;
 
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
+import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractItemRepository;
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
@@ -9,11 +10,11 @@ import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
 import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
-import com.greedy.jaegojaego.order.order.model.entitiy.CompanyOrderHistory;
-import com.greedy.jaegojaego.order.order.model.entitiy.CompanyOrderItem;
-import com.greedy.jaegojaego.order.order.model.entitiy.OrderApplication;
+import com.greedy.jaegojaego.order.order.model.entitiy.*;
 import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderItemRepository;
+import com.greedy.jaegojaego.order.order.model.repository.OrderApplicationItemRepository;
+import com.greedy.jaegojaego.order.order.model.repository.OrderApplicationRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,14 @@ public class OrderService {
     private final OrderItemInfoRepository orderItemInfoRepository;
     private final OrderClientContractItemRepository orderClientContractItemRepository;
     private final CompanyOrderItemRepository companyOrderItemRepository;
+    private final OrderApplicationRepository orderApplicationRepository;
+    private final OrderApplicationItemRepository orderApplicationItemRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
             , OrderItemWarehouseRepository orderItemWarehouseRepository, OrderItemInfoRepository orderItemInfoRepository
-            , OrderClientContractItemRepository orderClientContractItemRepository, CompanyOrderItemRepository companyOrderItemRepository) {
+            , OrderClientContractItemRepository orderClientContractItemRepository, CompanyOrderItemRepository companyOrderItemRepository
+            , OrderApplicationRepository orderApplicationRepository, OrderApplicationItemRepository orderApplicationItemRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
@@ -46,6 +50,8 @@ public class OrderService {
         this.orderItemInfoRepository = orderItemInfoRepository;
         this.orderClientContractItemRepository = orderClientContractItemRepository;
         this.companyOrderItemRepository = companyOrderItemRepository;
+        this.orderApplicationRepository = orderApplicationRepository;
+        this.orderApplicationItemRepository = orderApplicationItemRepository;
     }
 
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
@@ -101,15 +107,21 @@ public class OrderService {
         return orderClientContractItemList.stream().map(orderClientContractItem -> modelMapper.map(orderClientContractItem, OrderClientContractItemDTO.class)).collect(Collectors.toList());
     }
 
-//    @Transactional
-    public void insertCompanyOrder(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, int memberNo) {
+    @Transactional
+    public void insertCompanyOrder(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, int memberNo, String[] clientNo) {
 
         Map<Integer, Integer> orderItemInfo = new HashMap<>();
-        List<Integer> clientNoList = new ArrayList<>();
+        List<Integer> clientList = new ArrayList<>();
 
         for(String item : itemInfoNo) {
             if(!orderItemInfo.containsKey(Integer.parseInt(item))){
                 orderItemInfo.put(Integer.parseInt(item), 0);
+            }
+        }
+
+        for(String client : clientNo) {
+            if(!clientList.contains(Integer.parseInt(client))) {
+                clientList.add(Integer.parseInt(client));
             }
         }
 
@@ -128,6 +140,26 @@ public class OrderService {
             }
         }
 
+        insertCompanyOrderHistory(memberNo);
+
+        int companyOrderHistoryNo = companyOrderHistoryRepository.selectRecentHistoryNo();
+
+        iter = orderItemInfo.keySet().iterator();
+
+        while(iter.hasNext()) {
+
+            int key = iter.next();
+
+            insertCompanyOrderItem(companyOrderHistoryNo, key, orderItemInfo.get(key));
+
+        }
+
+        insertOrderApplication(companyOrderHistoryNo, clientList);
+
+        insertOrderApplicationItem(clientList, clientItemNo, clientNo, itemAmount);
+    }
+
+    private void insertCompanyOrderHistory(int memberNo) {
 
         OrderCompanyAccount companyAccount = new OrderCompanyAccount();
         companyAccount.setMemberNo(memberNo);
@@ -138,14 +170,91 @@ public class OrderService {
 
         companyOrderHistoryRepository.save(companyOrderHistory);
 
-        iter = orderItemInfo.keySet().iterator();
+    }
 
-        while(iter.hasNext()) {
+    private void insertCompanyOrderItem(int companyOrderHistoryNo, int itemIntoNo, int itemAmount) {
 
-            int key = iter.next();
+        CompanyOrderHistory companyOrderHistory = new CompanyOrderHistory();
 
-            companyOrderItemRepository.insertCompanyOrderItem(key, orderItemInfo.get(key));
+        companyOrderHistory.setCompanyOrderHistoryNo(companyOrderHistoryNo);
+        OrderItemInfo newOrderItemInfo = new OrderItemInfo();
+        newOrderItemInfo.setItemInfoNo(itemIntoNo);
+
+        CompanyOrderItemPK companyOrderItemPK = new CompanyOrderItemPK();
+        companyOrderItemPK.setCompanyOrderHistory(companyOrderHistory);
+        companyOrderItemPK.setOrderItemInfo(newOrderItemInfo);
+
+        CompanyOrderItem companyOrderItem = new CompanyOrderItem();
+        companyOrderItem.setCompanyOrderItemPK(companyOrderItemPK);
+        companyOrderItem.setCompanyOrderItemAmount(itemAmount);
+
+        companyOrderItemRepository.save(companyOrderItem);
+
+    }
+
+    private void insertOrderApplication(int companyOrderHistoryNo, List<Integer> clientList) {
+
+        CompanyOrderHistory companyOrderHistory = new CompanyOrderHistory();
+        companyOrderHistory.setCompanyOrderHistoryNo(companyOrderHistoryNo);
+
+        for(int i = 0; i < clientList.size(); i++) {
+
+            OrderClient orderClient = new OrderClient();
+            orderClient.setClientNo(clientList.get(i));
+
+            OrderApplication orderApplication = new OrderApplication();
+            orderApplication.setOrderClient(orderClient);
+            orderApplication.setCompanyOrderHistory(companyOrderHistory);
+
+            orderApplicationRepository.save(orderApplication);
+        }
+
+    }
+
+    private void insertOrderApplicationItem(List<Integer> clientList, String[] clientItemNo, String[] clientNo, String[] itemAmount) {
+
+        List<Integer> orderApplicationNo = orderApplicationRepository.selectRecentOrderApplication(clientList.size() + 1);
+        List<Integer> orderApplicationClientNo = orderApplicationRepository.selectRecentOrderApplicationClient(clientList.size() + 1);
+
+        for(int i = 0; i < itemAmount.length; i++) {
+            System.out.println(clientNo[i] + " : " + clientItemNo[i] + " : " + itemAmount[i]);
+        }
+
+        for(int i = 0; i < orderApplicationNo.size(); i++) {
+            System.out.println(orderApplicationClientNo.get(i) + " : " + orderApplicationNo.get(i));
+        }
+
+        for(int i = 0; i < clientItemNo.length; i++) {
+
+            for(int j = 0; j < orderApplicationClientNo.size(); j++) {
+
+                OrderApplication orderApplication = new OrderApplication();
+                OrderClientContractItem orderClientContractItem = new OrderClientContractItem();
+                OrderApplicationItemPK orderApplicationItemPK = new OrderApplicationItemPK();
+
+                if(Integer.parseInt(clientNo[i]) == orderApplicationClientNo.get(j)) {
+                    orderApplication.setOrderApplicationNo(orderApplicationNo.get(j));
+                    orderApplicationItemPK.setOrderApplication(orderApplication);
+
+                    orderClientContractItem.setClientContractItemNo(Integer.parseInt(clientItemNo[i]));
+                    orderApplicationItemPK.setOrderClientContractItem(orderClientContractItem);
+
+                    System.out.println("발주 신청서 번호 : " + orderApplication.getOrderApplicationNo());
+                    System.out.println("발주 거래처 판매 물품 번호 : " + orderClientContractItem.getClientContractItemNo());
+                    System.out.println("수량 : " + itemAmount[i]);
+
+                    System.out.println("orderApplicationItemPK = " + orderApplicationItemPK);
+
+                    OrderApplicationItem orderApplicationItem = new OrderApplicationItem();
+                    orderApplicationItem.setOrderApplicationItemPK(orderApplicationItemPK);
+                    orderApplicationItem.setOrderApplicationItemAmount(Integer.parseInt(itemAmount[i]));
+
+                    orderApplicationItemRepository.save(orderApplicationItem);
+                }
+            }
 
         }
+
     }
+
 }
