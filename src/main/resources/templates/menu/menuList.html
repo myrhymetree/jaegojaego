@@ -45,11 +45,11 @@
                         <select name="materialCapacity" class="materialCapacity" id="materialCapacity" onchange="addRawMaterialToDiv(this.value, this.options[this.selectedIndex].text);">
                             <!-- 위에랑 select 연관 : 고정 (위에가 선택되면 얘가 10g/20g/30g/40g/50g/60g .. /100g까지 생기게!! -->
                         </select><br><br>
-                        <div class="rawMaterialList" id="rawMaterialList">
+                        <div class="rawMaterialList" id="rawMaterialList" name="rawMaterialList">
                                 <!-- 누르면 생기게 -->
                         </div>
                     <input type="hidden" name="materialsArrayv[]" id="material_list" value="">
-                    <input type="hidden" name="itemInfoArray[]" id="itemInfo_list" value="">
+<!--                    <input type="hidden" name="itemInfoArray[]" id="itemInfo_list" value="">-->
                     <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
                 </form>
                     <button class="button registMenuSubmitButton demo3">등록</button>
@@ -207,30 +207,29 @@
 
             const $rawMaterialList = $("#rawMaterialList");
             const $materialCapacity = $("#materialCapacity");
-            const comma = ',';
-
 
             function addRawMaterial(value, text) {
-                const capacity = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"];
+                const capacity = ["10g", "20g", "30g", "40g", "50g", "60g", "70g", "80g", "90g", "100g"];
 
                     $materialCapacity.html("");
 
                 for(x in capacity) {
                     const opt = document.createElement("option");
-                    opt.innerText = text + '/' + capacity[x] + 'g';
+                    opt.innerText = text + '/' + capacity[x] + ',';
                     opt.value = value;
                     // opt.value = text + '/' + capacity[x];
                     $materialCapacity.append(opt);
 
                 }
             }
+                // let itemInfoList = new Array();
 
             function addRawMaterialToDiv(value, text) {
                 const obj = document.getElementById("rawMaterialList");
                 const oneRawMaterial = document.createElement("div");
                 const deleteButton = document.createElement("div"); //얘도 같이 생성되게 해서
 
-                oneRawMaterial.innerHTML = text + ',';
+                oneRawMaterial.innerText = text;
                 oneRawMaterial.setAttribute("id","oneRawMaterial");
                 oneRawMaterial.value = value; // value에
                 oneRawMaterial.align = "center";
@@ -240,31 +239,22 @@
                 obj.appendChild(oneRawMaterial);//body에 자식 태그로 추가.
                 oneRawMaterial.appendChild(deleteButton);
 
-
-                console.log("oneRawMaterial : " + oneRawMaterial.value);
-                console.log("자재번호들 되는지 : " + value);
-
-                let itemInfoList = new Array();
                 let listForMaterialList = new Array();
 
-                itemInfoList.push(oneRawMaterial.value); //안쌓이고
+                // itemInfoList.push(oneRawMaterial.value); //안쌓이고
                 listForMaterialList.push($('div[id=oneRawMaterial]').text());
-                // itemInfoList.push($('div[id=oneRawMaterial]').value); //얘도 안쌓여
 
-                $("#itemInfo_list").val(itemInfoList);
+                // $("#itemInfo_list").val(itemInfoList);
                 $("#material_list").val(listForMaterialList);
 
                 console.log("푸시되는 이름/용량 : " + listForMaterialList);
-                console.log("푸시되는 자재번호 : " + itemInfoList);  //왜 안쌓이지?
+                // console.log("푸시되는 자재번호 : " + itemInfoList);
 
                 deleteButton.onclick = function() {
                     this.parentNode.remove();
-                    console.log("삭제한 애의 배열 번호? : " + this.parentNode);
-                    // listForMaterialList.splice( , 1); // delete시
-
+                    $("#material_list").splice(this, 1);
+                    // $("#itemInfo_list").splice(this, 1); //이번엔 얘가 안없어져서 ㅋㅋ
                 };
-
-                // $rawMaterialList.append($("<div>").val(this.value).text(this.text).css().append($("</div>")));
             }
 
             // function getMaterialList() {
@@ -309,7 +299,7 @@
 
                                             materialTbody += '<tr>';
                                             materialTbody += '<td>' + data[list].rawMaterialName + '</td>';
-                                            materialTbody += '<td>' + data[list].rawMaterialCapacity + 'g' + '</td>';
+                                            materialTbody += '<td>' + data[list].rawMaterialCapacity + '</td>';
                                             materialTbody += '</tr>';
                                         }
                                     }

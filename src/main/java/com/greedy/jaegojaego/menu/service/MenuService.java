@@ -67,21 +67,6 @@ public class MenuService {
 
         List<RawMaterial> test = rawMaterialRepository.selectOneMenu(menuNo);
         test.forEach(System.out::println);
-        System.out.println("오긴옴? : " + test);
-
-//        List<String> stringList = rawMaterialRepository.selectStringList(menuNo);
-//        List<Integer> intList = rawMaterialRepository.selectintList(menuNo);
-//
-//        List<RawMaterial> rawMaterialList = new ArrayList<>();
-//        for(int i = 0;  i < stringList.size(); i++) {
-//
-//            RawMaterial rawMaterial = new RawMaterial();
-//
-//            rawMaterial.setRawMaterialName(stringList.get(i));
-//            rawMaterial.setRawMaterialCapacity(intList.get(i));
-//
-//            rawMaterialList.add(rawMaterial);
-//        }
 
         return test.stream().map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDTO.class)).collect(Collectors.toList());
     }
@@ -110,37 +95,45 @@ public class MenuService {
     @Transactional
     public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String materialNameAndCapacityList) {
 
-        String[] rawMaterialList = materialNameAndCapacityList.split(",");
-        // rawMaterialList[0] = 루누아나 원두 1kg/60g
-        List<String[]> stringList = new ArrayList<>();
-        // stringList[0] = 루누아나 원두
-        // stringList[1] = 60g
+        /* 1. 메뉴 insert */
+        Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class)); //성공시
 
-        //그 원두3개잖아? 3개당 자재번호도 3개네 그럼
-        //
-
+        RawMaterialDTO rawMaterial = new RawMaterialDTO();
+        String[] rawMaterialList = materialNameAndCapacityList.split(","); // -> 루누아나원두1kg/60g  , 000원두1kg/50 , 000원두1kg/40 으로 나누어짐
+        List<String[]> stringList = new ArrayList<>(); // [0] -> 루누아나 원두1kg // [1] -> 60g
 
         for(int i = 0; i < rawMaterialList.length; i++) { //3개
             String[] oneRawMaterial = rawMaterialList[i].split("/");
-
             stringList.add(oneRawMaterial);
         }
 
         for(String[] array : stringList) { //stringList = 2
-
+            rawMaterial.setRawMaterialName(array[0]);
+//            rawMaterial.setRawMaterialCapacity(array[1]);
             System.out.println("제발 : " + array[0]);
-            System.out.println("제발 : " + array[1]);
+            System.out.println("제발 : " + array[1].indexOf("g"));
         }
-
-        System.out.println("menu : " + menu);
         System.out.println("menuMaterial : " + menuMaterial);
 
-        RawMaterialDTO rawMaterial = new RawMaterialDTO();
+        if(insertMenu != null) {
+
+            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+
+            System.out.println("나오냐? : " + menuNo);
+
+            // List<Integer> itemInfo = menuMaterialRepository.selectByItemInfoContaining();
+            for(int i = 0; i < stringList.size(); i++) {
+//                rawMaterial.setRawMaterialName(stringList[i]);
+//                rawMaterial.setMenuNoforRaw(menu.getMenuNo());
+            }
 
 
-        //총 2가지 insert가 필요!
-        //1. menuRepository.save(menu);
-        //2. 그 메뉴에 해당하는 -> itemInfo(자재번호) / 메뉴재료이름 / 용량(용량은 받아와야하는게 맞는데) / 메뉴번호(만들어진거 갖고올거고)
+
+        }
+
+
+
+
 
     }
 }

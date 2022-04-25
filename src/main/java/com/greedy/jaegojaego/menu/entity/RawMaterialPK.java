@@ -12,11 +12,11 @@ public class RawMaterialPK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
-    private MenuFranchiseOrderableItem itemInfoNo;
+    private MenuMaterial itemInfoNo;
 
     public RawMaterialPK() {}
 
-    public RawMaterialPK(Menu menuNoforRaw, MenuFranchiseOrderableItem itemInfoNo) {
+    public RawMaterialPK(Menu menuNoforRaw, MenuMaterial itemInfoNo) {
         this.menuNoforRaw = menuNoforRaw;
         this.itemInfoNo = itemInfoNo;
     }
@@ -29,11 +29,11 @@ public class RawMaterialPK implements Serializable {
         this.menuNoforRaw = menuNoforRaw;
     }
 
-    public MenuFranchiseOrderableItem getItemInfoNo() {
+    public MenuMaterial getItemInfoNo() {
         return itemInfoNo;
     }
 
-    public void setItemInfoNo(MenuFranchiseOrderableItem itemInfoNo) {
+    public void setItemInfoNo(MenuMaterial itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
     }
 

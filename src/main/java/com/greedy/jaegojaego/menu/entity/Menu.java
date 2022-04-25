@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "FINISHED_PRODUCT_MENU")
 @SequenceGenerator(
         name = "MENU_SEQ_GENERATOR",
-        sequenceName = "SEQ_MENU_NO",
-        initialValue = 1,
+        sequenceName = "MENU_NO",
+        initialValue = 11, //1로 하면 무결성 떠서 일단 11로
         allocationSize = 1
 )
 public class Menu {
