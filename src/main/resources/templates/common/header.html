@@ -123,6 +123,8 @@
                     <ul class="nav nav-second-level collapse">
                         <!--                            <li><a href="typography.html">Typography</a></li>-->
                         <li><a href="/order/franchiseorderlist">발주 내역</a></li>
+                        <li><a href="/outwarehouse/list">출고 관리</a></li>
+                        <li><a href="/outwarehouse/history">출고 내역</a></li>
                     </ul>
                 </li>
 
@@ -156,9 +158,10 @@
 
                 <!-- 자산관리 -->
                 <li>
-                    <a th:href="@{/asset}"><i class="fa fa-table"></i> <span class="nav-label">자산관리</span><span class="fa arrow"></span></a>
+                    <a th:href="@{/asset}"><i class="fa fa-table"></i> <span class="nav-label">자산 관리</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-<!--                        <li><a href="table_basic.html">Static Tables</a></li>-->
+                        <li><a th:href="@{/asset/main}">자산 관리</a></li>
+                        <li><a th:href="@{/asset/main}">재고 폐기처리</a></li>
                     </ul>
                 </li>
 
