@@ -3,7 +3,6 @@ package com.greedy.jaegojaego.outWarehouse.model.controller;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.service.OutWarehouseService;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
