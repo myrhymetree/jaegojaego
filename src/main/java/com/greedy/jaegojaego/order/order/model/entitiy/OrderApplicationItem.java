@@ -9,36 +9,28 @@ import java.io.Serializable;
 
 @Entity(name = "orderApplicationItem")
 @Table(name = "ORDER_APPLICATION_ITEM")
-public class OrderApplicationItem implements Serializable {
+public class OrderApplicationItem {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "ORDER_APPLICATION_NO")
-    private OrderApplication orderApplication;
+    @EmbeddedId
+    private OrderApplicationItemPK orderApplicationItemPK;
 
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-    private OrderClientContractItem orderClientContractItem;
-
     public OrderApplicationItem() {
     }
 
-    public OrderApplicationItem(OrderApplication orderApplication, int orderApplicationItemAmount, OrderClientContractItem orderClientContractItem) {
-        this.orderApplication = orderApplication;
+    public OrderApplicationItem(OrderApplicationItemPK orderApplicationItemPK, int orderApplicationItemAmount) {
+        this.orderApplicationItemPK = orderApplicationItemPK;
         this.orderApplicationItemAmount = orderApplicationItemAmount;
-        this.orderClientContractItem = orderClientContractItem;
     }
 
-    public OrderApplication getOrderApplication() {
-        return orderApplication;
+    public OrderApplicationItemPK getOrderApplicationItemPK() {
+        return orderApplicationItemPK;
     }
 
-    public void setOrderApplication(OrderApplication orderApplication) {
-        this.orderApplication = orderApplication;
+    public void setOrderApplicationItemPK(OrderApplicationItemPK orderApplicationItemPK) {
+        this.orderApplicationItemPK = orderApplicationItemPK;
     }
 
     public int getOrderApplicationItemAmount() {
@@ -49,19 +41,11 @@ public class OrderApplicationItem implements Serializable {
         this.orderApplicationItemAmount = orderApplicationItemAmount;
     }
 
-    public OrderClientContractItem getOrderClientContractItem() {
-        return orderClientContractItem;
-    }
-
-    public void setOrderClientContractItem(OrderClientContractItem orderClientContractItem) {
-        this.orderClientContractItem = orderClientContractItem;
-    }
-
     @Override
     public String toString() {
         return "OrderApplicationItem{" +
-                "orderApplicationItemAmount=" + orderApplicationItemAmount +
-                ", orderClientContractItem=" + orderClientContractItem +
+                "orderApplicationItemPK=" + orderApplicationItemPK +
+                ", orderApplicationItemAmount=" + orderApplicationItemAmount +
                 '}';
     }
 }

@@ -5,19 +5,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.authentification.model.service.AuthenticationService;
-import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
 import com.greedy.jaegojaego.order.order.model.dto.*;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -220,25 +217,17 @@ public class OrderController {
     }
 
     @PostMapping("companyorderregist")
-    public ModelAndView registCompanyOrder(ModelAndView mv, HttpServletRequest request) {
+    public ModelAndView registCompanyOrder(ModelAndView mv, HttpServletRequest request, Authentication authentication) {
 
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        User loadUser = (User) principal;
-//
-//        CustomUser user = (CustomUser) authenticationService.loadUserByUsername(loadUser.getUsername());
 
-//        System.out.println(user.getMemberNo());
-
-        MemberDTO member = (MemberDTO) request.getSession().getAttribute("loginMember");
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
         String[] itemAmount = request.getParameterValues("itemAmount");
-        String[] clientNo = request.getParameterValues("clientItemInfoNo");
+        String[] clientItemNo = request.getParameterValues("clientItemInfoNo");
         String[] itemInfoNo = request.getParameterValues("itemInfoNo");
+        String[] clientNo = request.getParameterValues("clientNo");
 
-        System.out.println(member.getMemberNo());
-
-        orderService.insertCompanyOrder(itemAmount, clientNo, itemInfoNo, member.getMemberNo());
+        orderService.insertCompanyOrder(itemAmount, clientItemNo, itemInfoNo, customUser.getMemberNo(), clientNo);
 
         mv.setViewName("/order/companyApplicationList");
 

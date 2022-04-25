@@ -10,15 +10,8 @@ import java.io.Serializable;
 @Table(name = "COMPANY_ORDER_ITEM")
 public class CompanyOrderItem implements Serializable {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "ITEM_INFO_NO")
-    private OrderItemInfo orderItemInfo;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
-    private CompanyOrderHistory companyOrderHistory;
+    @EmbeddedId
+    private CompanyOrderItemPK companyOrderItemPK;
 
     @Column(name = "COMPANY_ORDER_ITEM_AMOUNT")
     private int companyOrderItemAmount;
@@ -26,26 +19,17 @@ public class CompanyOrderItem implements Serializable {
     public CompanyOrderItem() {
     }
 
-    public CompanyOrderItem(OrderItemInfo orderItemInfo, CompanyOrderHistory companyOrderHistory, int companyOrderItemAmount) {
-        this.orderItemInfo = orderItemInfo;
-        this.companyOrderHistory = companyOrderHistory;
+    public CompanyOrderItem(CompanyOrderItemPK companyOrderItemPK, int companyOrderItemAmount) {
+        this.companyOrderItemPK = companyOrderItemPK;
         this.companyOrderItemAmount = companyOrderItemAmount;
     }
 
-    public OrderItemInfo getOrderItemInfo() {
-        return orderItemInfo;
+    public CompanyOrderItemPK getCompanyOrderItemPK() {
+        return companyOrderItemPK;
     }
 
-    public void setOrderItemInfo(OrderItemInfo orderItemInfo) {
-        this.orderItemInfo = orderItemInfo;
-    }
-
-    public CompanyOrderHistory getCompanyOrderHistory() {
-        return companyOrderHistory;
-    }
-
-    public void setCompanyOrderHistory(CompanyOrderHistory companyOrderHistory) {
-        this.companyOrderHistory = companyOrderHistory;
+    public void setCompanyOrderItemPK(CompanyOrderItemPK companyOrderItemPK) {
+        this.companyOrderItemPK = companyOrderItemPK;
     }
 
     public int getCompanyOrderItemAmount() {
@@ -59,7 +43,7 @@ public class CompanyOrderItem implements Serializable {
     @Override
     public String toString() {
         return "CompanyOrderItem{" +
-                "itemInfo=" + orderItemInfo +
+                "companyOrderItemPK=" + companyOrderItemPK +
                 ", companyOrderItemAmount=" + companyOrderItemAmount +
                 '}';
     }
