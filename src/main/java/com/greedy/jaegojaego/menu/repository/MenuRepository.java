@@ -4,6 +4,7 @@ package com.greedy.jaegojaego.menu.repository;
 import com.greedy.jaegojaego.menu.entity.Menu;
 import com.greedy.jaegojaego.menu.entity.RawMaterial;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,10 @@ import java.util.List;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
+    @Query(
+            value = "SELECT * " +
+                    "  FROM FINISHED_PRODUCT_MENU A " +
+                    " WHERE A.FINISHED_PRODUCT_MENU_NAME = :menuName", nativeQuery = true
+    )
+    Menu selectMenuByMenuName(String menuName);
 }

@@ -14,23 +14,23 @@ public class MenuFranchiseOrderableItem implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
-    private MenuMaterialManufacture itemInfoNo;
+    private MenuMaterial itemInfoNo;
 
     @Column(name = "FRANCHISE_ORDERABLE_ITEM_PRICE")
     private int franchiseOrderableItemPrice;
 
     public MenuFranchiseOrderableItem() {}
 
-    public MenuFranchiseOrderableItem(MenuMaterialManufacture itemInfoNo, int franchiseOrderableItemPrice) {
+    public MenuFranchiseOrderableItem(MenuMaterial itemInfoNo, int franchiseOrderableItemPrice) {
         this.itemInfoNo = itemInfoNo;
         this.franchiseOrderableItemPrice = franchiseOrderableItemPrice;
     }
 
-    public MenuMaterialManufacture getItemInfoNo() {
+    public MenuMaterial getItemInfoNo() {
         return itemInfoNo;
     }
 
-    public void setItemInfoNo(MenuMaterialManufacture itemInfoNo) {
+    public void setItemInfoNo(MenuMaterial itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
     }
 

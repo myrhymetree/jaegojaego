@@ -14,12 +14,12 @@ public class RawMaterial implements Serializable {
     private String rawMaterialName;
 
     @Column(name = "FINISHED_PRODUCT_CONFIGURATION_ITEM_CAPACITY")
-    private int rawMaterialCapacity;
+    private String rawMaterialCapacity;
 
 
     public RawMaterial() {}
 
-    public RawMaterial(RawMaterialPK rawMaterialPK, String rawMaterialName, int rawMaterialCapacity) {
+    public RawMaterial(RawMaterialPK rawMaterialPK, String rawMaterialName, String rawMaterialCapacity) {
         this.rawMaterialPK = rawMaterialPK;
         this.rawMaterialName = rawMaterialName;
         this.rawMaterialCapacity = rawMaterialCapacity;
@@ -41,11 +41,11 @@ public class RawMaterial implements Serializable {
         this.rawMaterialName = rawMaterialName;
     }
 
-    public int getRawMaterialCapacity() {
+    public String getRawMaterialCapacity() {
         return rawMaterialCapacity;
     }
 
-    public void setRawMaterialCapacity(int rawMaterialCapacity) {
+    public void setRawMaterialCapacity(String rawMaterialCapacity) {
         this.rawMaterialCapacity = rawMaterialCapacity;
     }
 
@@ -54,7 +54,7 @@ public class RawMaterial implements Serializable {
         return "RawMaterial{" +
                 "rawMaterialPK=" + rawMaterialPK +
                 ", rawMaterialName='" + rawMaterialName + '\'' +
-                ", rawMaterialCapacity=" + rawMaterialCapacity +
+                ", rawMaterialCapacity='" + rawMaterialCapacity + '\'' +
                 '}';
     }
 }

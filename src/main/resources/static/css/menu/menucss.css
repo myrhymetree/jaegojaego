@@ -58,8 +58,8 @@
 
 .forz-index {
     position: absolute;
-    top: 25%;
-    left: 30%;
+    top: 22.3%;
+    left: 29.5%;
     z-index: 1050
 }
 
@@ -126,7 +126,7 @@
 
 .registMenuCancelButton {
     position: relative;
-    left: 25%;
+    left: 30%;
     margin-top: 8px;
 }
 
@@ -145,7 +145,8 @@
 
 .registMenuSubmitButton {
     position: relative;
-    left: 15%;
+    top: 39.3%;
+    left: 30%;
 }
 
 #oneRawMaterial {
@@ -166,4 +167,8 @@
     width: 17px;
     height: 14px;
     display: inline-block;
+}
+
+.sweet-alert {
+    margin-left: -150px !important;
 }

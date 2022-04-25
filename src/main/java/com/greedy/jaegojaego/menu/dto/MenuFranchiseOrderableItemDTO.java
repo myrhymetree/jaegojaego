@@ -2,21 +2,21 @@ package com.greedy.jaegojaego.menu.dto;
 
 public class MenuFranchiseOrderableItemDTO {
 
-    private MenuMaterialManufactureDTO itemInfoNo;
+    private MenuMaterialsDTO itemInfoNo;
     private int franchiseOrderableItemPrice;
 
     public MenuFranchiseOrderableItemDTO() {}
 
-    public MenuFranchiseOrderableItemDTO(MenuMaterialManufactureDTO itemInfoNo, int franchiseOrderableItemPrice) {
+    public MenuFranchiseOrderableItemDTO(MenuMaterialsDTO itemInfoNo, int franchiseOrderableItemPrice) {
         this.itemInfoNo = itemInfoNo;
         this.franchiseOrderableItemPrice = franchiseOrderableItemPrice;
     }
 
-    public MenuMaterialManufactureDTO getItemInfoNo() {
+    public MenuMaterialsDTO getItemInfoNo() {
         return itemInfoNo;
     }
 
-    public void setItemInfoNo(MenuMaterialManufactureDTO itemInfoNo) {
+    public void setItemInfoNo(MenuMaterialsDTO itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
     }
 
