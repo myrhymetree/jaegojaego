@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego.order.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy.company;
 
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 

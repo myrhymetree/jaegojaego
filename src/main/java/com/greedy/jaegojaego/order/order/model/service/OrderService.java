@@ -4,17 +4,19 @@ import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractItemRepository;
+import com.greedy.jaegojaego.order.client.model.repository.OrderClientRepository;
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
-import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
-import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
-import com.greedy.jaegojaego.order.order.model.entitiy.*;
-import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderHistoryRepository;
-import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderItemRepository;
-import com.greedy.jaegojaego.order.order.model.repository.OrderApplicationItemRepository;
-import com.greedy.jaegojaego.order.order.model.repository.OrderApplicationRepository;
+import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
+import com.greedy.jaegojaego.order.order.model.entitiy.company.*;
+import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
+import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
+import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;
+import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +39,14 @@ public class OrderService {
     private final CompanyOrderItemRepository companyOrderItemRepository;
     private final OrderApplicationRepository orderApplicationRepository;
     private final OrderApplicationItemRepository orderApplicationItemRepository;
+    private final OrderClientRepository orderClientRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
             , OrderItemWarehouseRepository orderItemWarehouseRepository, OrderItemInfoRepository orderItemInfoRepository
             , OrderClientContractItemRepository orderClientContractItemRepository, CompanyOrderItemRepository companyOrderItemRepository
-            , OrderApplicationRepository orderApplicationRepository, OrderApplicationItemRepository orderApplicationItemRepository) {
+            , OrderApplicationRepository orderApplicationRepository, OrderApplicationItemRepository orderApplicationItemRepository
+            , OrderClientRepository orderClientRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
@@ -52,6 +56,7 @@ public class OrderService {
         this.companyOrderItemRepository = companyOrderItemRepository;
         this.orderApplicationRepository = orderApplicationRepository;
         this.orderApplicationItemRepository = orderApplicationItemRepository;
+        this.orderClientRepository = orderClientRepository;
     }
 
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
@@ -108,7 +113,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void insertCompanyOrder(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, int memberNo, String[] clientNo) {
+    public List<CompanyOrderDetailDTO> insertCompanyOrder(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, int memberNo, String[] clientNo) {
 
         Map<Integer, Integer> orderItemInfo = new HashMap<>();
         List<Integer> clientList = new ArrayList<>();
@@ -157,6 +162,22 @@ public class OrderService {
         insertOrderApplication(companyOrderHistoryNo, clientList);
 
         insertOrderApplicationItem(clientList, clientItemNo, clientNo, itemAmount);
+
+        List<CompanyOrderDetailDTO> companyOrderDetailList = new ArrayList<>();
+
+        for(Integer clientNumber : clientList) {
+            CompanyOrderDetailDTO companyOrderDetail = new CompanyOrderDetailDTO();
+            companyOrderDetail.setCompanyOrderHistoryNo(companyOrderHistoryNo);
+
+            OrderClient orderClient = orderClientRepository.findById(clientNumber).get();
+
+            companyOrderDetail.setClientName(orderClient.getClientName());
+            companyOrderDetail.setClientNo(orderClient.getClientNo());
+
+            companyOrderDetailList.add(companyOrderDetail);
+        }
+
+        return companyOrderDetailList;
     }
 
     private void insertCompanyOrderHistory(int memberNo) {
@@ -216,14 +237,6 @@ public class OrderService {
         List<Integer> orderApplicationNo = orderApplicationRepository.selectRecentOrderApplication(clientList.size() + 1);
         List<Integer> orderApplicationClientNo = orderApplicationRepository.selectRecentOrderApplicationClient(clientList.size() + 1);
 
-        for(int i = 0; i < itemAmount.length; i++) {
-            System.out.println(clientNo[i] + " : " + clientItemNo[i] + " : " + itemAmount[i]);
-        }
-
-        for(int i = 0; i < orderApplicationNo.size(); i++) {
-            System.out.println(orderApplicationClientNo.get(i) + " : " + orderApplicationNo.get(i));
-        }
-
         for(int i = 0; i < clientItemNo.length; i++) {
 
             for(int j = 0; j < orderApplicationClientNo.size(); j++) {
@@ -238,12 +251,6 @@ public class OrderService {
 
                     orderClientContractItem.setClientContractItemNo(Integer.parseInt(clientItemNo[i]));
                     orderApplicationItemPK.setOrderClientContractItem(orderClientContractItem);
-
-                    System.out.println("발주 신청서 번호 : " + orderApplication.getOrderApplicationNo());
-                    System.out.println("발주 거래처 판매 물품 번호 : " + orderClientContractItem.getClientContractItemNo());
-                    System.out.println("수량 : " + itemAmount[i]);
-
-                    System.out.println("orderApplicationItemPK = " + orderApplicationItemPK);
 
                     OrderApplicationItem orderApplicationItem = new OrderApplicationItem();
                     orderApplicationItem.setOrderApplicationItemPK(orderApplicationItemPK);

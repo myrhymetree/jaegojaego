@@ -31,9 +31,6 @@
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
                             <a class="close-link">
                                 <i class="fa fa-times"></i>
                             </a>
@@ -41,38 +38,24 @@
                     </div>
                     <div class="ibox-content">
 
-                        <table class="table table-bordered" style="text-align: center">
+                        <table class="table table-bordered" style="text-align: center; margin-left:100px; width: 750px;">
                             <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>물품 이름</th>
-                                <th>거래처명</th>
-                                <th>수량</th>
-                                <th>발주 신청서</th>
-                            </tr>
+                                <tr>
+                                    <th>No</th>
+                                    <th>거래처명</th>
+                                    <th style="width: 180px;">발주 신청서</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>지로스팅 커피원두 1kg</td>
-                                <td>A 거래처</td>
-                                <td>1000</td>
-                                <td><button class="company-order-output">출력</button></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>1</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>1</td>
-                                <td>@twitter</td>
-                            </tr>
+                                <tr th:each="orderApplication : ${ applicationList }">
+                                    <td th:text="${ orderApplicationStat.count }"></td>
+                                    <td th:text="${ orderApplication.clientName }"></td>
+                                    <td>
+                                        <button class="company-order-output" id="company-order-output">출력</button>
+                                        <input type="hidden" th:value="${ orderApplication.companyOrderHistoryNo }">
+                                        <input type="hidden" th:value="${ orderApplication.clientNo }">
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -81,6 +64,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById("company-order-output").onclick = function() {
+
+            let companyOrderHistoryNo = this.parentNode.children[1].value;
+            let clientNo = this.parentNode.children[2].value;
+
+            location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
+
+        }
+    </script>
 
     <th:block th:replace="/common/footer.html"></th:block>
 

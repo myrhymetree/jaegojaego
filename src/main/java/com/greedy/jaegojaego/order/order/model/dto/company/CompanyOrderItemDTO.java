@@ -1,8 +1,7 @@
-package com.greedy.jaegojaego.order.order.model.dto;
+package com.greedy.jaegojaego.order.order.model.dto.company;
 
 
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
-import lombok.*;
 
 public class CompanyOrderItemDTO {
 

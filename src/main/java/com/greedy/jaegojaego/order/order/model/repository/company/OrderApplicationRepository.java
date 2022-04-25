@@ -1,6 +1,6 @@
-package com.greedy.jaegojaego.order.order.model.repository;
+package com.greedy.jaegojaego.order.order.model.repository.company;
 
-import com.greedy.jaegojaego.order.order.model.entitiy.OrderApplication;
+import com.greedy.jaegojaego.order.order.model.entitiy.company.OrderApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

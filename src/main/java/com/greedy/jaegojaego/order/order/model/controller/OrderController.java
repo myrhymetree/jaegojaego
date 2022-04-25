@@ -7,7 +7,10 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.authentification.model.service.AuthenticationService;
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
-import com.greedy.jaegojaego.order.order.model.dto.*;
+import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationItemDTO;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -227,8 +230,9 @@ public class OrderController {
         String[] itemInfoNo = request.getParameterValues("itemInfoNo");
         String[] clientNo = request.getParameterValues("clientNo");
 
-        orderService.insertCompanyOrder(itemAmount, clientItemNo, itemInfoNo, customUser.getMemberNo(), clientNo);
+        List<CompanyOrderDetailDTO> applicationList = orderService.insertCompanyOrder(itemAmount, clientItemNo, itemInfoNo, customUser.getMemberNo(), clientNo);
 
+        mv.addObject("applicationList", applicationList);
         mv.setViewName("/order/companyApplicationList");
 
         return mv;

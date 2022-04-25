@@ -1,9 +1,8 @@
-package com.greedy.jaegojaego.order.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy.company;
 
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
