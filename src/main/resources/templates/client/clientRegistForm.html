@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>거래처 신규 등록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/client/clientcss.css}">
+</head>
+<body>
+<div th:replace="/common/header.html"></div>
+
+<div class="body-header" style="min-height: 7%;">
+    <div class="menu-title">거래처정보</div>
+    <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처등록</div>
+</div>
+<div class="client-regist-title">거래처 신규 등록 </div>
+<div class="client-regist-body" style="position: center !important;">
+<div class="panel-body">
+    <fieldset>
+        <div> 회사 정보 </div>
+        <div class="form-group row"><label class="col-sm-2 col-form-label">상호명 : </label>
+            <div class="col-sm-10" ><input type="text" class="form-control"></div>
+        </div>
+        <div class="form-group row"><label class="col-sm-2 col-form-label">사업자등록번호 : </label>
+            <div class="col-sm-10"><input type="text" class="form-control" name="cbrNo" id="cbrNo" maxlength="12"></div>
+        </div>
+        <div class="form-group row"><label class="col-sm-2 col-form-label">회사 주소 : </label>
+            <div class="col-sm-10"><input type="text" class="form-control"></div>
+        </div>
+        <div class="form-group row"><label class="col-sm-2 col-form-label">대표자명 : </label>
+            <div class="col-sm-10"><input type="text" class="form-control"></div>
+        </div>
+        <div class="form-group row"><label class="col-sm-2 col-form-label">대표자 연락처 :</label>
+            <div class="col-sm-10"><input type="text" class="form-control"></div>
+        </div>
+        <div class="form-group row"><label class="col-sm-2 col-form-label">회사 연락처 : </label>
+            <div class="col-sm-10"><input type="text" class="form-control" ></div>
+        </div>
+            <label class="col-sm-2 col-form-label" style="float: left;"> 계약시작일 : </label>
+            <input type="text" class="form-control" style="float: left">
+            <label class="col-sm-2 col-form-label" style="float: left">계약종료일 : </label>
+            <input type="text" class="form-control" style="float: left">
+    </fieldset>
+</div>
+
+</div>
+</div>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+<script>
+    $(document).ready(function () {
+        $(function () {
+
+            $('#cbrNo').keydown(function (event) {
+                var key = event.charCode || event.keyCode || 0;
+                $text = $(this);
+                if (key !== 8 && key !== 9) {
+                    if ($text.val().length === 3) {
+                        $text.val($text.val() + '-');
+                    }
+                    if ($text.val().length === 6) {
+                        $text.val($text.val() + '-');
+                    }
+                }
+
+                return (key == 8 || key == 9 || key == 46 || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));
+            })
+        });
+
+    });
+</script>
+</body>
+</html>
