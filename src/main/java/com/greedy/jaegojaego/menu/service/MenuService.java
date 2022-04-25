@@ -6,6 +6,7 @@ import com.greedy.jaegojaego.menu.dto.RawMaterialDTO;
 import com.greedy.jaegojaego.menu.entity.Menu;
 import com.greedy.jaegojaego.menu.entity.MenuMaterial;
 import com.greedy.jaegojaego.menu.entity.RawMaterial;
+import com.greedy.jaegojaego.menu.entity.RawMaterialPK;
 import com.greedy.jaegojaego.menu.repository.MenuMaterialRepository;
 import com.greedy.jaegojaego.menu.repository.MenuRepository;
 import com.greedy.jaegojaego.menu.repository.RawMaterialRepository;
@@ -15,11 +16,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
  * 2022/04/21 (이소현) 매뉴 상세 조회 비동기 페이징
  * 2022/04/22 (이소현) 매뉴 등록용 자재 리스트 조회
  * 2022/04/23 (이소현) 메뉴 등록
+ * 2022/04/25 (이소현) 메뉴 등록
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -65,10 +67,10 @@ public class MenuService {
 
     public List<RawMaterialDTO> selectOneMenu(int menuNo) {
 
-        List<RawMaterial> test = rawMaterialRepository.selectOneMenu(menuNo);
-        test.forEach(System.out::println);
+        List<RawMaterial> selectOneMenu = rawMaterialRepository.selectOneMenu(menuNo);
+        selectOneMenu.forEach(System.out::println);
 
-        return test.stream().map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDTO.class)).collect(Collectors.toList());
+        return selectOneMenu.stream().map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDTO.class)).collect(Collectors.toList());
     }
 
     /* 비동기(ajax) 페이징 */
@@ -95,45 +97,85 @@ public class MenuService {
     @Transactional
     public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String materialNameAndCapacityList) {
 
-        /* 1. 메뉴 insert */
-        Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class)); //성공시
+        /* 1. 완제품 메뉴 등록 */
+        Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class));
 
-        RawMaterialDTO rawMaterial = new RawMaterialDTO();
-        String[] rawMaterialList = materialNameAndCapacityList.split(","); // -> 루누아나원두1kg/60g  , 000원두1kg/50 , 000원두1kg/40 으로 나누어짐
-        List<String[]> stringList = new ArrayList<>(); // [0] -> 루누아나 원두1kg // [1] -> 60g
+        /* 분리 (3개가 들어올 경우 3개로) */
+        String[] rawMaterialList = materialNameAndCapacityList.split(",");
+        List<String> nameList = new ArrayList<>();
+        List<Integer> capacityList = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        //이름 -> 키값
+        //용량 -> 밸류값
 
-        for(int i = 0; i < rawMaterialList.length; i++) { //3개
+        for(int i = 0; i < rawMaterialList.length; i++) {
             String[] oneRawMaterial = rawMaterialList[i].split("/");
-            stringList.add(oneRawMaterial);
+
+            nameList.add(oneRawMaterial[0]);
+            capacityList.add(Integer.parseInt(oneRawMaterial[1].replace("g","")));
         }
 
-        for(String[] array : stringList) { //stringList = 2
-            rawMaterial.setRawMaterialName(array[0]);
-//            rawMaterial.setRawMaterialCapacity(array[1]);
-            System.out.println("제발 : " + array[0]);
-            System.out.println("제발 : " + array[1].indexOf("g"));
-        }
-        System.out.println("menuMaterial : " + menuMaterial);
+        for(int i = 0;  i < nameList.size(); i++) {
 
+            if(!map.containsKey(nameList.get(i))) { //중복 안된 경우
+                map.put(nameList.get(i), capacityList.get(i));
+            } else { // 중복 된 경우
+                map.put(nameList.get(i), map.get(nameList.get(i)) + capacityList.get(i));
+            }
+        }
+
+            Iterator<String> keys = map.keySet().iterator();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                System.out.println(key + "," + map.get(key));
+
+            }
+
+        //인제 얘를 g을 붙여서 데이터에 넣어주면 된다. 
+
+        /* 2. 완제품 메뉴의 번호를 불러와야 함 */
         if(insertMenu != null) {
 
             Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
 
-            System.out.println("나오냐? : " + menuNo);
-
-            // List<Integer> itemInfo = menuMaterialRepository.selectByItemInfoContaining();
-            for(int i = 0; i < stringList.size(); i++) {
-//                rawMaterial.setRawMaterialName(stringList[i]);
-//                rawMaterial.setMenuNoforRaw(menu.getMenuNo());
-            }
-
-
-
         }
 
 
 
 
 
-    }
-}
+
+//        String[] rawMaterialList = materialNameAndCapacityList.split(",");  //3개
+//        List<String[]> stringList = new ArrayList<>();
+//
+//        if(insertMenu != null) {
+//
+//            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+//
+//            for(int i = 0; i < rawMaterialList.length; i++) { //3개로 나누느 것
+//                String[] oneRawMaterial = rawMaterialList[i].split("/");
+//                stringList.add(oneRawMaterial);
+//
+//                for(String[] array : stringList) { //stringList = 2
+//
+//                    String menuName = array[0]; //로스팅된 지로스팅 1kg
+//                    String menuCapacity = array[1]; //60g
+//
+//                    MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menuName);
+//                    System.out.println("menuInfo : " + menuInfoNo);
+//
+//                    RawMaterial rawMaterial = new RawMaterial();
+//                    RawMaterialPK rawMaterialPK = new RawMaterialPK();
+//
+//                    rawMaterialPK.setMenuNoforRaw(menuNo);
+//                    rawMaterialPK.setItemInfoNo(menuInfoNo);
+//                    rawMaterial.setRawMaterialPK(rawMaterialPK);
+//
+//                    rawMaterial.setRawMaterialName(menuName);
+//                    rawMaterial.setRawMaterialCapacity(menuCapacity);
+//
+//                    rawMaterialRepository.save(rawMaterial);
+
+                }
+            }
+

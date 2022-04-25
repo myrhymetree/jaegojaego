@@ -15,7 +15,7 @@
     <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
 
 </head>
-<body style="overflow: hidden">
+<body>
 <th:block th:replace="/common/header.html"></th:block>
 
 <div class="ibox">
@@ -74,17 +74,17 @@
                         <option value="N">N</option>
                     </select><br>
                     *<label>원재료 선택 : </label>&nbsp;
-                    <select name="materialCategoryForModify" id="materialCategoryForModify">
+                    <select name="itemInfoNo" class="materialCategoryForModify" id="materialCategoryForModify" onchange="">
                         <option>원재료를 선택해주세요!</option>
-                        <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
+                        <!-- 동적생성으로 -->
                     </select><br>
-                    *<labe>용량 : </labe>
-                    <select class="materialCapacity" id="materialCapacityForModify">
+                    *<label>용량 : </label>
+                    <select name="materialCapacity" class="materialCapacity" id="materialCapacityForModify" onchange="">
                         <!-- 위에랑 select 연관 : 고정 (위에가 선택되면 얘가 10g/20g/30g/40g/50g/60g .. /100g까지 생기게!! -->
-                        <option>위쪽먼저선택ㄱ</option>
                     </select><br><br>
-                    <div class="rawMaterialList" id="rawMaterialListForModify">
-                        <!-- 원재료 선택 select 할때 여기에도 동적 생성으로 추가되야함 -->
+                    <div class="rawMaterialList" id="rawMaterialListForModify" name="rawMaterialList">
+
+
                     </div>
                     <button class="button" type="submit">수정</button>
                     <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
@@ -100,7 +100,6 @@
             <div class="ibox">
                 <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">메뉴 목록</h3>
                 <button class="button registMenuButton" id="registMenuButton">메뉴 등록</button>
-                <button class="button modifyMenuButton" id="modifyMenuButton">메뉴 수정</button>
                 <button class="button deleteMenuButton" id="deleteMenuButton">메뉴 삭제</button>
                 <div class="ibox-content">
                     <div class="table-responsive">
@@ -141,6 +140,7 @@
             <div class="ibox">
                 <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;" id="menuNameWhenClickEachMenu">
                 </h3>
+                <button class="button modifyMenuButton" id="modifyMenuButton">메뉴 수정</button>
 
                 <div class="ibox-content">
                     <div class="table-responsive">
@@ -191,11 +191,16 @@
                    url: "/menu/materialcategory",
                    success: function(data) {
                        const $materialCategoryForRegist = $("#materialCategoryForRegist");
+                       const $materialCategoryForModify = $("#materialCategoryForModify");
+
                        $materialCategoryForRegist.html("");
+                       $materialCategoryForModify.html("");
                        $materialCategoryForRegist.append($("<option>").text("옵션을 선택해주세요!"));
+                       $materialCategoryForModify.append($("<option>").text("옵션을 선택해주세요!"));
 
                        for(let list in data) {
                            $materialCategoryForRegist.append($("<option>").val(data[list].itemInfoNo).text(data[list].itemInfoName));
+                           $materialCategoryForModify.append($("<option>").val(data[list].itemInfoNo).text(data[list].itemInfoName));
                        }
                    },
                    error: function(xhr) {
@@ -215,7 +220,7 @@
 
                 for(x in capacity) {
                     const opt = document.createElement("option");
-                    opt.innerText = text + '/' + capacity[x] + ',';
+                    opt.innerText = text + '/' + capacity[x] + ','; //, 밑에붙여주자
                     opt.value = value;
                     // opt.value = text + '/' + capacity[x];
                     $materialCapacity.append(opt);
