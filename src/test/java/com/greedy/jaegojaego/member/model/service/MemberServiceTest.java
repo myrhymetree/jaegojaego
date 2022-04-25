@@ -15,6 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @ContextConfiguration(classes = {JpaConfiguration.class, JaegojaegoApplication.class, BeanConfiguration.class, JaegojaegoApplication.class})
@@ -59,5 +63,15 @@ class MemberServiceTest {
         companyAccount.setMemberEmail("dfdfdlk@jaegojaego.com");
 
         companyAccountRepository.save(companyAccount);
+    }
+
+    @Test
+    public void 계정목록조회() {
+
+        List<CompanyAccount> memberList = companyAccountRepository.findAll();
+
+        memberList.forEach(rows -> System.out.println(rows));
+
+        assertNotNull(memberList);
     }
 }

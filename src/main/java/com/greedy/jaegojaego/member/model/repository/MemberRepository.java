@@ -22,5 +22,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 //    List<MemberRole> findByMemberNo(int memberNo);
 
     boolean existsByMemberId(String memberId);
+
 }
 

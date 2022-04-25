@@ -7,6 +7,7 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
+import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -88,13 +89,21 @@ public class MemberController {
         return memberService.findDepartmentAll();
     }
 
-//    @GetMapping("/list")
-//    public ModelAndView findMemberList(ModelAndView mv) {
-//
-//        mv.setViewName("/member/list");
-//
-//        return mv;
-//    }
+    @GetMapping("/list")
+    public ModelAndView findMemberList(ModelAndView mv) {
+
+        List<CompanyAccountDTO> memberList = memberService.findMemberList();
+
+        Integer count = memberService.countAll();
+
+        mv.addObject("memberList", memberList);
+
+        mv.addObject("count", count);
+
+        mv.setViewName("/member/list");
+
+        return mv;
+    }
 
     @GetMapping(value = "/duplication", produces = "application/json; charset=UTF-8")
     @ResponseBody
