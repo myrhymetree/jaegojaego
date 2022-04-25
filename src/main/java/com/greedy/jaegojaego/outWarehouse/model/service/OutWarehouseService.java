@@ -3,7 +3,6 @@ package com.greedy.jaegojaego.outWarehouse.model.service;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouse;
-import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseFranchiseInfo;
 import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseItem;
 import com.greedy.jaegojaego.outWarehouse.model.repository.OutWarehouseDetailRespository;
 import com.greedy.jaegojaego.outWarehouse.model.repository.OutWarehouseRepository;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,5 +83,17 @@ public class OutWarehouseService {
         }
 
         return outWarehouseDetailList;
+    }
+
+    /**
+     * @param status
+     * @param outWarehouseNo
+     */
+    public void modifyStatus(String status, int outWarehouseNo) {
+
+        OutWarehouse outWarehouse = outWarehouseRepository.findByOutWarehouseNo(outWarehouseNo);
+        outWarehouse.setOutWarehouseWorkingStatusName(status);
+
+        outWarehouseRepository.save(outWarehouse);
     }
 }

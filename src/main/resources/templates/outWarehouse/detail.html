@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <th:block th:include="/common/header.html"></th:block>
@@ -24,7 +25,7 @@
                 <h5>출고 번호</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins" th:text="${ outWarehouseDetailList.get(0).outWarehouseNo }"></h1>
+                <h1 id="outWarehouseNo" class="no-margins" th:text="${ outWarehouseDetailList.get(0).outWarehouseNo }"></h1>
                 <br>
             </div>
         </div>
@@ -50,13 +51,13 @@
     <h2>출고 정보</h2>
     <br>
         <h3>작업 상태</h3>
-        <select th:style="${'width:10%; height:2rem; text-align:center; font-size:1.2rem;'}">
-            <option value="1">출고 대기</option>
-            <option value="2">출고 작업</option>
-            <option value="3">출하 작업</option>
-            <option value="4">출하 완료</option>
+        <select id="outWarehouseStatus" th:style="${'width:10%; height:2rem; text-align:center; font-size:1.2rem;'}">
+            <option value="출고 대기">출고 대기</option>
+            <option value="출고 작업">출고 작업</option>
+            <option value="출하 작업">출하 작업</option>
+            <option value="출하 완료">출하 완료</option>
         </select>
-        <button class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
+        <button onclick="asyncModifyStatus()" class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
     <br>
     <br>
 
@@ -91,11 +92,34 @@
 </div>
 <!-- 테이블 끝 -->
 <script>
-    const modifyBtn = document.getElementsByClassName("modifyBtn");
-    // const
+    const modifyStatusBtn = document.getElementsByClassName("modifyStatusBtn");
+    const outWarehouseNo = document.getElementById("outWarehouseNo").innerText;
 
-    modifyBtn.onclick = async function() {
-        console.log("check");
+    function postStatus() {
+        try {
+            let outWarehouseStatus = document.getElementById("outWarehouseStatus").value;
+
+            axios.post("/outwarehouse/modify",
+                {
+                    "outWarehouseNo": parseInt(outWarehouseNo),
+                    "outWarehouseStatus": outWarehouseStatus
+                }
+            )
+            .then(function (response) {
+                alert("처리 상태 수정에 성공하셨습니다.");
+                console.log(response)
+            })
+            .then(() => {
+                location.reload();
+            })
+        } catch (e) {
+            alert("처리 상태 수정에 실패하셨습니다.");
+            console.log(e);
+        }
+    }
+
+    async function asyncModifyStatus() {
+        return await postStatus();
     }
 </script>
 
