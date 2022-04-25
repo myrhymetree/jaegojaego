@@ -81,7 +81,7 @@ public class MenuServiceTests {
         //given
         MenuDTO menu = new MenuDTO();
         menu.setMenuNo(51);
-        menu.setMenuName("테스트용 메뉴3");
+        menu.setMenuName("테스트용 메뉴3"); //이름 계속 바꿔줘야 성공합니다.
         menu.setMenuPrice(3000);
         menu.setMenuOrderableStatus("Y");
 
@@ -99,6 +99,8 @@ public class MenuServiceTests {
 
         rawMaterialPK.setMenuNoforRaw(modelMapper.map(menuNo, Menu.class));
         rawMaterialPK.setItemInfoNo(menuInfo);
+        rawMaterial.setRawMaterialCapacity(menuCapacity);
+        rawMaterial.setRawMaterialName(menuRawMaterialName);
         rawMaterial.setRawMaterialPK(rawMaterialPK);
         rawMaterialRepository.save(rawMaterial); //제발 되라!
 

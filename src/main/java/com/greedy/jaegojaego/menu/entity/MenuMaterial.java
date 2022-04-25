@@ -36,14 +36,22 @@ public class MenuMaterial {
     @JoinColumn(name = "MATERIAL_CATEGORY_NO")
     private MenuMaterialsCategory menuMaterialsCategoryNo;
 
+    @Column(name = "SUBDIVISION_UNIT")
+    private Integer subdivisionUnit;
+
+    @Column(name = "SUBDIVISION_YN")
+    private String subdivisionYN;
+
     public MenuMaterial() {}
 
-    public MenuMaterial(int itemInfoNo, String itemInfoName, String itemInfoSerialNo, String itemInfoStatus, MenuMaterialsCategory menuMaterialsCategoryNo) {
+    public MenuMaterial(int itemInfoNo, String itemInfoName, String itemInfoSerialNo, String itemInfoStatus, MenuMaterialsCategory menuMaterialsCategoryNo, Integer subdivisionUnit, String subdivisionYN) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoSerialNo = itemInfoSerialNo;
         this.itemInfoStatus = itemInfoStatus;
         this.menuMaterialsCategoryNo = menuMaterialsCategoryNo;
+        this.subdivisionUnit = subdivisionUnit;
+        this.subdivisionYN = subdivisionYN;
     }
 
     public int getItemInfoNo() {
@@ -86,6 +94,22 @@ public class MenuMaterial {
         this.menuMaterialsCategoryNo = menuMaterialsCategoryNo;
     }
 
+    public Integer getSubdivisionUnit() {
+        return subdivisionUnit;
+    }
+
+    public void setSubdivisionUnit(Integer subdivisionUnit) {
+        this.subdivisionUnit = subdivisionUnit;
+    }
+
+    public String getSubdivisionYN() {
+        return subdivisionYN;
+    }
+
+    public void setSubdivisionYN(String subdivisionYN) {
+        this.subdivisionYN = subdivisionYN;
+    }
+
     @Override
     public String toString() {
         return "MenuMaterial{" +
@@ -94,6 +118,8 @@ public class MenuMaterial {
                 ", itemInfoSerialNo='" + itemInfoSerialNo + '\'' +
                 ", itemInfoStatus='" + itemInfoStatus + '\'' +
                 ", menuMaterialsCategoryNo=" + menuMaterialsCategoryNo +
+                ", subdivisionUnit=" + subdivisionUnit +
+                ", subdivisionYN='" + subdivisionYN + '\'' +
                 '}';
     }
 }

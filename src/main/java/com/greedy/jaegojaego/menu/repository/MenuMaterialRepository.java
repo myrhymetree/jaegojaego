@@ -29,3 +29,4 @@ public interface MenuMaterialRepository extends JpaRepository<MenuMaterial, Inte
     )
     MenuMaterial selectMenuMaterialBymenuName(String menuName);
 }
+

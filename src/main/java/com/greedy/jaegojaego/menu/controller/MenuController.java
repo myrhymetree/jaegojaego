@@ -102,10 +102,10 @@ public class MenuController {
     }
 
     @PostMapping("/regist")
-    public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr) {
+    public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request) {
 
         String materialNameAndCapacityList = request.getParameter("materialsArrayv[]");
-        System.out.println("배열? : " + materialNameAndCapacityList);
+        System.out.println("들어오는 배열들 : " +  materialNameAndCapacityList);
 
         menuService.registMenu(menu, menuMaterial, materialNameAndCapacityList);
 

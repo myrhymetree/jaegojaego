@@ -20,8 +20,7 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -98,53 +97,46 @@ public class MenuService {
     @Transactional
     public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String materialNameAndCapacityList) {
 
-        /* 1. 메뉴 insert */
-        Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class)); //성공시
+        /* 1. 완제품 메뉴 등록 */
+        Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class));
 
-        String[] rawMaterialList = materialNameAndCapacityList.split(","); // -> 루누아나원두1kg/60g  , 000원두1kg/50 , 000원두1kg/40 으로 나누어짐
-        List<String[]> stringList = new ArrayList<>(); // [0] -> 루누아나 원두1kg // [1] -> 60g
+        /* 분리 (3개가 들어올 경우 3개로) */
+        String[] rawMaterialList = materialNameAndCapacityList.split(",");
+        List<String> nameList = new ArrayList<>();
+        List<Integer> capacityList = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+        //이름 -> 키값
+        //용량 -> 밸류값
 
+        for(int i = 0; i < rawMaterialList.length; i++) {
+            String[] oneRawMaterial = rawMaterialList[i].split("/");
 
-        System.out.println("menuMaterial : " + menuMaterial);
+            nameList.add(oneRawMaterial[0]);
+            capacityList.add(Integer.parseInt(oneRawMaterial[1].replace("g","")));
+        }
 
+        for(int i = 0;  i < nameList.size(); i++) {
+
+            if(!map.containsKey(nameList.get(i))) { //중복 안된 경우
+                map.put(nameList.get(i), capacityList.get(i));
+            } else { // 중복 된 경우
+                map.put(nameList.get(i), map.get(nameList.get(i)) + capacityList.get(i));
+            }
+        }
+
+            Iterator<String> keys = map.keySet().iterator();
+            while(keys.hasNext()) {
+                String key = keys.next();
+                System.out.println(key + "," + map.get(key));
+
+            }
+
+        //인제 얘를 g을 붙여서 데이터에 넣어주면 된다. 
+
+        /* 2. 완제품 메뉴의 번호를 불러와야 함 */
         if(insertMenu != null) {
 
-            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName()); //메뉴 번호
-            System.out.println("나오냐? : " + menuNo); //메뉴번호 받아왔음
-
-
-            for(int i = 0; i < rawMaterialList.length; i++) { //3개로 나누느 것
-                String[] oneRawMaterial = rawMaterialList[i].split("/");
-                stringList.add(oneRawMaterial);
-
-//                Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName()); //메뉴 번호
-//                System.out.println("나오냐? : " + menuNo); //메뉴번호 받아왔음(여따가 해주도 뜨네 .. 하)
-
-                for(String[] array : stringList) { //stringList = 2
-
-                    String menuName = array[0];
-                    String menuCapacity = array[1];
-                    System.out.println("메뉴이름 : " + menuName);
-                    System.out.println("메뉴용량 : " + menuCapacity);
-
-                    MenuMaterial menuInfo = menuMaterialRepository.selectMenuMaterialBymenuName(menuName);
-                    System.out.println("나오려나 ?: " + menuInfo);
-
-                    RawMaterial rawMaterial = new RawMaterial();
-                    RawMaterialPK rawMaterialPK = new RawMaterialPK();
-
-                    rawMaterialPK.setMenuNoforRaw(menuNo);
-                    rawMaterialPK.setItemInfoNo(menuInfo);
-                    rawMaterial.setRawMaterialPK(rawMaterialPK);
-
-                    rawMaterial.setRawMaterialName(menuName);
-                    rawMaterial.setRawMaterialCapacity(menuCapacity);
-
-                    System.out.println("완성품  : " + rawMaterial);
-                    rawMaterialRepository.save(rawMaterial); //제발 되라!
-
-                }
-            }
+            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
 
         }
 
@@ -152,5 +144,38 @@ public class MenuService {
 
 
 
-    }
-}
+
+//        String[] rawMaterialList = materialNameAndCapacityList.split(",");  //3개
+//        List<String[]> stringList = new ArrayList<>();
+//
+//        if(insertMenu != null) {
+//
+//            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+//
+//            for(int i = 0; i < rawMaterialList.length; i++) { //3개로 나누느 것
+//                String[] oneRawMaterial = rawMaterialList[i].split("/");
+//                stringList.add(oneRawMaterial);
+//
+//                for(String[] array : stringList) { //stringList = 2
+//
+//                    String menuName = array[0]; //로스팅된 지로스팅 1kg
+//                    String menuCapacity = array[1]; //60g
+//
+//                    MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menuName);
+//                    System.out.println("menuInfo : " + menuInfoNo);
+//
+//                    RawMaterial rawMaterial = new RawMaterial();
+//                    RawMaterialPK rawMaterialPK = new RawMaterialPK();
+//
+//                    rawMaterialPK.setMenuNoforRaw(menuNo);
+//                    rawMaterialPK.setItemInfoNo(menuInfoNo);
+//                    rawMaterial.setRawMaterialPK(rawMaterialPK);
+//
+//                    rawMaterial.setRawMaterialName(menuName);
+//                    rawMaterial.setRawMaterialCapacity(menuCapacity);
+//
+//                    rawMaterialRepository.save(rawMaterial);
+
+                }
+            }
+
