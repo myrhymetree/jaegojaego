@@ -40,15 +40,23 @@ public class CompanyOrderHistory {
     @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
     private List<OrderApplication> orderApplicationList;
 
+    @Column(name = "COMPANY_ORDER_HISTORY_STATUS")
+    private String companyOrderHistoryStaus;
+
+    @Column(name = "COMPANY_ORDER_HISTORY_STATUS_DATE")
+    private java.sql.Date companyOrderHistoryStatusDate;
+
     public CompanyOrderHistory() {
     }
 
-    public CompanyOrderHistory(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccount orderCompanyAccount, List<CompanyOrderItem> companyOrderItemList, List<OrderApplication> orderApplicationList) {
+    public CompanyOrderHistory(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccount orderCompanyAccount, List<CompanyOrderItem> companyOrderItemList, List<OrderApplication> orderApplicationList, String companyOrderHistoryStaus, Date companyOrderHistoryStatusDate) {
         this.companyOrderHistoryNo = companyOrderHistoryNo;
         this.companyOrderHistoryCreatedDate = companyOrderHistoryCreatedDate;
         this.orderCompanyAccount = orderCompanyAccount;
         this.companyOrderItemList = companyOrderItemList;
         this.orderApplicationList = orderApplicationList;
+        this.companyOrderHistoryStaus = companyOrderHistoryStaus;
+        this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
     }
 
     public int getCompanyOrderHistoryNo() {
@@ -91,14 +99,32 @@ public class CompanyOrderHistory {
         this.orderApplicationList = orderApplicationList;
     }
 
+    public String getCompanyOrderHistoryStaus() {
+        return companyOrderHistoryStaus;
+    }
+
+    public void setCompanyOrderHistoryStaus(String companyOrderHistoryStaus) {
+        this.companyOrderHistoryStaus = companyOrderHistoryStaus;
+    }
+
+    public Date getCompanyOrderHistoryStatusDate() {
+        return companyOrderHistoryStatusDate;
+    }
+
+    public void setCompanyOrderHistoryStatusDate(Date companyOrderHistoryStatusDate) {
+        this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
+    }
+
     @Override
     public String toString() {
         return "CompanyOrderHistory{" +
                 "companyOrderHistoryNo=" + companyOrderHistoryNo +
                 ", companyOrderHistoryCreatedDate=" + companyOrderHistoryCreatedDate +
-                ", companyAccount=" + orderCompanyAccount +
+                ", orderCompanyAccount=" + orderCompanyAccount +
                 ", companyOrderItemList=" + companyOrderItemList +
                 ", orderApplicationList=" + orderApplicationList +
+                ", companyOrderHistoryStaus='" + companyOrderHistoryStaus + '\'' +
+                ", companyOrderHistoryStatusDate=" + companyOrderHistoryStatusDate +
                 '}';
     }
 }
