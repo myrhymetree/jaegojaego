@@ -1,13 +1,7 @@
 package com.greedy.jaegojaego.warehouse.controller;
 
-import com.greedy.jaegojaego.warehouse.dto.WarehouseCompanyOrderItemDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseInItemDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseOrderApplicationDTO;
-import com.greedy.jaegojaego.warehouse.entity.Warehouse;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderItem;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseOrderApplication;
+import com.greedy.jaegojaego.warehouse.dto.*;
+import com.greedy.jaegojaego.warehouse.entity.*;
 import com.greedy.jaegojaego.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,7 +44,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /* 입고, 입하 상세보기용 */
+    /* 입고, 입하 상세 조회용 */
     @GetMapping("/detail/{warehouseNo}")
     public ModelAndView findWarehouseByWarehouseNo(ModelAndView mv, @PathVariable int warehouseNo) {
 
@@ -59,13 +53,7 @@ public class WarehouseController {
         System.out.println("Controller warehouseDetailNo = " + warehouseDetailNo);
 
         /* 상세보기를 위한 발주 정보담은 DTO 확인용 */
-//        List<WarehouseInItemDTO> warehouseInItem = warehouseService.findAllWarehouseInItem();
-//        dto 생성 후 getter,setter 사용해서 값을 담고 mv.addObject 로 해서 view에서 사용
-//        List<WarehouseCompanyOrderHistory> warehouseHistory = new ArrayList<>();
-//        List<WarehouseCompanyOrderItem> warehouseCompanyOrder = new ArrayList<>();
-//        List<WarehouseOrderApplication> warehouseClient = new ArrayList<>();
-
-        List<WarehouseInItemDTO> warehouseDetailList = new ArrayList<>();       //뽑아서 List를 담을
+        List<WarehouseInItemDTO> warehouseDetailList = new ArrayList<>();
 
         for(int i = 0; i < warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().size(); i++) {
             WarehouseInItemDTO warehouseInItem = new WarehouseInItemDTO();
@@ -97,7 +85,7 @@ public class WarehouseController {
     @GetMapping("/raw")
     public ModelAndView warehouseRawList(ModelAndView mv) {
 
-        mv.setViewName("/warehouse/warehouseRaw");
+        mv.setViewName("/warehouse/warehouseRawList");
 
         return mv;
     }
@@ -106,7 +94,25 @@ public class WarehouseController {
     @GetMapping("/manufacture")
     public ModelAndView warehouseManufactureList(ModelAndView mv) {
 
-        mv.setViewName("/warehouse/warehouseManufacture");
+        List<ItemWarehouseDTO> itemManuList = warehouseService.findAllManuList();
+
+        System.out.println("itemManuList = " + itemManuList);
+
+        for (ItemWarehouseDTO list : itemManuList) {
+            System.out.println("list : " + list);
+        }
+
+        mv.addObject("itemManuList", itemManuList);
+        mv.setViewName("/warehouse/warehouseManufactureList");
+
+        return mv;
+    }
+
+    /* 가공 완성 창고 상세 조회용 */
+    @GetMapping("/manufacture/{ManuNo}")
+    public ModelAndView findWarehouseByManuNo(ModelAndView mv, @PathVariable int ManuNo) {
+
+        mv.setViewName("/warehouse/warehouseManufactureDetail");
 
         return mv;
     }
@@ -115,7 +121,7 @@ public class WarehouseController {
     @GetMapping("/quality")
     public ModelAndView warehouseQualityList(ModelAndView mv) {
 
-        mv.setViewName("/warehouse/warehouseQuality");
+        mv.setViewName("/warehouse/warehouseQualityList");
 
         return mv;
     }

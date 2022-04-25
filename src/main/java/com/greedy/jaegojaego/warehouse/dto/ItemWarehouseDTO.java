@@ -1,19 +1,21 @@
 package com.greedy.jaegojaego.warehouse.dto;
 
+import com.greedy.jaegojaego.warehouse.entity.WarehouseItemInfo;
+
 public class ItemWarehouseDTO {
 
     private int itemWarehouseNo;
     private String itemWarehouseDivision;
     private int itemWarehouseAmount;
     private int itemWarehouseRealAmount;
-    private WarehouseItemInfoDTO itemInfoNo;
+    private WarehouseItemInfo itemInfoNo;
     private WarehouseDTO inWarehouseNo;
     private int outWarehouseNo;
     private String itemWarehouseQualityStatus;
 
     public ItemWarehouseDTO() {}
 
-    public ItemWarehouseDTO(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, int itemWarehouseRealAmount, WarehouseItemInfoDTO itemInfoNo, WarehouseDTO inWarehouseNo, int outWarehouseNo, String itemWarehouseQualityStatus) {
+    public ItemWarehouseDTO(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, int itemWarehouseRealAmount, WarehouseItemInfo itemInfoNo, WarehouseDTO inWarehouseNo, int outWarehouseNo, String itemWarehouseQualityStatus) {
         this.itemWarehouseNo = itemWarehouseNo;
         this.itemWarehouseDivision = itemWarehouseDivision;
         this.itemWarehouseAmount = itemWarehouseAmount;
@@ -56,11 +58,11 @@ public class ItemWarehouseDTO {
         this.itemWarehouseRealAmount = itemWarehouseRealAmount;
     }
 
-    public WarehouseItemInfoDTO getItemInfoNo() {
+    public WarehouseItemInfo getItemInfoNo() {
         return itemInfoNo;
     }
 
-    public void setItemInfoNo(WarehouseItemInfoDTO itemInfoNo) {
+    public void setItemInfoNo(WarehouseItemInfo itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
     }
 
