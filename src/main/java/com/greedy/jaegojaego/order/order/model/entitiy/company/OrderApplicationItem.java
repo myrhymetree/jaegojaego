@@ -1,11 +1,7 @@
-package com.greedy.jaegojaego.order.order.model.entitiy;
+package com.greedy.jaegojaego.order.order.model.entitiy.company;
 
-
-import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
-import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity(name = "orderApplicationItem")
 @Table(name = "ORDER_APPLICATION_ITEM")

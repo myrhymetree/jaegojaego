@@ -32,30 +32,32 @@
 <body>
     <div th:replace="/common/header.html"></div>
 
-    <div class="body-header">
-        <div class="menu-title">발주 내역</div>
-        <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}" style="font-weight: bold">발주 내역</a></div>
-    </div>
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h2 style="font-weight: bold; margin-left: 10px">발주 내역</h2>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
-                           placeholder="검색하고자 하는 검색어를 2글자 이상 입력하세요.">
+    <div class="ibox ">
+        <div class="body-header">
+            <div class="menu-title">발주 내역</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}" style="font-weight: bold">발주 내역</a></div>
+        </div>
 
-                    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
-                        <thead>
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h2 style="font-weight: bold; margin-left: 10px">발주 내역</h2>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+                               placeholder="검색하고자 하는 검색어를 2글자 이상 입력하세요.">
+
+                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
+                            <thead>
                             <tr>
                                 <th>신청일자</th>
                                 <th>신청자</th>
@@ -63,8 +65,8 @@
                                 <th>총 금액</th>
                                 <th>발주 신청서</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             <tr th:each="companyOrder, index : ${ companyOrderList }" id="company-order-history-tr" data-toggle="modal" data-target="#myModal4">
                                 <input type="hidden" id="companyOrderHistoryNo" th:value="${ companyOrder.companyOrderHistoryNo }">
                                 <td th:text="${ companyOrder.companyOrderHistoryCreatedDate }"></td>
@@ -87,76 +89,77 @@
                                     <button class="order-application-output-btn" id="order-application-output-btn">출력</button>
                                 </td>
                             </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="5">
-                                <ul class="pagination float-right"></ul>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <ul class="pagination float-right"></ul>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
 
-                <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
-                    <div class="modal-dialog">
-                        <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
-                                <h4 class="modal-title">내역 상세</h4>
-                                <small id="company-order-detail-modal-small" style="margin-right: 30px;"></small>
-                            </div>
-                            <div class="modal-body">
-                                <table class="company-order-detail-modal-body-table">
-                                    <thead>
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title">내역 상세</h4>
+                                    <small id="company-order-detail-modal-small" style="margin-right: 30px;"></small>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="company-order-detail-modal-body-table">
+                                        <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>물품 이름</th>
                                             <th>수량</th>
                                             <th>금액</th>
                                         </tr>
-                                    </thead>
-                                    <tbody id="company-order-detail-table-tbody">
+                                        </thead>
+                                        <tbody id="company-order-detail-table-tbody">
 
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="company-order-detail-modal-ok-btn">확인</button>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="company-order-detail-modal-ok-btn">확인</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none">
-                    <div class="modal-dialog">
-                        <div class="modal-content animated bounceInRight">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                <h4 class="modal-title">발주신청서 선택</h4>
-                                <small class="font-bold" style="color:red;">* 출력할 거래처를 선택해주세요. *</small>
-                            </div>
-                            <div class="modal-body">
-                                <table class="company-order-detail-modal-body-table">
-                                    <thead>
+                    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title">발주신청서 선택</h4>
+                                    <small class="font-bold" style="color:red;">* 출력할 거래처를 선택해주세요. *</small>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="company-order-detail-modal-body-table">
+                                        <thead>
                                         <tr>
                                             <td>No</td>
                                             <td>거래처명</td>
                                             <td>발주 신청서</td>
                                         </tr>
-                                    </thead>
-                                    <tbody id="output-modal-body">
+                                        </thead>
+                                        <tbody id="output-modal-body">
 
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" id="output-modal-close-btn" data-dismiss="modal">닫기</button>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="output-modal-close-btn" data-dismiss="modal">닫기</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>

@@ -1,11 +1,9 @@
-package com.greedy.jaegojaego.order.order.model.repository;
+package com.greedy.jaegojaego.order.order.model.repository.company;
 
-import com.greedy.jaegojaego.order.order.model.entitiy.CompanyOrderHistory;
+import com.greedy.jaegojaego.order.order.model.entitiy.company.CompanyOrderHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface CompanyOrderHistoryRepository extends JpaRepository<CompanyOrderHistory, Integer> {
