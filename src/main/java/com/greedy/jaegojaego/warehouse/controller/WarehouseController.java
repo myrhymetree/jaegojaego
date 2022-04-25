@@ -38,6 +38,11 @@ public class WarehouseController {
             System.out.println("list : " + list);
         }
 
+        int itemCnt;
+        itemCnt = warehouseList.size();
+
+
+        mv.addObject("itemCnt", itemCnt);
         mv.addObject("warehouseList", warehouseList);
         mv.setViewName("/warehouse/warehouseList");
 
@@ -74,6 +79,14 @@ public class WarehouseController {
 
         warehouseDetailList.forEach(System.out::println);
 
+        /* view상단 박스에 갯수를 기입 */
+        int itemCnt = 0;
+        itemCnt = warehouseDetailList.size();
+        /* No를 카운트 하주기 위한 것 */
+        int No = 0;
+
+        mv.addObject("No", No);
+        mv.addObject("itemCnt", itemCnt);
         mv.addObject("warehouseDetailList", warehouseDetailList);
         mv.addObject("warehouseDetailNo", warehouseDetailNo);
         mv.setViewName("/warehouse/warehouseDetail");
@@ -85,6 +98,15 @@ public class WarehouseController {
     @GetMapping("/raw")
     public ModelAndView warehouseRawList(ModelAndView mv) {
 
+        List<WarehouseDTO> itemRawList = warehouseService.findAllRawList();
+
+        System.out.println("controller itemRawList = " + itemRawList);
+
+        for (WarehouseDTO list : itemRawList) {
+            System.out.println("list : " + list);
+        }
+
+        mv.addObject("itemRawList", itemRawList);
         mv.setViewName("/warehouse/warehouseRawList");
 
         return mv;
@@ -96,12 +118,16 @@ public class WarehouseController {
 
         List<ItemWarehouseDTO> itemManuList = warehouseService.findAllManuList();
 
-        System.out.println("itemManuList = " + itemManuList);
+        System.out.println("controller itemManuList = " + itemManuList);
 
         for (ItemWarehouseDTO list : itemManuList) {
             System.out.println("list : " + list);
         }
 
+        int itemCnt = 0;
+        itemCnt = itemManuList.size();
+
+        mv.addObject("itemCnt", itemCnt);
         mv.addObject("itemManuList", itemManuList);
         mv.setViewName("/warehouse/warehouseManufactureList");
 
@@ -125,5 +151,4 @@ public class WarehouseController {
 
         return mv;
     }
-
 }

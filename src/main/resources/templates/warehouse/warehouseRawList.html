@@ -59,41 +59,28 @@
         <tr>
             <th>No</th>
             <th>입고 번호</th>
-            <th>카테고리</th>
+            <th>품목</th>
             <th>품번</th>
             <th>품명</th>
-            <th>품목</th>
-            <th>발주 일시</th>
-            <th>작업 상태</th>
-            <th>상세 정보</th>
+            <th>입고 일시</th>
+            <th>입고 수량</th>
+            <th>가공,소분</th>
+
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>2</td>
-            <td>20222022</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>4</td>
-            <td>입하 대기</td>
-            <td>
-                <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
-            </td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>20222023</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>5</td>
-            <td>입고 완료</td>
-            <td>
-                <button type="button" class="btn btn-w-m btn-primary" onclick="location.href='/warehouseDetail'">상세 조회</button>
-            </td>
+        <tr th:each="itemRawList : ${ itemRawList }">
+            <td th:text="${ itemRawList.warehouseNo }"></td>
+            <td th:text="${ itemRawList.orderHistoryNo.companyOrderItemList }"></td>
+<!--            <td th:text="${ itemManuList.itemInfoNo.warehouseMaterialCategory.materialCategoryName }"></td>-->
+<!--            <td th:text="${ itemManuList.itemInfoNo.itemInfoItemSerialNo }"></td>-->
+<!--            <td th:text="${ itemManuList.itemInfoNo.itemInfoName }"></td>-->
+<!--            <td th:text="${ itemManuList.itemWarehouseAmount }"></td>-->
+<!--            <td th:text="${ itemManuList.itemWarehouseQualityStatus }"></td>-->
+<!--            <td>-->
+<!--                <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>-->
+<!--                &lt;!&ndash;                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouse.warehouseNo}')|">상세 조회</button>&ndash;&gt;-->
+<!--            </td>-->
         </tr>
 
         </tfoot>

@@ -23,10 +23,10 @@
     <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>입하 대기 시작일</h5>
+                <h5>입고 번호</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">2022.02.22</h1>
+                <h1 class="no-margins" th:text="${ warehouseDetailList.get(0).warehouseNo }"></h1>
                 <br>
             </div>
         </div>
@@ -35,34 +35,10 @@
     <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>입하 작업 시작일</h5>
+                <h5>입고, 입하 물품 수</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">2022.02.22</h1>
-                <br>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-2">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>입고 작업 시작일</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">2022.02.22</h1>
-                <br>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-2">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>입고 완료</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">2022.02.22</h1>
+                <h1 class="no-margins" th:text="${ itemCnt } + 개"></h1>
                 <br>
             </div>
         </div>
@@ -90,7 +66,7 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
-            <th>입고 번호</th>
+            <th>No</th>
             <th>품목</th>
             <th>품번</th>
             <th>품명</th>
@@ -104,8 +80,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="warehouse : ${ warehouseDetailList }">
-            <td th:text="${ warehouse.warehouseNo }"></td>
+        <tr th:each="warehouse,num : ${ warehouseDetailList }">
+            <td th:text="${ num.size - num.index }"></td>
             <td th:text="${ warehouse.warehouseMaterialCategoryName }"></td>
             <td th:text="${ warehouse.warehouseItemInfoItemSerialNo }"></td>
             <td th:text="${ warehouse.warehouseItemInfoName }"></td>
