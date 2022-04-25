@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class CustomUser extends User implements UserDetails {
+public class CustomUser extends User {
 
     private int memberNo;
     private String memberId;

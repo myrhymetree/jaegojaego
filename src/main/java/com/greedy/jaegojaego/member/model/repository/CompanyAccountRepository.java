@@ -11,4 +11,6 @@ import java.util.List;
 public interface CompanyAccountRepository extends JpaRepository<CompanyAccount, Integer> {
 
     List<CompanyAccount> findAll();
+
+    Integer countAllBy();
 }
