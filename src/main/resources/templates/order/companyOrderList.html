@@ -26,6 +26,34 @@
             border: none;
         }
 
+        .order-before-btn {
+            border: none;
+            cursor: pointer;
+            background-color: yellowgreen;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .order-cancel-btn {
+            border: none;
+            cursor: pointer;
+            background-color: orangered;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .order-complete-btn {
+            border: none;
+            cursor: pointer;
+            background-color: skyblue;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
 
     </style>
 </head>
@@ -58,44 +86,58 @@
 
                         <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
                             <thead>
-                            <tr>
-                                <th>신청일자</th>
-                                <th>신청자</th>
-                                <th>신청물품</th>
-                                <th>총 금액</th>
-                                <th>발주 신청서</th>
-                            </tr>
+                                <tr>
+                                    <th>신청일자</th>
+                                    <th>신청자</th>
+                                    <th>신청물품</th>
+                                    <th>총 금액</th>
+                                    <th>처리일자</th>
+                                    <th>처리상태</th>
+                                    <th>발주 신청서</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="companyOrder, index : ${ companyOrderList }" id="company-order-history-tr" data-toggle="modal" data-target="#myModal4">
-                                <input type="hidden" id="companyOrderHistoryNo" th:value="${ companyOrder.companyOrderHistoryNo }">
-                                <td th:text="${ companyOrder.companyOrderHistoryCreatedDate }"></td>
-                                <td th:text="${ companyOrder.companyAccount.memberName }"></td>
-                                <td>
-                                    <th:block th:each="itemName, i : ${ itemName }">
-                                        <th:block th:if="${ index.index eq i.index }">
-                                            <th:block th:text="${ itemName }"></th:block>
+                                <tr th:each="companyOrder, index : ${ companyOrderList }" id="company-order-history-tr" data-toggle="modal" data-target="#myModal4">
+                                    <input type="hidden" id="companyOrderHistoryNo" th:value="${ companyOrder.companyOrderHistoryNo }">
+                                    <td th:text="${ companyOrder.companyOrderHistoryCreatedDate }"></td>
+                                    <td th:text="${ companyOrder.companyAccount.memberName }"></td>
+                                    <td>
+                                        <th:block th:each="itemName, i : ${ itemName }">
+                                            <th:block th:if="${ index.index eq i.index }">
+                                                <th:block th:text="${ itemName }"></th:block>
+                                            </th:block>
                                         </th:block>
-                                    </th:block>
-                                </td>
-                                <td>
-                                    <th:block th:each="totalPrice, t : ${ totalPrice }">
-                                        <th:block th:if="${ index.index eq t.index }">
-                                            <th:block th:text="${ totalPrice }"></th:block>
+                                    </td>
+                                    <td>
+                                        <th:block th:each="totalPrice, t : ${ totalPrice }">
+                                            <th:block th:if="${ index.index eq t.index }">
+                                                <th:block th:text="${ totalPrice }"></th:block>
+                                            </th:block>
                                         </th:block>
-                                    </th:block>
-                                </td>
-                                <td>
-                                    <button class="order-application-output-btn" id="order-application-output-btn">출력</button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td th:text="${ companyOrder.companyOrderHistoryStatusDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'BEFORE' }">
+                                            <button class="order-before-btn">처리 전</button>
+                                        </th:block>
+                                        <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'CANCEL' }">
+                                            <button class="order-cancel-btn">신청취소</button>
+                                        </th:block>
+                                        <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'COMPLETE' }">
+                                            <button class="order-complete-btn">승인완료</button>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <button class="order-application-output-btn" id="order-application-output-btn">출력</button>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tfoot>
-                            <tr>
-                                <td colspan="5">
-                                    <ul class="pagination float-right"></ul>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="7">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
