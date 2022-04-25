@@ -22,7 +22,6 @@ public class WarehouseDTO {
 
     public WarehouseDTO() {}
 
-
     public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, int issueNo, WarehouseClientDTO clientNo, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;

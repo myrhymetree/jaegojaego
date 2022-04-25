@@ -14,12 +14,12 @@ public class WarehouseInItemDTO {           //상세 조회를 하기 위한 정
     private int warehouseNo;                        //입고 번호
     private String warehouseWorkingStatus;          //작업 상태
     private java.sql.Date warehouseDate;            //작업 처리일자
-//    private int warehouseCheckAmount;               //입하 수량(상태 변경이력의 입고 처리 상태 수량 in warehouse status history)
-//    private int warehouseInAmount;                  //입고 수량(창고의 수량 item_warehouse)
+    private int warehouseCheckAmount;               //입하 수량(상태 변경이력의 입고 처리 상태 수량 in warehouse status history)
+    private int warehouseInAmount;                  //입고 수량(창고의 수량 item_warehouse)
 
     public WarehouseInItemDTO() {}
 
-    public WarehouseInItemDTO(String warehouseClientName, String warehouseMaterialCategoryName, String warehouseItemInfoItemSerialNo, String warehouseItemInfoName, int warehouseCompanyOrderItemAmount, Date warehouseOrderDate, int warehouseNo, String warehouseWorkingStatus, Date warehouseDate) {
+    public WarehouseInItemDTO(String warehouseClientName, String warehouseMaterialCategoryName, String warehouseItemInfoItemSerialNo, String warehouseItemInfoName, int warehouseCompanyOrderItemAmount, Date warehouseOrderDate, int warehouseNo, String warehouseWorkingStatus, Date warehouseDate, int warehouseCheckAmount, int warehouseInAmount) {
         this.warehouseClientName = warehouseClientName;
         this.warehouseMaterialCategoryName = warehouseMaterialCategoryName;
         this.warehouseItemInfoItemSerialNo = warehouseItemInfoItemSerialNo;
@@ -29,6 +29,8 @@ public class WarehouseInItemDTO {           //상세 조회를 하기 위한 정
         this.warehouseNo = warehouseNo;
         this.warehouseWorkingStatus = warehouseWorkingStatus;
         this.warehouseDate = warehouseDate;
+        this.warehouseCheckAmount = warehouseCheckAmount;
+        this.warehouseInAmount = warehouseInAmount;
     }
 
     public String getWarehouseClientName() {
@@ -103,6 +105,22 @@ public class WarehouseInItemDTO {           //상세 조회를 하기 위한 정
         this.warehouseDate = warehouseDate;
     }
 
+    public int getWarehouseCheckAmount() {
+        return warehouseCheckAmount;
+    }
+
+    public void setWarehouseCheckAmount(int warehouseCheckAmount) {
+        this.warehouseCheckAmount = warehouseCheckAmount;
+    }
+
+    public int getWarehouseInAmount() {
+        return warehouseInAmount;
+    }
+
+    public void setWarehouseInAmount(int warehouseInAmount) {
+        this.warehouseInAmount = warehouseInAmount;
+    }
+
     @Override
     public String toString() {
         return "WarehouseInItemDTO{" +
@@ -115,6 +133,8 @@ public class WarehouseInItemDTO {           //상세 조회를 하기 위한 정
                 ", warehouseNo=" + warehouseNo +
                 ", warehouseWorkingStatus='" + warehouseWorkingStatus + '\'' +
                 ", warehouseDate=" + warehouseDate +
+                ", warehouseCheckAmount=" + warehouseCheckAmount +
+                ", warehouseInAmount=" + warehouseInAmount +
                 '}';
     }
 }

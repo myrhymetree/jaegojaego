@@ -53,9 +53,7 @@ public class Warehouse {
     @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
     private List<WarehouseOrderApplication> orderApplicationList;
 
-    @OneToMany
-    @JoinColumn(name = "IN_WAREHOUSE_NO")
-    private List<WarehouseStatusHistory> warehouseStatusHistory;
+
 
     @Column(name = "IN_WAREHOUSE_WORKING_STATUS_NAME")
     private String warehouseWorkingName;
@@ -65,7 +63,7 @@ public class Warehouse {
 
     public Warehouse() {}
 
-    public Warehouse(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, int issueNo, WarehouseClient clientNo, List<WarehouseCompanyOrderItem> companyOrderItemList, List<WarehouseOrderApplication> orderApplicationList, List<WarehouseStatusHistory> warehouseStatusHistory, String warehouseWorkingName, Date warehouseWorkingDate) {
+    public Warehouse(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, int issueNo, WarehouseClient clientNo, List<WarehouseCompanyOrderItem> companyOrderItemList, List<WarehouseOrderApplication> orderApplicationList, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;
         this.warehouseDivisionItem = warehouseDivisionItem;
@@ -74,7 +72,6 @@ public class Warehouse {
         this.clientNo = clientNo;
         this.companyOrderItemList = companyOrderItemList;
         this.orderApplicationList = orderApplicationList;
-        this.warehouseStatusHistory = warehouseStatusHistory;
         this.warehouseWorkingName = warehouseWorkingName;
         this.warehouseWorkingDate = warehouseWorkingDate;
     }
@@ -143,14 +140,6 @@ public class Warehouse {
         this.orderApplicationList = orderApplicationList;
     }
 
-    public List<WarehouseStatusHistory> getWarehouseStatusHistory() {
-        return warehouseStatusHistory;
-    }
-
-    public void setWarehouseStatusHistory(List<WarehouseStatusHistory> warehouseStatusHistory) {
-        this.warehouseStatusHistory = warehouseStatusHistory;
-    }
-
     public String getWarehouseWorkingName() {
         return warehouseWorkingName;
     }
@@ -178,7 +167,6 @@ public class Warehouse {
                 ", clientNo=" + clientNo +
                 ", companyOrderItemList=" + companyOrderItemList +
                 ", orderApplicationList=" + orderApplicationList +
-                ", warehouseStatusHistory=" + warehouseStatusHistory +
                 ", warehouseWorkingName='" + warehouseWorkingName + '\'' +
                 ", warehouseWorkingDate=" + warehouseWorkingDate +
                 '}';

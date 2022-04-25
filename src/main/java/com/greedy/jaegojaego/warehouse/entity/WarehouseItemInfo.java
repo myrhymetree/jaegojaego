@@ -40,14 +40,23 @@ public class WarehouseItemInfo {
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemInfoStatusYn;
 
+//    @Column(name = "SUBDIVISION_UNIT")
+//    private String subdivisionUnit;
+//
+//    @Column(name = "SUBDIVISION_YN")
+//    private int subdivisionYn;
+
+
     @Override
     public String toString() {
-        return "ItemInfo{" +
+        return "WarehouseItemInfo{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
-                ", materialCategory=" + warehouseMaterialCategory +
+                ", warehouseMaterialCategory=" + warehouseMaterialCategory +
                 ", itemInfoStatusYn='" + itemInfoStatusYn + '\'' +
+//                ", subdivisionUnit='" + subdivisionUnit + '\'' +
+//                ", subdivisionYn=" + subdivisionYn +
                 '}';
     }
 }
