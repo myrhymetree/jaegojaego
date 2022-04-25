@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class MenuMaterial {
 
     @Id
-    @GeneratedValue(
+    @GeneratedValue( //이거때문인가 싶어서 없애고 해봣는데도 똑같음 음..
             strategy = GenerationType.SEQUENCE,
             generator = "MENUMATERIAL_SEQ_GENERATOR"
     )

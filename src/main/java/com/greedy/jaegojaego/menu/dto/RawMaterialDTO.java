@@ -6,8 +6,6 @@ public class RawMaterialDTO {
     private MenuMaterialsDTO itemInfoNo;
     private String rawMaterialName;
     private String rawMaterialCapacity;
-                //결국에는 자재명/자재품번(자재내부의 컬럼들 여러개사용해야함) 받아야하잫ㄴ아? 음..일단
-//    private List<MenuFranchiseOrderableItemDTO> itemInfoNo;
 
     public RawMaterialDTO() {}
 

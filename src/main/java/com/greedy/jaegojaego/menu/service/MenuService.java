@@ -6,6 +6,7 @@ import com.greedy.jaegojaego.menu.dto.RawMaterialDTO;
 import com.greedy.jaegojaego.menu.entity.Menu;
 import com.greedy.jaegojaego.menu.entity.MenuMaterial;
 import com.greedy.jaegojaego.menu.entity.RawMaterial;
+import com.greedy.jaegojaego.menu.entity.RawMaterialPK;
 import com.greedy.jaegojaego.menu.repository.MenuMaterialRepository;
 import com.greedy.jaegojaego.menu.repository.MenuRepository;
 import com.greedy.jaegojaego.menu.repository.RawMaterialRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
  * 2022/04/21 (이소현) 매뉴 상세 조회 비동기 페이징
  * 2022/04/22 (이소현) 매뉴 등록용 자재 리스트 조회
  * 2022/04/23 (이소현) 메뉴 등록
+ * 2022/04/25 (이소현) 메뉴 등록
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -65,10 +68,10 @@ public class MenuService {
 
     public List<RawMaterialDTO> selectOneMenu(int menuNo) {
 
-        List<RawMaterial> test = rawMaterialRepository.selectOneMenu(menuNo);
-        test.forEach(System.out::println);
+        List<RawMaterial> selectOneMenu = rawMaterialRepository.selectOneMenu(menuNo);
+        selectOneMenu.forEach(System.out::println);
 
-        return test.stream().map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDTO.class)).collect(Collectors.toList());
+        return selectOneMenu.stream().map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDTO.class)).collect(Collectors.toList());
     }
 
     /* 비동기(ajax) 페이징 */
@@ -98,36 +101,50 @@ public class MenuService {
         /* 1. 메뉴 insert */
         Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class)); //성공시
 
-        RawMaterialDTO rawMaterial = new RawMaterialDTO();
         String[] rawMaterialList = materialNameAndCapacityList.split(","); // -> 루누아나원두1kg/60g  , 000원두1kg/50 , 000원두1kg/40 으로 나누어짐
         List<String[]> stringList = new ArrayList<>(); // [0] -> 루누아나 원두1kg // [1] -> 60g
 
-        for(int i = 0; i < rawMaterialList.length; i++) { //3개
-            String[] oneRawMaterial = rawMaterialList[i].split("/");
-            stringList.add(oneRawMaterial);
-        }
 
-        for(String[] array : stringList) { //stringList = 2
-            rawMaterial.setRawMaterialName(array[0]);
-//            rawMaterial.setRawMaterialCapacity(array[1]);
-            System.out.println("제발 : " + array[0]);
-            System.out.println("제발 : " + array[1].indexOf("g"));
-        }
         System.out.println("menuMaterial : " + menuMaterial);
 
         if(insertMenu != null) {
 
-            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName()); //메뉴 번호
+            System.out.println("나오냐? : " + menuNo); //메뉴번호 받아왔음
 
-            System.out.println("나오냐? : " + menuNo);
 
-            // List<Integer> itemInfo = menuMaterialRepository.selectByItemInfoContaining();
-            for(int i = 0; i < stringList.size(); i++) {
-//                rawMaterial.setRawMaterialName(stringList[i]);
-//                rawMaterial.setMenuNoforRaw(menu.getMenuNo());
+            for(int i = 0; i < rawMaterialList.length; i++) { //3개로 나누느 것
+                String[] oneRawMaterial = rawMaterialList[i].split("/");
+                stringList.add(oneRawMaterial);
+
+//                Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName()); //메뉴 번호
+//                System.out.println("나오냐? : " + menuNo); //메뉴번호 받아왔음(여따가 해주도 뜨네 .. 하)
+
+                for(String[] array : stringList) { //stringList = 2
+
+                    String menuName = array[0];
+                    String menuCapacity = array[1];
+                    System.out.println("메뉴이름 : " + menuName);
+                    System.out.println("메뉴용량 : " + menuCapacity);
+
+                    MenuMaterial menuInfo = menuMaterialRepository.selectMenuMaterialBymenuName(menuName);
+                    System.out.println("나오려나 ?: " + menuInfo);
+
+                    RawMaterial rawMaterial = new RawMaterial();
+                    RawMaterialPK rawMaterialPK = new RawMaterialPK();
+
+                    rawMaterialPK.setMenuNoforRaw(menuNo);
+                    rawMaterialPK.setItemInfoNo(menuInfo);
+                    rawMaterial.setRawMaterialPK(rawMaterialPK);
+
+                    rawMaterial.setRawMaterialName(menuName);
+                    rawMaterial.setRawMaterialCapacity(menuCapacity);
+
+                    System.out.println("완성품  : " + rawMaterial);
+                    rawMaterialRepository.save(rawMaterial); //제발 되라!
+
+                }
             }
-
-
 
         }
 
