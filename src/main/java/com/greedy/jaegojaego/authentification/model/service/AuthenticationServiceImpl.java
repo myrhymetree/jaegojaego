@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Data
-@SessionAttributes("loginMember")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final MemberRepository memberRepository;
@@ -58,8 +57,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         System.out.println("memberRole = " + memberRoleList);
 
         MemberDTO loginMember =  modelMapper.map(member, MemberDTO.class);
-
-        mv.addObject("loginMember", loginMember);
 
 //        MemberRoleDTO memberRoleDTO = modelMapper.map(memberRoleList, MemberRoleDTO.class);
 

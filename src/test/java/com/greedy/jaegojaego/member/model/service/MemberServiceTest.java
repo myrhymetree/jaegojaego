@@ -3,19 +3,24 @@ package com.greedy.jaegojaego.member.model.service;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
+import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
+import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Department;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,6 +41,9 @@ class MemberServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Test
     public void initTest() {
@@ -73,5 +81,23 @@ class MemberServiceTest {
         memberList.forEach(rows -> System.out.println(rows));
 
         assertNotNull(memberList);
+    }
+    
+    @Test
+    public void 검색테스트() {
+        
+        MemberSearchCondition condition = new MemberSearchCondition(); 
+        condition.setMemberId("");
+        condition.setMemberName("");
+        condition.setDepaartmentName("");
+        
+        List<CompanyAccount> companyAccounts = companyAccountRepository.searchMembers(condition);
+
+        List<CompanyAccountDTO> companyAccountDTOS =
+                companyAccounts.stream().map(companyAccount -> modelMapper.map(companyAccount, CompanyAccountDTO.class)).collect(Collectors.toList());
+
+        companyAccountDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(companyAccountDTOS);
     }
 }

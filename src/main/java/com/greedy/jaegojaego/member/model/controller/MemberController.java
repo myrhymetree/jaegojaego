@@ -45,11 +45,11 @@ public class MemberController {
     public ModelAndView sendRegistView(ModelAndView mv, Authentication authentication) {
 
         // 로그인한 계정 정보 찾기 방법 1
-//        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
-//
-//        CustomUser customUser1 = (CustomUser) authentication1.getPrincipal();
-//
-//        System.out.println("customUser1.getMemberNo() = " + customUser1.getMemberNo());
+        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUser customUser1 = (CustomUser) authentication1.getPrincipal();
+
+        System.out.println("customUser1.getMemberNo() = " + customUser1.getMemberNo());
 
 
         // 로그인한 계정 정보 찾기 방법 2
@@ -90,9 +90,11 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public ModelAndView findMemberList(ModelAndView mv) {
+    public ModelAndView findMemberList(ModelAndView mv, HttpServletRequest request) {
 
-        List<CompanyAccountDTO> memberList = memberService.findMemberList();
+        String searchWord = request.getParameter("searchWord");
+
+        List<CompanyAccountDTO> memberList = memberService.findMemberList(searchWord);
 
         Integer count = memberService.countAll();
 

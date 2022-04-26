@@ -13,9 +13,9 @@ import java.util.List;
 @Entity(name = "companyAccount")
 @EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
+//@DiscriminatorValue("본사")
 public class CompanyAccount extends Member {
 
-    @Id
     @Column(name = "MEMBER_NO")
     private Integer memberNo;
 

@@ -22,12 +22,14 @@
                         <p>
                             본사 소속 모든 직원 목록 입니다.
                         </p>
+                        <form method="get" id="searchForm" action="/member/list">
                         <div class="input-group">
-                            <input type="text" placeholder="검색하세요 " class="input form-control">
+                            <input type="text" placeholder="검색하세요 " name="searchWord" class="input form-control" value="">
                             <span class="input-group-append">
-                                        <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> 검색</button>
+                                        <button type="submit" class="btn btn btn-primary"> <i class="fa fa-search"></i> 검색</button>
                                 </span>
                         </div>
+                        </form>
                         <div class="clients-list">
                             <span class="float-right small text-muted"></span>
                             <ul class="nav nav-tabs">
