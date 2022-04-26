@@ -46,10 +46,14 @@ public class CompanyOrderHistory {
     @Column(name = "COMPANY_ORDER_HISTORY_STATUS_DATE")
     private java.sql.Date companyOrderHistoryStatusDate;
 
+    @ManyToOne
+    @JoinColumn(name = "COMPANY_ORDER_HISTORY_STATUS_UPDATE_MEMBER")
+    private OrderCompanyAccount companyOrderUpdateMember;
+
     public CompanyOrderHistory() {
     }
 
-    public CompanyOrderHistory(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccount orderCompanyAccount, List<CompanyOrderItem> companyOrderItemList, List<OrderApplication> orderApplicationList, String companyOrderHistoryStaus, Date companyOrderHistoryStatusDate) {
+    public CompanyOrderHistory(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccount orderCompanyAccount, List<CompanyOrderItem> companyOrderItemList, List<OrderApplication> orderApplicationList, String companyOrderHistoryStaus, Date companyOrderHistoryStatusDate, OrderCompanyAccount companyOrderUpdateMember) {
         this.companyOrderHistoryNo = companyOrderHistoryNo;
         this.companyOrderHistoryCreatedDate = companyOrderHistoryCreatedDate;
         this.orderCompanyAccount = orderCompanyAccount;
@@ -57,6 +61,7 @@ public class CompanyOrderHistory {
         this.orderApplicationList = orderApplicationList;
         this.companyOrderHistoryStaus = companyOrderHistoryStaus;
         this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
+        this.companyOrderUpdateMember = companyOrderUpdateMember;
     }
 
     public int getCompanyOrderHistoryNo() {
@@ -115,6 +120,14 @@ public class CompanyOrderHistory {
         this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
     }
 
+    public OrderCompanyAccount getCompanyOrderUpdateMember() {
+        return companyOrderUpdateMember;
+    }
+
+    public void setCompanyOrderUpdateMember(OrderCompanyAccount companyOrderUpdateMember) {
+        this.companyOrderUpdateMember = companyOrderUpdateMember;
+    }
+
     @Override
     public String toString() {
         return "CompanyOrderHistory{" +
@@ -125,6 +138,7 @@ public class CompanyOrderHistory {
                 ", orderApplicationList=" + orderApplicationList +
                 ", companyOrderHistoryStaus='" + companyOrderHistoryStaus + '\'' +
                 ", companyOrderHistoryStatusDate=" + companyOrderHistoryStatusDate +
+                ", companyOrderUpdateMember=" + companyOrderUpdateMember +
                 '}';
     }
 }

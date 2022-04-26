@@ -12,11 +12,17 @@ import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository
 import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderDetailDTO;
 import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
 import com.greedy.jaegojaego.order.order.model.entitiy.company.*;
+import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrder;
+import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrderItem;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationRepository;
+import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +46,14 @@ public class OrderService {
     private final OrderApplicationRepository orderApplicationRepository;
     private final OrderApplicationItemRepository orderApplicationItemRepository;
     private final OrderClientRepository orderClientRepository;
+    private final FranchiseOrderRepository franchiseOrderRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
             , OrderItemWarehouseRepository orderItemWarehouseRepository, OrderItemInfoRepository orderItemInfoRepository
             , OrderClientContractItemRepository orderClientContractItemRepository, CompanyOrderItemRepository companyOrderItemRepository
             , OrderApplicationRepository orderApplicationRepository, OrderApplicationItemRepository orderApplicationItemRepository
-            , OrderClientRepository orderClientRepository) {
+            , OrderClientRepository orderClientRepository, FranchiseOrderRepository franchiseOrderRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
@@ -57,6 +64,7 @@ public class OrderService {
         this.orderApplicationRepository = orderApplicationRepository;
         this.orderApplicationItemRepository = orderApplicationItemRepository;
         this.orderClientRepository = orderClientRepository;
+        this.franchiseOrderRepository = franchiseOrderRepository;
     }
 
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
@@ -262,6 +270,53 @@ public class OrderService {
 
         }
 
+    }
+
+    @Transactional
+    public void updateCompanyOrderHistoryStatus(int memberNo, int companyOrderHistoryNo, String orderStatus) {
+
+        OrderCompanyAccount orderCompanyAccount = new OrderCompanyAccount();
+        orderCompanyAccount.setMemberNo(memberNo);
+
+        CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
+        companyOrderHistory.setCompanyOrderHistoryStaus(orderStatus);
+        companyOrderHistory.setCompanyOrderUpdateMember(orderCompanyAccount);
+        companyOrderHistory.setCompanyOrderHistoryStatusDate(new Date(System.currentTimeMillis()));
+
+    }
+
+    public List<FranchiseOrderDTO> selectFranchiseOrderList(int memberNo, String memberDivision) {
+
+        List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
+
+        if("본사".equals(memberDivision)) {
+
+            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_HeadOfficeSupervisor_MemberNo(memberNo);
+        } else if("가맹점".equals(memberDivision)) {
+
+            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_FranchiseRepresentativeNo(memberNo);
+        }
+
+        return franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<FranchiseOrderDetailDTO> selectFranchiseOrderDetail(int franchiseOrderNo) {
+
+        FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
+
+        List<FranchiseOrderDetailDTO> franchiseOrderDetailList = new ArrayList<>();
+
+        for(FranchiseOrderItem order : franchiseOrder.getFranchiseOrderItemList()) {
+
+            FranchiseOrderDetailDTO franchiseOrderDetail = new FranchiseOrderDetailDTO();
+            franchiseOrderDetail.setItemName(order.getFranchiseOrderItem().getFranchiseOrderableItem().getOrderItemInfo().getItemInfoName());
+            franchiseOrderDetail.setItemPrice(order.getFranchiseOrderItem().getFranchiseOrderableItem().getFranchiseOrderableItemPrice());
+            franchiseOrderDetail.setItemAmount(order.getFranchiseOrderItemAmount());
+
+            franchiseOrderDetailList.add(franchiseOrderDetail);
+        }
+
+        return franchiseOrderDetailList;
     }
 
 }

@@ -21,7 +21,7 @@ public class FranchiseOrderStatusHistory {
             strategy = GenerationType.SEQUENCE,
             generator = "FRANCHISE_ORDER_STATUS_HISTORY_SEQ_GENERATOR"
     )
-    private int franchiseOrderStatusHitoryNo;
+    private int franchiseOrderStatusHistoryNo;
 
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_ORDER_NO")
@@ -43,8 +43,8 @@ public class FranchiseOrderStatusHistory {
     public FranchiseOrderStatusHistory() {
     }
 
-    public FranchiseOrderStatusHistory(int franchiseOrderStatusHitoryNo, FranchiseOrder franchiseOrder, Date franchiseOrderStatusHistoryDate, String franchiseOrderStatus, OrderCompanyAccount orderCompanyAccount, String franchiseOrderStatusRejectionContent) {
-        this.franchiseOrderStatusHitoryNo = franchiseOrderStatusHitoryNo;
+    public FranchiseOrderStatusHistory(int franchiseOrderStatusHistoryNo, FranchiseOrder franchiseOrder, Date franchiseOrderStatusHistoryDate, String franchiseOrderStatus, OrderCompanyAccount orderCompanyAccount, String franchiseOrderStatusRejectionContent) {
+        this.franchiseOrderStatusHistoryNo = franchiseOrderStatusHistoryNo;
         this.franchiseOrder = franchiseOrder;
         this.franchiseOrderStatusHistoryDate = franchiseOrderStatusHistoryDate;
         this.franchiseOrderStatus = franchiseOrderStatus;
@@ -52,12 +52,12 @@ public class FranchiseOrderStatusHistory {
         this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
     }
 
-    public int getFranchiseOrderStatusHitoryNo() {
-        return franchiseOrderStatusHitoryNo;
+    public int getFranchiseOrderStatusHistoryNo() {
+        return franchiseOrderStatusHistoryNo;
     }
 
-    public void setFranchiseOrderStatusHitoryNo(int franchiseOrderStatusHitoryNo) {
-        this.franchiseOrderStatusHitoryNo = franchiseOrderStatusHitoryNo;
+    public void setFranchiseOrderStatusHistoryNo(int franchiseOrderStatusHistoryNo) {
+        this.franchiseOrderStatusHistoryNo = franchiseOrderStatusHistoryNo;
     }
 
     public FranchiseOrder getFranchiseOrder() {
@@ -103,7 +103,7 @@ public class FranchiseOrderStatusHistory {
     @Override
     public String toString() {
         return "FranchiseOrderStatusHistory{" +
-                "franchiseOrderStatusHitoryNo=" + franchiseOrderStatusHitoryNo +
+                "franchiseOrderStatusHistoryNo=" + franchiseOrderStatusHistoryNo +
                 ", franchiseOrderStatusHistoryDate=" + franchiseOrderStatusHistoryDate +
                 ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
                 ", orderCompanyAccount=" + orderCompanyAccount +

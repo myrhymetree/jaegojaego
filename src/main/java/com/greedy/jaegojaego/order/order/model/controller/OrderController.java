@@ -11,6 +11,9 @@ import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderDetailDTO
 import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationItemDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -98,10 +101,6 @@ public class OrderController {
 
             }
 
-        }
-
-        for(int i = 0; i < companyOrderList.size(); i++) {
-            System.out.println(companyOrderList.get(i).getCompanyOrderHistoryStaus());
         }
 
         mv.addObject("itemName", orderItemName);
@@ -207,14 +206,6 @@ public class OrderController {
         return gson.toJson(companyOrderDetailList);
     }
 
-    @GetMapping("/franchiseorderlist")
-    public ModelAndView selectFranchiseOrderList(ModelAndView mv) {
-
-        mv.setViewName("/order/franchiseOrderList");
-
-        return mv;
-    }
-
     @GetMapping("/companyorderregist")
     public ModelAndView companyOrderRegist(ModelAndView mv) {
 
@@ -238,14 +229,6 @@ public class OrderController {
 
         mv.addObject("applicationList", applicationList);
         mv.setViewName("/order/companyApplicationList");
-
-        return mv;
-    }
-
-    @GetMapping("franchiseorderregist")
-    public ModelAndView franchiseOrderRegist(ModelAndView mv) {
-
-        mv.setViewName("/order/franchiseOrderRegist");
 
         return mv;
     }
@@ -311,6 +294,60 @@ public class OrderController {
         Gson gson = new Gson();
 
         return gson.toJson(orderClientContractItemList);
+    }
+
+    @GetMapping(value = "modifyCompanyOrderHistoryStatus", produces = "application/json; charset=UTF-8")
+    public String modifyCompanyOrderHistoryStatus(HttpServletRequest request, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
+        String orderStatus = request.getParameter("orderStatus");
+
+        orderService.updateCompanyOrderHistoryStatus(customUser.getMemberNo(), companyOrderHistoryNo, orderStatus);
+
+        Gson gson = new Gson();
+
+        return gson.toJson("jsonView");
+    }
+
+    @GetMapping("/franchiseorderlist")
+    public ModelAndView selectFranchiseOrderList(ModelAndView mv, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        List<FranchiseOrderDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision());
+
+        mv.addObject("franchiseOrderList", franchiseOrderList);
+        mv.setViewName("/order/franchiseOrderList");
+
+        return mv;
+    }
+
+    @GetMapping(value = "/franchiseorderdetail", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String selectFranchiseOrderDetail(HttpServletRequest request) {
+
+        int franchiseOrderNo = Integer.parseInt(request.getParameter("franchiseOrderNo"));
+
+        List<FranchiseOrderDetailDTO> franchiseOrderItemList = orderService.selectFranchiseOrderDetail(franchiseOrderNo);
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(franchiseOrderItemList);
+    }
+
+    @GetMapping("franchiseorderregist")
+    public ModelAndView franchiseOrderRegist(ModelAndView mv) {
+
+        mv.setViewName("/order/franchiseOrderRegist");
+
+        return mv;
     }
 
 }

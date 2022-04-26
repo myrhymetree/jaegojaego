@@ -13,6 +13,52 @@
             height: 30px;
             margin-right: 20px;
         }
+
+        .order-before-btn {
+            border: none;
+            cursor: pointer;
+            background-color: yellowgreen;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .order-reject-btn {
+            border: none;
+            cursor: pointer;
+            background-color: orangered;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .order-complete-btn {
+            border: none;
+            cursor: pointer;
+            background-color: skyblue;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .status-change-div {
+            width: 80px;
+            display: none;
+            position: absolute;
+            margin-left: 34px;
+        }
+
+        .franchise-order-detail-modal-body-table {
+            text-align: center;
+            border-collapse:collapse;
+            width: 80%;
+        }
+
+        .franchise-order-detail-modal-body-table th, td {
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -43,20 +89,84 @@
                     </div>
                     <div class="ibox-content">
                         <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
-                               placeholder="Search in table">
+                               placeholder="검색하고자 하는 내용을 2글자 이상 입력하세요.">
 
-                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
                             <thead>
                                 <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th data-hide="phone,tablet">Platform(s)</th>
-                                    <th data-hide="phone,tablet">Engine version</th>
-                                    <th data-hide="phone,tablet">CSS grade</th>
+                                    <th>No</th>
+                                    <th>가맹점명</th>
+                                    <th>주문번호</th>
+                                    <th>신청일자</th>
+                                    <th>처리일자</th>
+                                    <th>처리상태</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                <tr th:each="franchiseOrder, index : ${ franchiseOrderList }" id="franchise-order-history-tr"  data-toggle="modal" data-target="#myModal4">
+                                    <input type="hidden" th:value="${ franchiseOrder.franchiseOrderNo }">
+                                    <td th:text="${ index.index + 1 }"></td>
+                                    <td th:text="${ franchiseOrder.orderFranchiseInfo.franchiseBranchName }"></td>
+                                    <td th:text="${ franchiseOrder.franchiseOrderOrderNumber }"></td>
+                                    <td th:text="${ franchiseOrder.franchiseOrderApplicationDate }"></td>
+                                    <td th:text="${ franchiseOrder.franchiseOrderStatusDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'BEFORE' }">
+                                            <button class="order-before-btn">처리전</button>
+                                            <div class="status-change-div">
+                                                <button class="order-complete-btn" id="order-complete-btn">승인완료</button>
+                                                <button class="order-reject-btn" id="order-reject-btn">승인거절</button>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'COMPLETE' }">
+                                            <button class="order-complete-btn">승인완료</button>
+                                        </th:block>
+                                        <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'REJECT' }">
+                                            <button class="order-reject-btn">승인거절</button>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
+
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">내역 상세</h4>
+                                    <small id="franchise-order-detail-modal-small" style="margin-right: 30px;"></small>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="franchise-order-detail-modal-body-table">
+                                        <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>물품 이름</th>
+                                            <th>금액(개)</th>
+                                            <th>수량</th>
+                                            <th>금액(총)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="franchise-order-detail-table-tbody">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="franchise-order-detail-modal-ok-btn">확인</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -73,6 +183,65 @@
             $('.footable2').footable();
 
         });
+
+        if(document.querySelectorAll("#franchise-order-history-tr td")) {
+            const $tds = document.querySelectorAll("#franchise-order-history-tr td");
+
+            for(let i = 0; i < $tds.length; i++) {
+
+                $tds[i].onmouseenter = function() {
+                    this.parentNode.style.backgroundColor = "#d3d3d3";
+                    this.parentNode.style.cursor = "pointer";
+                }
+
+                $tds[i].onmouseout = function() {
+                    this.parentNode.style.backgroundColor = "white";
+                }
+
+                $tds[i].onclick = function() {
+
+                    $("#franchise-order-detail-table-tbody").empty();
+
+                    console.log(this.parentNode.children[0].value);
+
+                    let franchiseOrderNo = this.parentNode.children[0].value;
+
+                    fetch("/order/franchiseorderdetail?franchiseOrderNo=" + franchiseOrderNo)
+                        .then(response => response.json())
+                        .then(response => {
+
+                            let orderDetailModalTbody = '';
+
+                            let index = 1;
+
+                            if(response != null) {
+
+                                for(list in response) {
+
+                                    orderDetailModalTbody += '<tr>';
+                                    orderDetailModalTbody += '<td>' + index + '</td>';
+                                    orderDetailModalTbody += '<td>' + response[list].itemName + '</td>';
+                                    orderDetailModalTbody += '<td>' + response[list].itemPrice + '</td>';
+                                    orderDetailModalTbody += '<td>' + response[list].itemAmount + '</td>';
+                                    orderDetailModalTbody += '<td>' + (response[list].itemAmount * response[list].itemPrice) + '</td>';
+                                    orderDetailModalTbody += '</tr>';
+
+                                    index++;
+                                }
+                            }
+
+                            $("#franchise-order-detail-table-tbody").append(orderDetailModalTbody);
+
+                        })
+                        .catch(err => {
+                            alert("연결 실패!");
+                        });
+
+
+                }
+
+            }
+        }
 
     </script>
 

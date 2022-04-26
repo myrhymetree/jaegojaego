@@ -1,19 +1,23 @@
 package com.greedy.jaegojaego.order.franchise.model.entity;
 
 import com.greedy.jaegojaego.member.model.entity.Member;
+import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "orderFranchiseInfo")
 @Table(name = "FRANCHISE_INFO")
-public class OrderFranchiseInfo implements Serializable {
+@EqualsAndHashCode
+public class OrderFranchiseInfo {
 
     @Id
-    @OneToOne
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private Member member;
+    @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private Integer franchiseRepresentativeNo;
 
     @Column(name = "FRANCHISE_REPRESENTATIVE_NAME")
     private String franchiseRepresentativeName;
@@ -28,7 +32,7 @@ public class OrderFranchiseInfo implements Serializable {
     private String franchiseBranchName;
 
     @Column(name = "FRANCHISE_BUSINESS_REGISTRATION_NO")
-    private String franchiseBusinessRegistartionNo;
+    private String franchiseBusinessRegistrationNo;
 
     @Column(name = "FRANCHISE_ADDRESS")
     private String franchiseAddress;
@@ -50,13 +54,13 @@ public class OrderFranchiseInfo implements Serializable {
     public OrderFranchiseInfo() {
     }
 
-    public OrderFranchiseInfo(Member member, String franchiseRepresentativeName, String franchiseRepresentativePhone, String franchiseRepresentativeEmail, String franchiseBranchName, String franchiseBusinessRegistartionNo, String franchiseAddress, String bankAccountNo, OrderCompanyAccount headOfficeSupervisor, OrderCompanyAccount headOfficeWritedMember, String franchisePhone) {
-        this.member = member;
+    public OrderFranchiseInfo(Integer franchiseRepresentativeNo, String franchiseRepresentativeName, String franchiseRepresentativePhone, String franchiseRepresentativeEmail, String franchiseBranchName, String franchiseBusinessRegistrationNo, String franchiseAddress, String bankAccountNo, OrderCompanyAccount headOfficeSupervisor, OrderCompanyAccount headOfficeWritedMember, String franchisePhone) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
         this.franchiseRepresentativeName = franchiseRepresentativeName;
         this.franchiseRepresentativePhone = franchiseRepresentativePhone;
         this.franchiseRepresentativeEmail = franchiseRepresentativeEmail;
         this.franchiseBranchName = franchiseBranchName;
-        this.franchiseBusinessRegistartionNo = franchiseBusinessRegistartionNo;
+        this.franchiseBusinessRegistrationNo = franchiseBusinessRegistrationNo;
         this.franchiseAddress = franchiseAddress;
         this.bankAccountNo = bankAccountNo;
         this.headOfficeSupervisor = headOfficeSupervisor;
@@ -64,12 +68,12 @@ public class OrderFranchiseInfo implements Serializable {
         this.franchisePhone = franchisePhone;
     }
 
-    public Member getMember() {
-        return member;
+    public Integer getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setFranchiseRepresentativeNo(Integer franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
     public String getFranchiseRepresentativeName() {
@@ -104,12 +108,12 @@ public class OrderFranchiseInfo implements Serializable {
         this.franchiseBranchName = franchiseBranchName;
     }
 
-    public String getFranchiseBusinessRegistartionNo() {
-        return franchiseBusinessRegistartionNo;
+    public String getFranchiseBusinessRegistrationNo() {
+        return franchiseBusinessRegistrationNo;
     }
 
-    public void setFranchiseBusinessRegistartionNo(String franchiseBusinessRegistartionNo) {
-        this.franchiseBusinessRegistartionNo = franchiseBusinessRegistartionNo;
+    public void setFranchiseBusinessRegistrationNo(String franchiseBusinessRegistrationNo) {
+        this.franchiseBusinessRegistrationNo = franchiseBusinessRegistrationNo;
     }
 
     public String getFranchiseAddress() {
@@ -154,13 +158,13 @@ public class OrderFranchiseInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "FranchiseInfo{" +
-                "member=" + member +
+        return "OrderFranchiseInfo{" +
+                "franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 ", franchiseRepresentativeName='" + franchiseRepresentativeName + '\'' +
                 ", franchiseRepresentativePhone='" + franchiseRepresentativePhone + '\'' +
                 ", franchiseRepresentativeEmail='" + franchiseRepresentativeEmail + '\'' +
                 ", franchiseBranchName='" + franchiseBranchName + '\'' +
-                ", franchiseBusinessRegistartionNo='" + franchiseBusinessRegistartionNo + '\'' +
+                ", franchiseBusinessRegistrationNo='" + franchiseBusinessRegistrationNo + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 ", bankAccountNo='" + bankAccountNo + '\'' +
                 ", headOfficeSupervisor=" + headOfficeSupervisor +

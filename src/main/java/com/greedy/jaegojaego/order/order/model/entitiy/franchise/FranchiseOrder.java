@@ -3,6 +3,7 @@ package com.greedy.jaegojaego.order.order.model.entitiy.franchise;
 import com.greedy.jaegojaego.order.franchise.model.entity.OrderFranchiseInfo;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity(name = "franchiseOrder")
@@ -27,7 +28,7 @@ public class FranchiseOrder {
     private java.sql.Date franchiseOrderApplicationDate;
 
     @Column(name = "FRANCHISE_ORDER_ORDER_NUMBER")
-    private int franchiseOrderOrderNumber;
+    private String franchiseOrderOrderNumber;
 
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
@@ -41,5 +42,101 @@ public class FranchiseOrder {
     @JoinColumn(name = "FRANCHISE_ORDER_NO")
     private List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList;
 
+    @Column(name = "FRANCHISE_ORDER_STATUS")
+    private String franchiseOrderStatus;
 
+    @Column(name = "FRANCHISE_ORDER_STATUS_DATE")
+    private java.sql.Date franchiseOrderStatusDate;
+
+    public FranchiseOrder() {
+    }
+
+    public FranchiseOrder(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfo orderFranchiseInfo, List<FranchiseOrderItem> franchiseOrderItemList, List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate) {
+        this.franchiseOrderNo = franchiseOrderNo;
+        this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
+        this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
+        this.orderFranchiseInfo = orderFranchiseInfo;
+        this.franchiseOrderItemList = franchiseOrderItemList;
+        this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
+        this.franchiseOrderStatus = franchiseOrderStatus;
+        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+    }
+
+    public int getFranchiseOrderNo() {
+        return franchiseOrderNo;
+    }
+
+    public void setFranchiseOrderNo(int franchiseOrderNo) {
+        this.franchiseOrderNo = franchiseOrderNo;
+    }
+
+    public Date getFranchiseOrderApplicationDate() {
+        return franchiseOrderApplicationDate;
+    }
+
+    public void setFranchiseOrderApplicationDate(Date franchiseOrderApplicationDate) {
+        this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
+    }
+
+    public String getFranchiseOrderOrderNumber() {
+        return franchiseOrderOrderNumber;
+    }
+
+    public void setFranchiseOrderOrderNumber(String franchiseOrderOrderNumber) {
+        this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
+    }
+
+    public OrderFranchiseInfo getOrderFranchiseInfo() {
+        return orderFranchiseInfo;
+    }
+
+    public void setOrderFranchiseInfo(OrderFranchiseInfo orderFranchiseInfo) {
+        this.orderFranchiseInfo = orderFranchiseInfo;
+    }
+
+    public List<FranchiseOrderItem> getFranchiseOrderItemList() {
+        return franchiseOrderItemList;
+    }
+
+    public void setFranchiseOrderItemList(List<FranchiseOrderItem> franchiseOrderItemList) {
+        this.franchiseOrderItemList = franchiseOrderItemList;
+    }
+
+    public List<FranchiseOrderStatusHistory> getFranchiseOrderStatusHistoryList() {
+        return franchiseOrderStatusHistoryList;
+    }
+
+    public void setFranchiseOrderStatusHistoryList(List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList) {
+        this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
+    }
+
+    public String getFranchiseOrderStatus() {
+        return franchiseOrderStatus;
+    }
+
+    public void setFranchiseOrderStatus(String franchiseOrderStatus) {
+        this.franchiseOrderStatus = franchiseOrderStatus;
+    }
+
+    public Date getFranchiseOrderStatusDate() {
+        return franchiseOrderStatusDate;
+    }
+
+    public void setFranchiseOrderStatusDate(Date franchiseOrderStatusDate) {
+        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+    }
+
+    @Override
+    public String toString() {
+        return "FranchiseOrder{" +
+                "franchiseOrderNo=" + franchiseOrderNo +
+                ", franchiseOrderApplicationDate=" + franchiseOrderApplicationDate +
+                ", franchiseOrderOrderNumber='" + franchiseOrderOrderNumber + '\'' +
+                ", orderFranchiseInfo=" + orderFranchiseInfo +
+                ", franchiseOrderItemList=" + franchiseOrderItemList +
+                ", franchiseOrderStatusHistoryList=" + franchiseOrderStatusHistoryList +
+                ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
+                ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
+                '}';
+    }
 }
