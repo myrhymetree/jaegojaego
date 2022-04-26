@@ -1,6 +1,4 @@
 package com.greedy.jaegojaego.outWarehouse.model.entity;
-
-import com.greedy.jaegojaego.member.model.entity.FranchiseInfo;
 import lombok.*;
 
 import javax.persistence.*;

@@ -3,6 +3,7 @@ package com.greedy.jaegojaego.member.model.service;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
 import com.greedy.jaegojaego.member.model.entity.*;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
@@ -83,9 +84,14 @@ public class MemberService {
         return status;
     }
 
-    public List<CompanyAccountDTO> findMemberList() {
+    public List<CompanyAccountDTO> findMemberList(String searchWord) {
 
-        List<CompanyAccount> memberList = companyAccountRepository.findAll();
+        MemberSearchCondition condition = new MemberSearchCondition();
+        condition.setMemberId(searchWord);
+        condition.setMemberId(searchWord);
+        condition.setDepaartmentName(searchWord);
+
+        List<CompanyAccount> memberList = companyAccountRepository.searchMembers(condition);
 
         List<CompanyAccountDTO> memberDTOlist =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
 

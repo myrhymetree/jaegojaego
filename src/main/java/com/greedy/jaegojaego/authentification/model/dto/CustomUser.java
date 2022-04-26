@@ -36,9 +36,6 @@ public class CustomUser extends User {
 
         setDetails(member);
 
-        System.out.println("[ROLE_ADMIN]".equals(authorities));
-
-        System.out.println("authorities는 " + authorities);
     }
 
     private void setDetails(MemberDTO member) {
