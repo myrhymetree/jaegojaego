@@ -1,16 +1,17 @@
 package com.greedy.jaegojaego.order.franchise.model.dto;
 
+import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 
 public class OrderFranchiseInfoDTO {
 
-    private Member member;
+    private Integer franchiseRepresentativeNo;
     private String franchiseRepresentativeName;
     private String franchiseRepresentativePhone;
     private String franchiseRepresentativeEmail;
     private String franchiseBranchName;
-    private String franchiseBusinessRegistartionNo;
+    private String franchiseBusinessRegistrationNo;
     private String franchiseAddress;
     private String bankAccountNo;
     private OrderCompanyAccount headOfficeSupervisor;
@@ -20,13 +21,13 @@ public class OrderFranchiseInfoDTO {
     public OrderFranchiseInfoDTO() {
     }
 
-    public OrderFranchiseInfoDTO(Member member, String franchiseRepresentativeName, String franchiseRepresentativePhone, String franchiseRepresentativeEmail, String franchiseBranchName, String franchiseBusinessRegistartionNo, String franchiseAddress, String bankAccountNo, OrderCompanyAccount headOfficeSupervisor, OrderCompanyAccount headOfficeWritedMember, String franchisePhone) {
-        this.member = member;
+    public OrderFranchiseInfoDTO(Integer franchiseRepresentativeNo, String franchiseRepresentativeName, String franchiseRepresentativePhone, String franchiseRepresentativeEmail, String franchiseBranchName, String franchiseBusinessRegistrationNo, String franchiseAddress, String bankAccountNo, OrderCompanyAccount headOfficeSupervisor, OrderCompanyAccount headOfficeWritedMember, String franchisePhone) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
         this.franchiseRepresentativeName = franchiseRepresentativeName;
         this.franchiseRepresentativePhone = franchiseRepresentativePhone;
         this.franchiseRepresentativeEmail = franchiseRepresentativeEmail;
         this.franchiseBranchName = franchiseBranchName;
-        this.franchiseBusinessRegistartionNo = franchiseBusinessRegistartionNo;
+        this.franchiseBusinessRegistrationNo = franchiseBusinessRegistrationNo;
         this.franchiseAddress = franchiseAddress;
         this.bankAccountNo = bankAccountNo;
         this.headOfficeSupervisor = headOfficeSupervisor;
@@ -34,12 +35,12 @@ public class OrderFranchiseInfoDTO {
         this.franchisePhone = franchisePhone;
     }
 
-    public Member getMember() {
-        return member;
+    public Integer getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setFranchiseRepresentativeNo(Integer franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
     public String getFranchiseRepresentativeName() {
@@ -74,12 +75,12 @@ public class OrderFranchiseInfoDTO {
         this.franchiseBranchName = franchiseBranchName;
     }
 
-    public String getFranchiseBusinessRegistartionNo() {
-        return franchiseBusinessRegistartionNo;
+    public String getFranchiseBusinessRegistrationNo() {
+        return franchiseBusinessRegistrationNo;
     }
 
-    public void setFranchiseBusinessRegistartionNo(String franchiseBusinessRegistartionNo) {
-        this.franchiseBusinessRegistartionNo = franchiseBusinessRegistartionNo;
+    public void setFranchiseBusinessRegistrationNo(String franchiseBusinessRegistrationNo) {
+        this.franchiseBusinessRegistrationNo = franchiseBusinessRegistrationNo;
     }
 
     public String getFranchiseAddress() {
@@ -125,12 +126,12 @@ public class OrderFranchiseInfoDTO {
     @Override
     public String toString() {
         return "OrderFranchiseInfoDTO{" +
-                "member=" + member +
+                "franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 ", franchiseRepresentativeName='" + franchiseRepresentativeName + '\'' +
                 ", franchiseRepresentativePhone='" + franchiseRepresentativePhone + '\'' +
                 ", franchiseRepresentativeEmail='" + franchiseRepresentativeEmail + '\'' +
                 ", franchiseBranchName='" + franchiseBranchName + '\'' +
-                ", franchiseBusinessRegistartionNo='" + franchiseBusinessRegistartionNo + '\'' +
+                ", franchiseBusinessRegistrationNo='" + franchiseBusinessRegistrationNo + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 ", bankAccountNo='" + bankAccountNo + '\'' +
                 ", headOfficeSupervisor=" + headOfficeSupervisor +

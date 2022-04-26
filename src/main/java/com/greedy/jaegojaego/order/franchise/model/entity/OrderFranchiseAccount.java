@@ -1,17 +1,22 @@
 package com.greedy.jaegojaego.order.franchise.model.entity;
 
 import com.greedy.jaegojaego.member.model.entity.Member;
+import com.greedy.jaegojaego.member.model.entity.MemberRole;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "orderFranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
-public class OrderFranchiseAccount implements Serializable {
+@EqualsAndHashCode
+public class OrderFranchiseAccount {
 
     @Id
-    @OneToOne
-    @JoinColumn(name = "FRANCHISE_MANAGER_NO")
-    private Member member;
+    @Column(name = "FRANCHISE_MANAGER_NO")
+    private Integer franchiseManagerNo;
 
     @Column(name = "MANAGER_NAME")
     private String managerName;
@@ -29,20 +34,20 @@ public class OrderFranchiseAccount implements Serializable {
     public OrderFranchiseAccount() {
     }
 
-    public OrderFranchiseAccount(Member member, String managerName, String managerPhone, String managerEmail, OrderFranchiseInfo franchiseInfo) {
-        this.member = member;
+    public OrderFranchiseAccount(Integer franchiseManagerNo, String managerName, String managerPhone, String managerEmail, OrderFranchiseInfo franchiseInfo) {
+        this.franchiseManagerNo = franchiseManagerNo;
         this.managerName = managerName;
         this.managerPhone = managerPhone;
         this.managerEmail = managerEmail;
         this.franchiseInfo = franchiseInfo;
     }
 
-    public Member getMember() {
-        return member;
+    public Integer getFranchiseManagerNo() {
+        return franchiseManagerNo;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setFranchiseManagerNo(Integer franchiseManagerNo) {
+        this.franchiseManagerNo = franchiseManagerNo;
     }
 
     public String getManagerName() {
@@ -80,7 +85,7 @@ public class OrderFranchiseAccount implements Serializable {
     @Override
     public String toString() {
         return "OrderFranchiseAccount{" +
-                "member=" + member +
+                "franchiseManagerNo=" + franchiseManagerNo +
                 ", managerName='" + managerName + '\'' +
                 ", managerPhone='" + managerPhone + '\'' +
                 ", managerEmail='" + managerEmail + '\'' +

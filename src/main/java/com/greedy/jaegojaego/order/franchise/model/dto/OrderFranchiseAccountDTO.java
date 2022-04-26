@@ -1,10 +1,11 @@
 package com.greedy.jaegojaego.order.franchise.model.dto;
 
+import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.entity.Member;
 
 public class OrderFranchiseAccountDTO {
 
-    private Member member;
+    private Integer franchiseManagerNo;
     private String managerName;
     private String managerPhone;
     private String managerEmail;
@@ -13,20 +14,20 @@ public class OrderFranchiseAccountDTO {
     public OrderFranchiseAccountDTO() {
     }
 
-    public OrderFranchiseAccountDTO(Member member, String managerName, String managerPhone, String managerEmail, OrderFranchiseInfoDTO franchiseInfo) {
-        this.member = member;
+    public OrderFranchiseAccountDTO(Integer franchiseManagerNo, String managerName, String managerPhone, String managerEmail, OrderFranchiseInfoDTO franchiseInfo) {
+        this.franchiseManagerNo = franchiseManagerNo;
         this.managerName = managerName;
         this.managerPhone = managerPhone;
         this.managerEmail = managerEmail;
         this.franchiseInfo = franchiseInfo;
     }
 
-    public Member getMember() {
-        return member;
+    public Integer getFranchiseManagerNo() {
+        return franchiseManagerNo;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setFranchiseManagerNo(Integer franchiseManagerNo) {
+        this.franchiseManagerNo = franchiseManagerNo;
     }
 
     public String getManagerName() {
@@ -63,8 +64,8 @@ public class OrderFranchiseAccountDTO {
 
     @Override
     public String toString() {
-        return "FranchiseAccountDTO{" +
-                "member=" + member +
+        return "OrderFranchiseAccountDTO{" +
+                "franchiseManagerNo=" + franchiseManagerNo +
                 ", managerName='" + managerName + '\'' +
                 ", managerPhone='" + managerPhone + '\'' +
                 ", managerEmail='" + managerEmail + '\'' +

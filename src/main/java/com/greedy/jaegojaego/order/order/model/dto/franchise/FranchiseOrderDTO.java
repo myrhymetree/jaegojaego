@@ -9,21 +9,25 @@ public class FranchiseOrderDTO {
 
     private int franchiseOrderNo;
     private java.sql.Date franchiseOrderApplicationDate;
-    private int franchiseOrderOrderNumber;
+    private String franchiseOrderOrderNumber;
     private OrderFranchiseInfoDTO orderFranchiseInfo;
     private List<FranchiseOrderItemDTO> franchiseOrderItemList;
     private List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList;
+    private String franchiseOrderStatus;
+    private java.sql.Date franchiseOrderStatusDate;
 
     public FranchiseOrderDTO() {
     }
 
-    public FranchiseOrderDTO(int franchiseOrderNo, Date franchiseOrderApplicationDate, int franchiseOrderOrderNumber, OrderFranchiseInfoDTO orderFranchiseInfo, List<FranchiseOrderItemDTO> franchiseOrderItemList, List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList) {
+    public FranchiseOrderDTO(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfoDTO orderFranchiseInfo, List<FranchiseOrderItemDTO> franchiseOrderItemList, List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate) {
         this.franchiseOrderNo = franchiseOrderNo;
         this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
         this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
         this.orderFranchiseInfo = orderFranchiseInfo;
         this.franchiseOrderItemList = franchiseOrderItemList;
         this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
+        this.franchiseOrderStatus = franchiseOrderStatus;
+        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
     }
 
     public int getFranchiseOrderNo() {
@@ -42,11 +46,11 @@ public class FranchiseOrderDTO {
         this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
     }
 
-    public int getFranchiseOrderOrderNumber() {
+    public String getFranchiseOrderOrderNumber() {
         return franchiseOrderOrderNumber;
     }
 
-    public void setFranchiseOrderOrderNumber(int franchiseOrderOrderNumber) {
+    public void setFranchiseOrderOrderNumber(String franchiseOrderOrderNumber) {
         this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
     }
 
@@ -74,15 +78,33 @@ public class FranchiseOrderDTO {
         this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
     }
 
+    public String getFranchiseOrderStatus() {
+        return franchiseOrderStatus;
+    }
+
+    public void setFranchiseOrderStatus(String franchiseOrderStatus) {
+        this.franchiseOrderStatus = franchiseOrderStatus;
+    }
+
+    public Date getFranchiseOrderStatusDate() {
+        return franchiseOrderStatusDate;
+    }
+
+    public void setFranchiseOrderStatusDate(Date franchiseOrderStatusDate) {
+        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+    }
+
     @Override
     public String toString() {
         return "FranchiseOrderDTO{" +
                 "franchiseOrderNo=" + franchiseOrderNo +
                 ", franchiseOrderApplicationDate=" + franchiseOrderApplicationDate +
-                ", franchiseOrderOrderNumber=" + franchiseOrderOrderNumber +
+                ", franchiseOrderOrderNumber='" + franchiseOrderOrderNumber + '\'' +
                 ", orderFranchiseInfo=" + orderFranchiseInfo +
                 ", franchiseOrderItemList=" + franchiseOrderItemList +
                 ", franchiseOrderStatusHistoryList=" + franchiseOrderStatusHistoryList +
+                ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
+                ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
                 '}';
     }
 }
