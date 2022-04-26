@@ -5,6 +5,7 @@
     <title>$Title$</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
 
     <style>
         .order-application-output-btn {
@@ -55,6 +56,12 @@
 
         }
 
+        .status-change-div {
+            width: 80px;
+            display: none;
+            position: absolute;
+            margin-left: 34px;
+        }
     </style>
 </head>
 <body>
@@ -92,6 +99,7 @@
                                     <th>신청물품</th>
                                     <th>총 금액</th>
                                     <th>처리일자</th>
+                                    <th>처리자</th>
                                     <th>처리상태</th>
                                     <th>발주 신청서</th>
                                 </tr>
@@ -117,8 +125,20 @@
                                     </td>
                                     <td th:text="${ companyOrder.companyOrderHistoryStatusDate }"></td>
                                     <td>
+                                        <th:block th:if="${ companyOrder.companyOrderUpdateMember ne null }">
+                                            <th:block th:text="${ companyOrder.companyOrderUpdateMember.memberName }"></th:block>
+                                        </th:block>
+                                        <th:block th:if="${ companyOrder.companyOrderUpdateMember eq null }">
+                                            <th:block th:text="${ companyOrder.companyOrderHistoryStatusDate }"></th:block>
+                                        </th:block>
+                                    </td>
+                                    <td>
                                         <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'BEFORE' }">
-                                            <button class="order-before-btn">처리 전</button>
+                                            <button class="order-before-btn" id="order-before-btn">처리 전</button>
+                                            <div class="status-change-div" id="status-change-div">
+                                                <button class="order-complete-btn" id="order-complete-btn">승인완료</button>
+                                                <button class="order-cancel-btn" id="order-cancel-btn">신청취소</button>
+                                            </div>
                                         </th:block>
                                         <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'CANCEL' }">
                                             <button class="order-cancel-btn">신청취소</button>
@@ -146,7 +166,6 @@
                         <div class="modal-dialog">
                             <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
                                     <h4 class="modal-title">내역 상세</h4>
                                     <small id="company-order-detail-modal-small" style="margin-right: 30px;"></small>
                                 </div>
@@ -176,7 +195,6 @@
                         <div class="modal-dialog">
                             <div class="modal-content animated bounceInRight">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                     <h4 class="modal-title">발주신청서 선택</h4>
                                     <small class="font-bold" style="color:red;">* 출력할 거래처를 선택해주세요. *</small>
                                 </div>
@@ -207,9 +225,13 @@
     </div>
 
     <th:block th:replace="/common/footer.html"></th:block>
+
     <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
     <!-- Page-Level Scripts -->
     <script>
+
         $(document).ready(function() {
 
             $('.footable').footable();
@@ -222,7 +244,20 @@
                 location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
             })
 
+            $(document).on('click', '.sa-button-container .confirm', function() {
+
+                if(checkSuccess == 1) {
+                    history.go(0);
+                }
+
+            });
+
         });
+
+        const $orderBeforeBtn = document.querySelectorAll("#order-before-btn");
+        const $StatusChangeDiv = document.querySelectorAll("#status-change-div");
+        const $orderCompleteBtn = document.querySelectorAll("#order-complete-btn");
+        const $orderCancelBtn = document.querySelectorAll("#order-cancel-btn");
 
         if(document.querySelectorAll("#company-order-history-tr td")) {
             const $tds = document.querySelectorAll("#company-order-history-tr td");
@@ -239,6 +274,14 @@
                 }
 
                 $tds[i].onclick = function() {
+
+                    for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                        if($StatusChangeDiv[j].style.display = 'block') {
+                            $StatusChangeDiv[j].style.display = 'none';
+                        }
+
+                    }
 
                     $("#company-order-detail-table-tbody").empty();
 
@@ -292,10 +335,6 @@
 
                 }
 
-                // this.parentNode.children[5].onclick = function(e) {
-                //     e.stopPropagation();
-                // }
-
             }
         }
 
@@ -307,6 +346,14 @@
             $outputBtn[i].onclick = function(e) {
 
                 e.stopPropagation();
+
+                for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                    if($StatusChangeDiv[j].style.display = 'block') {
+                        $StatusChangeDiv[j].style.display = 'none';
+                    }
+
+                }
 
                 $outputModalBody.empty();
 
@@ -361,6 +408,107 @@
         document.getElementById("output-modal-close-btn").onclick = function() {
 
             document.getElementById("myModal").style.display = 'none';
+
+        }
+
+        for(let i = 0; i < $orderBeforeBtn.length; i++) {
+
+            $orderBeforeBtn[i].onclick = function(e) {
+                e.stopPropagation();
+
+                for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                    if(j == i) {
+                        if($StatusChangeDiv[i].style.display == 'block') {
+
+                            $StatusChangeDiv[i].style.display = 'none';
+                        } else {
+
+                            $StatusChangeDiv[i].style.display = 'block';
+                        }
+                    } else {
+
+                        $StatusChangeDiv[j].style.display = 'none';
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        let checkSuccess = 0;
+
+        for(let i = 0; i < $orderCompleteBtn.length; i++) {
+
+            let companyOrderNo = this.parentNode.parentNode.parentNode.children[0].value;
+
+            $orderCompleteBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                e.preventDefault();
+
+                console.log("hi");
+
+                $StatusChangeDiv[i].style.display = 'none';
+
+                swal({
+                    title: "승인 완료 처리하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+
+                    fetch("/order/modifyCompanyOrderHistoryStatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=COMPLETE")
+                        .then(response => response.json())
+                        .then(response => {
+                            swal("변경 완료!", "승인 완료 처리되었습니다.", "success");
+                            checkSuccess = 1;
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "변경 실패!",
+                                text: "알수 없는 문제가 발생하였습니다."
+                            });
+                        });
+                });
+
+            }
+
+            $orderCancelBtn[i].onclick = function(e) {
+                e.stopPropagation();
+                $StatusChangeDiv[i].style.display = 'none';
+
+                swal({
+                    title: "신청 취소 처리하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+
+                    fetch("/order/modifyCompanyOrderHistoryStatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=CANCEL")
+                        .then(response => response.json())
+                        .then(response => {
+                            swal("변경 완료!", "신청 취소 처리되었습니다.", "success");
+                            checkSuccess = 1;
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "변경 실패!",
+                                text: "알수 없는 문제가 발생하였습니다."
+                            });
+                        });
+                });
+
+            }
 
         }
 

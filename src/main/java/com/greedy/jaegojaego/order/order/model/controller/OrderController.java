@@ -100,10 +100,6 @@ public class OrderController {
 
         }
 
-        for(int i = 0; i < companyOrderList.size(); i++) {
-            System.out.println(companyOrderList.get(i).getCompanyOrderHistoryStaus());
-        }
-
         mv.addObject("itemName", orderItemName);
         mv.addObject("totalPrice", totalPrice);
         mv.addObject("companyOrderList", companyOrderList);

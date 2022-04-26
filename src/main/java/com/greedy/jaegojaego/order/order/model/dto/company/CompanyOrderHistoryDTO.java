@@ -15,11 +15,12 @@ public class CompanyOrderHistoryDTO {
     private List<OrderApplicationDTO> orderApplicationList;
     private String companyOrderHistoryStaus;
     private java.sql.Date companyOrderHistoryStatusDate;
+    private OrderCompanyAccountDTO companyOrderUpdateMember;
 
     public CompanyOrderHistoryDTO() {
     }
 
-    public CompanyOrderHistoryDTO(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccountDTO companyAccount, List<CompanyOrderItemDTO> companyOrderItemList, List<OrderApplicationDTO> orderApplicationList, String companyOrderHistoryStaus, Date companyOrderHistoryStatusDate) {
+    public CompanyOrderHistoryDTO(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, OrderCompanyAccountDTO companyAccount, List<CompanyOrderItemDTO> companyOrderItemList, List<OrderApplicationDTO> orderApplicationList, String companyOrderHistoryStaus, Date companyOrderHistoryStatusDate, OrderCompanyAccountDTO companyOrderUpdateMember) {
         this.companyOrderHistoryNo = companyOrderHistoryNo;
         this.companyOrderHistoryCreatedDate = companyOrderHistoryCreatedDate;
         this.companyAccount = companyAccount;
@@ -27,6 +28,7 @@ public class CompanyOrderHistoryDTO {
         this.orderApplicationList = orderApplicationList;
         this.companyOrderHistoryStaus = companyOrderHistoryStaus;
         this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
+        this.companyOrderUpdateMember = companyOrderUpdateMember;
     }
 
     public int getCompanyOrderHistoryNo() {
@@ -85,6 +87,14 @@ public class CompanyOrderHistoryDTO {
         this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
     }
 
+    public OrderCompanyAccountDTO getCompanyOrderUpdateMember() {
+        return companyOrderUpdateMember;
+    }
+
+    public void setCompanyOrderUpdateMember(OrderCompanyAccountDTO companyOrderUpdateMember) {
+        this.companyOrderUpdateMember = companyOrderUpdateMember;
+    }
+
     @Override
     public String toString() {
         return "CompanyOrderHistoryDTO{" +
@@ -95,6 +105,7 @@ public class CompanyOrderHistoryDTO {
                 ", orderApplicationList=" + orderApplicationList +
                 ", companyOrderHistoryStaus='" + companyOrderHistoryStaus + '\'' +
                 ", companyOrderHistoryStatusDate=" + companyOrderHistoryStatusDate +
+                ", companyOrderUpdateMember=" + companyOrderUpdateMember +
                 '}';
     }
 }
