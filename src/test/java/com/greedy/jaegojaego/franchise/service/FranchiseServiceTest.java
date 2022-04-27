@@ -45,7 +45,7 @@ class FranchiseServiceTest {
     public void 계정생성() {
 
         FranchiseInfo franchiseInfo = new FranchiseInfo();
-        franchiseInfo.setMemberId("gangname3");
+        franchiseInfo.setMemberId("gangnam333");
         franchiseInfo.setMemberPwd(passwordEncoder.encode("0000"));
         franchiseInfo.setMemberPwdInitStatus("Y");
         franchiseInfo.setMemberCreatedDate(LocalDateTime.now());

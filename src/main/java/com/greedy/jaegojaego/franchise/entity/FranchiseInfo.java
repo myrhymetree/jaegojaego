@@ -3,16 +3,23 @@ package com.greedy.jaegojaego.franchise.entity;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
 
+import javax.naming.Name;
 import javax.persistence.*;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@SequenceGenerator(
+        name = "FRANCHISE_INFO_SEQ_GENERATOR",
+        sequenceName = "FRANCHISE_REPRESENTATIVE_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Entity(name = "FranchiseInfo")
 @Table(name = "FRANCHISE_INFO")
-public class FranchiseInfo extends FranchiseMember {
-
-    @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private int representativeNo;
+@PrimaryKeyJoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+//@DiscriminatorValue(value = "가맹점")
+public class FranchiseInfo extends Member {
 
     @Column(name = "FRANCHISE_REPRESENTATIVE_NAME")
     private String representativeName;
@@ -49,8 +56,15 @@ public class FranchiseInfo extends FranchiseMember {
     @Column(name = "HEAD_OFFICE_WRITED_MEMBER_NO")
     private Integer headOfficeWritedMemberNo;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseAttachmentFile> franchiseAttachmentFiles;
 
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
+
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
 }

@@ -10,6 +10,11 @@
     <!-- Sweet Alert -->
     <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
 
+    <!-- 자체 css  -->
+    <link th:href="@{/css/franchise/franchise.css}" rel="stylesheet">
+
+    <link th:href="@{/css/plugins/datapicker/datepicker3.css}" rel="stylesheet">
+
 </head>
 <body>
 <th:block th:include="/common/header.html"></th:block>
@@ -23,41 +28,88 @@
 <div align="center">
     <img alt="image" th:src="@{/img/jaegojaego_logo.png}"/>
 </div>
-<div class="middle-box text-center loginscreen   animated fadeInDown">
+<div class="large-box text-center animated fadeInDown">
 
-    <h3>임직원 계정등록</h3>
-    <form class="m-t2" id="registForm" role="form" action="/franchise/regist" method="post" onsubmit="preSubmit()">
-        <div class="form-group" id="idContainer">
-            <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
-            <label id="duplicationText"></label>
+    <h3>가맹점 계정등록</h3>
+    <form class="m-t4" id="registForm" role="form" action="/franchise/regist" method="post" onsubmit="preSubmit()">
+        <div class="mt-5 row">
+            <div class="form-group col-6" id="idContainer">
+                <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
+                <label id="duplicationText"></label>
+            </div>
+<!--            <div class="col-">-->
+<!--            </div>-->
+            <div class="form-group col-6">
+                <input type="text"  id="representativeName" name="representativeName" class="form-control" placeholder="가맹점 대표 이름을 입력하세요." required>
+            </div>
         </div>
-        <div id="pwd-container2">
-            <div class="form-group">
+        <div id="pwd-container2 mt-5 row">
+            <div class="form-group col-6">
                 <input type="password" class="form-control example2" id="memberPwd" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
+                <div class="form-group">
+                    <div class="pwstrength_viewport_progress"></div>
+                </div>
             </div>
-            <div class="form-group">
-                <div class="pwstrength_viewport_progress"></div>
-            </div>
-            <div class="form-group">
+            <div class="form-group col-6">
                 <input type="password" class="form-control" name="confirm" id="confirm" placeholder="비밀번호를 한번 더 입력하세요" required>
             </div>
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" id="memberName" name="memberName" placeholder="이름을 입력하세요" required>
+            <input type="text" class="form-control" id="branchName" name="branchName" placeholder="가맹점 이름을 입력하세요" required>
         </div>
 
-        <select class="select2_demo_3 form-control m-b" name="department.departmentNo" id="department" required>
+        <div class="form-group">
+            <input type="text" class="form-control" id="representativePhone" name="representativePhone" placeholder="가맹점 휴대전화 번호를 입력하세요" required>
+        </div>
 
+        <div class="form-group">
+            <input type="text" class="form-control" id="businessRegistrationNo" name="businessRegistrationNo" placeholder="가맹점 사업자 등록증 번호를 입력하세요" required>
+        </div>
+
+        <select class="select2_demo_3 form-control m-b" name="franchiseContractUpdatedRecords.franchiseContractStatus" id="franchiseContractStatus" required>
+            <option></option>
+            <option value="계약전">계약전</option>
+            <option value="계약중">계약중</option>
+            <option value="계약종료임박">계약종료임박</option>
         </select>
+        <br>
+        <div class="form-group" id="data_5">
+            <div class="input-daterange input-group" id="datepicker">
+                <input type="text" class="form-control-sm form-control" id="franchiseContractStartedDate" name="franchiseContractUpdatedRecords.franchiseContractStartedDate" placeholder="가맹 계약 시작일을 입력하세요"/>
+                <span class="input-group-addon">to</span>
+                <input type="text" class="form-control-sm form-control" id="franchiseContractExpiredDate" name="franchiseContractUpdatedRecords.franchiseContractExpiredDate" placeholder="가맹 계약 종료일을 입력하세요" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="text" placeholder="가맹점 유선 전화 번호를 입력하세요" name="phone" class="form-control" data-mask="(000) 0000-0000">
+        </div>
+        <div class="form-group">
+            <input type="email"  name="" class="form-control" placeholder="가맹점 대표 이메일을 입력하세요">
+        </div>
+
+        <div class="input-group mt-3">
+            <div class="custom-file">
+                <input id="inputGroupFile01" name="inputGroupFile01" type="file" class="custom-file-input">
+                <label class="custom-file-label" for="inputGroupFile01">계좌 확인서를 업로드 하세요</label>
+            </div>
+        </div>
+
+        <div class="input-group mt-3">
+            <div class="custom-file">
+                <input id="inputGroupFile02" name="inputGroupFile02" type="file" class="custom-file-input">
+                <label class="custom-file-label" for="inputGroupFile01">사업자 등록증을 업로드 하세요</label>
+            </div>
+        </div>
+
+        <div class="input-group mt-3">
+            <div class="custom-file">
+                <input id="inputGroupFile03" name="inputGroupFile03" type="file" class="custom-file-input">
+                <label class="custom-file-label" for="inputGroupFile01">가맹 계약서를 업로드 하세요</label>
+            </div>
+        </div>
 
         <br>
-
-        <div class="form-group">
-            <input type="text" placeholder="휴대전화 번호를 입력하세요" name="memberCellPhone" class="form-control" data-mask="(000) 0000-0000">
-        </div>
-        <div class="form-group">
-            <input type="email"  name="memberEmail" class="form-control" placeholder="이메일을 입력하세요">
-        </div>
 
         <button type="button" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
 
@@ -72,7 +124,7 @@
 <!-- iCheck -->
 <script th:src="@{js/plugins/iCheck/icheck.min.js}"></script>
 
-<script th:src="@{/js/member/memberRegist.js}"></script>
+<script th:src="@{/js/franchise/franchiseRegist.js}"></script>
 
 <!-- Custom and plugin javascript -->
 <script th:src="@{/js/inspinia.js}"></script>
@@ -93,6 +145,12 @@
 
 <!-- Sweet alert -->
 <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+<!-- Data picker -->
+<script th:src="@{/js/plugins/datapicker/bootstrap-datepicker.js}"></script>
+
+<!-- BS custom file -->
+<script th:src="@{/js/plugins/bs-custom-file/bs-custom-file-input.min.js}"></script>
 
 </body>
 </html>
