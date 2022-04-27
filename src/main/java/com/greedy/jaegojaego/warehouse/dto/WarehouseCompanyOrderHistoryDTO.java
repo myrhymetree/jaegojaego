@@ -10,15 +10,19 @@ public class WarehouseCompanyOrderHistoryDTO {
     private int companyAccount;
     private List<WarehouseCompanyOrderItemDTO> companyOrderItemList;
     private List<WarehouseOrderApplicationDTO> orderApplicationList;
+    private String companyOrderHistoryStatus;
+    private java.sql.Date companyOrderHistoryStatusDate;
 
     public WarehouseCompanyOrderHistoryDTO() {}
 
-    public WarehouseCompanyOrderHistoryDTO(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, int companyAccount, List<WarehouseCompanyOrderItemDTO> companyOrderItemList, List<WarehouseOrderApplicationDTO> orderApplicationList) {
+    public WarehouseCompanyOrderHistoryDTO(int companyOrderHistoryNo, Date companyOrderHistoryCreatedDate, int companyAccount, List<WarehouseCompanyOrderItemDTO> companyOrderItemList, List<WarehouseOrderApplicationDTO> orderApplicationList, String companyOrderHistoryStatus, Date companyOrderHistoryStatusDate) {
         this.companyOrderHistoryNo = companyOrderHistoryNo;
         this.companyOrderHistoryCreatedDate = companyOrderHistoryCreatedDate;
         this.companyAccount = companyAccount;
         this.companyOrderItemList = companyOrderItemList;
         this.orderApplicationList = orderApplicationList;
+        this.companyOrderHistoryStatus = companyOrderHistoryStatus;
+        this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
     }
 
     public int getCompanyOrderHistoryNo() {
@@ -61,6 +65,22 @@ public class WarehouseCompanyOrderHistoryDTO {
         this.orderApplicationList = orderApplicationList;
     }
 
+    public String getCompanyOrderHistoryStatus() {
+        return companyOrderHistoryStatus;
+    }
+
+    public void setCompanyOrderHistoryStatus(String companyOrderHistoryStatus) {
+        this.companyOrderHistoryStatus = companyOrderHistoryStatus;
+    }
+
+    public Date getCompanyOrderHistoryStatusDate() {
+        return companyOrderHistoryStatusDate;
+    }
+
+    public void setCompanyOrderHistoryStatusDate(Date companyOrderHistoryStatusDate) {
+        this.companyOrderHistoryStatusDate = companyOrderHistoryStatusDate;
+    }
+
     @Override
     public String toString() {
         return "WarehouseCompanyOrderHistoryDTO{" +
@@ -69,6 +89,8 @@ public class WarehouseCompanyOrderHistoryDTO {
                 ", companyAccount=" + companyAccount +
                 ", companyOrderItemList=" + companyOrderItemList +
                 ", orderApplicationList=" + orderApplicationList +
+                ", companyOrderHistoryStatus='" + companyOrderHistoryStatus + '\'' +
+                ", companyOrderHistoryStatusDate=" + companyOrderHistoryStatusDate +
                 '}';
     }
 }

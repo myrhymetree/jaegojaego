@@ -1,7 +1,6 @@
 package com.greedy.jaegojaego.warehouse.controller;
 
 import com.greedy.jaegojaego.warehouse.dto.*;
-import com.greedy.jaegojaego.warehouse.entity.*;
 import com.greedy.jaegojaego.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/warehouse")
@@ -25,6 +23,23 @@ public class WarehouseController {
     public WarehouseController(WarehouseService warehouseService) {
         this.warehouseService = warehouseService;
     }
+
+    /* 발주 승인 완료 목록 불러오기 */
+    @GetMapping("/complete")
+    public ModelAndView warehouseCompleteList(ModelAndView mv) {
+
+        List<WarehouseCompanyOrderHistoryDTO> warehouseCompanyOrderList = warehouseService.selectCompanyOrderList();
+
+        System.out.println("controller warehouseCompanyOrderList : " + warehouseCompanyOrderList);
+
+        mv.addObject("warehouseCompanyOrderList", warehouseCompanyOrderList);
+        mv.setViewName("/warehouse/warehouseCompleteList");
+
+        return mv;
+    }
+
+
+
 
     /* 입고, 입하 목록 조회용 */
     @GetMapping("/list")
@@ -60,7 +75,7 @@ public class WarehouseController {
         /* 상세보기를 위한 발주 정보담은 DTO 확인용 */
         List<WarehouseInItemDTO> warehouseDetailList = new ArrayList<>();
 
-        for(int i = 0; i < warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().size(); i++) {
+        for (int i = 0; i < warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().size(); i++) {
             WarehouseInItemDTO warehouseInItem = new WarehouseInItemDTO();
             warehouseInItem.setWarehouseClientName(warehouseDetailNo.getClientNo().getClientName());                                       //거래처 이름 받아오기
             warehouseInItem.setWarehouseMaterialCategoryName(warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getWarehouseMaterialCategory().getMaterialCategoryName());     //품목
@@ -73,6 +88,9 @@ public class WarehouseController {
             warehouseInItem.setWarehouseDate(warehouseDetailNo.getWarehouseWorkingDate());                 //작업 처리 일자
 //            warehouseInItem.setWarehouseCheckAmount(warehouseDetailNo.getWarehouseStatusHistory().getWarehouseStatusAmount());             //입하 수량
 //            warehouseInItem.setWarehouseInAmount(warehouseDetailNo.getWarehouseItemWarehouse().getItemWarehouseAmount());                  //입고 수량
+
+//            warehouseInItem.setWarehouseMaterialCategoryName(warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().get(i).getCompanyOrderItemPK().getOrderItemInfo().getOrderMaterialCategory().getMaterialCategoryName());     //품목
+
 
             warehouseDetailList.add(warehouseInItem);
         }
@@ -98,14 +116,29 @@ public class WarehouseController {
     @GetMapping("/raw")
     public ModelAndView warehouseRawList(ModelAndView mv) {
 
+//        WarehouseDTO itemRawList = warehouseService.findAllRawList();
         List<WarehouseDTO> itemRawList = warehouseService.findAllRawList();
 
         System.out.println("controller itemRawList = " + itemRawList);
 
-        for (WarehouseDTO list : itemRawList) {
-            System.out.println("list : " + list);
-        }
+//        for (WarehouseDTO list : itemRawList) {
+//            System.out.println("list : " + list);
+//        }
 
+//        List<RawWarehouseDTO> rawList = new ArrayList<>();
+//
+//        for (int i = 0; i < itemRawList.getOrderHistoryNo().getCompanyOrderItemList().size(); i++) {
+//            RawWarehouseDTO warehouseInItem = new RawWarehouseDTO();
+//            warehouseInItem.setWarehouseMaterialCategoryName(itemRawList.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getWarehouseMaterialCategory().getMaterialCategoryName());
+//            warehouseInItem.setWarehouseItemInfoItemSerialNo(itemRawList.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoItemSerialNo());
+//            warehouseInItem.setWarehouseItemInfoName(itemRawList.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoName());
+//
+//            rawList.add(warehouseInItem);
+//        }
+//
+//        rawList.forEach(System.out::println);
+//
+//        mv.addObject("rawList", rawList);
         mv.addObject("itemRawList", itemRawList);
         mv.setViewName("/warehouse/warehouseRawList");
 
@@ -121,7 +154,7 @@ public class WarehouseController {
         System.out.println("controller itemManuList = " + itemManuList);
 
         for (ItemWarehouseDTO list : itemManuList) {
-            System.out.println("list : " + list);
+            System.out.println("Controller list : " + list);
         }
 
         int itemCnt = 0;
