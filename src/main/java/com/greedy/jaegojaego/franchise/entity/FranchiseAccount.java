@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.franchise.entity;
 
+import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @ToString
 @Entity(name = "FranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
-public class FranchiseAccount extends FranchiseMember {
+public class FranchiseAccount extends Member {
 
     @Column(name = "FRANCHISE_MAMAGER_NO")
     private Integer managerNo;
