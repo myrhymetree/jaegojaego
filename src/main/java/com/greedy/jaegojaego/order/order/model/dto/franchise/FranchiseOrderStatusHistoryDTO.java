@@ -7,22 +7,20 @@ import java.sql.Date;
 public class FranchiseOrderStatusHistoryDTO {
 
     private int franchiseOrderStatusHistoryNo;
-    private FranchiseOrderDTO franchiseOrder;
+    private int franchiseOrderNo;
     private java.sql.Date franchiseOrderStatusHistoryDate;
     private String franchiseOrderStatus;
     private OrderCompanyAccountDTO orderCompanyAccount;
-    private String franchiseOrderStatusRejectionContent;
 
     public FranchiseOrderStatusHistoryDTO() {
     }
 
-    public FranchiseOrderStatusHistoryDTO(int franchiseOrderStatusHistoryNo, FranchiseOrderDTO franchiseOrder, Date franchiseOrderStatusHistoryDate, String franchiseOrderStatus, OrderCompanyAccountDTO orderCompanyAccount, String franchiseOrderStatusRejectionContent) {
+    public FranchiseOrderStatusHistoryDTO(int franchiseOrderStatusHistoryNo, int franchiseOrderNo, Date franchiseOrderStatusHistoryDate, String franchiseOrderStatus, OrderCompanyAccountDTO orderCompanyAccount) {
         this.franchiseOrderStatusHistoryNo = franchiseOrderStatusHistoryNo;
-        this.franchiseOrder = franchiseOrder;
+        this.franchiseOrderNo = franchiseOrderNo;
         this.franchiseOrderStatusHistoryDate = franchiseOrderStatusHistoryDate;
         this.franchiseOrderStatus = franchiseOrderStatus;
         this.orderCompanyAccount = orderCompanyAccount;
-        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
     }
 
     public int getFranchiseOrderStatusHistoryNo() {
@@ -33,12 +31,12 @@ public class FranchiseOrderStatusHistoryDTO {
         this.franchiseOrderStatusHistoryNo = franchiseOrderStatusHistoryNo;
     }
 
-    public FranchiseOrderDTO getFranchiseOrder() {
-        return franchiseOrder;
+    public int getFranchiseOrderNo() {
+        return franchiseOrderNo;
     }
 
-    public void setFranchiseOrder(FranchiseOrderDTO franchiseOrder) {
-        this.franchiseOrder = franchiseOrder;
+    public void setFranchiseOrderNo(int franchiseOrderNo) {
+        this.franchiseOrderNo = franchiseOrderNo;
     }
 
     public Date getFranchiseOrderStatusHistoryDate() {
@@ -65,22 +63,14 @@ public class FranchiseOrderStatusHistoryDTO {
         this.orderCompanyAccount = orderCompanyAccount;
     }
 
-    public String getFranchiseOrderStatusRejectionContent() {
-        return franchiseOrderStatusRejectionContent;
-    }
-
-    public void setFranchiseOrderStatusRejectionContent(String franchiseOrderStatusRejectionContent) {
-        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
-    }
-
     @Override
     public String toString() {
         return "FranchiseOrderStatusHistoryDTO{" +
                 "franchiseOrderStatusHistoryNo=" + franchiseOrderStatusHistoryNo +
+                ", franchiseOrderNo=" + franchiseOrderNo +
                 ", franchiseOrderStatusHistoryDate=" + franchiseOrderStatusHistoryDate +
                 ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
                 ", orderCompanyAccount=" + orderCompanyAccount +
-                ", franchiseOrderStatusRejectionContent='" + franchiseOrderStatusRejectionContent + '\'' +
                 '}';
     }
 }

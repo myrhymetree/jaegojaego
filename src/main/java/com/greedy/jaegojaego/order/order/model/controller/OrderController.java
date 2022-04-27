@@ -296,7 +296,8 @@ public class OrderController {
         return gson.toJson(orderClientContractItemList);
     }
 
-    @GetMapping(value = "modifyCompanyOrderHistoryStatus", produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "modifycompanyorderhistorystatus", produces = "application/json; charset=UTF-8")
+    @ResponseBody
     public String modifyCompanyOrderHistoryStatus(HttpServletRequest request, Authentication authentication) {
 
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
@@ -319,6 +320,7 @@ public class OrderController {
         List<FranchiseOrderDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision());
 
         mv.addObject("franchiseOrderList", franchiseOrderList);
+        mv.addObject("member", customUser);
         mv.setViewName("/order/franchiseOrderList");
 
         return mv;
@@ -340,6 +342,22 @@ public class OrderController {
                 .create();
 
         return gson.toJson(franchiseOrderItemList);
+    }
+
+    @GetMapping(value = "/modifyfranchiseorderstatus", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String modifyFranchiseOrderStatus(HttpServletRequest request, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        int franchiseOrderNo = Integer.parseInt(request.getParameter("franchiseOrderNo"));
+        String orderStatus = request.getParameter("orderStatus");
+
+//        orderService.updateFranchiseOrderStatus(customUser.getMemberNo(), franchiseOrderNo, orderStatus);
+
+        Gson gson = new Gson();
+
+        return gson.toJson("jsonView");
     }
 
     @GetMapping("franchiseorderregist")
