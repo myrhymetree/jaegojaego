@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
  * 2022/04/22 (이소현) 매뉴 등록용 자재 리스트 조회
  * 2022/04/23 (이소현) 메뉴 등록
  * 2022/04/25 (이소현) 메뉴 등록
+ * 2022/04/26 (이소현) 메뉴 등록(리팩토링)
+ * 2022/04/27 (이소현) 메뉴 수정
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -95,50 +97,139 @@ public class MenuService {
     }
 
     @Transactional
-    public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String materialNameAndCapacityList) {
+    public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
 
         /* 1. 완제품 메뉴 등록 */
         Menu insertMenu = menuRepository.save(modelMapper.map(menu, Menu.class));
 
         /* 분리 (3개가 들어올 경우 3개로) */
-        String[] rawMaterialList = materialNameAndCapacityList.split(",");
+        String[] rawMaterialList = materialNameAndCapacityList;
         List<String> nameList = new ArrayList<>();
         List<Integer> capacityList = new ArrayList<>();
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<>(); //합쳐지면 결국 2개만 드가는 그럼 map의 size만큼
+        String menuName = "";
+        String menuCapacity = "";
         //이름 -> 키값
         //용량 -> 밸류값
 
-        for(int i = 0; i < rawMaterialList.length; i++) {
+        for (int i = 0; i < rawMaterialList.length; i++) {
             String[] oneRawMaterial = rawMaterialList[i].split("/");
 
             nameList.add(oneRawMaterial[0]);
-            capacityList.add(Integer.parseInt(oneRawMaterial[1].replace("g","")));
+            capacityList.add(Integer.parseInt(oneRawMaterial[1].replace("g", "")));
         }
 
-        for(int i = 0;  i < nameList.size(); i++) {
+        for (int i = 0; i < nameList.size(); i++) {
 
-            if(!map.containsKey(nameList.get(i))) { //중복 안된 경우
+            if (!map.containsKey(nameList.get(i))) { //중복 안된 경우
                 map.put(nameList.get(i), capacityList.get(i));
             } else { // 중복 된 경우
                 map.put(nameList.get(i), map.get(nameList.get(i)) + capacityList.get(i));
             }
         }
 
-            Iterator<String> keys = map.keySet().iterator();
-            while(keys.hasNext()) {
-                String key = keys.next();
-                System.out.println(key + "," + map.get(key));
-
-            }
-
-        //인제 얘를 g을 붙여서 데이터에 넣어주면 된다. 
-
-        /* 2. 완제품 메뉴의 번호를 불러와야 함 */
-        if(insertMenu != null) {
-
+        if (insertMenu != null) {
             Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
 
+            Iterator<String> keys = map.keySet().iterator();
+            while (keys.hasNext()) {
+                String key = keys.next(); // key = key값 , value = map.get(key)
+                System.out.println(key + "," + map.get(key));
+                menuName = key;
+                menuCapacity = String.valueOf(map.get(key) + "g");
+
+
+                MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menuName);
+//                MenuMaterial menuInfoNo = menuMaterialRepository.findByMenuInfoNo(menuName); //여기부터ㄱㄱ
+                System.out.println("menuInfo : " + menuInfoNo);
+
+                RawMaterial rawMaterial = new RawMaterial();
+                RawMaterialPK rawMaterialPK = new RawMaterialPK();
+
+                rawMaterialPK.setMenuNoforRaw(menuNo);
+                rawMaterialPK.setItemInfoNo(menuInfoNo);
+                rawMaterial.setRawMaterialPK(rawMaterialPK);
+
+                rawMaterial.setRawMaterialName(menuName);
+                rawMaterial.setRawMaterialCapacity(menuCapacity);
+
+                rawMaterialRepository.save(rawMaterial);
+                }
+            }
+
         }
+
+    @Transactional
+    public void modifyMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
+
+        System.out.println("menuDTO : " + menu);
+        System.out.println("MenuMaterialsDTO : " + menuMaterial);
+        /* 메뉴 번호 조회해오기 (이름으로) */ //update인데
+        //-> 메뉴이름으로 메뉴자체 조회해오기
+        Menu selectMenu = menuRepository.findById(menu.getMenuNo()).get();
+        System.out.println("메뉴가 잘 조회되어왓는가 ? : " + selectMenu);
+        selectMenu.setMenuName(menu.getMenuName());
+        selectMenu.setMenuPrice(menu.getMenuPrice());
+        selectMenu.setMenuOrderableStatus(menu.getMenuOrderableStatus());
+        //메뉴쪽 업데이트 ㅇㅋ
+
+        /* 분리 (3개가 들어올 경우 3개로) */
+        String[] rawMaterialList = materialNameAndCapacityList;
+        List<String> nameList = new ArrayList<>();
+        List<Integer> capacityList = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>(); //합쳐지면 결국 2개만 드가는 그럼 map의 size만큼
+        String menuName = "";
+        String menuCapacity = "";
+
+        for (int i = 0; i < rawMaterialList.length; i++) {
+            String[] oneRawMaterial = rawMaterialList[i].split("/");
+
+            nameList.add(oneRawMaterial[0]);
+            capacityList.add(Integer.parseInt(oneRawMaterial[1].replace("g", "")));
+        }
+
+        for (int i = 0; i < nameList.size(); i++) {
+
+            if (!map.containsKey(nameList.get(i))) { //중복 안된 경우
+                map.put(nameList.get(i), capacityList.get(i));
+            } else { // 중복 된 경우
+                map.put(nameList.get(i), map.get(nameList.get(i)) + capacityList.get(i));
+            }
+        }
+
+        if (selectMenu != null) {
+            Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+
+            Iterator<String> keys = map.keySet().iterator();
+            while (keys.hasNext()) {
+                String key = keys.next(); // key = key값 , value = map.get(key)
+                System.out.println(key + "," + map.get(key));
+                menuName = key;
+                menuCapacity = String.valueOf(map.get(key) + "g");
+
+
+                MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menuName);
+                System.out.println("menuInfo : " + menuInfoNo);
+
+                RawMaterial rawMaterial = new RawMaterial();
+                RawMaterialPK rawMaterialPK = new RawMaterialPK();
+
+                rawMaterialPK.setMenuNoforRaw(menuNo);
+                rawMaterialPK.setItemInfoNo(menuInfoNo);
+                rawMaterial.setRawMaterialPK(rawMaterialPK);
+
+                rawMaterial.setRawMaterialName(menuName);
+                rawMaterial.setRawMaterialCapacity(menuCapacity);
+
+                rawMaterialRepository.save(rawMaterial);
+            }
+        }
+    }
+}
+
+
+
+
 
 
 
@@ -176,6 +267,4 @@ public class MenuService {
 //
 //                    rawMaterialRepository.save(rawMaterial);
 
-                }
-            }
 

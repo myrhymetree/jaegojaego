@@ -18,6 +18,7 @@ import java.util.List;
  * 2022/04/19 (이소현) 메뉴 페이지 이동
  * 2022/04/20 (이소현) 매뉴 목록 조회
  * 2022/04/25 (이소현) 매뉴 등록
+ * 2022/04/27 (이소현) 매뉴 수정
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -32,4 +33,5 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
                     " WHERE A.FINISHED_PRODUCT_MENU_NAME = :menuName", nativeQuery = true
     )
     Menu selectMenuByMenuName(String menuName);
+
 }

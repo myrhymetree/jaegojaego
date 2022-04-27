@@ -1,12 +1,14 @@
 package com.greedy.jaegojaego.menu.controller;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.greedy.jaegojaego.menu.dto.MenuDTO;
 import com.greedy.jaegojaego.menu.dto.MenuMaterialsDTO;
 import com.greedy.jaegojaego.menu.dto.RawMaterialDTO;
 import com.greedy.jaegojaego.menu.service.MenuService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -29,6 +35,8 @@ import java.util.List;
  * 2022/04/21 (이소현) 메뉴 상세 조회 비동기 페이징 다시 시도
  * 2022/04/23 (이소현) 메뉴 등록
  * 2022/04/25 (이소현) 메뉴 등록
+ * 2022/04/26 (이소현) 메뉴 등록(리팩토링)
+ * 2022/04/27 (이소현) 메뉴 수정
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -53,8 +61,8 @@ public class MenuController {
         mv.addObject("menuList", menuList);
         mv.setViewName("menu/menuList");
 
-       return mv;
-   }
+        return mv;
+    }
 
     @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -72,7 +80,7 @@ public class MenuController {
                 .create();
 
         return gson.toJson(rawMaterialList);
-   }
+    }
 
 //   /* 비동기방식(ajax) 페이징 */
 //    @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
@@ -104,8 +112,12 @@ public class MenuController {
     @PostMapping("/regist")
     public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request) {
 
-        String materialNameAndCapacityList = request.getParameter("materialsArrayv[]");
-        System.out.println("들어오는 배열들 : " +  materialNameAndCapacityList);
+        //이름을 넘기는게 아니라 자재의 no를 받아와서 불러와야되는게 맞긴한데 일단 이름으로 진행해보자...!
+
+        String[] materialNameAndCapacityList = request.getParameterValues("materials");
+        for(String m : materialNameAndCapacityList) {
+            System.out.println("배열로 넘어옴 : " + m);
+        }
 
         menuService.registMenu(menu, menuMaterial, materialNameAndCapacityList);
 
@@ -114,5 +126,56 @@ public class MenuController {
         return mv;
     }
 
+    @PostMapping("/modify")
+    public ModelAndView modifyMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request) {
+        //아무것도 안바꿔서 얘가 null이구나
+        String[] materialNameAndCapacityList = request.getParameterValues("materialsForModify");
+        for(String m : materialNameAndCapacityList) {
+            System.out.println("수정의 배열로 넘어옴 : " + m);
+        }
+
+        menuService.modifyMenu(menu, menuMaterial, materialNameAndCapacityList);
+
+        mv.setViewName("redirect:/menu/list");
+
+        return mv;
+
+    }
 
 }
+
+//    /* 되지만 1개만 들어옴.. */
+//    @PostMapping(value = "/regist", produces = "application/json; charset=UTF-8")
+//    @ResponseBody
+//    public ModelAndView registMenu(ModelAndView mv, @RequestParam Map<String, Object> itemInfoAndCapacitydata) {
+//        List<Map<String, Object>> menuInfoList = new ArrayList<>();
+//        menuInfoList = JSONArray.fromObject(itemInfoAndCapacitydata);
+//
+//        menuInfoList.forEach(System.out::println);
+//        System.out.println("나오냐 : " + menuInfoList);
+//
+//
+//        mv.setViewName("redirect:/menu/menuList");
+//
+//        return mv;
+//    }
+
+
+//    @PostMapping(value = "/regist", produces = "application/json; charset=UTF-8")
+//    @ResponseBody
+//    public Map<String, Object> registMenu(ModelAndView mv, @RequestParam String itemInfoAndCapacitydata) {
+//        Map<String, Object> result = new HashMap<>();
+//            /*JSONArray jsonArray = JSONArray.fromObject(paramData);*/
+//            List<Map<String,Object>> info = new ArrayList<Map<String,Object>>();
+//            info = JSONArray.fromObject(itemInfoAndCapacitydata);
+//
+//            for (Map<String, Object> menuInfo : info) {
+//                System.out.println(menuInfo.get("menuName") + " : " + menuInfo.get("menuPrice")
+//                                + menuInfo.get("menuStatus") + menuInfo.get("capacityData") + menuInfo.get("itemInfoData"));
+//            }
+//            result.put("result", true);
+//        return result;
+//
+//    }
+
+

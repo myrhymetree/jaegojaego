@@ -92,7 +92,7 @@ public class MenuControllerTests {
         
         MenuMaterialsDTO menuMaterial = new MenuMaterialsDTO();
         menuMaterial.setItemInfoName("지로스팅 로스팅 원두 1kg");
-        String materialNameAndCapacityList = "지로스팅 로스팅 원두 1kg/80g,";
+        String[] materialNameAndCapacityList = {"지로스팅 로스팅 원두 1kg/80g", "지로스팅 로스팅 원두 1kg/60g"};
         //when
         menuService.registMenu(menu, menuMaterial, materialNameAndCapacityList);
 

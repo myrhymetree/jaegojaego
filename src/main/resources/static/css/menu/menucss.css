@@ -149,7 +149,7 @@
     left: 30%;
 }
 
-#oneRawMaterial {
+#oneRawMaterial, #oneRawMaterialForModify {
     margin: 3px;
     display: inline-block;
     font-size: 5px;
@@ -157,7 +157,7 @@
     border: 1px solid black;
 }
 
-#rawMaterialDeleteButton {
+#rawMaterialDeleteButton, #rawMaterialDeleteButtonForModify {
     background-image: url("../../images/xButton.png");
     border: 1px solid black;
     margin-left: 3px;
