@@ -9,10 +9,8 @@ import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractIt
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
-import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
-import com.greedy.jaegojaego.order.order.model.entitiy.company.*;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrder;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrderItem;
+import com.greedy.jaegojaego.order.order.model.entity.company.*;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;

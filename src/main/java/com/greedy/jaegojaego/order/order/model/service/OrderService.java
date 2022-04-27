@@ -14,11 +14,10 @@ import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDT
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
-import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
-import com.greedy.jaegojaego.order.order.model.entitiy.company.*;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrder;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrderItem;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrderStatusHistory;
+import com.greedy.jaegojaego.order.order.model.entity.company.*;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderItem;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderStatusHistory;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;
