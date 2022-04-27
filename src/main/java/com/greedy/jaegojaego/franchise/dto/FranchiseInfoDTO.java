@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 public class FranchiseInfoDTO extends MemberDTO {
 
     private String representativeName;

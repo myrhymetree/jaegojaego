@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Table(name = "FRANCHISE_ACCOUNT")
 public class FranchiseAccount extends Member {
 
-    @Column(name = "FRANCHISE_MAMAGER_NO")
+    @Column(name = "FRANCHISE_MANAGER_NO")
     private Integer managerNo;
 
     @Column(name = "MANAGER_NAME")

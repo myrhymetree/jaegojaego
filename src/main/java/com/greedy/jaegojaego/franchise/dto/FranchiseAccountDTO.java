@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 public class FranchiseAccountDTO extends MemberDTO {
 
     private Integer managerNo;
