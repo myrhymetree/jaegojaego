@@ -29,14 +29,14 @@ public class ItemWarehouse implements Serializable {
     private Warehouse inWarehouseNo;
 
     @Column(name = "OUT_WAREHOUSE_NO")
-    private int outWarehouseNo;
+    private Integer outWarehouseNo;
 
     @Column(name = "ITEM_WAREHOUSE_QUALITY_STATUS")
     private String itemWarehouseQualityStatus;
 
     public ItemWarehouse() {}
 
-    public ItemWarehouse(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, int itemWarehouseRealAmount, WarehouseItemInfo itemInfoNo, Warehouse inWarehouseNo, int outWarehouseNo, String itemWarehouseQualityStatus) {
+    public ItemWarehouse(int itemWarehouseNo, String itemWarehouseDivision, int itemWarehouseAmount, int itemWarehouseRealAmount, WarehouseItemInfo itemInfoNo, Warehouse inWarehouseNo, Integer outWarehouseNo, String itemWarehouseQualityStatus) {
         this.itemWarehouseNo = itemWarehouseNo;
         this.itemWarehouseDivision = itemWarehouseDivision;
         this.itemWarehouseAmount = itemWarehouseAmount;
@@ -95,11 +95,11 @@ public class ItemWarehouse implements Serializable {
         this.inWarehouseNo = inWarehouseNo;
     }
 
-    public int getOutWarehouseNo() {
+    public Integer getOutWarehouseNo() {
         return outWarehouseNo;
     }
 
-    public void setOutWarehouseNo(int outWarehouseNo) {
+    public void setOutWarehouseNo(Integer outWarehouseNo) {
         this.outWarehouseNo = outWarehouseNo;
     }
 

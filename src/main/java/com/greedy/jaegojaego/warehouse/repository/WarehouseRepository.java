@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface WarehouseRepository extends JpaRepository<Warehouse, Integer> {
+//    Warehouse findAllRawList();
 
-//    @Query(value = "SELECT a FROM warehouse a ORDER BY a.warehouseNo DESC")
-//    List<Warehouse> findAll();
+    @Query(value = "SELECT a FROM warehouse a ORDER BY a.warehouseNo DESC")
+    List<Warehouse> findAll();
 }
