@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego.order.order.model.entitiy.franchise;
+package com.greedy.jaegojaego.order.order.model.entity.franchise;
 
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 
@@ -23,9 +23,8 @@ public class FranchiseOrderStatusHistory {
     )
     private int franchiseOrderStatusHistoryNo;
 
-    @ManyToOne
-    @JoinColumn(name = "FRANCHISE_ORDER_NO")
-    private FranchiseOrder franchiseOrder;
+    @Column(name = "FRANCHISE_ORDER_NO")
+    private int franchiseOrderNo;
 
     @Column(name = "FRANCHISE_ORDER_STATUS_HISTORY_DATE")
     private java.sql.Date franchiseOrderStatusHistoryDate;
@@ -37,19 +36,15 @@ public class FranchiseOrderStatusHistory {
     @JoinColumn(name = "MEMBER_NO")
     private OrderCompanyAccount orderCompanyAccount;
 
-    @Column(name = "FRANCHISE_ORDER_STATUS_REJECTION_CONTENT")
-    private String franchiseOrderStatusRejectionContent;
-
     public FranchiseOrderStatusHistory() {
     }
 
-    public FranchiseOrderStatusHistory(int franchiseOrderStatusHistoryNo, FranchiseOrder franchiseOrder, Date franchiseOrderStatusHistoryDate, String franchiseOrderStatus, OrderCompanyAccount orderCompanyAccount, String franchiseOrderStatusRejectionContent) {
+    public FranchiseOrderStatusHistory(int franchiseOrderStatusHistoryNo, int franchiseOrderNo, Date franchiseOrderStatusHistoryDate, String franchiseOrderStatus, OrderCompanyAccount orderCompanyAccount) {
         this.franchiseOrderStatusHistoryNo = franchiseOrderStatusHistoryNo;
-        this.franchiseOrder = franchiseOrder;
+        this.franchiseOrderNo = franchiseOrderNo;
         this.franchiseOrderStatusHistoryDate = franchiseOrderStatusHistoryDate;
         this.franchiseOrderStatus = franchiseOrderStatus;
         this.orderCompanyAccount = orderCompanyAccount;
-        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
     }
 
     public int getFranchiseOrderStatusHistoryNo() {
@@ -60,12 +55,12 @@ public class FranchiseOrderStatusHistory {
         this.franchiseOrderStatusHistoryNo = franchiseOrderStatusHistoryNo;
     }
 
-    public FranchiseOrder getFranchiseOrder() {
-        return franchiseOrder;
+    public int getFranchiseOrderNo() {
+        return franchiseOrderNo;
     }
 
-    public void setFranchiseOrder(FranchiseOrder franchiseOrder) {
-        this.franchiseOrder = franchiseOrder;
+    public void setFranchiseOrderNo(int franchiseOrderNo) {
+        this.franchiseOrderNo = franchiseOrderNo;
     }
 
     public Date getFranchiseOrderStatusHistoryDate() {
@@ -92,22 +87,14 @@ public class FranchiseOrderStatusHistory {
         this.orderCompanyAccount = orderCompanyAccount;
     }
 
-    public String getFranchiseOrderStatusRejectionContent() {
-        return franchiseOrderStatusRejectionContent;
-    }
-
-    public void setFranchiseOrderStatusRejectionContent(String franchiseOrderStatusRejectionContent) {
-        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
-    }
-
     @Override
     public String toString() {
         return "FranchiseOrderStatusHistory{" +
                 "franchiseOrderStatusHistoryNo=" + franchiseOrderStatusHistoryNo +
+                ", franchiseOrderNo=" + franchiseOrderNo +
                 ", franchiseOrderStatusHistoryDate=" + franchiseOrderStatusHistoryDate +
                 ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
                 ", orderCompanyAccount=" + orderCompanyAccount +
-                ", franchiseOrderStatusRejectionContent='" + franchiseOrderStatusRejectionContent + '\'' +
                 '}';
     }
 }

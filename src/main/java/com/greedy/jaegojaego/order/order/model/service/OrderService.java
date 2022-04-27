@@ -14,15 +14,16 @@ import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDT
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
-import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
-import com.greedy.jaegojaego.order.order.model.entitiy.company.*;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrder;
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrderItem;
+import com.greedy.jaegojaego.order.order.model.entity.company.*;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderItem;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderStatusHistory;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationRepository;
 import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderRepository;
+import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderStatusHistoryRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,15 @@ public class OrderService {
     private final OrderApplicationItemRepository orderApplicationItemRepository;
     private final OrderClientRepository orderClientRepository;
     private final FranchiseOrderRepository franchiseOrderRepository;
+    private final FranchiseOrderStatusHistoryRepository franchiseOrderStatusHistoryRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
             , OrderItemWarehouseRepository orderItemWarehouseRepository, OrderItemInfoRepository orderItemInfoRepository
             , OrderClientContractItemRepository orderClientContractItemRepository, CompanyOrderItemRepository companyOrderItemRepository
             , OrderApplicationRepository orderApplicationRepository, OrderApplicationItemRepository orderApplicationItemRepository
-            , OrderClientRepository orderClientRepository, FranchiseOrderRepository franchiseOrderRepository) {
+            , OrderClientRepository orderClientRepository, FranchiseOrderRepository franchiseOrderRepository
+            , FranchiseOrderStatusHistoryRepository franchiseOrderStatusHistoryRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
@@ -65,6 +68,7 @@ public class OrderService {
         this.orderApplicationItemRepository = orderApplicationItemRepository;
         this.orderClientRepository = orderClientRepository;
         this.franchiseOrderRepository = franchiseOrderRepository;
+        this.franchiseOrderStatusHistoryRepository = franchiseOrderStatusHistoryRepository;
     }
 
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
@@ -319,4 +323,23 @@ public class OrderService {
         return franchiseOrderDetailList;
     }
 
+    @Transactional
+    public void updateFranchiseOrderStatus(int memberNo, int franchiseOrderNo, String orderStatus) {
+
+        FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
+        franchiseOrder.setFranchiseOrderStatus(orderStatus);
+        franchiseOrder.setFranchiseOrderStatusDate(new Date(System.currentTimeMillis()));
+
+        OrderCompanyAccount orderCompanyAccount = new OrderCompanyAccount();
+        orderCompanyAccount.setMemberNo(memberNo);
+
+        FranchiseOrderStatusHistory franchiseOrderStatusHistory = new FranchiseOrderStatusHistory();
+        franchiseOrderStatusHistory.setFranchiseOrderNo(franchiseOrderNo);
+        franchiseOrderStatusHistory.setOrderCompanyAccount(orderCompanyAccount);
+        franchiseOrderStatusHistory.setFranchiseOrderStatus(orderStatus);
+        franchiseOrderStatusHistory.setFranchiseOrderStatusHistoryDate(new Date(System.currentTimeMillis()));
+
+        franchiseOrderStatusHistoryRepository.save(franchiseOrderStatusHistory);
+
+    }
 }

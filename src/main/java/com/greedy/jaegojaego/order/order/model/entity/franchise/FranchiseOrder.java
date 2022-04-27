@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego.order.order.model.entitiy.franchise;
+package com.greedy.jaegojaego.order.order.model.entity.franchise;
 
 import com.greedy.jaegojaego.order.franchise.model.entity.OrderFranchiseInfo;
 
@@ -34,6 +34,15 @@ public class FranchiseOrder {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private OrderFranchiseInfo orderFranchiseInfo;
 
+    @Column(name = "FRANCHISE_ORDER_STATUS")
+    private String franchiseOrderStatus;
+
+    @Column(name = "FRANCHISE_ORDER_STATUS_DATE")
+    private java.sql.Date franchiseOrderStatusDate;
+
+    @Column(name = "FRANCHISE_ORDER_STATUS_REJECTION_CONTENT")
+    private String franchiseOrderStatusRejectionContent;
+
     @OneToMany
     @JoinColumn(name = "FRANCHISE_ORDER_NO")
     private List<FranchiseOrderItem> franchiseOrderItemList;
@@ -42,16 +51,11 @@ public class FranchiseOrder {
     @JoinColumn(name = "FRANCHISE_ORDER_NO")
     private List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList;
 
-    @Column(name = "FRANCHISE_ORDER_STATUS")
-    private String franchiseOrderStatus;
-
-    @Column(name = "FRANCHISE_ORDER_STATUS_DATE")
-    private java.sql.Date franchiseOrderStatusDate;
 
     public FranchiseOrder() {
     }
 
-    public FranchiseOrder(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfo orderFranchiseInfo, List<FranchiseOrderItem> franchiseOrderItemList, List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate) {
+    public FranchiseOrder(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfo orderFranchiseInfo, List<FranchiseOrderItem> franchiseOrderItemList, List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate, String franchiseOrderStatusRejectionContent) {
         this.franchiseOrderNo = franchiseOrderNo;
         this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
         this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
@@ -60,6 +64,7 @@ public class FranchiseOrder {
         this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
         this.franchiseOrderStatus = franchiseOrderStatus;
         this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
     }
 
     public int getFranchiseOrderNo() {
@@ -126,6 +131,14 @@ public class FranchiseOrder {
         this.franchiseOrderStatusDate = franchiseOrderStatusDate;
     }
 
+    public String getFranchiseOrderStatusRejectionContent() {
+        return franchiseOrderStatusRejectionContent;
+    }
+
+    public void setFranchiseOrderStatusRejectionContent(String franchiseOrderStatusRejectionContent) {
+        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
+    }
+
     @Override
     public String toString() {
         return "FranchiseOrder{" +
@@ -137,6 +150,7 @@ public class FranchiseOrder {
                 ", franchiseOrderStatusHistoryList=" + franchiseOrderStatusHistoryList +
                 ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
                 ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
+                ", franchiseOrderStatusRejectionContent='" + franchiseOrderStatusRejectionContent + '\'' +
                 '}';
     }
 }

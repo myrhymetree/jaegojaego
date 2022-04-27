@@ -1,12 +1,8 @@
 package com.greedy.jaegojaego.client.model.service;
 
-import com.greedy.jaegojaego.client.model.dto.ClientDTO;
-import com.greedy.jaegojaego.client.model.dto.ClientDetailDTO;
-import com.greedy.jaegojaego.client.model.dto.ClientMemoDTO;
-import com.greedy.jaegojaego.client.model.entity.Client;
-import com.greedy.jaegojaego.client.model.entity.ClientMemo;
-import com.greedy.jaegojaego.client.model.repository.ClientMemoRepository;
-import com.greedy.jaegojaego.client.model.repository.ClientRepository;
+import com.greedy.jaegojaego.client.model.dto.*;
+import com.greedy.jaegojaego.client.model.entity.*;
+import com.greedy.jaegojaego.client.model.repository.*;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -28,13 +24,19 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientMemoRepository clientMemoRepository;
+    private final ClientBusinessTypeRepository clientBusinessTypeRepository;
+    private final ClientBusinessItemRepository clientBusinessItemRepository;
+    private final ClientMemberRepository clientMemberRepository;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
+        this.clientBusinessTypeRepository = clientBusinessTypeRepository;
+        this.clientBusinessItemRepository = clientBusinessItemRepository;
+        this.clientMemberRepository = clientMemberRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -77,15 +79,63 @@ public class ClientService {
 
     @Transactional
     public List<ClientMemoDTO> findClientMemoByClientNo(int clientNo) {
-        System.out.println("메모 서비스 도착");
-        System.out.println("clientNo : " + clientNo);
 
         List<ClientMemo> clientMemoList = new ArrayList<>();
 
         clientMemoList = clientMemoRepository.findByClientNo(clientNo);
 
-        System.out.println("clientMemoList : " + clientMemoList);
-
         return clientMemoList.stream().map(clientMemo -> modelMapper.map(clientMemo, ClientMemoDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<ClientBusinessTypeDTO> findClientBusinessType() {
+
+        List<ClientBusinessType> clientBusinessTypeList = new ArrayList<>();
+
+        clientBusinessTypeList = clientBusinessTypeRepository.findAll();
+
+        return clientBusinessTypeList.stream().map(clientBusinessType -> modelMapper.map(clientBusinessType, ClientBusinessTypeDTO.class)).collect(Collectors.toList());
+
+
+    }
+
+
+    public List<ClientBusinessItemDTO> findClientBusinessItem() {
+
+        List<ClientBusinessItem> clientBusinessItemList = new ArrayList<>();
+
+        clientBusinessItemList = clientBusinessItemRepository.findAll();
+
+        return clientBusinessItemList.stream().map(clientBusinessItem -> modelMapper.map(clientBusinessItem, ClientBusinessItemDTO.class)).collect(Collectors.toList());
+    }
+
+    public ClientMember findClientLoginNo(int memberNo) {
+
+        ClientMember clientMember = clientMemberRepository.findByClientMemberNo(memberNo);
+
+        return clientMember;
+    }
+
+    public void registClient(ClientDTO clientDTO) {
+
+        Client newClient = new Client();
+
+        newClient.setClientName(clientDTO.getClientName());
+        newClient.setClientCbrNo(clientDTO.getClientCbrNo());
+        newClient.setClientRepresentativeName(clientDTO.getClientRepresentativeName());
+        newClient.setClientRepresentativePhone(clientDTO.getClientRepresentativePhone());
+        newClient.setClientRepresentativeEmail(clientDTO.getClientRepresentativeEmail());
+        newClient.setClientAddress(clientDTO.getClientAddress());
+        newClient.setClientMember(clientDTO.getClientMemberNo());
+        newClient.setClientCreatedDate(new Date(System.currentTimeMillis()));
+        newClient.setClientPaymentMethod("일시불");
+
+        System.out.println("newClient : " + newClient);
+
+        clientRepository.save(newClient);
+    }
+
+    public void deleteClient(int clientNo) {
+
+       clientRepository.deleteById(clientNo);
     }
 }

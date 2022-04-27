@@ -9,11 +9,13 @@ import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractIt
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
-import com.greedy.jaegojaego.order.order.model.entitiy.company.*;
+import com.greedy.jaegojaego.order.order.model.entity.company.*;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationRepository;
+import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,6 +56,9 @@ public class OrderServiceTests {
 
     @Autowired
     private OrderApplicationItemRepository orderApplicationItemRepository;
+
+    @Autowired
+    private FranchiseOrderRepository franchiseOrderRepository;
 
     @Test
     @DisplayName("본사 발주 내역 목록 조회 메소드 테스트")
@@ -204,6 +210,66 @@ public class OrderServiceTests {
         //then
 
 
+    }
+
+    @Test
+    @DisplayName("본사 발주 처리 상태 변경 메소드 테스트")
+    public void updateCompanyOrderHistoryStatus() {
+
+        //given
+        int memberNo = 107;
+        int companyOrderHistoryNo = 1;
+        String orderStatus = "COMPLETE";
+
+        //when
+        OrderCompanyAccount orderCompanyAccount = new OrderCompanyAccount();
+        orderCompanyAccount.setMemberNo(memberNo);
+
+        CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
+        companyOrderHistory.setCompanyOrderHistoryStaus(orderStatus);
+        companyOrderHistory.setCompanyOrderUpdateMember(orderCompanyAccount);
+        companyOrderHistory.setCompanyOrderHistoryStatusDate(new Date(System.currentTimeMillis()));
+
+        //then
+
+    }
+
+    @Test
+    @DisplayName("가맹점 발주 내역 목록 조회 메소드 테스트")
+    public void selectFranchiseOrderList() {
+
+        //given
+        int memberNo = 107;
+        String memberDivision = "본사";
+        List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
+
+        //when
+        if("본사".equals(memberDivision)) {
+
+            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_HeadOfficeSupervisor_MemberNo(memberNo);
+        } else if("가맹점".equals(memberDivision)) {
+
+            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_FranchiseRepresentativeNo(memberNo);
+        }
+
+        //then
+        assertNotNull(franchiseOrderList);
+
+    }
+
+    @Test
+    @DisplayName("본사 발주 내역 상세 조회 메소드 테스트")
+    public void selectFranchiseOrderDetail() {
+
+        //given
+        int franchiseOrderNo = 1;
+
+        //when
+        FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
+
+        //then
+        assertNotNull(franchiseOrder);
+        assertNotNull(franchiseOrder.getFranchiseOrderItemList());
 
     }
 

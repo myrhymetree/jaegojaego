@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>$Title$</title>
+
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
     <style>
         .franchise-order-regist-btn {
             background-color: #c69500;
@@ -47,13 +51,15 @@
             width: 80px;
             display: none;
             position: absolute;
-            margin-left: 34px;
+            margin-left: 70px;
+            z-index: 1000;
         }
 
         .franchise-order-detail-modal-body-table {
             text-align: center;
             border-collapse:collapse;
             width: 80%;
+            margin-left: 130px;
         }
 
         .franchise-order-detail-modal-body-table th, td {
@@ -78,7 +84,9 @@
                         <h2 style="font-weight: bold; margin-left: 10px">발주 내역</h2>
 
                         <div class="ibox-tools">
-                            <button class="franchise-order-regist-btn" onclick="location.href='/order/franchiseorderregist'">발주 신청</button>
+                            <th:block th:if="${ member.memberDivision eq '가맹점' }">
+                                <button class="franchise-order-regist-btn" onclick="location.href='/order/franchiseorderregist'">발주 신청</button>
+                            </th:block>
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
@@ -99,21 +107,30 @@
                                     <th>주문번호</th>
                                     <th>신청일자</th>
                                     <th>처리일자</th>
+                                    <th>처리자</th>
                                     <th>처리상태</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="franchiseOrder, index : ${ franchiseOrderList }" id="franchise-order-history-tr"  data-toggle="modal" data-target="#myModal4">
                                     <input type="hidden" th:value="${ franchiseOrder.franchiseOrderNo }">
+                                    <input type="hidden" th:value="${ member.memberDivision }">
                                     <td th:text="${ index.index + 1 }"></td>
                                     <td th:text="${ franchiseOrder.orderFranchiseInfo.franchiseBranchName }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderOrderNumber }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderApplicationDate }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderStatusDate }"></td>
                                     <td>
+                                        <th:block th:each="franchiseHistory, historyIndex : ${ franchiseOrder.franchiseOrderStatusHistoryList }">
+                                            <th:block th:if="${ franchiseHistory.orderCompanyAccount ne null and #lists.size('franchiseOrderHistory') eq historyIndex.index + 1 }">
+                                                <th:block th:text="${ franchiseHistory.orderCompanyAccount.memberName }"></th:block>
+                                            </th:block>
+                                        </th:block>
+                                    </td>
+                                    <td>
                                         <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'BEFORE' }">
-                                            <button class="order-before-btn">처리전</button>
-                                            <div class="status-change-div">
+                                            <button class="order-before-btn" id="order-before-btn">처리전</button>
+                                            <div class="status-change-div" id="status-change-div">
                                                 <button class="order-complete-btn" id="order-complete-btn">승인완료</button>
                                                 <button class="order-reject-btn" id="order-reject-btn">승인거절</button>
                                             </div>
@@ -129,7 +146,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="6">
+                                    <td colspan="7">
                                         <ul class="pagination float-right"></ul>
                                     </td>
                                 </tr>
@@ -142,7 +159,7 @@
                             <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
                                 <div class="modal-header">
                                     <h4 class="modal-title">내역 상세</h4>
-                                    <small id="franchise-order-detail-modal-small" style="margin-right: 30px;"></small>
+                                    <small id="franchise-order-detail-modal-small"></small>
                                 </div>
                                 <div class="modal-body">
                                     <table class="franchise-order-detail-modal-body-table">
@@ -167,6 +184,22 @@
                         </div>
                     </div>
 
+                    <div class="modal inmodal" id="insertRejectModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">발주 거부 사유서</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <textarea cols="65" rows="5" id="reject-message" style="resize: none" placeholder="발주 거부 사유를 작성해주세요."></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="reject-save-btn">저장</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -175,14 +208,71 @@
     <th:block th:replace="/common/footer.html"></th:block>
 
     <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
     <!-- Page-Level Scripts -->
     <script>
+
         $(document).ready(function() {
 
             $('.footable').footable();
             $('.footable2').footable();
 
+            $(document).on('click', '.sa-button-container .confirm', function() {
+
+                if(checkSuccess == 1) {
+                    history.go(0);
+                }
+
+                if(checkReject == 2) {
+
+                    document.getElementById('insertRejectModal').style.display = 'block';
+
+                }
+
+                if(checkReject == 1) {
+                    checkReject++;
+                }
+
+            });
+
+            let text = '';
+
+            $('#reject-message').keyup(function() {
+               text = $('#reject-message').val();
+            });
+
+            document.getElementById('reject-save-btn').onclick = function() {
+
+                console.log(insertRejectOrderNo);
+                console.log(insertRejectOrderStatus);
+                console.log(text);
+
+                fetch("/order/modifyfranchiseorderstatus?franchiseOrderNo=" + franchiseOrderNo + "&orderStatus=REJECT&rejectMessage=" + text)
+                    .then(response => response.json())
+                    .then(response => {
+                        swal({
+                            title: "변경 완료!",
+                            text: "승인 거절 처리되었습니다."
+                        }), function () {
+
+                        };
+                    })
+                    .catch(err => {
+                        swal({
+                            title: "변경 실패!",
+                            text: "알수 없는 문제가 발생하였습니다."
+                        });
+                    });
+
+
+            }
+
+
         });
+
+        const $StatusChangeDiv = document.querySelectorAll("#status-change-div");
+        const $OrderBeforeBtn = document.querySelectorAll("#order-before-btn");
 
         if(document.querySelectorAll("#franchise-order-history-tr td")) {
             const $tds = document.querySelectorAll("#franchise-order-history-tr td");
@@ -202,7 +292,14 @@
 
                     $("#franchise-order-detail-table-tbody").empty();
 
-                    console.log(this.parentNode.children[0].value);
+                    for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                        if($StatusChangeDiv[j].style.display = 'block') {
+
+                            $StatusChangeDiv[j].style.display = 'none';
+                        }
+
+                    }
 
                     let franchiseOrderNo = this.parentNode.children[0].value;
 
@@ -237,10 +334,114 @@
                             alert("연결 실패!");
                         });
 
+                    document.getElementById("franchise-order-detail-modal-small").innerText = this.parentNode.children[4].innerText + " 발주 내역";
 
                 }
 
             }
+        }
+
+        for(let i = 0; i < $OrderBeforeBtn.length; i++) {
+
+            $OrderBeforeBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+
+                if("본사" === this.parentNode.parentNode.children[1].value) {
+
+                    for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                        if(j == i) {
+                            if($StatusChangeDiv[i].style.display == 'block') {
+
+                                $StatusChangeDiv[i].style.display = 'none';
+                            } else {
+
+                                $StatusChangeDiv[i].style.display = 'block';
+                            }
+                        } else {
+
+                            $StatusChangeDiv[j].style.display = 'none';
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        let checkSuccess = 0;
+        let checkReject = 0;
+        let insertRejectOrderNo = 0;
+        let insertRejectOrderStatus = '';
+        const $OrderCompleteBtn = document.querySelectorAll("#order-complete-btn");
+        const $OrderRejectBtn = document.querySelectorAll("#order-reject-btn");
+
+        for(let i = 0; i < $OrderCompleteBtn.length; i++) {
+
+            $OrderCompleteBtn[i].onclick = function(e) {
+
+                let franchiseOrderNo = this.parentNode.parentNode.parentNode.children[0].value;
+
+                e.stopPropagation();
+
+                $StatusChangeDiv[i].style.display = 'none';
+
+                swal({
+                    title: "승인 완료 처리하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+
+                    fetch("/order/modifyfranchiseorderstatus?franchiseOrderNo=" + franchiseOrderNo + "&orderStatus=COMPLETE")
+                        .then(response => response.json())
+                        .then(response => {
+                            swal("변경 완료!", "승인 완료 처리되었습니다.", "success");
+                            checkSuccess = 1;
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "변경 실패!",
+                                text: "알수 없는 문제가 발생하였습니다."
+                            });
+                        });
+                });
+
+            }
+
+            $OrderRejectBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+                $StatusChangeDiv[i].style.display = 'none';
+
+                let franchiseOrderNo = this.parentNode.parentNode.parentNode.children[0].value;
+
+                swal({
+                    title: "승인 거절 처리하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+
+                    swal("승인 거절", "발주 거절 사유서를 작성해주세요.", "success");
+                    checkReject = 1;
+                    insertRejectOrderNo = franchiseOrderNo;
+                    insertRejectOrderStatus = 'REJECT';
+
+                });
+
+            }
+
         }
 
     </script>

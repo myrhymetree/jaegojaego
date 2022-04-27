@@ -11,15 +11,16 @@ public class FranchiseOrderDTO {
     private java.sql.Date franchiseOrderApplicationDate;
     private String franchiseOrderOrderNumber;
     private OrderFranchiseInfoDTO orderFranchiseInfo;
-    private List<FranchiseOrderItemDTO> franchiseOrderItemList;
-    private List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList;
     private String franchiseOrderStatus;
     private java.sql.Date franchiseOrderStatusDate;
+    private String franchiseOrderStatusRejectionContent;
+    private List<FranchiseOrderItemDTO> franchiseOrderItemList;
+    private List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList;
 
     public FranchiseOrderDTO() {
     }
 
-    public FranchiseOrderDTO(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfoDTO orderFranchiseInfo, List<FranchiseOrderItemDTO> franchiseOrderItemList, List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate) {
+    public FranchiseOrderDTO(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfoDTO orderFranchiseInfo, List<FranchiseOrderItemDTO> franchiseOrderItemList, List<FranchiseOrderStatusHistoryDTO> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate, String franchiseOrderStatusRejectionContent) {
         this.franchiseOrderNo = franchiseOrderNo;
         this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
         this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
@@ -28,6 +29,7 @@ public class FranchiseOrderDTO {
         this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
         this.franchiseOrderStatus = franchiseOrderStatus;
         this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
     }
 
     public int getFranchiseOrderNo() {
@@ -94,6 +96,14 @@ public class FranchiseOrderDTO {
         this.franchiseOrderStatusDate = franchiseOrderStatusDate;
     }
 
+    public String getFranchiseOrderStatusRejectionContent() {
+        return franchiseOrderStatusRejectionContent;
+    }
+
+    public void setFranchiseOrderStatusRejectionContent(String franchiseOrderStatusRejectionContent) {
+        this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
+    }
+
     @Override
     public String toString() {
         return "FranchiseOrderDTO{" +
@@ -105,6 +115,7 @@ public class FranchiseOrderDTO {
                 ", franchiseOrderStatusHistoryList=" + franchiseOrderStatusHistoryList +
                 ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
                 ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
+                ", franchiseOrderStatusRejectionContent='" + franchiseOrderStatusRejectionContent + '\'' +
                 '}';
     }
 }
