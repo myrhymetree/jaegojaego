@@ -1,6 +1,6 @@
 package com.greedy.jaegojaego.order.order.model.repository.franchise;
 
-import com.greedy.jaegojaego.order.order.model.entitiy.franchise.FranchiseOrder;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

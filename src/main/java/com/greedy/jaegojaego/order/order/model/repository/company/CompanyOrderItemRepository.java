@@ -1,7 +1,7 @@
 package com.greedy.jaegojaego.order.order.model.repository.company;
 
-import com.greedy.jaegojaego.order.order.model.entitiy.company.CompanyOrderItem;
-import com.greedy.jaegojaego.order.order.model.entitiy.company.CompanyOrderItemPK;
+import com.greedy.jaegojaego.order.order.model.entity.company.CompanyOrderItem;
+import com.greedy.jaegojaego.order.order.model.entity.company.CompanyOrderItemPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

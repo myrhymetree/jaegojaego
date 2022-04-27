@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego.order.order.model.entitiy.franchise;
+package com.greedy.jaegojaego.order.order.model.entity.franchise;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;

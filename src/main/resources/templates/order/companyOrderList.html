@@ -167,7 +167,7 @@
                             <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
                                 <div class="modal-header">
                                     <h4 class="modal-title">내역 상세</h4>
-                                    <small id="company-order-detail-modal-small" style="margin-right: 30px;"></small>
+                                    <small id="company-order-detail-modal-small"></small>
                                 </div>
                                 <div class="modal-body">
                                     <table class="company-order-detail-modal-body-table">
@@ -448,7 +448,7 @@
                     closeOnConfirm: false
                 }, function () {
 
-                    fetch("/order/modifyCompanyOrderHistoryStatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=COMPLETE")
+                    fetch("/order/modifycompanyorderhistorystatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=COMPLETE")
                         .then(response => response.json())
                         .then(response => {
                             swal("변경 완료!", "승인 완료 처리되었습니다.", "success");
@@ -481,7 +481,7 @@
                     closeOnConfirm: false
                 }, function () {
 
-                    fetch("/order/modifyCompanyOrderHistoryStatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=CANCEL")
+                    fetch("/order/modifycompanyorderhistorystatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=CANCEL")
                         .then(response => response.json())
                         .then(response => {
                             swal("변경 완료!", "신청 취소 처리되었습니다.", "success");

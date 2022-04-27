@@ -74,16 +74,6 @@ public class OrderControllerTests {
     }
 
     @Test
-    @DisplayName("본사 발주 신청 요청 테스트")
-    public void registCompanyOrder() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/order/companyorderregist"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-
-    }
-
-    @Test
     @DisplayName("본사 발주 신청서 상세 조회 및 이동 테스트")
     public void companyOrderApplicationDetail() throws Exception {
 
@@ -112,6 +102,18 @@ public class OrderControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/order/selectclientitemlist")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("itemInfoNo", "1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+
+    }
+
+    @Test
+    @DisplayName("거래처 발주 상세 조회 비동기 테스트")
+    public void selectFranchiseOrderDetail() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/order/franchiseorderdetail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("franchiseOrderNo", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
