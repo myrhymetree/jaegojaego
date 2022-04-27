@@ -12,12 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     Page<Client> findAll(Pageable pageable);
-/*
-    Page<Client> findByClientNameContainingAnyTypeAndStatus(String searchValue, Integer integer, String y, Pageable pageable);
-
-    Page<Client> findByClientRepresentativeNameContainingTypeAndStatus(String searchValue, Integer integer, String y, Pageable pageable);
-*/
-
 
 
 }

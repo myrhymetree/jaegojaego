@@ -99,6 +99,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
 <!-- Mainly scripts -->
 <script src="js/jquery-3.1.1.min.js"></script>
@@ -153,7 +154,7 @@
 
                         body += '<div class="tab-content">';
                         body += '<div id="|#contact-' + data.clientNo + '|" class="tab-pane active">';
-                        body += '<strong style="line-height:20px; vertical-align: center; font-size: 20px;">회사 정보 <span class="label label-primary" style="float: right;">계약상태</span></strong><br><br>';
+                        body += '<strong style="line-height:20px; vertical-align: center; font-size: 20px;">회사 정보 <span class="label label-primary" style="float: right;">계약상태</span><button id="clientDelete" style="float: right; background-color: white; border: 0;"><i class="fa fa-trash"></i></button></strong><br><br>';
                         body += '<ul class="list-group clear-list">';
                         body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientName + '</span>회사명 : </li>';
                         body += '<li class="list-group-item fist-item"><span class="float-right">' + data.clientCbrNo + '</span>사업자등록증</li>';
@@ -209,14 +210,33 @@
 
                                         $('#clientMemoBody').append(body);
                                     }
-
-                                    $('#')
                                 },
                                 error : function(xhr) {
                                     console.log("메모 에이젝스 실행 실패");
                                 }
                             });
                         });
+                        $("#clientDelete").click(function (){
+
+                            let clientNo = data.clientNo;
+                            console.log("삭제clientNo : " + clientNo);
+
+                            $.ajax({
+                                    type: 'get',
+                                    url: "/client/removeclient",
+                                    data : {
+                                        clientNo: clientNo
+                                    },
+                                    dataType: "json",
+                                    async : true,
+                                    success : function(data){
+                                        console.log("삭제 에이젝스 실행 성공")
+                                    },
+                                error : function(xhr) {
+                                    console.log("삭제 에이젝스 실행 실패");
+                                }
+                        });
+                    });
                     },
                     error : function(xhr) {
                         console.log("에이젝스 실행 실패");
@@ -224,7 +244,7 @@
                     }
                 });
             }
-        }
+        };
     }
 
 </script>

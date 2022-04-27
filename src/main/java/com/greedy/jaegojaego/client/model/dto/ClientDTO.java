@@ -1,6 +1,6 @@
 package com.greedy.jaegojaego.client.model.dto;
 
-import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.client.model.entity.ClientMember;
 
 import java.util.Date;
 public class ClientDTO {
@@ -11,13 +11,14 @@ public class ClientDTO {
     private String clientRepresentativeName;
     private String clientRepresentativePhone;
     private String clientRepresentativeEmail;
-    private MemberDTO clientMemberName;
+    private ClientMember clientMemberNo;
     private Date clientCreatedDate;
     private String clientPaymentMethod;
+    private String clientAddress;
 
     public ClientDTO(){}
 
-    public ClientDTO(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, MemberDTO clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
+    public ClientDTO(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, ClientMember clientMemberNo, Date clientCreatedDate, String clientPaymentMethod, String clientAddress) {
 
         this.clientNo = clientNo;
         this.clientName = clientName;
@@ -25,9 +26,10 @@ public class ClientDTO {
         this.clientRepresentativeName = clientRepresentativeName;
         this.clientRepresentativePhone = clientRepresentativePhone;
         this.clientRepresentativeEmail = clientRepresentativeEmail;
-        this.clientMemberName = clientMemberName;
+        this.clientMemberNo = clientMemberNo;
         this.clientCreatedDate = clientCreatedDate;
         this.clientPaymentMethod = clientPaymentMethod;
+        this.clientAddress = clientAddress;
     }
 
     public int getClientNo() {
@@ -78,12 +80,12 @@ public class ClientDTO {
         this.clientRepresentativeEmail = clientRepresentativeEmail;
     }
 
-    public MemberDTO getClientMemberName() {
-        return clientMemberName;
+    public ClientMember clientMemberNo() {
+        return clientMemberNo;
     }
 
-    public void setClientMemberName(MemberDTO clientMemberName) {
-        this.clientMemberName = clientMemberName;
+    public void clientMemberNo(ClientMember clientMemberNo) {
+        this.clientMemberNo = clientMemberNo;
     }
 
     public Date getClientCreatedDate() {
@@ -102,6 +104,22 @@ public class ClientDTO {
         this.clientPaymentMethod = clientPaymentMethod;
     }
 
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(String clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
+    public ClientMember getClientMemberNo() {
+        return clientMemberNo;
+    }
+
+    public void setClientMemberNo(ClientMember clientMemberNo) {
+        this.clientMemberNo = clientMemberNo;
+    }
+
     @Override
     public String toString() {
         return "ClientDTO{" +
@@ -111,9 +129,10 @@ public class ClientDTO {
                 ", clientRepresentativeName='" + clientRepresentativeName + '\'' +
                 ", clientRepresentativePhone='" + clientRepresentativePhone + '\'' +
                 ", clientRepresentativeEmail='" + clientRepresentativeEmail + '\'' +
-                ", clientMemberName=" + clientMemberName +
+                ", clientMemberNo=" + clientMemberNo +
                 ", clientCreatedDate=" + clientCreatedDate +
                 ", clientPaymentMethod='" + clientPaymentMethod + '\'' +
+                ", clientAddress='" + clientAddress + '\'' +
                 '}';
     }
 }
