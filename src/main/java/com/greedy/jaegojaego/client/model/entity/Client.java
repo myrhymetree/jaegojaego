@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "CLIENT")
 @SequenceGenerator(
         name = "CLIENT_SEQ_GENERATOR",
-        sequenceName = "SEQ_CLIENT_NO",
+        sequenceName = "CLIENT_NO",
         initialValue = 1,
         allocationSize = 1
 )
@@ -45,7 +45,7 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
-    private ClientMember clientMemberName;
+    private ClientMember clientMember;
 
     @Column(name = "CLIENT_CREATED_DATE")
     private Date clientCreatedDate;
@@ -53,7 +53,7 @@ public class Client {
     @Column(name = "CLIENT_PAYMENT_METHOD")
     private String clientPaymentMethod;
 
-    public Client(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, String clientAddress, ClientMember clientMemberName, Date clientCreatedDate, String clientPaymentMethod) {
+    public Client(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, String clientAddress, ClientMember clientMember, Date clientCreatedDate, String clientPaymentMethod) {
         this.clientNo = clientNo;
         this.clientName = clientName;
         this.clientCbrNo = clientCbrNo;
@@ -61,7 +61,7 @@ public class Client {
         this.clientRepresentativePhone = clientRepresentativePhone;
         this.clientRepresentativeEmail = clientRepresentativeEmail;
         this.clientAddress = clientAddress;
-        this.clientMemberName = clientMemberName;
+        this.clientMember = clientMember;
         this.clientCreatedDate = clientCreatedDate;
         this.clientPaymentMethod = clientPaymentMethod;
     }
@@ -118,14 +118,6 @@ public class Client {
         this.clientRepresentativeEmail = clientRepresentativeEmail;
     }
 
-    public ClientMember getClientMemberName() {
-        return clientMemberName;
-    }
-
-    public void setClientMemberName(ClientMember clientMemberName) {
-        this.clientMemberName = clientMemberName;
-    }
-
     public Date getClientCreatedDate() {
         return clientCreatedDate;
     }
@@ -150,6 +142,13 @@ public class Client {
         this.clientAddress = clientAddress;
     }
 
+    public ClientMember getClientMember() {
+        return clientMember;
+    }
+
+    public void setClientMember(ClientMember clientMember) {
+        this.clientMember = clientMember;
+    }
     @Override
     public String toString() {
         return "Client{" +
@@ -160,9 +159,11 @@ public class Client {
                 ", clientRepresentativePhone='" + clientRepresentativePhone + '\'' +
                 ", clientRepresentativeEmail='" + clientRepresentativeEmail + '\'' +
                 ", clientAddress='" + clientAddress + '\'' +
-                ", clientMemberName=" + clientMemberName +
+                ", clientMember=" + clientMember +
                 ", clientCreatedDate=" + clientCreatedDate +
                 ", clientPaymentMethod='" + clientPaymentMethod + '\'' +
                 '}';
     }
+
+
 }
