@@ -60,7 +60,7 @@
         <div class="forz-index" id="forz-indexForModify" style="display: none;">
             <div class="menuModifyModal" id="menuModalForModify">
                 <h1 align="center" style="color: #1ab394">메뉴 수정</h1>
-                <form class="menuModifytForm" method="post" action="/menu/modify">
+                <form class="menuModifytForm" id="menuModifytForm" method="post" action="/menu/modify">
                     *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify" name="menuName"><br>
                     *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify" name="menuPrice"><br>
                     *<label>판매여부 : </label>&nbsp;
@@ -80,13 +80,16 @@
                     <div class="rawMaterialList" id="rawMaterialListForModify" name="rawMaterialList">
 
                     </div>
-                    <button class="button" type="submit">수정</button>
+                    <button class="button modifyMenuSubmitButton demo4" type="submit">수정</button>
                     <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
                 </form>
 
                 <div class="modal-layer"></div>
             </div>
         </div>
+
+
+        <!-- 삭제버튼 누르면 input type="checkbox" 동적생성 value에 menuNo넘기면 될듯? -->
 
 
         <!-- 메뉴리스트 목록 -->
@@ -161,9 +164,9 @@
         <th:block th:replace="/common/footer.html"></th:block>
 
         <script>
-            <!-- 메뉴수정 관련 -->
             const $rawMaterialListForModify = document.getElementById("rawMaterialListForModify");
             const $materialCapacityForModify = $("#materialCapacityForModify");
+            const deleteMenuButton = document.getElementById("deleteMenuButton");
 
             document.getElementById("registMenuButton").onclick = function() {
                 document.getElementById("forz-index").style.display = "block";
@@ -180,6 +183,27 @@
             document.getElementById("modifyMenuCancelButtonForModify").onclick = function () {
                 document.getElementById("forz-indexForModify").style.display = "none";
                 // $("#rawMaterialListForModify").empty(); 없어도 될듯 일단 나둬
+            }
+
+            deleteMenuButton.onclick = function() {
+
+                // input , type selectbox , name : menu , value : menuNo(그 하나하나 생길때 )동적 생성 -> 사진있음
+                const deleteBox = document.createElement("input");
+                deleteBox.type = "checkbox"
+                deleteBox.id = "menuDeleteBox";
+                deleteBox.value = $("#menuNo").val();
+
+                $("#menuTable tbody tr").append(deleteBox);
+                deleteMenuButton.onclick = function() {
+                    alert("삭제하시겠습니까? 떠야함");
+                }
+
+                console.log("밸류 나옴? : " + deleteBox.value); //tr누를때 input menuNo에 있는 value를 넣어주는 걸로 해야할듯? 1만 나옴 !
+
+                // $(체크박스).prop("checked" boolean );
+                // $(체크된 체크박스).length;
+
+
             }
 
             function addRawMaterialForModify(value, text) {
@@ -403,6 +427,64 @@
         <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
         <script>
+
+            <!-- 메뉴수정시스왈도만들자(미완성) -->
+            // $('.demo4').click(function () {
+            //     swal({
+            //         title: "메뉴 수정하시겠습니까?",
+            //         type: "warning",
+            //         showCancelButton: true,
+            //         confirmButtonColor: "#DD6B55",
+            //         confirmButtonText: "Ok",
+            //         cancelButtonText: "Cancel",
+            //         closeOnConfirm: false
+            //     }, function () {
+            //         swal("수정 완료!", "메뉴 수정이 완료되었습니다.", "success");
+            //     });
+            // });
+            //
+            // let confirmCount2 = 0;
+            // let checkMenuAmount2 = 0;
+            //
+            // $(document).on('click', '.sa-button-container .confirm', function() {
+            //     if($("#menuNameForModify")[0].children.length == 1 /*&& $("#menuPrice")[0].children.length == 0
+            // && $("#menuStatus")[0].children.length == 0 && $("#rawMaterialList")[0].children.length == 0*/) {
+            //         swal("메뉴 수정 실패!", "필수 항목이 입력되지 않았습니다.\n필수 항목을 모두 입력해주세요.", "error");
+            //     } else {
+            //         let checkMenuAmount2 = 0;
+            //
+            //         const $menuRawMaterialAmount = document.querySelectorAll("#rawMaterialListForModify");
+            //
+            //         for (let i = 0; i < $menuRawMaterialAmount.length; i++) {
+            //
+            //             let amountInt = $menuRawMaterialAmount[i].value * 1;
+            //
+            //             console.log("amountInt : " + amountInt)
+            //
+            //             if (amountInt < 1) {
+            //                 checkMenuAmount2 = 1;
+            //                 break;
+            //             }
+            //         }
+            //
+            //         if (checkMenuAmount2 == 1) {
+            //             swal("발주 신청 실패!", "이게뭘까?", "warning")
+            //         } else {
+            //             confirmCount2++;
+            //         }
+            //
+            //     }
+            //
+            //     if(confirmCount2 == 2) {
+            //
+            //         $("#menuModifytForm").submit();
+            //     }
+            //
+            // });
+
+
+
+            <!-- 메뉴등록시스왈(미완성) -->
             $('.demo3').click(function () {
                 swal({
                     title: "메뉴 등록하시겠습니까?",

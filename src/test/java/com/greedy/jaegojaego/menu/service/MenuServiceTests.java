@@ -19,8 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -108,4 +107,53 @@ public class MenuServiceTests {
         assertNotNull(rawMaterialRepository.save(rawMaterial));
 
     }
+
+    @Test
+    @DisplayName("서비스 메뉴 수정 테스트")
+    public void menuModifyTest() {
+
+        //given
+        MenuDTO menu = new MenuDTO();
+        menu.setMenuNo(141);
+        menu.setMenuName("메뉴수정수정");
+        menu.setMenuPrice(35000);
+        menu.setMenuOrderableStatus("Y");
+
+        String modifyedMenuName = "메뉴수정수정"; //이름은 안바꾸기
+        int modifyedMenuPrice = 45000;
+        String modifyedOrderableStatus = "N";
+
+        MenuMaterialsDTO menuMaterials = new MenuMaterialsDTO();
+        String menuRawMaterialName = "인도 바르마르 원두 1kg";
+        String menuCapacity = "20g";
+
+        //when
+        Menu selectMenu = menuRepository.findById(menu.getMenuNo()).get();
+        selectMenu.setMenuName(menu.getMenuName());
+        selectMenu.setMenuOrderableStatus(menu.getMenuOrderableStatus());
+        selectMenu.setMenuPrice(menu.getMenuPrice());
+
+        Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+        System.out.println("메뉴이름: " + menu.getMenuName());
+        MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menu.getMenuName());
+        //then
+
+        RawMaterial rawMaterial = new RawMaterial();
+        RawMaterialPK rawMaterialPK = new RawMaterialPK();
+
+        rawMaterialPK.setMenuNoforRaw(menuNo);
+        rawMaterialPK.setItemInfoNo(menuInfoNo);
+        rawMaterial.setRawMaterialPK(rawMaterialPK);
+
+
+        rawMaterial.setRawMaterialName(menu.getMenuName());
+        rawMaterial.setRawMaterialCapacity(menuCapacity);
+
+        rawMaterialRepository.save(rawMaterial);
+
+    }
+
+
+
 }
+

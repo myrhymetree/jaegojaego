@@ -132,9 +132,16 @@
 
 .modifyMenuSubmitButton {
     position: relative;
-    left: 15%;
+    top: 0.1%;
+    left: 5%;
 }
 
+/* demo4 주석풀었을때 뭔가 에러가 나네 */
+/*.modifyMenuSubmitButton {*/
+/*    position: relative;*/
+/*    top: 39.3%;*/
+/*    left: 30%;*/
+/*}*/
 
 .modifyMenuCancelButton {
     position: relative;
@@ -171,4 +178,12 @@
 
 .sweet-alert {
     margin-left: -150px !important;
+}
+
+#menuDeleteBox {
+    border: 1px solid red;
+    width: 15px;
+    height: 15px;
+    
+
 }
