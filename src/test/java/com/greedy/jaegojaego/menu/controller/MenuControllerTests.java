@@ -86,8 +86,9 @@ public class MenuControllerTests {
 
         //given
         MenuDTO menu = new MenuDTO();
-        menu.setMenuNo(100);
-        menu.setMenuName("테스트용 메뉴4");
+        menu.setMenuNo(120);
+        menu.setMenuName("테스트용 메뉴5");
+        menu.setMenuPrice(35000);
         menu.setMenuOrderableStatus("Y");
         
         MenuMaterialsDTO menuMaterial = new MenuMaterialsDTO();
@@ -100,5 +101,26 @@ public class MenuControllerTests {
 
     }
 
+    @Test
+    @DisplayName("컨트롤러 메뉴 수정 테스트")
+    public void modifyMenu() {
+
+        //given
+        MenuDTO menu = new MenuDTO();
+        menu.setMenuNo(141);
+        menu.setMenuName("메뉴수정수정");
+        menu.setMenuPrice(35000);
+        menu.setMenuOrderableStatus("Y");
+
+        MenuMaterialsDTO menuMaterials = new MenuMaterialsDTO();
+        menuMaterials.setItemInfoName("인도 바르마르 원두 1kg");
+        String[] materialNameAndCapacityList = {"인도 바르마르 원두 1kg/20g"};
+
+        //when
+        menuService.modifyMenu(menu, menuMaterials, materialNameAndCapacityList);
+
+        //then
+
+    }
 
 }
