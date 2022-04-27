@@ -13,7 +13,7 @@ public class WarehouseDTO {
 //    private int warehouseDivisionNo;
     private int warehouseDivisionItem;
     private WarehouseCompanyOrderHistory orderHistoryNo;
-    private int issueNo;                                    //추후 타입 수정 예정!!
+    private Integer issueNo;                                    //추후 타입 수정 예정!!
     private WarehouseClientDTO clientNo;
     private String warehouseWorkingName;
     private java.sql.Date warehouseWorkingDate;
@@ -22,7 +22,7 @@ public class WarehouseDTO {
 
     public WarehouseDTO() {}
 
-    public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, int issueNo, WarehouseClientDTO clientNo, String warehouseWorkingName, Date warehouseWorkingDate) {
+    public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, WarehouseClientDTO clientNo, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;
         this.warehouseDivisionItem = warehouseDivisionItem;
@@ -65,11 +65,11 @@ public class WarehouseDTO {
         this.orderHistoryNo = orderHistoryNo;
     }
 
-    public int getIssueNo() {
+    public Integer getIssueNo() {
         return issueNo;
     }
 
-    public void setIssueNo(int issueNo) {
+    public void setIssueNo(Integer issueNo) {
         this.issueNo = issueNo;
     }
 

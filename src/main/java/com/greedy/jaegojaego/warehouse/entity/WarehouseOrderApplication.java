@@ -29,9 +29,9 @@ public class WarehouseOrderApplication {
     )
     private int orderApplicationNo;
 
-    @ManyToOne
-    @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
-    private WarehouseCompanyOrderHistory companyOrderHistory;
+//    @ManyToOne
+//    @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
+//    private WarehouseCompanyOrderHistory companyOrderHistory;
 
     @ManyToOne
     @JoinColumn(name = "CLIENT_NO")

@@ -41,7 +41,7 @@ public class WarehouseOrderApplicationItemDTO {
     @Override
     public String toString() {
         return "WarehouseOrderApplicationItemDTO{" +
-                "orderApplication=" + orderApplication +
+//                "orderApplication=" + orderApplication +
                 ", orderApplicationItemAmount=" + orderApplicationItemAmount +
                 ", clientContractItem=" + clientContractItem +
                 '}';

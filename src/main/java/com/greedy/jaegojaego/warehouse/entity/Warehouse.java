@@ -39,7 +39,7 @@ public class Warehouse {
     private WarehouseCompanyOrderHistory orderHistoryNo;
 
     @Column(name = "FRANCHISE_ISSUE_NO")
-    private int issueNo;
+    private Integer issueNo;
 
     @ManyToOne
     @JoinColumn(name = "CLIENT_NO")
@@ -63,7 +63,8 @@ public class Warehouse {
 
     public Warehouse() {}
 
-    public Warehouse(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, int issueNo, WarehouseClient clientNo, List<WarehouseCompanyOrderItem> companyOrderItemList, List<WarehouseOrderApplication> orderApplicationList, String warehouseWorkingName, Date warehouseWorkingDate) {
+
+    public Warehouse(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, WarehouseClient clientNo, List<WarehouseCompanyOrderItem> companyOrderItemList, List<WarehouseOrderApplication> orderApplicationList, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;
         this.warehouseDivisionItem = warehouseDivisionItem;
@@ -108,11 +109,11 @@ public class Warehouse {
         this.orderHistoryNo = orderHistoryNo;
     }
 
-    public int getIssueNo() {
+    public Integer getIssueNo() {
         return issueNo;
     }
 
-    public void setIssueNo(int issueNo) {
+    public void setIssueNo(Integer issueNo) {
         this.issueNo = issueNo;
     }
 

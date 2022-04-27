@@ -42,7 +42,7 @@ public class WarehouseCompanyOrderItemDTO {
     public String toString() {
         return "WarehouseCompanyOrderItemDTO{" +
                 "itemInfo=" + itemInfo +
-                ", companyOrderHistory=" + companyOrderHistory +
+//                ", companyOrderHistory=" + companyOrderHistory +
                 ", companyOrderItemAmount=" + companyOrderItemAmount +
                 '}';
     }
