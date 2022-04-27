@@ -58,8 +58,8 @@
 
 .forz-index {
     position: absolute;
-    top: 25%;
-    left: 30%;
+    top: 22.3%;
+    left: 29.5%;
     z-index: 1050
 }
 
@@ -101,13 +101,13 @@
 .registMenuButton {
     position: absolute;
     top: 1.5%;
-    left: 40%;
+    left: 60%;
 }
 
 .modifyMenuButton {
     position: absolute;
     top: 1.5%;
-    left: 60%;
+    left: 89%;
 }
 
 .deleteMenuButton {
@@ -126,7 +126,7 @@
 
 .registMenuCancelButton {
     position: relative;
-    left: 25%;
+    left: 30%;
     margin-top: 8px;
 }
 
@@ -145,10 +145,11 @@
 
 .registMenuSubmitButton {
     position: relative;
-    left: 15%;
+    top: 39.3%;
+    left: 30%;
 }
 
-#oneRawMaterial {
+#oneRawMaterial, #oneRawMaterialForModify {
     margin: 3px;
     display: inline-block;
     font-size: 5px;
@@ -156,7 +157,7 @@
     border: 1px solid black;
 }
 
-#rawMaterialDeleteButton {
+#rawMaterialDeleteButton, #rawMaterialDeleteButtonForModify {
     background-image: url("../../images/xButton.png");
     border: 1px solid black;
     margin-left: 3px;
@@ -166,4 +167,8 @@
     width: 17px;
     height: 14px;
     display: inline-block;
+}
+
+.sweet-alert {
+    margin-left: -150px !important;
 }

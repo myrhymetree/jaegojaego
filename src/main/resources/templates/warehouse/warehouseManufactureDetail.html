@@ -10,8 +10,8 @@
 <th:block th:include="/common/header.html"></th:block>
 
 <div class="body-header">
-    <div class="menu-title">가공 완료 창고</div>
-    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/manufacturce}">가공 완료 창고</a></div>
+    <div class="menu-title">가공 완성 창고</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/manufacturce}">가공 완성 창고</a></div>
 </div>
 
 <!-- 컨텐츠 작성 영역 -->
@@ -58,14 +58,12 @@
         <thead>
         <tr>
             <th>No</th>
-            <th>입고 번호</th>
-            <th>카테고리</th>
+            <th>품목</th>
             <th>품번</th>
             <th>품명</th>
-            <th>품목</th>
-            <th>발주 일시</th>
-            <th>작업 상태</th>
-            <th>상세 정보</th>
+            <th>재고 수량</th>
+            <th>품질 상태</th>
+            <th>상세 조회</th>
         </tr>
         </thead>
         <tbody>
@@ -73,46 +71,17 @@
             <td>2</td>
             <td>20222022</td>
             <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
+            <td>4</td>
             <td>4</td>
             <td>입하 대기</td>
             <td>
                 <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
             </td>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>20222023</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>Win 95+</td>
-            <td>5</td>
-            <td>입고 완료</td>
-            <td>
-                <button type="button" class="btn btn-w-m btn-primary" onclick="location.href='/warehouseDetail'">상세 조회</button>
-            </td>
-        </tr>
-
         </tfoot>
     </table>
 </div>
 <!-- 테이블 끝 -->
-
-
-
-
-<div class="footer">
-    <div class="float-right">
-        10GB of <strong>250GB</strong> Free.
-    </div>
-    <div>
-        <strong>Copyright</strong> Example Company &copy; 2014-2018
-    </div>
-</div>
-
 
 <th:block th:replace="/common/footer.html"></th:block>
 </body>

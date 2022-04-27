@@ -12,6 +12,7 @@
 
     <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
 
 </head>
 <body>
@@ -28,60 +29,56 @@
         <div class="forz-index" id="forz-index" style="display: none;">
             <div class="menuRegistModal" id="menuRegistModal">
                 <h1 align="center" style="color: #1ab394">메뉴 등록</h1>
-                <form class="menuRegistForm" method="post"  action="/menu/regist">
-                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName"><br>
-                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice"><br>
+                <form class="menuRegistForm" id="menuRegistForm" method="post"  action="/menu/regist">
+                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuName" name="menuName"><br>
+                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPrice" name="menuPrice"><br>
                     *<label>판매여부 : </label>&nbsp;
-                    <select class="menuStatus" name="menuOrderableStatus">
+                    <select class="menuStatus" name="menuOrderableStatus" id="menuStatus">
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select><br>
                     *<label>원재료 선택 : </label>&nbsp;
-                        <select name="itemInfoNo" class="materialCategoryForRegist" id="materialCategoryForRegist" onchange="addRawMaterial(this.value, this.options[this.selectedIndex].text);">
-                            <!-- 동적생성으로 -->
-                        </select><br>
+                    <select name="itemInfoNo" class="materialCategoryForRegist" id="materialCategoryForRegist" onchange="addRawMaterial(this.value, this.options[this.selectedIndex].text);">
+
+                    </select><br>
                     *<label>용량 : </label>
-                        <select name="materialCapacity" class="materialCapacity" id="materialCapacity" onchange="addRawMaterialToDiv(this.value, this.options[this.selectedIndex].text);">
-                            <!-- 위에랑 select 연관 : 고정 (위에가 선택되면 얘가 10g/20g/30g/40g/50g/60g .. /100g까지 생기게!! -->
-                        </select><br><br>
-                        <div class="rawMaterialList" id="rawMaterialList">
-                                <!-- 누르면 생기게 -->
-                        </div>
-                    <button class="button registMenuSubmitButton" type="submit">등록</button>
+                    <select name="materialCapacity" class="materialCapacity" id="materialCapacity" onchange="addRawMaterialToDiv(this.value, this.options[this.selectedIndex].text);">
+
+                    </select><br><br>
+                    <div class="rawMaterialList" id="rawMaterialList" name="rawMaterialList">
+
+                    </div>
                     <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
                 </form>
+                <button class="button registMenuSubmitButton demo3">등록</button>
 
                 <div class="modal-layer"></div>
             </div>
         </div>
 
-
-
-
         <!-- 메뉴수정 모달창 -->
         <div class="forz-index" id="forz-indexForModify" style="display: none;">
             <div class="menuModifyModal" id="menuModalForModify">
                 <h1 align="center" style="color: #1ab394">메뉴 수정</h1>
-                <form class="menuModifytForm" method="post">
-                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify"><br>
-                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify"><br>
+                <form class="menuModifytForm" method="post" action="/menu/modify">
+                    *<label>메뉴명 : </label>&nbsp;<input type="text" class="menuName" id="menuNameForModify" name="menuName"><br>
+                    *<label>메뉴가격 : </label>&nbsp;<input type="number" class="menuPrice" id="menuPriceForModify" name="menuPrice"><br>
                     *<label>판매여부 : </label>&nbsp;
-                    <select class="menuStatus">
+                    <select class="menuStatus" id="menuStatusForModify" name="menuOrderableStatus">
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select><br>
+                    <input type="hidden" id="menuNoForModify" name="menuNo">
                     *<label>원재료 선택 : </label>&nbsp;
-                    <select name="materialCategoryForModify" id="materialCategoryForModify">
-                        <option>원재료를 선택해주세요!</option>
-                        <!-- 동적생성으로 만들어 줘야함 default로 둘건지 물품명해놓고 다시선택하면 드가게 할지ㄱㄷ-->
+                    <select name="itemInfoNo" class="materialCategoryForModify" id="materialCategoryForModify" onchange="addRawMaterialForModify(this.value, this.options[this.selectedIndex].text);">
+                        <!-- 동적생성으로 -->
                     </select><br>
-                    *<labe>용량 : </labe>
-                    <select class="materialCapacity" id="materialCapacityForModify">
+                    *<label>용량 : </label>
+                    <select name="materialCapacity" class="materialCapacity" id="materialCapacityForModify" onchange="addRawMaterialToDivForModify(this.value, this.options[this.selectedIndex].text);">
                         <!-- 위에랑 select 연관 : 고정 (위에가 선택되면 얘가 10g/20g/30g/40g/50g/60g .. /100g까지 생기게!! -->
-                        <option>위쪽먼저선택ㄱ</option>
                     </select><br><br>
-                    <div class="rawMaterialList" id="rawMaterialListForModify">
-                        <!-- 원재료 선택 select 할때 여기에도 동적 생성으로 추가되야함 -->
+                    <div class="rawMaterialList" id="rawMaterialListForModify" name="rawMaterialList">
+
                     </div>
                     <button class="button" type="submit">수정</button>
                     <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
@@ -97,7 +94,6 @@
             <div class="ibox">
                 <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;">메뉴 목록</h3>
                 <button class="button registMenuButton" id="registMenuButton">메뉴 등록</button>
-                <button class="button modifyMenuButton" id="modifyMenuButton">메뉴 수정</button>
                 <button class="button deleteMenuButton" id="deleteMenuButton">메뉴 삭제</button>
                 <div class="ibox-content">
                     <div class="table-responsive">
@@ -114,7 +110,7 @@
                             <tr th:each="menu : ${ menuList }">
                                 <input type="hidden" th:value="${ menu.menuNo }" id="menuNo" name="menuNo">
                                 <td th:text="${ menu.menuNo }"></td>
-                                <td th:text="${ menu.menuName }"></td>
+                                <td th:text="${ menu.menuName }" id="menuNameForModifyThing"></td>
                                 <td th:text="${ menu.menuPrice }"></td>
                                 <td th:text="${ menu.menuOrderableStatus }"></td>
                             </tr>
@@ -138,6 +134,7 @@
             <div class="ibox">
                 <h3 style="font-weight: bold; padding: 6px; margin-left: 10px;" id="menuNameWhenClickEachMenu">
                 </h3>
+                <button class="button modifyMenuButton" id="modifyMenuButton">메뉴 수정</button>
 
                 <div class="ibox-content">
                     <div class="table-responsive">
@@ -159,17 +156,14 @@
             </div>
         </div>
 
-        <input type="hidden" id="materialsArray" name="materialsArray">
 
 
         <th:block th:replace="/common/footer.html"></th:block>
 
         <script>
-
-            const successMessage = "[[${ successMessage }]]";
-            if(successMessage) {
-                alert(successMessage);
-            }
+            <!-- 메뉴수정 관련 -->
+            const $rawMaterialListForModify = document.getElementById("rawMaterialListForModify");
+            const $materialCapacityForModify = $("#materialCapacityForModify");
 
             document.getElementById("registMenuButton").onclick = function() {
                 document.getElementById("forz-index").style.display = "block";
@@ -185,73 +179,123 @@
 
             document.getElementById("modifyMenuCancelButtonForModify").onclick = function () {
                 document.getElementById("forz-indexForModify").style.display = "none";
+                // $("#rawMaterialListForModify").empty(); 없어도 될듯 일단 나둬
             }
 
+            function addRawMaterialForModify(value, text) {
+                const capacity = ["10g", "20g", "30g", "40g", "50g", "60g", "70g", "80g", "90g", "100g"];
+
+                $materialCapacityForModify.html("");
+
+                $materialCapacityForModify.append($("<option selected>").text("옵션을 선택해주세요!").attr("disabled", true))
+
+                for (x in capacity) {
+
+                    const opt = document.createElement("option");
+                    opt.innerText = text + '/' + capacity[x]; //이름 + 용량 -> text
+                    opt.value = text + '/' + capacity[x]; //이름 + 용량 -> text
+                    $materialCapacityForModify.append(opt);
+
+                }
+
+            }
+
+            function addRawMaterialToDivForModify(value, text) {
+
+                const oneRawMaterialForModify = document.createElement("div")
+                const deleteButtondForModify = document.createElement("div")
+                const menuInfoForModify = document.createElement("input")
+                oneRawMaterialForModify.setAttribute("id", "oneRawMaterialForModify");
+                oneRawMaterialForModify.value = value;
+                oneRawMaterialForModify.innerText = text;
+                deleteButtondForModify.setAttribute("id", "rawMaterialDeleteButtonForModify");
+                menuInfoForModify.type = "hidden"
+                menuInfoForModify.name = "materialsForModify"
+                menuInfoForModify.value = value;
+
+                rawMaterialListForModify.appendChild(oneRawMaterialForModify);
+                rawMaterialListForModify.appendChild(menuInfoForModify); //input
+                oneRawMaterialForModify.appendChild(deleteButtondForModify); // 화면의 보여질 div의 delete버튼
+
+                deleteButtondForModify.onclick = function () { //제거 버튼을 누르면
+                    this.parentNode.remove(); //oneRawMaterial삭제됨(자동으로 deleteButton도 삭제) -> 화면에서 삭제
+                    menuInfoForModify.remove(); //input을 삭제해줘야 하는데?
+
+                }
+            }
 
             <!-- 원재료 목록 불러오기 -->
             $(function () {
-               $.ajax({
-                   url: "/menu/materialcategory",
-                   success: function(data) {
-                       const $materialCategoryForRegist = $("#materialCategoryForRegist");
-                       $materialCategoryForRegist.html("");
-                       $materialCategoryForRegist.append($("<option>").text("옵션을 선택해주세요!"));
+                $.ajax({
+                    url: "/menu/materialcategory",
+                    success: function(data) {
+                        const $materialCategoryForRegist = $("#materialCategoryForRegist");
+                        const $materialCategoryForModify = $("#materialCategoryForModify");
 
-                       for(let list in data) {
-                           $materialCategoryForRegist.append($("<option>").val(data[list].itemInfoNo).text(data[list].itemInfoName));
-                       }
-                   },
-                   error: function(xhr) {
-                       alert("에러가 발생하였습니다. 다시 시도해주세요");
-                   }
+                        $materialCategoryForRegist.html("");
+                        $materialCategoryForModify.html("");
+                        $materialCategoryForRegist.append($("<option selected>").text("옵션을 선택해주세요!").attr("disabled", true));
+                        $materialCategoryForModify.append($("<option selected>").text("옵션을 선택해주세요!").attr("disabled", true));
 
-               });
+                        for(let list in data) {
+                            $materialCategoryForRegist.append($("<option>").val(data[list].itemInfoNo).text(data[list].itemInfoName));
+                            $materialCategoryForModify.append($("<option>").val(data[list].itemInfoNo).text(data[list].itemInfoName));
+                        }
+                    },
+                    error: function(xhr) {
+                        alert("에러가 발생하였습니다. 다시 시도해주세요");
+                    }
+
+                });
             });
 
+            <!-- 메뉴 등록 관련 -->
             const $rawMaterialList = $("#rawMaterialList");
             const $materialCapacity = $("#materialCapacity");
-            const testArray = [];
 
-            function addRawMaterial(value, text) {
-                const capacity = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100"];
+            function addRawMaterial(value, text) { //value에 자재번호 , text에 이름 + 용량
+                const capacity = ["10g", "20g", "30g", "40g", "50g", "60g", "70g", "80g", "90g", "100g"];
 
-                    $materialCapacity.html("");
+                $materialCapacity.html("");
+
+                $materialCapacity.append($("<option selected>").text("옵션을 선택해주세요!").attr("disabled", true))
 
                 for(x in capacity) {
+
                     const opt = document.createElement("option");
-                    opt.innerText = text + '/' + capacity[x] + 'g';
-                    opt.value = text + '/' + capacity[x];
+                    opt.innerText = text + '/' + capacity[x]; //이름 + 용량 -> text
+                    opt.value = text + '/' + capacity[x]; //이름 + 용량 -> text
                     $materialCapacity.append(opt);
 
                 }
             }
 
             function addRawMaterialToDiv(value, text) {
-                const obj = document.getElementById("rawMaterialList");
-                const oneRawMaterial = document.createElement("div");
-                const deleteButton = document.createElement("div"); //얘도 같이 생성되게 해서
-
-                oneRawMaterial.innerHTML = text;
-                oneRawMaterial.setAttribute("id","oneRawMaterial");//새롭게 만들어지는 div태그에 id값 저장
+                const rawMaterialList = document.getElementById("rawMaterialList");
+                const oneRawMaterial = document.createElement("div"); //rawMaterialList에 추가되는거
+                const deleteButton = document.createElement("div"); // delete버튼
+                const test = document.createElement("input");
+                oneRawMaterial.setAttribute("id","oneRawMaterial"); //id = oneRawMaterial
+                oneRawMaterial.value = value; // 이름 + 용량 -> value로
                 oneRawMaterial.align = "center";
-
+                oneRawMaterial.innerText = text; // 이름 + 용량 -> text로
                 deleteButton.setAttribute("id", "rawMaterialDeleteButton");
+                test.type = "hidden";
+                test.name = "materials";
+                test.value = value;
 
-                obj.appendChild(oneRawMaterial);//body에 자식 태그로 추가.
-                oneRawMaterial.appendChild(deleteButton);
-
-                testArray.push(oneRawMaterial.innerText);
-                console.log("배열배열!! : " +testArray);
-                $("#materialsArray").innerText = testArray;
+                rawMaterialList.appendChild(oneRawMaterial);// 화면에 보여질 div
+                rawMaterialList.appendChild(test); //input
+                oneRawMaterial.appendChild(deleteButton); // 화면의 보여질 div의 delete버튼
 
 
-                deleteButton.onclick = function(){
-                    this.parentNode.remove();
-                };
 
-                // $rawMaterialList.append($("<div>").val(this.value).text(this.text).css().append($("</div>")));
+                deleteButton.onclick = function() { //제거 버튼을 누르면
+                    this.parentNode.remove(); //oneRawMaterial삭제됨(자동으로 deleteButton도 삭제) -> 화면에서 삭제
+                    test.remove(); //input을 삭제해줘야 하는데?
+
+                }
             }
-
 
             <!-- 메뉴 클릭시 상세보기용 -->
             if(document.querySelectorAll("#menuTable tbody tr")) {
@@ -269,36 +313,78 @@
                         /* 기.억.해 */
                         let test = document.getElementById("menuNameWhenClickEachMenu");
                         const $menuNo = this.children[0].value;
-
                         test.innerText = this.children[2].innerText + '의 원재료 목록';
+
+
+                        <!-- 메뉴 수정용 -->
+                        let menuNameForModify = document.getElementById("menuNameForModify");
+                        let menuPriceForModify = document.getElementById("menuPriceForModify");
+                        let menuNoForModify = document.getElementById("menuNoForModify");
+                        let menuStatusForModify = document.getElementById("menuStatusForModify");
+                        menuNoForModify.value = $menuNo;
+                        menuNameForModify.value = this.children[2].innerText;
+                        menuPriceForModify.value = this.children[3].innerText;
+                        menuStatusForModify.value = this.children[4].innerText;
+
+                        $("#rawMaterialListForModify").empty();
 
                         <!-- 원래 ajax -->
                         $.ajax ({
-                           url: '/menu/selectonemenu',
-                           type: 'GET',
+                            url: '/menu/selectonemenu',
+                            type: 'GET',
                             dataType: 'json',
                             data: {"menuNo":this.children[0].value},
                             success: function(data) {
-                                    let materialTbody = '';
-                                    if(data != null) {
-                                        for(list in data) {
+                                let materialTbody = '';
 
-                                            materialTbody += '<tr>';
-                                            materialTbody += '<td>' + data[list].rawMaterialName + '</td>';
-                                            materialTbody += '<td>' + data[list].rawMaterialCapacity + 'g' + '</td>';
-                                            materialTbody += '</tr>';
+
+                                if(data != null) {
+                                    for (list in data) {
+
+                                        materialTbody += '<tr>';
+                                        materialTbody += '<td>' + data[list].rawMaterialName + '</td>';
+                                        materialTbody += '<td>' + data[list].rawMaterialCapacity + '</td>';
+                                        materialTbody += '</tr>';
+
+                                        console.log("넘어오는 데이터 : " + data[list].menuNoforRaw.menuNo);
+                                        console.log("그 눌렀을대 list의 menuNo : " + $menuNo);
+
+                                        if(data[list].menuNoforRaw.menuNo == $menuNo) {
+
+                                            <!-- 여기서 그 rawMaterialName이랑 Capacity도 받아와서 rawMaterial에 넣어줘야하는데 그 사태로 -->
+                                            const oneRawMaterialForModify = document.createElement("div")
+                                            const deleteButtondForModify = document.createElement("div")
+                                            const menuInfoForModify = document.createElement("input")
+                                            oneRawMaterialForModify.setAttribute("id", "oneRawMaterialForModify");
+                                            oneRawMaterialForModify.value = data[list].rawMaterialName + "/" + data[list].rawMaterialCapacity;
+                                            oneRawMaterialForModify.innerText = data[list].rawMaterialName + "/" + data[list].rawMaterialCapacity;
+                                            deleteButtondForModify.setAttribute("id", "rawMaterialDeleteButtonForModify");
+                                            menuInfoForModify.type = "hidden"
+                                            menuInfoForModify.name = "materialsForModify"
+                                            menuInfoForModify.value = data[list].rawMaterialName + "/" + data[list].rawMaterialCapacity;
+
+                                            rawMaterialListForModify.appendChild(oneRawMaterialForModify);
+                                            rawMaterialListForModify.appendChild(menuInfoForModify); //input
+                                            oneRawMaterialForModify.appendChild(deleteButtondForModify); // 화면의 보여질 div의 delete버튼
+
+
+                                            deleteButtondForModify.onclick = function () { //제거 버튼을 누르면
+                                                this.parentNode.remove(); //oneRawMaterial삭제됨(자동으로 deleteButton도 삭제) -> 화면에서 삭제
+                                                menuInfoForModify.remove();
+                                            }
+
                                         }
                                     }
                                     $('#selectOneMenuTbody').empty();
                                     $('#selectOneMenuTbody').append(materialTbody);
 
+                                }
                             },
                             error: function(xhr) {
                                 alert("실패" + xhr);
                             }
 
                         });
-
                         document.getElementById("selectOneMenu").style.display = "block";
                         document.getElementById("defualtOneMenu").style.display = "none";
 
@@ -306,12 +392,73 @@
 
                 }
             }
+            <!-- 메뉴 수정용 -->
+
+
+
 
         </script>
         <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
         <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+        <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
         <script>
+            $('.demo3').click(function () {
+                swal({
+                    title: "메뉴 등록하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+                    swal("등록 완료!", "메뉴 등록이 완료되었습니다.", "success");
+                });
+            });
+
+            let confirmCount = 0;
+            let checkMenuAmount = 0;
+
+            $(document).on('click', '.sa-button-container .confirm', function() {
+                if($("#menuName")[0].children.length == 1 /*&& $("#menuPrice")[0].children.length == 0
+            && $("#menuStatus")[0].children.length == 0 && $("#rawMaterialList")[0].children.length == 0*/) {
+                    swal("메뉴 등록 실패!", "필수 항목이 입력되지 않았습니다.\n필수 항목을 모두 입력해주세요.", "error");
+                } else {
+                    let checkMenuAmount = 0;
+
+                    const $menuRawMaterialAmount = document.querySelectorAll("#rawMaterialList");
+
+                    for (let i = 0; i < $menuRawMaterialAmount.length; i++) {
+
+                        let amountInt = $menuRawMaterialAmount[i].value * 1;
+
+                        console.log("amountInt : " + amountInt)
+
+                        if (amountInt < 1) {
+                            checkMenuAmount = 1;
+                            break;
+                        }
+                    }
+
+                    if (checkMenuAmount == 1) {
+                        swal("발주 신청 실패!", "이게뭘까?", "warning")
+                    } else {
+                        confirmCount++;
+                    }
+
+                }
+
+                if(confirmCount == 2) {
+
+                    $("#menuRegistForm").submit();
+                }
+
+            });
+
+
+
+
             $(".select2_demo_1").select2({
                 theme: 'bootstrap4',
             });

@@ -13,307 +13,164 @@
             height: 30px;
             margin-right: 20px;
         }
+
+        .order-before-btn {
+            border: none;
+            cursor: pointer;
+            background-color: yellowgreen;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .order-reject-btn {
+            border: none;
+            cursor: pointer;
+            background-color: orangered;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .order-complete-btn {
+            border: none;
+            cursor: pointer;
+            background-color: skyblue;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .status-change-div {
+            width: 80px;
+            display: none;
+            position: absolute;
+            margin-left: 34px;
+        }
+
+        .franchise-order-detail-modal-body-table {
+            text-align: center;
+            border-collapse:collapse;
+            width: 80%;
+        }
+
+        .franchise-order-detail-modal-body-table th, td {
+            border: none;
+        }
     </style>
 </head>
 <body>
     <div th:replace="/common/header.html"></div>
 
-    <div class="body-header">
-        <div class="menu-title">발주 내역</div>
-        <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/franchiseorderlist}" style="font-weight: bold">발주 내역</a></div>
-    </div>
+    <div class="ibox ">
+        <div class="body-header">
+            <div class="menu-title">발주 내역</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/franchiseorderlist}" style="font-weight: bold">발주 내역</a></div>
+        </div>
 
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-lg-12">
-            <div class="ibox">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <div class="ibox">
 
-                <div class="ibox-title">
-                    <h2 style="font-weight: bold; margin-left: 10px">발주 내역</h2>
+                    <div class="ibox-title">
+                        <h2 style="font-weight: bold; margin-left: 10px">발주 내역</h2>
 
-                    <div class="ibox-tools">
-                        <button class="franchise-order-regist-btn" onclick="location.href='/order/franchiseorderregist'">발주 신청</button>
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+                        <div class="ibox-tools">
+                            <button class="franchise-order-regist-btn" onclick="location.href='/order/franchiseorderregist'">발주 신청</button>
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="ibox-content">
-                    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
-                           placeholder="Search in table">
+                    <div class="ibox-content">
+                        <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+                               placeholder="검색하고자 하는 내용을 2글자 이상 입력하세요.">
 
-                    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
-                        <thead>
-                        <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th data-hide="phone,tablet">Platform(s)</th>
-                            <th data-hide="phone,tablet">Engine version</th>
-                            <th data-hide="phone,tablet">CSS grade</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="gradeX">
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 4.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td class="center">4</td>
-                            <td class="center">X</td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 5.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td class="center">5</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 5.5
-                            </td>
-                            <td>Win 95+</td>
-                            <td class="center">5.5</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Gecko</td>
-                            <td>Netscape Navigator 9</td>
-                            <td>Win 98+ / OSX.2+</td>
-                            <td class="center">1.8</td>
-                            <td class="center">A</td>
-                        </tr>
+                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>가맹점명</th>
+                                    <th>주문번호</th>
+                                    <th>신청일자</th>
+                                    <th>처리일자</th>
+                                    <th>처리상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="franchiseOrder, index : ${ franchiseOrderList }" id="franchise-order-history-tr"  data-toggle="modal" data-target="#myModal4">
+                                    <input type="hidden" th:value="${ franchiseOrder.franchiseOrderNo }">
+                                    <td th:text="${ index.index + 1 }"></td>
+                                    <td th:text="${ franchiseOrder.orderFranchiseInfo.franchiseBranchName }"></td>
+                                    <td th:text="${ franchiseOrder.franchiseOrderOrderNumber }"></td>
+                                    <td th:text="${ franchiseOrder.franchiseOrderApplicationDate }"></td>
+                                    <td th:text="${ franchiseOrder.franchiseOrderStatusDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'BEFORE' }">
+                                            <button class="order-before-btn">처리전</button>
+                                            <div class="status-change-div">
+                                                <button class="order-complete-btn" id="order-complete-btn">승인완료</button>
+                                                <button class="order-reject-btn" id="order-reject-btn">승인거절</button>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'COMPLETE' }">
+                                            <button class="order-complete-btn">승인완료</button>
+                                        </th:block>
+                                        <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'REJECT' }">
+                                            <button class="order-reject-btn">승인거절</button>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
 
-                        <tr class="gradeA">
-                            <td>Webkit</td>
-                            <td>Safari 1.3</td>
-                            <td>OSX.3</td>
-                            <td class="center">312.8</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Webkit</td>
-                            <td>Safari 2.0</td>
-                            <td>OSX.4+</td>
-                            <td class="center">419.3</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Webkit</td>
-                            <td>Safari 3.0</td>
-                            <td>OSX.4+</td>
-                            <td class="center">522.1</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Webkit</td>
-                            <td>OmniWeb 5.5</td>
-                            <td>OSX.4+</td>
-                            <td class="center">420</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Webkit</td>
-                            <td>iPod Touch / iPhone</td>
-                            <td>iPod</td>
-                            <td class="center">420.1</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Webkit</td>
-                            <td>S60</td>
-                            <td>S60</td>
-                            <td class="center">413</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 7.0</td>
-                            <td>Win 95+ / OSX.1+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 7.5</td>
-                            <td>Win 95+ / OSX.2+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 8.0</td>
-                            <td>Win 95+ / OSX.2+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 8.5</td>
-                            <td>Win 95+ / OSX.2+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 9.0</td>
-                            <td>Win 95+ / OSX.3+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 9.2</td>
-                            <td>Win 88+ / OSX.3+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera 9.5</td>
-                            <td>Win 88+ / OSX.3+</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Opera for Wii</td>
-                            <td>Wii</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Nokia N800</td>
-                            <td>N800</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Presto</td>
-                            <td>Nintendo DS browser</td>
-                            <td>Nintendo DS</td>
-                            <td class="center">8.5</td>
-                            <td class="center">C/A<sup>1</sup></td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>KHTML</td>
-                            <td>Konqureror 3.1</td>
-                            <td>KDE 3.1</td>
-                            <td class="center">3.1</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>KHTML</td>
-                            <td>Konqureror 3.3</td>
-                            <td>KDE 3.3</td>
-                            <td class="center">3.3</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>KHTML</td>
-                            <td>Konqureror 3.5</td>
-                            <td>KDE 3.5</td>
-                            <td class="center">3.5</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeX">
-                            <td>Tasman</td>
-                            <td>Internet Explorer 4.5</td>
-                            <td>Mac OS 8-9</td>
-                            <td class="center">-</td>
-                            <td class="center">X</td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>Tasman</td>
-                            <td>Internet Explorer 5.1</td>
-                            <td>Mac OS 7.6-9</td>
-                            <td class="center">1</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>Tasman</td>
-                            <td>Internet Explorer 5.2</td>
-                            <td>Mac OS 8-X</td>
-                            <td class="center">1</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Misc</td>
-                            <td>NetFront 3.1</td>
-                            <td>Embedded devices</td>
-                            <td class="center">-</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeA">
-                            <td>Misc</td>
-                            <td>NetFront 3.4</td>
-                            <td>Embedded devices</td>
-                            <td class="center">-</td>
-                            <td class="center">A</td>
-                        </tr>
-                        <tr class="gradeX">
-                            <td>Misc</td>
-                            <td>Dillo 0.8</td>
-                            <td>Embedded devices</td>
-                            <td class="center">-</td>
-                            <td class="center">X</td>
-                        </tr>
-                        <tr class="gradeX">
-                            <td>Misc</td>
-                            <td>Links</td>
-                            <td>Text only</td>
-                            <td class="center">-</td>
-                            <td class="center">X</td>
-                        </tr>
-                        <tr class="gradeX">
-                            <td>Misc</td>
-                            <td>Lynx</td>
-                            <td>Text only</td>
-                            <td class="center">-</td>
-                            <td class="center">X</td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>Misc</td>
-                            <td>IE Mobile</td>
-                            <td>Windows Mobile 6</td>
-                            <td class="center">-</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeC">
-                            <td>Misc</td>
-                            <td>PSP browser</td>
-                            <td>PSP</td>
-                            <td class="center">-</td>
-                            <td class="center">C</td>
-                        </tr>
-                        <tr class="gradeU">
-                            <td>Other browsers</td>
-                            <td>All others</td>
-                            <td>-</td>
-                            <td class="center">-</td>
-                            <td class="center">U</td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="5">
-                                <ul class="pagination float-right"></ul>
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">내역 상세</h4>
+                                    <small id="franchise-order-detail-modal-small" style="margin-right: 30px;"></small>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="franchise-order-detail-modal-body-table">
+                                        <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>물품 이름</th>
+                                            <th>금액(개)</th>
+                                            <th>수량</th>
+                                            <th>금액(총)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="franchise-order-detail-table-tbody">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="franchise-order-detail-modal-ok-btn">확인</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
 
     <th:block th:replace="/common/footer.html"></th:block>
 
@@ -326,6 +183,65 @@
             $('.footable2').footable();
 
         });
+
+        if(document.querySelectorAll("#franchise-order-history-tr td")) {
+            const $tds = document.querySelectorAll("#franchise-order-history-tr td");
+
+            for(let i = 0; i < $tds.length; i++) {
+
+                $tds[i].onmouseenter = function() {
+                    this.parentNode.style.backgroundColor = "#d3d3d3";
+                    this.parentNode.style.cursor = "pointer";
+                }
+
+                $tds[i].onmouseout = function() {
+                    this.parentNode.style.backgroundColor = "white";
+                }
+
+                $tds[i].onclick = function() {
+
+                    $("#franchise-order-detail-table-tbody").empty();
+
+                    console.log(this.parentNode.children[0].value);
+
+                    let franchiseOrderNo = this.parentNode.children[0].value;
+
+                    fetch("/order/franchiseorderdetail?franchiseOrderNo=" + franchiseOrderNo)
+                        .then(response => response.json())
+                        .then(response => {
+
+                            let orderDetailModalTbody = '';
+
+                            let index = 1;
+
+                            if(response != null) {
+
+                                for(list in response) {
+
+                                    orderDetailModalTbody += '<tr>';
+                                    orderDetailModalTbody += '<td>' + index + '</td>';
+                                    orderDetailModalTbody += '<td>' + response[list].itemName + '</td>';
+                                    orderDetailModalTbody += '<td>' + response[list].itemPrice + '</td>';
+                                    orderDetailModalTbody += '<td>' + response[list].itemAmount + '</td>';
+                                    orderDetailModalTbody += '<td>' + (response[list].itemAmount * response[list].itemPrice) + '</td>';
+                                    orderDetailModalTbody += '</tr>';
+
+                                    index++;
+                                }
+                            }
+
+                            $("#franchise-order-detail-table-tbody").append(orderDetailModalTbody);
+
+                        })
+                        .catch(err => {
+                            alert("연결 실패!");
+                        });
+
+
+                }
+
+            }
+        }
 
     </script>
 

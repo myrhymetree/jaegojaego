@@ -5,19 +5,22 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.authentification.model.service.AuthenticationService;
-import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
-import com.greedy.jaegojaego.order.order.model.dto.*;
+import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
+import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationItemDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -203,14 +206,6 @@ public class OrderController {
         return gson.toJson(companyOrderDetailList);
     }
 
-    @GetMapping("/franchiseorderlist")
-    public ModelAndView selectFranchiseOrderList(ModelAndView mv) {
-
-        mv.setViewName("/order/franchiseOrderList");
-
-        return mv;
-    }
-
     @GetMapping("/companyorderregist")
     public ModelAndView companyOrderRegist(ModelAndView mv) {
 
@@ -220,35 +215,20 @@ public class OrderController {
     }
 
     @PostMapping("companyorderregist")
-    public ModelAndView registCompanyOrder(ModelAndView mv, HttpServletRequest request) {
+    public ModelAndView registCompanyOrder(ModelAndView mv, HttpServletRequest request, Authentication authentication) {
 
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        User loadUser = (User) principal;
-//
-//        CustomUser user = (CustomUser) authenticationService.loadUserByUsername(loadUser.getUsername());
 
-//        System.out.println(user.getMemberNo());
-
-        MemberDTO member = (MemberDTO) request.getSession().getAttribute("loginMember");
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
         String[] itemAmount = request.getParameterValues("itemAmount");
-        String[] clientNo = request.getParameterValues("clientItemInfoNo");
+        String[] clientItemNo = request.getParameterValues("clientItemInfoNo");
         String[] itemInfoNo = request.getParameterValues("itemInfoNo");
+        String[] clientNo = request.getParameterValues("clientNo");
 
-        System.out.println(member.getMemberNo());
+        List<CompanyOrderDetailDTO> applicationList = orderService.insertCompanyOrder(itemAmount, clientItemNo, itemInfoNo, customUser.getMemberNo(), clientNo);
 
-        orderService.insertCompanyOrder(itemAmount, clientNo, itemInfoNo, member.getMemberNo());
-
+        mv.addObject("applicationList", applicationList);
         mv.setViewName("/order/companyApplicationList");
-
-        return mv;
-    }
-
-    @GetMapping("franchiseorderregist")
-    public ModelAndView franchiseOrderRegist(ModelAndView mv) {
-
-        mv.setViewName("/order/franchiseOrderRegist");
 
         return mv;
     }
@@ -314,6 +294,60 @@ public class OrderController {
         Gson gson = new Gson();
 
         return gson.toJson(orderClientContractItemList);
+    }
+
+    @GetMapping(value = "modifyCompanyOrderHistoryStatus", produces = "application/json; charset=UTF-8")
+    public String modifyCompanyOrderHistoryStatus(HttpServletRequest request, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
+        String orderStatus = request.getParameter("orderStatus");
+
+        orderService.updateCompanyOrderHistoryStatus(customUser.getMemberNo(), companyOrderHistoryNo, orderStatus);
+
+        Gson gson = new Gson();
+
+        return gson.toJson("jsonView");
+    }
+
+    @GetMapping("/franchiseorderlist")
+    public ModelAndView selectFranchiseOrderList(ModelAndView mv, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        List<FranchiseOrderDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision());
+
+        mv.addObject("franchiseOrderList", franchiseOrderList);
+        mv.setViewName("/order/franchiseOrderList");
+
+        return mv;
+    }
+
+    @GetMapping(value = "/franchiseorderdetail", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String selectFranchiseOrderDetail(HttpServletRequest request) {
+
+        int franchiseOrderNo = Integer.parseInt(request.getParameter("franchiseOrderNo"));
+
+        List<FranchiseOrderDetailDTO> franchiseOrderItemList = orderService.selectFranchiseOrderDetail(franchiseOrderNo);
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(franchiseOrderItemList);
+    }
+
+    @GetMapping("franchiseorderregist")
+    public ModelAndView franchiseOrderRegist(ModelAndView mv) {
+
+        mv.setViewName("/order/franchiseOrderRegist");
+
+        return mv;
     }
 
 }

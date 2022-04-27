@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class CustomUser extends User implements UserDetails {
+public class CustomUser extends User {
 
     private int memberNo;
     private String memberId;
@@ -36,9 +36,6 @@ public class CustomUser extends User implements UserDetails {
 
         setDetails(member);
 
-        System.out.println("[ROLE_ADMIN]".equals(authorities));
-
-        System.out.println("authorities는 " + authorities);
     }
 
     private void setDetails(MemberDTO member) {

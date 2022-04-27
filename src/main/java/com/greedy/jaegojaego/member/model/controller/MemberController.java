@@ -1,6 +1,5 @@
 package com.greedy.jaegojaego.member.model.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,12 +7,11 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
+import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +44,18 @@ public class MemberController {
     @GetMapping("/regist")
     public ModelAndView sendRegistView(ModelAndView mv, Authentication authentication) {
 
+        // 로그인한 계정 정보 찾기 방법 1
+        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUser customUser1 = (CustomUser) authentication1.getPrincipal();
+
+        System.out.println("customUser1.getMemberNo() = " + customUser1.getMemberNo());
+
+
+        // 로그인한 계정 정보 찾기 방법 2
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
-        System.out.println("userDetails = " + customUser);
-
         System.out.println(customUser.getMemberNo());
-
 
         mv.setViewName("/member/regist");
 
@@ -85,35 +89,32 @@ public class MemberController {
         return memberService.findDepartmentAll();
     }
 
-//    @GetMapping("/list")
-//    public ModelAndView findMemberList(ModelAndView mv) {
-//
-//        mv.setViewName("/member/list");
-//
-//        return mv;
-//    }
+    @GetMapping("/list")
+    public ModelAndView findMemberList(ModelAndView mv, HttpServletRequest request) {
+
+        String searchWord = request.getParameter("searchWord");
+
+        List<CompanyAccountDTO> memberList = memberService.findMemberList(searchWord);
+
+        Integer count = memberService.countAll();
+
+        mv.addObject("memberList", memberList);
+
+        mv.addObject("count", count);
+
+        mv.setViewName("/member/list");
+
+        return mv;
+    }
 
     @GetMapping(value = "/duplication", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ModelAndView duplicationIdCheck(ModelAndView mv, HttpServletRequest request) {
+    public boolean duplicationIdCheck(HttpServletRequest request) {
 
         String memberId = request.getParameter("memberId");
 
-        request.getSession().getAttribute("loginMember");
-        System.out.println("memberId = " + memberId);
-
-        System.out.println("memberId : "  + memberId);
-
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .setPrettyPrinting()
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                .serializeNulls()
-                .disableHtmlEscaping()
-                .create();
-
         boolean status =  memberService.duplicationCheckId(memberId);
-        mv.addObject("duplication", gson.toJson(status));
-        return mv;
+
+        return status;
     }
 }

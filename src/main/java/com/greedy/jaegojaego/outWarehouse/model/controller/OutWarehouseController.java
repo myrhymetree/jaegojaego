@@ -5,12 +5,11 @@ import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.service.OutWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 /*
  * <pre>
@@ -80,4 +79,30 @@ public class OutWarehouseController {
 
         return mv;
     }
+
+    /**
+     * @param mv
+     * @param outWarehouseStatus
+     * @return
+     */
+    @PostMapping("/modify")
+    public ModelAndView modifyOutWarehouseStatus(ModelAndView mv, @RequestBody Map<String, Object> outWarehouseStatus) {
+
+//        System.out.println("this is outWarehouseStatus : " + outWarehouseStatus.get("outWarehouseStatus"));
+//        System.out.println(outWarehouseStatus.get("outWarehouseNo"));
+
+        int outWarehouseNo = (int) outWarehouseStatus.get("outWarehouseNo");
+        String status = (String) outWarehouseStatus.get("outWarehouseStatus");
+
+        outWarehouseService.modifyStatus(status, outWarehouseNo);
+
+        mv.setViewName("redirect:/outwarehouse/detail/" + outWarehouseNo);
+
+        return mv;
+    }
+
+//    @GetMapping("/history")
+//    public ModelAndView selectOutWarehouseHistory(ModelAndView mv) {
+//
+//    }
 }

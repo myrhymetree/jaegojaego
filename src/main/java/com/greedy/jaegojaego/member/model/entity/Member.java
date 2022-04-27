@@ -25,7 +25,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "MEMBER_DIVISION")
-public abstract class Member implements Serializable{
+public class Member implements Serializable{
 
 //    @ElementCollection(fetch = FetchType.LAZY)
 //    @Builder.Default

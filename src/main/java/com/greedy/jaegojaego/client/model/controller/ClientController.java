@@ -106,6 +106,12 @@ public class ClientController {
         return gson.toJson(clientMemoList);
     }
 
+    @GetMapping("/regist")
+    public ModelAndView sendClientRegistForm(){
+
+        return new ModelAndView("/client/clientRegistForm");
+    }
+
 
     @GetMapping("/productlist")
     public ModelAndView clientContractItemList(ModelAndView mv) {

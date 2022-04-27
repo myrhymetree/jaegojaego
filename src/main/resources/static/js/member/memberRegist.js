@@ -17,6 +17,7 @@ $(document).ready(function(){
 
     <!-- input mask, validation(password equality, length, email validation) -->
     $("#registForm").ready().validate({
+
         errorPlacement: function (error, element) {
             element.before(error);
         },
@@ -25,6 +26,7 @@ $(document).ready(function(){
               required: true
             },
             confirm: {
+                required: true,
                 equalTo: "#memberPwd",
             },
             memberPwd: {
@@ -41,6 +43,7 @@ $(document).ready(function(){
                 required: true
             }
         }
+
     });
 
     $(".select2_demo_1").select2({
@@ -79,28 +82,69 @@ $(document).ready(function(){
     // });
 })
 
-$("#registForm").submit(function (e) {
-    e.preventDefault();
-    var form = $(this)
-    swal({
-            title: "계정생성을 하시겠습니까?",
-            text: "계정 생성이 완료됩니다.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#1AB35",
-            confirmButtonText: "등록",
-            cancelButtonText: "취소",
-            closeOnConfirm: false,
-            closeOnCancel: false },
-        function (isConfirm) {
-            if (isConfirm) {
-                swal("계정 생성 성공", "계정을 성공적으로 생성했습니다.", "success");
-                form.submit();
-            } else {
-                swal("취소되었습니다.", "", "success");
-            }
-        });
+$("#btn-submit").click(function(e) {
+     e.preventDefault();
+    // var $form = $(this).parents('form');
+
+        swal({
+                title: "계정생성을 하시겠습니까?",
+                text: "계정 생성이 완료됩니다.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#1AB35",
+                confirmButtonText: "등록",
+                cancelButtonText: "취소",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+
+            function (isConfirm) {
+                if (isConfirm) {
+                    $("#registForm").submit();
+                    swal("계정 생성 성공", "계정을 성공적으로 생성했습니다.", "success");
+                } else {
+                    swal("취소되었습니다.", "", "success");
+                }
+            });
 });
+
+// $("#btn-submit")
+//     .submit(async () => {
+//         const jns_srt = $("#i_dok").val();
+//
+//         const result = await swal({
+//             title: "계정생성을 하시겠습니까?",
+//             text: "계정 생성이 완료됩니다.",
+//             type: "warning",
+//             showCancelButton: true,
+//             confirmButtonColor: "#1AB35",
+//             confirmButtonText: "등록",
+//             cancelButtonText: "취소",
+//             closeOnConfirm: true
+//         });
+//
+//         if(!result.isconfirmed)
+//             event.preventDefault();
+// });
+
+// $(document).on("click", ".submit", function (e) {
+//     e.preventDefault();
+//     var $invoiceForm = $('#registForm');
+//     if (!$invoiceForm[0].checkValidity()) {
+//         $invoiceForm[0].reportValidity()
+//     } else {
+//         swal({
+//             title: "Are you sure?",
+//             text: "Did you check all the inputs and calculations?",
+//             type: "warning",
+//             showCancelButton: true,
+//             confirmButtonColor: "#DD6B55",
+//             confirmButtonText: "Yes, Submit!",
+//         }).then(function (result) {
+//             $invoiceForm.submit();
+//         });
+//     }
+// });
 
 $(function () {
     $.ajax({
@@ -156,18 +200,16 @@ $(function() {
                memberId : memberId
            },
            url: "duplication",
-           type: "get",
-           success: function (data, textStatus, xhr) {
+           success: function (data) {
 
-               const id = JSON.parse(data.duplication)
+               console.log(data)
 
                if(memberId == "") {
-                   $("#duplicationText").css("color", "Green");
-                   $("#duplicationText").text("아이디를 입력하세요")
-               } else if(data == '0') {
+                   $("#duplicationText").text("")
+               } else if(data == false) {
                    $("#duplicationText").css("color", "Green");
                    $("#duplicationText").text("사용 가능한 아이디 입니다");
-               } else if(data == '1') {
+               } else if(data == true) {
                    $("#duplicationText").css("color", "Red");
                    $("#duplicationText").text("이미 사용중인 아이디 입니다");
                }

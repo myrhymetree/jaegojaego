@@ -18,14 +18,10 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @EntityGraph(attributePaths = {"memberRoleList"}, type = EntityGraph.EntityGraphType.LOAD)
     Member findMemberByMemberId(String memberId);
 
-    @Query(value = "SELECT a.memberNo FROM companyAccount a WHERE a.memberId = ?1")
-    Integer duplicationCheckId(String memberId);
+//    @Query(value = "SELECT a.memberNo FROM companyAccount a WHERE a.memberId = ?1")
+//    List<MemberRole> findByMemberNo(int memberNo);
 
-
-//    MemberRole findMemberRoleByMemberNo(int memberNo);
-
-    List<MemberRole> findByMemberNo(int memberNo);
-
+    boolean existsByMemberId(String memberId);
 
 }
 

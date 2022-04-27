@@ -12,7 +12,7 @@ public class AssetController {
     @GetMapping(value = {"/assetpage", "/", ""})
     public ModelAndView viewAsset(ModelAndView mv) {
 
-        mv.setViewName("/asset/assetPage");
+        mv.setViewName("assetMain");
 
         return mv;
     }
