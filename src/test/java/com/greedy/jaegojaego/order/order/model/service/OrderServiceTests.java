@@ -7,7 +7,7 @@ import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractItemRepository;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
-import com.greedy.jaegojaego.order.order.model.entitiy.CompanyOrderHistory;
+import com.greedy.jaegojaego.order.warehouse.entity.entitiy.CompanyOrderHistory;
 import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.junit.jupiter.api.DisplayName;

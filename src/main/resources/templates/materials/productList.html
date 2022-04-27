@@ -11,6 +11,7 @@
 
     <link th:href="@{/css/animate.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <style>
     .bg{ background-color: white;
@@ -62,33 +63,25 @@
 
                     <div class="ibox-content">
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover dataTables-example" >
+                            <table class="table table-striped table-bordered table-hover dataTables-example" id="listArea">
                                 <thead>
                                     <tr>
                                         <th>자재 번호</th>
                                         <th>자재 품번</th>
                                         <th>자재 품명</th>
                                         <th>카테고리</th>
-                                        <th>구분</th>
+                                        <th>가공 유무</th>
                                         <th>판매가격</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="gradeX">
-                                        <td>Trident</td>
-                                        <td>Internet</td>
-                                        <td>Win 95+</td>
-                                        <td class="center">4</td>
-                                        <td class="center">X</td>
-                                        <td class="center">X</td>
-                                    </tr>
                                     <tr th:each="materials : ${materialsList}">
-                                        <td th:text="${materials.idx}"></td>
-                                        <td th:text="${materials.idx}"></td>
-                                        <td th:text="${materials.idx}"></td>
-                                        <td th:text="${materials.idx}"></td>
-                                        <td th:text="${materials.idx}"></td>
-                                        <td th:text="${materials.idx}"></td>
+                                        <td th:text="${materials.itemInfoNo}"></td>
+                                        <td th:text="${materials.itemSerialNo}"></td>
+                                        <td th:text="${materials.itemInfoName}"></td>
+                                        <td th:text="${materials.materialsCategory.materialCategoryName}"></td>
+                                        <td th:text="${materials.subdivisionYN}"></td>
+                                        <td th:text="${materials.itemPrice}"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -118,21 +111,8 @@
                 responsive: true,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
-                    { extend: 'copy'},
-                    {extend: 'csv'},
-                    {extend: 'excel', title: 'ExampleFile'},
-                    {extend: 'pdf', title: 'ExampleFile'},
 
-                    {extend: 'print',
-                        customize: function (win){
-                            $(win.document.body).addClass('white-bg');
-                            $(win.document.body).css('font-size', '10px');
 
-                            $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
-                        }
-                    }
                 ]
 
             });
@@ -142,6 +122,23 @@
     </script>
 
     <script>
+        if(document.querySelectorAll("#listArea td")) {
+            const $tds = document.querySelectorAll("#listArea td");
+            for(let i = 0; i < $tds.length; i++) {
+
+                $tds[i].onclick = function() {
+                    const itemInfoNo = this.parentNode.children[0].innerText;
+                    location.href = "/materials/" + itemInfoNo;
+                }
+
+            }
+        }
+
+
+
+    </script>
+
+  <!--  <script>
         (function() {
             var ws = new WebSocket('ws://' + window.location.host + '/jb-server-page?reloadServiceClientId=7');
             ws.onmessage = function (msg) {
@@ -175,7 +172,7 @@
                 }
             };
         })();
-    </script>
+    </script>-->
 
 </body>
 </html>

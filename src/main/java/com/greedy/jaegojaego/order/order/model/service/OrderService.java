@@ -8,18 +8,16 @@ import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
 import com.greedy.jaegojaego.order.order.model.dto.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.order.model.dto.OrderApplicationDTO;
-import com.greedy.jaegojaego.order.order.model.entitiy.CompanyOrderHistory;
-import com.greedy.jaegojaego.order.order.model.entitiy.OrderApplication;
+import com.greedy.jaegojaego.order.warehouse.entity.entitiy.CompanyOrderHistory;
+import com.greedy.jaegojaego.order.warehouse.entity.entitiy.OrderApplication;
 import com.greedy.jaegojaego.order.order.model.repository.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 

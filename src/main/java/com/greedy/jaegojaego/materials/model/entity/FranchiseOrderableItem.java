@@ -1,9 +1,7 @@
 package com.greedy.jaegojaego.materials.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "FranchiseOrderableItem")
 @Table(name = "FRANCHISE_ORDERABLE_ITEM")
@@ -14,14 +12,14 @@ public class FranchiseOrderableItem {
     private int itemInfoNo;
 
     @Column(name = "FRANCHISE_ORDERABLE_ITEM_PRICE")
-    private int orderAmount;
+    private int itemPrice;
 
     public FranchiseOrderableItem() {
     }
 
-    public FranchiseOrderableItem(int itemInfoNo, int orderAmount) {
+    public FranchiseOrderableItem(int itemInfoNo, int itemPrice) {
         this.itemInfoNo = itemInfoNo;
-        this.orderAmount = orderAmount;
+        this.itemPrice = itemPrice;
     }
 
     public int getItemInfoNo() {
@@ -32,19 +30,13 @@ public class FranchiseOrderableItem {
         this.itemInfoNo = itemInfoNo;
     }
 
-    public int getOrderAmount() {
-        return orderAmount;
+    public int getItemPrice() {
+        return itemPrice;
     }
 
-    public void setOrderAmount(int orderAmount) {
-        this.orderAmount = orderAmount;
+    public void setItemPrice(int itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
-    @Override
-    public String toString() {
-        return "FranchiseOrderableItem{" +
-                "itemInfoNo=" + itemInfoNo +
-                ", orderAmount=" + orderAmount +
-                '}';
-    }
+
 }

@@ -1,7 +1,6 @@
-package com.greedy.jaegojaego.order.order.model.entitiy;
+package com.greedy.jaegojaego.order.warehouse.entity.entitiy;
 
 import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
-import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
