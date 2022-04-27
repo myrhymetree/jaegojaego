@@ -1,15 +1,22 @@
 package com.greedy.jaegojaego.materials.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "MaterialsCategory")
 @Table(name = "MATERIAL_CATEGORY")
+@SequenceGenerator(
+        name = "CATEGORY_NO_SEQ_GENERATOR",
+        sequenceName = "MATERIAL_CATEGORY_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class MaterialsCategory {
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "CATEGORY_NO_SEQ_GENERATOR"
+    )
     @Column(name = "MATERIAL_CATEGORY_NO")
     private int materialCategoryNo;
 
