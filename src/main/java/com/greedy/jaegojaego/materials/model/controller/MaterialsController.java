@@ -1,6 +1,6 @@
 package com.greedy.jaegojaego.materials.model.controller;
 
-import com.greedy.jaegojaego.materials.model.dto.FranchiseOrderableItemDTO;
+import com.greedy.jaegojaego.materials.model.dto.ClientContractItemDTO;
 import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
 import com.greedy.jaegojaego.materials.model.service.MaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/materials")
@@ -49,9 +50,25 @@ public class MaterialsController {
         System.out.println("들어오나! 숫자" + itemInfoNo);
         System.out.println("들어오나! 숫자" + itemInfoNo);
 
-        MaterialsDTO materials = materialsService.findMaterialsByCode(itemInfoNo);
+//        MaterialsDTO materials = materialsService.findMaterialsByCode(itemInfoNo);
+
+        Map<String, Object> productAllList = materialsService.findMaterialsByCode(itemInfoNo);
+
+        System.out.println("상세조회" + " " + productAllList);
+        System.out.println("상세조회" + " " + productAllList);
+        System.out.println("상세조회" + " " + productAllList);
+
+        MaterialsDTO materials = (MaterialsDTO)productAllList.get("materialsDTO");
+        List<ClientContractItemDTO> clientList =  (List<ClientContractItemDTO>)productAllList.get("clientContractItemDTO");
+
+        System.out.println("상세조회2" + " " + materials);
+        System.out.println("상세조회2" + " " + materials);
+        System.out.println("상세조회3" + " " + clientList);
+        System.out.println("상세조회3" + " " + clientList);
+
 
         mv.addObject("materials", materials);
+        mv.addObject("clientList", clientList);
         mv.setViewName("materials/productDetail");
 
         return mv;

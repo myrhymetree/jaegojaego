@@ -1,7 +1,5 @@
 package com.greedy.jaegojaego.materials.model.entity;
 
-import org.springframework.stereotype.Controller;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

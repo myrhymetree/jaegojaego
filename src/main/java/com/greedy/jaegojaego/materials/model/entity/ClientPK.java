@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ClientPK implements Serializable {
 
     @Column(name = "CLIENT_CONTRACT_ITEM_NO")
-    private int clientNo;
+    private int clientItemNo;
 
     @Column(name = "ITEM_INFO_NO")
     private int itemInfoNo;
@@ -17,17 +17,17 @@ public class ClientPK implements Serializable {
     public ClientPK() {
     }
 
-    public ClientPK(int clientNo, int itemInfoNo) {
-        this.clientNo = clientNo;
+    public ClientPK(int clientItemNo, int itemInfoNo) {
+        this.clientItemNo = clientItemNo;
         this.itemInfoNo = itemInfoNo;
     }
 
-    public int getClientNo() {
-        return clientNo;
+    public int getClientItemNo() {
+        return clientItemNo;
     }
 
-    public void setClientNo(int clientNo) {
-        this.clientNo = clientNo;
+    public void setClientItemNo(int clientItemNo) {
+        this.clientItemNo = clientItemNo;
     }
 
     public int getItemInfoNo() {
@@ -41,7 +41,7 @@ public class ClientPK implements Serializable {
     @Override
     public String toString() {
         return "ClientPK{" +
-                "clientNo=" + clientNo +
+                "clientItemNo=" + clientItemNo +
                 ", itemInfoNo=" + itemInfoNo +
                 '}';
     }

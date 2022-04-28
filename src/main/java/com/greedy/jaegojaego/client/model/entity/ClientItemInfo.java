@@ -1,7 +1,5 @@
 package com.greedy.jaegojaego.client.model.entity;
 
-import com.greedy.jaegojaego.materials.model.entity.MaterialsCategory;
-
 import javax.persistence.*;
 
 @Entity(name = "Client_Item_Info")

@@ -114,43 +114,43 @@
                         <div class="form-group  row">
                             <label class="col-sm-2 col-form-label">상품 번호</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" th:value="${materials.itemInfoNo}" name="itemInfoNo" readonly>
+                                <input type="number" class="form-control" th:value="${clientList.clientPK.clientNo}" name="itemInfoNo" readonly>
                             </div>
                         </div>
                         <div class="form-group  row">
                             <label class="col-sm-2 col-form-label">상품명</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:value="${materials.itemSerialNo}" name="itemSerialNo" readonly>
+                                <input type="text" class="form-control" th:value="${clientList.clientItemName}" name="itemSerialNo" readonly>
                             </div>
                         </div>
                         <div class="form-group  row">
                             <label class="col-sm-2 col-form-label">공급가</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:value="${materials.itemInfoName}" name="itemInfoName" readonly>
+                                <input type="text" class="form-control" th:value="${clientList.clientPrice}" name="itemInfoName" readonly>
                             </div>
                         </div>
                         <div class="form-group  row">
-                            <label class="col-sm-2 col-form-label">카테고리</label>
+                            <label class="col-sm-2 col-form-label">거래처 명</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:value="${materials.materialsCategory.materialCategoryName}" name="materialCategoryName" readonly>
+                                <input type="number" class="form-control" th:value="${clientList.clientName}" name="itemPrice" readonly>
                             </div>
                         </div>
                         <div class="form-group  row">
-                            <label class="col-sm-2 col-form-label">가공 유무</label>
+                            <label class="col-sm-2 col-form-label">이메일</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:value="${materials.subdivisionYN}" name="subdivisionYN" readonly>
+                                <input type="number" class="form-control" th:value="${clientList.clientEmail}" name="subdivisionUnit" readonly>
                             </div>
                         </div>
                         <div class="form-group  row">
-                            <label class="col-sm-2 col-form-label">판매 가격</label>
+                            <label class="col-sm-2 col-form-label">대표 핸드폰</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" th:value="${materials.itemPrice}" name="itemPrice" readonly>
+                                <input type="number" class="form-control" th:value="${clientList.clientPhone}" name="subdivisionUnit" readonly>
                             </div>
                         </div>
                         <div class="form-group  row">
-                            <label class="col-sm-2 col-form-label">소분 단위</label>
+                            <label class="col-sm-2 col-form-label">사업자 번호</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" th:value="${materials.subdivisionUnit}" name="subdivisionUnit" readonly>
+                                <input type="number" class="form-control" th:value="${clientList.registrationNo}" name="subdivisionUnit" readonly>
                             </div>
                         </div>
                     </div>
