@@ -1,34 +1,19 @@
-package com.greedy.jaegojaego.materials.model.entity;
+package com.greedy.jaegojaego.materials.model.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity(name = "MaterialsClient")
-@Table(name = "CLIENT")
-public class Client {
+public class ClientDTO {
 
-    @Id
-    @Column(name = "CLIENT_NO")
     private int clientNo;
-
-    @Column(name = "CLIENT_NAME")
     private String clientName;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_EMAIL")
     private String clientEmail;
-
-    @Column(name = "CLIENT_REPRESENTATIVE_PHONE")
     private String clientPhone;
-
-    @Column(name = "CLIENT_CERTIFICATE_OF_BUSINESS_REGISTRATION_NO")
     private String registrationNo;
 
-    public Client() {
+    public ClientDTO() {
     }
 
-    public Client(int clientNo, String clientName, String clientEmail, String clientPhone, String registrationNo) {
+    public ClientDTO(int clientNo, String clientName, String clientEmail, String clientPhone, String registrationNo) {
         this.clientNo = clientNo;
         this.clientName = clientName;
         this.clientEmail = clientEmail;
@@ -78,12 +63,12 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
+        return "ClientDTO{" +
                 "clientNo=" + clientNo +
                 ", clientName='" + clientName + '\'' +
                 ", clientEmail='" + clientEmail + '\'' +
-                ", clientPhone=" + clientPhone +
-                ", registrationNo=" + registrationNo +
+                ", clientPhone='" + clientPhone + '\'' +
+                ", registrationNo='" + registrationNo + '\'' +
                 '}';
     }
 }

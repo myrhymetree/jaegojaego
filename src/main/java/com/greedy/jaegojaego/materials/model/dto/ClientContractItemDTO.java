@@ -1,40 +1,37 @@
 package com.greedy.jaegojaego.materials.model.dto;
 
+import com.greedy.jaegojaego.materials.model.entity.ClientContractInfoJoin;
 import com.greedy.jaegojaego.materials.model.entity.ClientPK;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 public class ClientContractItemDTO {
 
-    private ClientPKDTO clientPK;
+    private ClientPKDTO clientPKDTO;
     private String clientItemName;
     private int clientPrice;
-    private String clientName;
-    private String clientEmail;
-    private int clientPhone;
-    private int registrationNo;
-    private int clientNo;
-    private int clientInfoNo;
+    private ClientContractInfoJoinDTO clientContractInfoJoinDTO;
+    private ClientDTO clientDTO;
 
     public ClientContractItemDTO() {
     }
 
-    public ClientContractItemDTO(ClientPKDTO clientPK, String clientItemName, int clientPrice, String clientName, String clientEmail, int clientPhone, int registrationNo, int clientNo, int clientInfoNo) {
-        this.clientPK = clientPK;
+    public ClientContractItemDTO(ClientPKDTO clientPKDTO, String clientItemName, int clientPrice, ClientContractInfoJoinDTO clientContractInfoJoinDTO, ClientDTO clientDTO) {
+        this.clientPKDTO = clientPKDTO;
         this.clientItemName = clientItemName;
         this.clientPrice = clientPrice;
-        this.clientName = clientName;
-        this.clientEmail = clientEmail;
-        this.clientPhone = clientPhone;
-        this.registrationNo = registrationNo;
-        this.clientNo = clientNo;
-        this.clientInfoNo = clientInfoNo;
+        this.clientContractInfoJoinDTO = clientContractInfoJoinDTO;
+        this.clientDTO = clientDTO;
     }
 
-    public ClientPKDTO getClientPK() {
-        return clientPK;
+    public ClientPKDTO getClientPKDTO() {
+        return clientPKDTO;
     }
 
-    public void setClientPK(ClientPKDTO clientPK) {
-        this.clientPK = clientPK;
+    public void setClientPKDTO(ClientPKDTO clientPKDTO) {
+        this.clientPKDTO = clientPKDTO;
     }
 
     public String getClientItemName() {
@@ -53,66 +50,30 @@ public class ClientContractItemDTO {
         this.clientPrice = clientPrice;
     }
 
-    public String getClientName() {
-        return clientName;
+    public ClientContractInfoJoinDTO getClientContractInfoJoinDTO() {
+        return clientContractInfoJoinDTO;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setClientContractInfoJoinDTO(ClientContractInfoJoinDTO clientContractInfoJoinDTO) {
+        this.clientContractInfoJoinDTO = clientContractInfoJoinDTO;
     }
 
-    public String getClientEmail() {
-        return clientEmail;
+    public ClientDTO getClientDTO() {
+        return clientDTO;
     }
 
-    public void setClientEmail(String clientEmail) {
-        this.clientEmail = clientEmail;
-    }
-
-    public int getClientPhone() {
-        return clientPhone;
-    }
-
-    public void setClientPhone(int clientPhone) {
-        this.clientPhone = clientPhone;
-    }
-
-    public int getRegistrationNo() {
-        return registrationNo;
-    }
-
-    public void setRegistrationNo(int registrationNo) {
-        this.registrationNo = registrationNo;
-    }
-
-    public int getClientNo() {
-        return clientNo;
-    }
-
-    public void setClientNo(int clientNo) {
-        this.clientNo = clientNo;
-    }
-
-    public int getClientInfoNo() {
-        return clientInfoNo;
-    }
-
-    public void setClientInfoNo(int clientInfoNo) {
-        this.clientInfoNo = clientInfoNo;
+    public void setClientDTO(ClientDTO clientDTO) {
+        this.clientDTO = clientDTO;
     }
 
     @Override
     public String toString() {
         return "ClientContractItemDTO{" +
-                "clientPK=" + clientPK +
+                "clientPKDTO=" + clientPKDTO +
                 ", clientItemName='" + clientItemName + '\'' +
                 ", clientPrice=" + clientPrice +
-                ", clientName='" + clientName + '\'' +
-                ", clientEmail='" + clientEmail + '\'' +
-                ", clientPhone=" + clientPhone +
-                ", registrationNo=" + registrationNo +
-                ", clientNo=" + clientNo +
-                ", clientInfoNo=" + clientInfoNo +
+                ", clientContractInfoJoinDTO=" + clientContractInfoJoinDTO +
+                ", clientDTO=" + clientDTO +
                 '}';
     }
 }

@@ -73,4 +73,12 @@ public class MaterialsController {
 
         return mv;
     }
+
+    @GetMapping("/regist")
+    public ModelAndView productMaterials(ModelAndView mv) {
+
+        mv.setViewName("/materials/productRegist");
+
+        return mv;
+    }
 }
