@@ -1,7 +1,9 @@
 package com.greedy.jaegojaego.franchise.entity;
 
+import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @SequenceGenerator(
         name = "FRANCHISE_INFO_UPDATED_RECORD_SEQ_GENERATOR",
@@ -11,6 +13,8 @@ import javax.persistence.*;
 )
 @Entity(name = "FranchiseInfoUpdatedRecord")
 @Table(name = "FRANCHISE_INFO_UPDATED_RECORD")
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class FranchiseInfoUpdatedRecord {
 
@@ -26,9 +30,13 @@ public class FranchiseInfoUpdatedRecord {
     private Integer infoWriteMemberNo;
 
     @Column(name = "FRANCHISE_UPDATED_DATE")
-    private Integer franchiseUpdatedDate;
+    private LocalDateTime franchiseUpdatedDate;
 
     @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
     private Integer franchiseRepresentativeNo;
+
+//    @ManyToOne
+//    @JoinColumn(name = "MEMBER_NO")
+//    private CompanyAccount companyAccount;
 
 }

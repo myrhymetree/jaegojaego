@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.naming.Name;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -30,7 +31,7 @@ public class FranchiseInfo extends Member {
     @Column(name = "FRANCHISE_REPRESENTATIVE_EMAIL")
     private String representativeEmail;
 
-    @Column(name = "FRANCHISE_BRANCH_NAME")
+    @Column(name = "FRANCHISE_BRANCH_NAME", unique = true)
     private String branchName;
 
     @Column(name = "FRANCHISE_BUSINESS_REGISTRATION_NO")
@@ -42,19 +43,22 @@ public class FranchiseInfo extends Member {
     @Column(name = "BANK_ACCOUNT_NO")
     private String bankAccountNo;
 
-    @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member supervisorNo;
+    @Column(name = "HEAD_OFFICE_SUPERVISOR_NO")
+    private Integer supervisorNo;
 
-    @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER_NO", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member writedMemberNo;
+    @Column(name = "HEAD_OFFICE_WRITED_MEMBER_NO")
+    private Integer writedMemberNo;
 
     @Column(name = "FRANCHISE_PHONE")
     private String phone;
 
-    @Column(name = "HEAD_OFFICE_WRITED_MEMBER_NO")
-    private Integer headOfficeWritedMemberNo;
+    @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member supervisor;
+
+    @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER_NO",insertable = false,  updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member writedMember;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
@@ -64,7 +68,16 @@ public class FranchiseInfo extends Member {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
     private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
+
+    @Transient
+    private LocalDateTime franchiseContractStartedDate;
+
+    @Transient
+    private LocalDateTime franchiseContractExpiredDate;
+
+    @Transient
+    private String franchiseContractStatus;
 }

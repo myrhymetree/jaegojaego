@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.member.model.entity;
 
+import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
 
 import javax.naming.Name;
@@ -93,6 +94,7 @@ public class Member implements Serializable{
     @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false)
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
+
 
 //    @OneToOne
 //    @JoinColumn(name = "MEMBER_NO")
