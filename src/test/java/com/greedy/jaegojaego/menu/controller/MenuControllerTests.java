@@ -26,8 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.client.ExpectedCount.never;
 
@@ -118,6 +117,20 @@ public class MenuControllerTests {
 
         //when
         menuService.modifyMenu(menu, menuMaterials, materialNameAndCapacityList);
+
+        //then
+
+    }
+
+    @Test
+    @DisplayName("컨트롤러 메뉴 탈퇴 테스트")
+    public void deleteMenu() {
+
+        //given
+        int menuNo = 182;
+
+        //when
+        menuService.deleteMenu(menuNo);
 
         //then
 

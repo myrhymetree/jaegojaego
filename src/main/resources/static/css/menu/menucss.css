@@ -101,19 +101,13 @@
 .registMenuButton {
     position: absolute;
     top: 1.5%;
-    left: 60%;
+    left: 80%;
 }
 
 .modifyMenuButton {
     position: absolute;
     top: 1.5%;
     left: 89%;
-}
-
-.deleteMenuButton {
-    position: absolute;
-    top: 1.5%;
-    left: 80%;
 }
 
 /*#test {*/
@@ -181,9 +175,15 @@
 }
 
 #menuDeleteBox {
-    border: 1px solid red;
     width: 15px;
     height: 15px;
-    
 
+}
+
+.checkboxForAll {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 10%;
+    top: 10%;
 }

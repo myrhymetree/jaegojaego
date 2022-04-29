@@ -18,10 +18,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration(classes = {JpaConfiguration.class, JaegojaegoApplication.class, BeanConfiguration.class, JaegojaegoApplication.class})
 @SpringBootTest
@@ -114,14 +116,11 @@ public class MenuServiceTests {
 
         //given
         MenuDTO menu = new MenuDTO();
-        menu.setMenuNo(141);
-        menu.setMenuName("메뉴수정수정");
-        menu.setMenuPrice(35000);
-        menu.setMenuOrderableStatus("Y");
+        menu.setMenuNo(161);
+        menu.setMenuName("죽빵수정수정수정");
+        menu.setMenuPrice(2000);
+        menu.setMenuOrderableStatus("N");
 
-        String modifyedMenuName = "메뉴수정수정"; //이름은 안바꾸기
-        int modifyedMenuPrice = 45000;
-        String modifyedOrderableStatus = "N";
 
         MenuMaterialsDTO menuMaterials = new MenuMaterialsDTO();
         String menuRawMaterialName = "인도 바르마르 원두 1kg";
@@ -130,26 +129,47 @@ public class MenuServiceTests {
         //when
         Menu selectMenu = menuRepository.findById(menu.getMenuNo()).get();
         selectMenu.setMenuName(menu.getMenuName());
-        selectMenu.setMenuOrderableStatus(menu.getMenuOrderableStatus());
         selectMenu.setMenuPrice(menu.getMenuPrice());
+        selectMenu.setMenuOrderableStatus(menu.getMenuOrderableStatus());
 
-        Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
-        System.out.println("메뉴이름: " + menu.getMenuName());
-        MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menu.getMenuName());
+        Menu modifyMenu = menuRepository.save(selectMenu);
+
+        if (selectMenu != null) {
+
+            Menu menuNo = menuRepository.selectMenuByMenuName(modifyMenu.getMenuName());
+            MenuMaterial menuInfoNo = menuMaterialRepository.selectMenuMaterialBymenuName(menuRawMaterialName);
+            //then
+
+            RawMaterial rawMaterial = new RawMaterial();
+            RawMaterialPK rawMaterialPK = new RawMaterialPK();
+
+            rawMaterialPK.setMenuNoforRaw(menuNo);
+            rawMaterialPK.setItemInfoNo(menuInfoNo);
+            rawMaterial.setRawMaterialPK(rawMaterialPK);
+
+
+            rawMaterial.setRawMaterialName(menu.getMenuName());
+            rawMaterial.setRawMaterialCapacity(menuCapacity);
+
+            System.out.println(rawMaterial);
+            rawMaterialRepository.save(rawMaterial);
+
+            assertNotNull(rawMaterialRepository.save(rawMaterial));
+        }
+
+    }
+
+    @Test
+    @DisplayName("서비스 메뉴 탈퇴 테스트")
+    public void deleteMenu() {
+
+        //given
+        int menuNo = 182;
+
+        //when
+        menuRepository.deleteById(menuNo);
+
         //then
-
-        RawMaterial rawMaterial = new RawMaterial();
-        RawMaterialPK rawMaterialPK = new RawMaterialPK();
-
-        rawMaterialPK.setMenuNoforRaw(menuNo);
-        rawMaterialPK.setItemInfoNo(menuInfoNo);
-        rawMaterial.setRawMaterialPK(rawMaterialPK);
-
-
-        rawMaterial.setRawMaterialName(menu.getMenuName());
-        rawMaterial.setRawMaterialCapacity(menuCapacity);
-
-        rawMaterialRepository.save(rawMaterial);
 
     }
 

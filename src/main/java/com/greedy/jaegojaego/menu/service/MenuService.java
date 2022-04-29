@@ -225,6 +225,12 @@ public class MenuService {
             }
         }
     }
+
+    public void deleteMenu(int menuNo) {
+
+        menuRepository.deleteById(menuNo);
+
+    }
 }
 
 

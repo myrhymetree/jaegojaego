@@ -140,6 +140,16 @@ public class MenuController {
 
     }
 
+    @GetMapping("/delete")
+    @ResponseBody
+    public void deleteMenu(HttpServletRequest request) {
+
+        int menuNo = Integer.parseInt(request.getParameter("menuNo"));
+
+        menuService.deleteMenu(menuNo);
+
+    }
+
 }
 
 //    /* 되지만 1개만 들어옴.. */

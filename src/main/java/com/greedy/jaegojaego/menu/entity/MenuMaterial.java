@@ -4,6 +4,7 @@ import com.greedy.jaegojaego.menu.dto.MenuMaterialsCategoryDTO;
 import com.greedy.jaegojaego.menu.dto.MenuMaterialsDTO;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "menuMaterial")
 @Table(name = "ITEM_INFO")
@@ -42,9 +43,13 @@ public class MenuMaterial {
     @Column(name = "SUBDIVISION_YN")
     private String subdivisionYN;
 
+    @JoinColumn(name = "ITEM_INFO_NO")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<RawMaterial> rawMaterialList;
+
     public MenuMaterial() {}
 
-    public MenuMaterial(int itemInfoNo, String itemInfoName, String itemInfoSerialNo, String itemInfoStatus, MenuMaterialsCategory menuMaterialsCategoryNo, Integer subdivisionUnit, String subdivisionYN) {
+    public MenuMaterial(int itemInfoNo, String itemInfoName, String itemInfoSerialNo, String itemInfoStatus, MenuMaterialsCategory menuMaterialsCategoryNo, Integer subdivisionUnit, String subdivisionYN, List<RawMaterial> rawMaterialList) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoSerialNo = itemInfoSerialNo;
@@ -52,6 +57,7 @@ public class MenuMaterial {
         this.menuMaterialsCategoryNo = menuMaterialsCategoryNo;
         this.subdivisionUnit = subdivisionUnit;
         this.subdivisionYN = subdivisionYN;
+        this.rawMaterialList = rawMaterialList;
     }
 
     public int getItemInfoNo() {
@@ -110,6 +116,14 @@ public class MenuMaterial {
         this.subdivisionYN = subdivisionYN;
     }
 
+    public List<RawMaterial> getRawMaterialList() {
+        return rawMaterialList;
+    }
+
+    public void setRawMaterialList(List<RawMaterial> rawMaterialList) {
+        this.rawMaterialList = rawMaterialList;
+    }
+
     @Override
     public String toString() {
         return "MenuMaterial{" +
@@ -120,6 +134,7 @@ public class MenuMaterial {
                 ", menuMaterialsCategoryNo=" + menuMaterialsCategoryNo +
                 ", subdivisionUnit=" + subdivisionUnit +
                 ", subdivisionYN='" + subdivisionYN + '\'' +
+//                ", rawMaterialList=" + rawMaterialList +
                 '}';
     }
 }

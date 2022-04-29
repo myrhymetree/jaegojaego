@@ -1,13 +1,16 @@
 package com.greedy.jaegojaego.menu.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
 public class RawMaterialPK implements Serializable {
 
-    @ManyToOne
     @JoinColumn(name = "FINISHED_PRODUCT_MENU_NO")
+    @ManyToOne
     private Menu menuNoforRaw;
 
     @ManyToOne

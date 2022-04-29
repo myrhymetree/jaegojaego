@@ -1,6 +1,7 @@
 package com.greedy.jaegojaego.menu.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "finshedProductMenu")
 @Table(name = "FINISHED_PRODUCT_MENU")
@@ -29,13 +30,19 @@ public class Menu {
     @Column(name = "FINISHED_PRODUCT_MENU_ORDERABLE")
     private String menuOrderableStatus;
 
+    @JoinColumn(name = "FINISHED_PRODUCT_MENU_NO", updatable = false)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<RawMaterial> rawMaterialList;
+
+
     public Menu() {}
 
-    public Menu(int menuNo, String menuName, int menuPrice, String menuOrderableStatus) {
+    public Menu(int menuNo, String menuName, int menuPrice, String menuOrderableStatus, List<RawMaterial> rawMaterialList) {
         this.menuNo = menuNo;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
         this.menuOrderableStatus = menuOrderableStatus;
+        this.rawMaterialList = rawMaterialList;
     }
 
     public int getMenuNo() {
@@ -70,6 +77,14 @@ public class Menu {
         this.menuOrderableStatus = menuOrderableStatus;
     }
 
+    public List<RawMaterial> getRawMaterialList() {
+        return rawMaterialList;
+    }
+
+    public void setRawMaterialList(List<RawMaterial> rawMaterialList) {
+        this.rawMaterialList = rawMaterialList;
+    }
+
     @Override
     public String toString() {
         return "Menu{" +
@@ -77,6 +92,7 @@ public class Menu {
                 ", menuName='" + menuName + '\'' +
                 ", menuPrice=" + menuPrice +
                 ", menuOrderableStatus='" + menuOrderableStatus + '\'' +
+//                ", rawMaterialList=" + rawMaterialList +
                 '}';
     }
 }
