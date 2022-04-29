@@ -60,6 +60,11 @@ public class MaterialsService {
         System.out.println("여기까지는 되나33" + " " + clientContractItemDTO);
         System.out.println("여기까지는 되나33" + " " + clientContractItemDTO);
 
+        for (ClientContractItemDTO list: clientContractItemDTO
+             ) {
+            System.out.println("언제 돼!" + list);
+        }
+
         productAllList.put("materialsDTO", materialsDTO);
         productAllList.put("clientContractItemDTO", clientContractItemDTO);
 

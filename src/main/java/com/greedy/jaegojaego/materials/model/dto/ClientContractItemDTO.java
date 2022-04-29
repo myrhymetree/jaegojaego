@@ -9,29 +9,27 @@ import javax.persistence.ManyToOne;
 
 public class ClientContractItemDTO {
 
-    private ClientPKDTO clientPKDTO;
+    private ClientPKDTO clientPK;
     private String clientItemName;
     private int clientPrice;
-    private ClientContractInfoJoinDTO clientContractInfoJoinDTO;
-    private ClientDTO clientDTO;
+    private ClientContractInfoJoinDTO clientContractInfoJoin;
 
     public ClientContractItemDTO() {
     }
 
-    public ClientContractItemDTO(ClientPKDTO clientPKDTO, String clientItemName, int clientPrice, ClientContractInfoJoinDTO clientContractInfoJoinDTO, ClientDTO clientDTO) {
-        this.clientPKDTO = clientPKDTO;
+    public ClientContractItemDTO(ClientPKDTO clientPK, String clientItemName, int clientPrice, ClientContractInfoJoinDTO clientContractInfoJoin) {
+        this.clientPK = clientPK;
         this.clientItemName = clientItemName;
         this.clientPrice = clientPrice;
-        this.clientContractInfoJoinDTO = clientContractInfoJoinDTO;
-        this.clientDTO = clientDTO;
+        this.clientContractInfoJoin = clientContractInfoJoin;
     }
 
-    public ClientPKDTO getClientPKDTO() {
-        return clientPKDTO;
+    public ClientPKDTO getClientPK() {
+        return clientPK;
     }
 
-    public void setClientPKDTO(ClientPKDTO clientPKDTO) {
-        this.clientPKDTO = clientPKDTO;
+    public void setClientPK(ClientPKDTO clientPK) {
+        this.clientPK = clientPK;
     }
 
     public String getClientItemName() {
@@ -50,30 +48,21 @@ public class ClientContractItemDTO {
         this.clientPrice = clientPrice;
     }
 
-    public ClientContractInfoJoinDTO getClientContractInfoJoinDTO() {
-        return clientContractInfoJoinDTO;
+    public ClientContractInfoJoinDTO getClientContractInfoJoin() {
+        return clientContractInfoJoin;
     }
 
-    public void setClientContractInfoJoinDTO(ClientContractInfoJoinDTO clientContractInfoJoinDTO) {
-        this.clientContractInfoJoinDTO = clientContractInfoJoinDTO;
-    }
-
-    public ClientDTO getClientDTO() {
-        return clientDTO;
-    }
-
-    public void setClientDTO(ClientDTO clientDTO) {
-        this.clientDTO = clientDTO;
+    public void setClientContractInfoJoin(ClientContractInfoJoinDTO clientContractInfoJoin) {
+        this.clientContractInfoJoin = clientContractInfoJoin;
     }
 
     @Override
     public String toString() {
         return "ClientContractItemDTO{" +
-                "clientPKDTO=" + clientPKDTO +
+                "clientPK=" + clientPK +
                 ", clientItemName='" + clientItemName + '\'' +
                 ", clientPrice=" + clientPrice +
-                ", clientContractInfoJoinDTO=" + clientContractInfoJoinDTO +
-                ", clientDTO=" + clientDTO +
+                ", clientContractInfoJoin=" + clientContractInfoJoin +
                 '}';
     }
 }
