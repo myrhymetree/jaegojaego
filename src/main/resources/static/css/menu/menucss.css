@@ -1,57 +1,58 @@
 .menuListWhiteBoard {
     border: 0.5px solid gray;
-    position: absolute;
-    left:1%;
-    top: 18%;
-    height: 610px;
-    width: 450px;
+    margin-left: 30px;
+    margin-top: 30px;
+    height: 820px;
+    width: 30%;
+    float: left;
     background: white;
 }
 
 .selectOneMenuWhiteboard {
     border: 0.5px solid gray;
-    position: absolute;
-    left: 37%;
-    top: 18%;
-    height: 610px;
-    width: 800px;
+    float: left;
+    margin-left: 30px;
+    margin-top: 30px;
+    height: 820px;
+    width: 62%;
     background: white;
 }
 
 .OneMenuWhiteboard {
     border: 0.5px solid gray;
-    position: absolute;
-    left:37%;
-    top: 18%;
     height: 610px;
-    width: 800px;
+    float: left;
+    margin-left: 30px;
+    margin-top: 30px;
+    height: 820px;
+    width: 62%;
     background: white;
 }
 
 .menuModifyModal {
     position: absolute;
     border: 0.5px solid gray;
-    height: 500px;
-    width: 500px;
+    height: 600px;
+    width: 600px;
     background: white;
-    border-radius: 5px 5px 5px 5px ;
+    border-radius: 5px 5px 5px 5px;
 }
 
 .menuRegistModal {
     position: absolute;
     border: 0.5px solid gray;
-    height: 500px;
-    width: 500px;
+    height: 600px;
+    width: 600px;
     background: white;
-    border-radius: 5px 5px 5px 5px ;
+    border-radius: 5px 5px 5px 5px;
 }
 
 .modal-layer {
     position: relative;
-    top: -68%;
-    left:-78%;
-    width: 1340px;
-    height: 637px;
+    top: -74.5%;
+    left:-90%;
+    width: 1825px;
+    height: 890px;
     background: rgba(0, 0, 0, 0.5);
     z-index: -1;
 }
@@ -65,14 +66,18 @@
 
 .menuRegistForm {
     position: relative;
-    height: 200px;
+    font-size: 16.5px;
+    width: 350px;
+    height: 250px;
     top: 5%;
     left: 23%;
 }
 
 .menuModifytForm {
     position: relative;
-    height: 200px;
+    font-size: 16.5px;
+    width: 350px;
+    height: 250px;
     top: 5%;
     left: 23%;
 }
@@ -85,7 +90,7 @@
     position: relative;
     right: 13%;
     height: 200px;
-    width: 400px;
+    width: 450px;
     background: white;
     border: 0.5px solid gray;
 }
@@ -93,6 +98,8 @@
 .button {
     background: #1AB394;
     color: white;
+    width: 75px;
+    height: 25px;
     border: none;
     box-shadow: 1px 1px gray;
     cursor: pointer;
@@ -100,25 +107,26 @@
 
 .registMenuButton {
     position: absolute;
-    top: 1.5%;
-    left: 80%;
+    top: 16.5%;
+    left: 26%;
 }
 
 .modifyMenuButton {
     position: absolute;
-    top: 1.5%;
-    left: 89%;
+    top: 16.5%;
+    left: 90%;
 }
 
 .registMenuCancelButton {
     position: relative;
-    left: 30%;
+    left: 50%;
     margin-top: 8px;
 }
 
 .modifyMenuSubmitButton {
     position: relative;
-    top: 39.3%;
+    font-size: 16.5px;
+    top: 30.3%;
     left: 30%;
 }
 
@@ -131,7 +139,8 @@
 
 .registMenuSubmitButton {
     position: relative;
-    top: 39.3%;
+    font-size: 16.5px;
+    top: 30.3%;
     left: 30%;
 }
 
@@ -156,7 +165,7 @@
 }
 
 .sweet-alert {
-    margin-left: -150px !important;
+    margin-left: -190px !important;
 }
 
 #menuDeleteBox {

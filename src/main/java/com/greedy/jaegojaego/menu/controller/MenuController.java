@@ -3,11 +3,14 @@ package com.greedy.jaegojaego.menu.controller;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.menu.dto.MenuDTO;
 import com.greedy.jaegojaego.menu.dto.MenuMaterialsDTO;
 import com.greedy.jaegojaego.menu.dto.RawMaterialDTO;
 import com.greedy.jaegojaego.menu.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -54,10 +57,11 @@ public class MenuController {
     }
 
     @GetMapping("/list")
-    public ModelAndView moveMenu(ModelAndView mv) {
+    public ModelAndView moveMenu(ModelAndView mv, Authentication authentication) {
 
         List<MenuDTO> menuList = menuService.selectMenuList();
 
+        mv.addObject("authentication", authentication.getPrincipal());
         mv.addObject("menuList", menuList);
         mv.setViewName("menu/menuList");
 
