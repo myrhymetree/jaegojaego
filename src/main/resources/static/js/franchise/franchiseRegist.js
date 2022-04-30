@@ -127,11 +127,19 @@ $(document).ready(function(){
         todayHighlight: true
     });
 
+    let d = ["2020/11/21", "20/11/2021", "20/11/21"];
+
+    stringsFromAPI.forEach( (d) => {
+        if (!isNaN(Date.parse(d))) {
+            console.log(new Date(d));
+        }
+    })
+
     $('#data_5 .input-daterange').datepicker({
         keyboardNavigation: false,
         forceParse: false,
         autoclose: true,
-        
+
     });
 })
 

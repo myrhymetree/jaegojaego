@@ -117,4 +117,31 @@ public class MemberController {
 
         return status;
     }
+
+    @GetMapping(value = "/loginMemberInformation", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public CompanyAccountDTO findMemberInformation(Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        Integer memberNo = customUser.getMemberNo();
+
+        CompanyAccountDTO loginMember = memberService.findLoginMemberInfo(memberNo);
+
+        return loginMember;
+    }
+
+    @PostMapping(value = "/modify")
+    public ModelAndView updateMember(ModelAndView mv, CompanyAccountDTO member, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        member.setMemberNo(customUser.getMemberNo());
+
+        memberService.updateLoginMemberInfo(member);
+
+
+
+        return mv;
+    }
 }

@@ -82,9 +82,6 @@ public class Member implements Serializable{
     @Column(name = "MEMBER_REMOVE_STATUS")
     private String memberRemoveStatus;
 
-    @Column(name = "FRANCHISE_DIVISION")
-    private String franchiseDivision;
-
     @Column(name = "OFFICE_DIVISION")
     private String officeDivision;
 
@@ -113,7 +110,6 @@ public class Member implements Serializable{
                 ", memberCreatedDate=" + memberCreatedDate +
                 ", memberRemovedDate=" + memberRemovedDate +
                 ", memberRemoveStatus='" + memberRemoveStatus + '\'' +
-                ", franchiseDivision='" + franchiseDivision + '\'' +
                 ", officeDivision='" + officeDivision + '\'' +
                 ", memberDivision='" + memberDivision + '\'' +
                 ", memberRoleList=" + memberRoleList +

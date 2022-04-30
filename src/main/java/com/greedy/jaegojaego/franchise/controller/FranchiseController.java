@@ -8,9 +8,11 @@ import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.franchise.service.FranchiseService;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
+import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -145,8 +147,19 @@ public class FranchiseController {
 //    }
 
     @PostMapping("/regist")
-    public ModelAndView registMember(ModelAndView mv, FranchiseInfoDTO franchise,
+    public ModelAndView registMember(ModelAndView mv,
+                                     HttpServletRequest request, @ModelAttribute FranchiseInfoDTO franchise,
                                      @RequestParam  MultipartFile bankAccountFile, @RequestParam  MultipartFile businessRegistrationFile, @RequestParam MultipartFile contractFile) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        LocalDateTime startDate = LocalDateTime.parse(request.getParameter("franchiseContractStartedDate1"), formatter);
+        LocalDateTime expiredDate = LocalDateTime.parse(request.getParameter("franchiseContractExpiredDate1"), formatter);
+
+        franchise.setFranchiseContractStartedDate(startDate);
+        franchise.setFranchiseContractExpiredDate(expiredDate);
+
+        System.out.println("startDate = " + startDate);
 
         System.out.println(franchise.getFranchiseContractStartedDate());
         System.out.println(franchise.getFranchiseContractExpiredDate());
@@ -160,17 +173,12 @@ public class FranchiseController {
         franchiseContractUpdatedRecordDTO.setFranchiseContractStartedDate(franchise.getFranchiseContractStartedDate());
         franchiseContractUpdatedRecordDTO.setFranchiseContractExpiredDate(franchise.getFranchiseContractExpiredDate());
 
-        List<FranchiseContractUpdatedRecordDTO> franchiseContractUpdatedRecordDTOS = new ArrayList<>();
-
-        franchiseContractUpdatedRecordDTOS.add(0, franchiseContractUpdatedRecordDTO);
-
         franchise.setMemberPwd(passwordEncoder.encode(franchise.getMemberPwd()));
         franchise.setMemberCreatedDate(LocalDateTime.now());
         franchise.setMemberPwdInitStatus("Y");
         franchise.setMemberRemoveStatus("Y");
         franchise.setMemberDivision("가맹점");
         franchise.setWritedMemberNo(loginUser.getMemberNo());
-        franchise.setFranchiseContractUpdatedRecords(franchiseContractUpdatedRecordDTOS);
 
         List<FranchiseAttachmentFileDTO> attachmentFiles = new ArrayList<>();
 
@@ -285,7 +293,7 @@ public class FranchiseController {
 
         System.out.println("franchise" + franchise);
 
-        franchiseService.registFranchise(franchise);
+        franchiseService.registFranchise(franchise, franchiseContractUpdatedRecordDTO);
 
         mv.setViewName("redirect:/franchise/regist");
 

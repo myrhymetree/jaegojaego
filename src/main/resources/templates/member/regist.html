@@ -26,7 +26,7 @@
     <div class="middle-box text-center loginscreen   animated fadeInDown">
 
             <h3>임직원 계정등록</h3>
-            <form class="m-t" id="registForm" role="form" action="/member/regist" method="post" onsubmit="preSubmit()">
+            <form class="m-t" id="registForm" role="form" action="/member/regist" method="post">
                 <div class="form-group" id="idContainer">
                     <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
                     <label id="duplicationText"></label>
@@ -59,8 +59,7 @@
                     <input type="email"  name="memberEmail" class="form-control" placeholder="이메일을 입력하세요">
                 </div>
 
-                <button type="button" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
-
+                <button id="btn-submit" type="submit" class="btn btn-primary block full-width m-b">등록</button>
             </form>
             <button type="button" class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#registMultipleModal">계정 일괄 생성</button>
         </div>

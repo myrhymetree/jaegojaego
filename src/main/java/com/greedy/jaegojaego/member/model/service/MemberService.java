@@ -105,4 +105,19 @@ public class MemberService {
 
         return count;
     }
+
+    public CompanyAccountDTO findLoginMemberInfo(Integer memberNo) {
+
+        CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNo(memberNo);
+
+        CompanyAccountDTO loginMember = modelMappper.map(companyAccount, CompanyAccountDTO.class);
+
+        return loginMember;
+    }
+
+    public void updateLoginMemberInfo(CompanyAccountDTO member) {
+
+        companyAccountRepository.save(modelMappper.map(member, CompanyAccount.class));
+
+    }
 }

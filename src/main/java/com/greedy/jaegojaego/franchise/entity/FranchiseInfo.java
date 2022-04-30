@@ -60,15 +60,14 @@ public class FranchiseInfo extends Member {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member writedMember;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseAttachmentFile> franchiseAttachmentFiles;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    @OneToMany(mappedBy = "franchiseInfo")
     private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
     private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
 
