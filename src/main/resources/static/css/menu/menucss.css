@@ -110,14 +110,6 @@
     left: 89%;
 }
 
-/*#test {*/
-/*    position: absolute;*/
-/*    left: 17%;*/
-/*    top: 35%;*/
-/*    width: 30px;*/
-/*    height: 30px;*/
-/*}*/
-
 .registMenuCancelButton {
     position: relative;
     left: 30%;
@@ -126,22 +118,15 @@
 
 .modifyMenuSubmitButton {
     position: relative;
-    top: 0.1%;
-    left: 5%;
+    top: 39.3%;
+    left: 30%;
 }
-
-/* demo4 주석풀었을때 뭔가 에러가 나네 */
-/*.modifyMenuSubmitButton {*/
-/*    position: relative;*/
-/*    top: 39.3%;*/
-/*    left: 30%;*/
-/*}*/
 
 .modifyMenuCancelButton {
     position: relative;
     left: 15%;
     margin-top: 8px;
-    margin-left: 40px;
+    margin-left: 80px;
 }
 
 .registMenuSubmitButton {
