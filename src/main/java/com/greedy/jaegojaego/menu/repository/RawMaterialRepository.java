@@ -4,7 +4,9 @@ import com.greedy.jaegojaego.menu.entity.RawMaterial;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +34,12 @@ public interface RawMaterialRepository extends JpaRepository<RawMaterial, Intege
                     " WHERE C.FINISHED_PRODUCT_MENU_NO = :menuNo", nativeQuery = true
     )
     List<RawMaterial> selectOneMenu(int menuNo);
+
+    @Modifying
+    @Query(
+            value = "DELETE " +
+                    "  FROM FINISHED_PRODUCT_CONFIGURATION_ITEM A " +
+                    " WHERE A.FINISHED_PRODUCT_MENU_NO = :menuNo", nativeQuery = true
+    )
+    void deleteRawMaterialByMenuNo(@Param("menuNo") int menuNo);
 }

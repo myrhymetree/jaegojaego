@@ -126,6 +126,8 @@ public class MenuController {
 
     @PostMapping("/modify")
     public ModelAndView modifyMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request) {
+
+
         //아무것도 안바꿔서 얘가 null이구나
         String[] materialNameAndCapacityList = request.getParameterValues("materialsForModify");
         for(String m : materialNameAndCapacityList) {

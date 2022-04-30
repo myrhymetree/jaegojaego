@@ -50,7 +50,7 @@
                     </div>
                     <button class="button registMenuCancelButton" type="button" id="registMenuCancelButton">취소</button>
                 </form>
-                <button class="button registMenuSubmitButton">등록</button>
+                    <button class="button registMenuSubmitButton">등록</button>
 
                 <div class="modal-layer"></div>
             </div>
@@ -80,9 +80,9 @@
                     <div class="rawMaterialList" id="rawMaterialListForModify" name="rawMaterialList">
 
                     </div>
-                    <button class="button modifyMenuSubmitButton demo4" type="submit">수정</button>
                     <button class="button modifyMenuCancelButton" type="button" id="modifyMenuCancelButtonForModify">취소</button>
                 </form>
+                    <button class="button modifyMenuSubmitButton" id="modifyMenuSubmitButton">수정</button>
 
                 <div class="modal-layer"></div>
             </div>
@@ -299,8 +299,6 @@
                 }
             }
 
-            // "menuNoTh" id="menuNoTh">번호</th>
-            // <th class="menuNameTh" id="menuNameTh">
 
             <!-- 메뉴 클릭시 상세보기용 -->
             if(document.querySelectorAll("#menuTable tbody tr")) {
@@ -321,7 +319,6 @@
                         this.style.opacity = "100%";
                     }
 
-                    // style="color: darkgreen; opacity: 35%;"
                     $menuNameTh[i].onmouseenter = function() {
                         this.style.cursor  = "pointer";
                         this.style.color = "darkgreen";
@@ -333,34 +330,40 @@
                         this.style.opacity = "100%";
                     }
 
-                    $menuNoTh[i].ondblclick = function() {
-                        // swal({
-                        //     title: '정말 메뉴를 삭제하시겠습니까?',
-                        //     text: '삭제한 메뉴는 복구하실 수 없습니다.',
-                        //     type: "warning",
-                        //     showCancelButton: true,
-                        //     confirmButtonColor: "#DD6B55",
-                        //     confirmButtonText: "Ok",
-                        //     cancelButtonText: "Cancel",
-                        //     closeOnConfirm: false
-                        //  }, function() {
-                            $.ajax({
-                                url: "/menu/delete",
-                                type: 'GET',
-                                dataType: 'text',
-                                async: true,
-                                data: {"menuNo": this.parentNode.children[0].value},
-                                success: function(data) {
-                                    alert("일단 성공(swal로 해야함!)");
-                                    location.href="/menu/list";
-                                },
-                                error: function(xhr) {
-                                    alert("에러 발생! 다시 시도해주세요!");
-                                }
-                            });
-                        //     swal("삭제 완료!", "메뉴 삭제가 완료되었습니다.", "success");
-                        // });
 
+
+                    $menuNoTh[i].ondblclick = function() {
+                    const $menuNoForSwal = this.parentNode.children[0].value;
+                            swal({
+                                title: "메뉴 삭제하시겠습니까?",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Ok",
+                                cancelButtonText: "Cancel",
+                                closeOnConfirm: false
+                            }, function () {
+                                    swal({
+                                        title: "삭제 완료!",
+                                        text: "메뉴 삭제가 완료되었습니다.",
+                                        type: "success",
+
+                                    }, function () {
+                                        $.ajax({
+                                            url: "/menu/delete",
+                                            type: 'GET',
+                                            dataType: 'text',
+                                            async: true,
+                                            data: {"menuNo": $menuNoForSwal},
+                                            success: function(data) {
+                                                location.href="/menu/list";
+                                            },
+                                            error: function(xhr) {
+                                                alert("에러 발생! 다시 시도해주세요!");
+                                            }
+                                        });
+                                    })
+                            });
                     }
 
 
@@ -447,7 +450,6 @@
 
                 }
             }
-            <!-- 메뉴 수정용 -->
 
 
 
@@ -459,83 +461,40 @@
 
         <script>
 
-            <!-- 메뉴수정시스왈도만들자(미완성) -->
-            // $('.demo4').click(function () {
-            //     swal({
-            //         title: "메뉴 수정하시겠습니까?",
-            //         type: "warning",
-            //         showCancelButton: true,
-            //         confirmButtonColor: "#DD6B55",
-            //         confirmButtonText: "Ok",
-            //         cancelButtonText: "Cancel",
-            //         closeOnConfirm: false
-            //     }, function () {
-            //         swal("수정 완료!", "메뉴 수정이 완료되었습니다.", "success");
-            //     });
-            // });
-            //
-            // let confirmCount2 = 0;
-            // let checkMenuAmount2 = 0;
-            //
-            // $(document).on('click', '.sa-button-container .confirm', function() {
-            //     if($("#menuNameForModify")[0].children.length == 1 /*&& $("#menuPrice")[0].children.length == 0
-            // && $("#menuStatus")[0].children.length == 0 && $("#rawMaterialList")[0].children.length == 0*/) {
-            //         swal("메뉴 수정 실패!", "필수 항목이 입력되지 않았습니다.\n필수 항목을 모두 입력해주세요.", "error");
-            //     } else {
-            //         let checkMenuAmount2 = 0;
-            //
-            //         const $menuRawMaterialAmount = document.querySelectorAll("#rawMaterialListForModify");
-            //
-            //         for (let i = 0; i < $menuRawMaterialAmount.length; i++) {
-            //
-            //             let amountInt = $menuRawMaterialAmount[i].value * 1;
-            //
-            //             console.log("amountInt : " + amountInt)
-            //
-            //             if (amountInt < 1) {
-            //                 checkMenuAmount2 = 1;
-            //                 break;
-            //             }
-            //         }
-            //
-            //         if (checkMenuAmount2 == 1) {
-            //             swal("발주 신청 실패!", "이게뭘까?", "warning")
-            //         } else {
-            //             confirmCount2++;
-            //         }
-            //
-            //     }
-            //
-            //     if(confirmCount2 == 2) {
-            //
-            //         $("#menuModifytForm").submit();
-            //     }
-            //
-            // });
+            <!-- 메뉴수정스왈 -->
+            $('.modifyMenuSubmitButton').click(function () {
+                swal({
+                    title: "메뉴 수정하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+                    if(document.getElementById("menuNameForModify").value != "" && document.getElementById("menuPriceForModify").value != "" && document.getElementById("materialCategoryForModify").value != "" && document.getElementById("oneRawMaterialForModify") != null) {
+                        swal({
+                            title: "수정 완료!",
+                            text: "메뉴 수정이 완료되었습니다.",
+                            type: "success",
+                        }, function () {
+                            $("#menuModifytForm").submit();
+                        })
+                    } else {
+                        swal("수정 실패!", "필수값을 입력해주세요!", "error");
+                        //if) 다 없애고 OK눌렀다가 안되서 다시 추가 후 하면 그전에 있던 애가 안없어지고 그대로 같이 감.. (소스에도 없어지는데 왜 이러지?)
+                    }
 
+                });
 
+            });
 
+            const $menuName = document.getElementById("menuName");
+            const $menuPrice = document.getElementById("menuPrice");
+            const $materialCategoryForRegist = document.getElementById("materialCategoryForRegist");
+            const $materialCapacityForSwal = document.getElementById("materialCapacity");
 
-            // swal({
-            //     title: "Are you sure?",
-            //     text: "Once deleted, you will not be able to recover this imaginary file!",
-            //     icon: "warning",
-            //     buttons: true,
-            //     dangerMode: true,
-            // })
-            //     .then((willDelete) => {
-            //         if (willDelete) {
-            //             swal("Poof! Your imaginary file has been deleted!", {
-            //                 icon: "success",
-            //             });
-            //         } else {
-            //             swal("Your imaginary file is safe!");
-            //         }
-            //     });
-
-
-
-            <!-- 메뉴등록시스왈(미완성) -->
+            <!-- 메뉴등록시스왈 -->
             $('.registMenuSubmitButton').click(function () {
                 swal({
                     title: "메뉴 등록하시겠습니까?",
@@ -546,50 +505,22 @@
                     cancelButtonText: "Cancel",
                     closeOnConfirm: false
                 }, function () {
-                    swal("등록 완료!", "메뉴 등록이 완료되었습니다.", "success");
-                });
-            });
+                    if($menuName.value != "" && $menuPrice.value != "" && $materialCategoryForRegist.value != "" && $materialCapacityForSwal.value != "옵션을 선택해주세요!" && document.getElementById("oneRawMaterial") != null) {
+                        swal({
+                          title: "등록 완료!",
+                          text: "메뉴 등록이 완료되었습니다.",
+                          type: "success",
 
-            let confirmCount = 0;
-            let checkMenuAmount = 0;
-
-            $(document).on('click', '.sa-button-container .confirm', function() {
-                if($("#menuName")[0].children.length == 1 /*&& $("#menuPrice")[0].children.length == 0
-            && $("#menuStatus")[0].children.length == 0 && $("#rawMaterialList")[0].children.length == 0*/) {
-                    swal("메뉴 등록 실패!", "필수 항목이 입력되지 않았습니다.\n필수 항목을 모두 입력해주세요.", "error");
-                } else {
-                    let checkMenuAmount = 0;
-
-                    const $menuRawMaterialAmount = document.querySelectorAll("#rawMaterialList");
-
-                    for (let i = 0; i < $menuRawMaterialAmount.length; i++) {
-
-                        let amountInt = $menuRawMaterialAmount[i].value * 1;
-
-                        console.log("amountInt : " + amountInt)
-
-                        if (amountInt < 1) {
-                            checkMenuAmount = 1;
-                            break;
-                        }
-                    }
-
-                    if (checkMenuAmount == 1) {
-                        swal("발주 신청 실패!", "이게뭘까?", "warning")
+                        }, function () {
+                            $("#menuRegistForm").submit();
+                        })
                     } else {
-                        confirmCount++;
+                        swal("등록 실패!", "필수값을 입력해주세요!", "error");
                     }
 
-                }
-
-                if(confirmCount == 2) {
-
-                    $("#menuRegistForm").submit();
-                }
+                });
 
             });
-
-
 
 
             $(".select2_demo_1").select2({
@@ -604,7 +535,6 @@
                 allowClear: true
             });
 
-            // Upgrade button class name
             $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
 
             $(document).ready(function(){
@@ -614,23 +544,7 @@
                     lengthChange: false,
                     info: false,
                     dom: '<"html5buttons"B>lTfgitp',
-                    buttons: [
-                        // { extend: 'copy'},
-                        // {extend: 'csv'},
-                        // {extend: 'excel', title: 'ExampleFile'},
-                        // {extend: 'pdf', title: 'ExampleFile'},
-
-                        {extend: '',
-                            customize: function (win){
-                                $(win.document.body).addClass('white-bg');
-                                $(win.document.body).css('font-size', '10px');
-
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            }
-                        }
-                    ]
+                    buttons: []
 
                 });
 
@@ -647,23 +561,7 @@
                     lengthChange: false,
                     info: false,
                     // dom: '<"html5buttons"B>lTfgitp',
-                    buttons: [
-                        // { extend: 'copy'},
-                        // {extend: 'csv'},
-                        // {extend: 'excel', title: 'ExampleFile'},
-                        // {extend: 'pdf', title: 'ExampleFile'},
-
-                        {extend: '',
-                            customize: function (win){
-                                $(win.document.body).addClass('white-bg');
-                                $(win.document.body).css('font-size', '10px');
-
-                                $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
-                            }
-                        }
-                    ]
+                    buttons: []
 
                 });
 

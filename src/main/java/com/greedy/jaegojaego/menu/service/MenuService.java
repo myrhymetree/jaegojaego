@@ -159,6 +159,9 @@ public class MenuService {
 
         }
 
+
+//            //안에들어있는애 삭ㅡ제
+
     @Transactional
     public void modifyMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
 
@@ -167,11 +170,14 @@ public class MenuService {
         /* 메뉴 번호 조회해오기 (이름으로) */ //update인데
         //-> 메뉴이름으로 메뉴자체 조회해오기
         Menu selectMenu = menuRepository.findById(menu.getMenuNo()).get();
+        rawMaterialRepository.deleteRawMaterialByMenuNo(selectMenu.getMenuNo());
+
         System.out.println("메뉴가 잘 조회되어왓는가 ? : " + selectMenu);
         selectMenu.setMenuName(menu.getMenuName());
         selectMenu.setMenuPrice(menu.getMenuPrice());
         selectMenu.setMenuOrderableStatus(menu.getMenuOrderableStatus());
         //메뉴쪽 업데이트 ㅇㅋ
+
 
         /* 분리 (3개가 들어올 경우 3개로) */
         String[] rawMaterialList = materialNameAndCapacityList;
@@ -199,6 +205,7 @@ public class MenuService {
 
         if (selectMenu != null) {
             Menu menuNo = menuRepository.selectMenuByMenuName(menu.getMenuName());
+            System.out.println("메뉴전체전체 : " + menuNo);
 
             Iterator<String> keys = map.keySet().iterator();
             while (keys.hasNext()) {

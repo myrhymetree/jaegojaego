@@ -10,10 +10,10 @@ import java.io.Serializable;
 public class RawMaterialPK implements Serializable {
 
     @JoinColumn(name = "FINISHED_PRODUCT_MENU_NO")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Menu menuNoforRaw;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ITEM_INFO_NO")
     private MenuMaterial itemInfoNo;
 
