@@ -32,11 +32,9 @@ $(document).ready(function(){
             memberPwd: {
                 required: true,
                 minlength: 8,
-                maxlength: 15,
-                empty: true
+                maxlength: 15
             },
             memberName: {
-                empty: true,
                 required: true
             },
             department: {
@@ -82,10 +80,9 @@ $(document).ready(function(){
     // });
 })
 
-$("#btn-submit").click(function(e) {
+$("#btn-submit").submit(function(e) {
      e.preventDefault();
     // var $form = $(this).parents('form');
-
         swal({
                 title: "계정생성을 하시겠습니까?",
                 text: "계정 생성이 완료됩니다.",
@@ -99,10 +96,18 @@ $("#btn-submit").click(function(e) {
             },
 
             function (isConfirm) {
-                if (isConfirm) {
-                    $("#registForm").submit();
-                    swal("계정 생성 성공", "계정을 성공적으로 생성했습니다.", "success");
-                } else {
+                if (document.getElementById("memberId").value != "",
+                    document.getElementById("memberPwd").value != "",
+                    document.getElementById("department").value != "") {
+                    swal({
+                        title: "본사 계정 생성 완료",
+                        text: "본사 계정 생성이 완료되었습니다.",
+                        type: "success",
+                    }, function () {
+                        $("#registForm").submit();
+                    })
+                }
+                else {
                     swal("취소되었습니다.", "", "success");
                 }
             });

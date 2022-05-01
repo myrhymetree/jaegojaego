@@ -6,6 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#    url: jdbc:log4jdbc:oracle:thin:@localhost.team-greedy.com:1521:xe
     url: jdbc:log4jdbc:oracle:thin:@oracle.team-greedy.com:1521:xe
     username: C##JAEGOJAEGO
     password: JAEGOJAEGO
@@ -44,9 +45,16 @@ spring:
       # 파일 업로드 가능 여부 선택
       enabled: true
       # 업로드된 파일의 임시 저장 경로
-      location: C:\\dev\\jaegojaegoUpload
+      location: C:\dev\jaegojaegoUpload
       # 한 번에 최대 업로드 가능 용량
       max-request-size: 100MB
       # 파일 하나의 최대 크기
       max-file-size: 20MB
+
+# 경로에 대한 매개변수 생성
+com:
+  greedy:
+    jaegojaego:
+      upload:
+        path: C:\dev\jaegojaegoUpload
 

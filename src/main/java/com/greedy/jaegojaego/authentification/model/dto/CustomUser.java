@@ -46,7 +46,6 @@ public class CustomUser extends User {
         this.memberPwdInitStatus = member.getMemberPwdInitStatus();
         this.memberCreatedDate = member.getMemberCreatedDate();
         this.memberRemovedDate = member.getMemberRemovedDate();
-        this.franchiseDivision = member.getFranchiseDivision();
         this.officeDivision = member.getOfficeDivision();
         this.memberDivision = member.getMemberDivision();
         this.authorityList = member.getAuthorityDTOList();

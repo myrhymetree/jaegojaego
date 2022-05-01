@@ -28,6 +28,8 @@
 
 </head>
 <body class="md-skin">
+<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/js/common/memberInfo.js}"></script>
 <th:block th:include="/member/myInfoModal.html"></th:block>
 <th:block th:include="/member/myInfoModifyModal.html"></th:block>
 
@@ -39,12 +41,12 @@
                     <div class="dropdown profile-element">
                         <img alt="image" class="rounded-circle" th:src="@{/img/profile_small.jpg}"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="block m-t-xs font-bold"></span>
-                            <span class="text-muted text-xs block">Art Director <b class="caret"></b></span>
+                            <span class="block m-t-xs font-bold" id="memberName"></span>
+                            <span class="text-muted text-xs block" id="department"><b class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="dropdown-item" data-toggle="modal" data-target="#myInfoModifyModal">계정 정보</a></li>
-                            <li><a class="dropdown-item" href="/member/password">Contacts</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#myInfoModal">계정정보조회</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#myInfoModifyModal">계정정보수정</a></li>
                             <li><a class="dropdown-item" href="mailbox.html">Mailbox</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="login.html">Logout</a></li>
@@ -54,6 +56,8 @@
                         IN+
                     </div>
                 </li>
+
+
 
                 <!-- 메뉴바 카테고리 -->
                 <!-- 가맹점 메뉴바는 따로 메뉴에다 조건 걸어서 안보이게 처리하시면 됩니다. -->
@@ -83,7 +87,7 @@
 
                 <!-- 가맹점 관리 -->
                 <li>
-                    <a th:href="@{/franchise}"><i class="fa fa-pie-chart"></i> <span class="nav-label">가맹점 관리</span></a>
+                    <a th:href="@{/franchise}"><i class="fa fa-pie-chart"></i> <span class="nav-label">가맹점 관리</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a th:href="@{/franchise/regist}">가맹점 계정 생성</a></li>
                     </ul>

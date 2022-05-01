@@ -39,7 +39,13 @@ $(document).ready(function(){
                 empty: true,
                 required: true
             },
-            department: {
+            businessRegistrationNo: {
+                required: true
+            },
+            address: {
+                required: true
+            },
+            bankAccountNo: {
                 required: true
             }
         }
@@ -121,38 +127,47 @@ $(document).ready(function(){
         todayHighlight: true
     });
 
+    let d = ["2020/11/21", "20/11/2021", "20/11/21"];
+
+    stringsFromAPI.forEach( (d) => {
+        if (!isNaN(Date.parse(d))) {
+            console.log(new Date(d));
+        }
+    })
+
     $('#data_5 .input-daterange').datepicker({
         keyboardNavigation: false,
         forceParse: false,
-        autoclose: true
+        autoclose: true,
+
     });
 })
 
-$("#btn-submit").click(function(e) {
-     e.preventDefault();
-    // var $form = $(this).parents('form');
-
-        swal({
-                title: "계정생성을 하시겠습니까?",
-                text: "계정 생성이 완료됩니다.",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#1AB35",
-                confirmButtonText: "등록",
-                cancelButtonText: "취소",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-
-            function (isConfirm) {
-                if (isConfirm) {
-                    $("#registForm").submit();
-                    swal("계정 생성 성공", "계정을 성공적으로 생성했습니다.", "success");
-                } else {
-                    swal("취소되었습니다.", "", "success");
-                }
-            });
-});
+// $("#btn-submit").click(function(e) {
+//      e.preventDefault();
+//     // var $form = $(this).parents('form');
+//
+//         swal({
+//                 title: "계정생성을 하시겠습니까?",
+//                 text: "계정 생성이 완료됩니다.",
+//                 type: "warning",
+//                 showCancelButton: true,
+//                 confirmButtonColor: "#1AB35",
+//                 confirmButtonText: "등록",
+//                 cancelButtonText: "취소",
+//                 closeOnConfirm: false,
+//                 closeOnCancel: false
+//             },
+//
+//             function (isConfirm) {
+//                 if (isConfirm) {
+//                     $("#registForm").submit();
+//                     swal("계정 생성 성공", "계정을 성공적으로 생성했습니다.", "success");
+//                 } else {
+//                     swal("취소되었습니다.", "", "success");
+//                 }
+//             });
+// });
 
 // $("#btn-submit")
 //     .submit(async () => {

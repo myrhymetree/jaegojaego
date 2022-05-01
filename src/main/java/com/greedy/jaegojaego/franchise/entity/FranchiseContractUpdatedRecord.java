@@ -1,19 +1,30 @@
 package com.greedy.jaegojaego.franchise.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@SequenceGenerator(
+        name = "FRANCHISE_CONTRACT_UPDATED_RECORD_GENERATOR",
+        sequenceName = "FRANCHISE_CONTRACT_UPDATE_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "FranchiseContractUpdatedRecord")
 @Table(name = "FRANCHISE_CONTRACT_UPDATE_RECORD")
 public class FranchiseContractUpdatedRecord {
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "FRANCHISE_CONTRACT_UPDATED_RECORD_GENERATOR"
+    )
     @Column(name = "FRANCHISE_CONTRACT_UPDATE_NO")
     private Integer franchiseContractUpdateNo;
 
@@ -28,4 +39,9 @@ public class FranchiseContractUpdatedRecord {
 
     @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
     private Integer franchiseRepresentativeNo;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false, updatable = false)
+    private FranchiseInfo franchiseInfo;
+
 }

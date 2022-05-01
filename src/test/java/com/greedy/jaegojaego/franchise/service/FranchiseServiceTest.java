@@ -52,13 +52,13 @@ class FranchiseServiceTest {
         franchiseInfo.setMemberRemoveStatus("Y");
         franchiseInfo.setMemberRemoveStatus("Y");
         franchiseInfo.setMemberDivision("가맹점");
-        franchiseInfo.setFranchiseDivision("대표자");
+        franchiseInfo.setOfficeDivision("대표자");
         franchiseInfo.setRepresentativeName("박성준");
         franchiseInfo.setBranchName("강남점");
         franchiseInfo.setBusinessRegistrationNo("110-11111-11111");
         franchiseInfo.setAddress("서울특별시 강남구 강남대로1");
         franchiseInfo.setBankAccountNo("1000-000-000000");
-        franchiseInfo.setHeadOfficeWritedMemberNo(1);
+        franchiseInfo.setWritedMemberNo(1);
 
         FranchiseAttachmentFile franchiseAttachmentFile1 = new FranchiseAttachmentFile();
         FranchiseAttachmentFile franchiseAttachmentFile2 = new FranchiseAttachmentFile();

@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.member.model.entity;
 
+import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
 
 import javax.naming.Name;
@@ -81,9 +82,6 @@ public class Member implements Serializable{
     @Column(name = "MEMBER_REMOVE_STATUS")
     private String memberRemoveStatus;
 
-    @Column(name = "FRANCHISE_DIVISION")
-    private String franchiseDivision;
-
     @Column(name = "OFFICE_DIVISION")
     private String officeDivision;
 
@@ -93,6 +91,7 @@ public class Member implements Serializable{
     @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false)
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
+
 
 //    @OneToOne
 //    @JoinColumn(name = "MEMBER_NO")
@@ -111,7 +110,6 @@ public class Member implements Serializable{
                 ", memberCreatedDate=" + memberCreatedDate +
                 ", memberRemovedDate=" + memberRemovedDate +
                 ", memberRemoveStatus='" + memberRemoveStatus + '\'' +
-                ", franchiseDivision='" + franchiseDivision + '\'' +
                 ", officeDivision='" + officeDivision + '\'' +
                 ", memberDivision='" + memberDivision + '\'' +
                 ", memberRoleList=" + memberRoleList +

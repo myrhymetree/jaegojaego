@@ -7,6 +7,7 @@ import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Department;
+import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
@@ -99,5 +100,17 @@ class MemberServiceTest {
         companyAccountDTOS.forEach(row -> System.out.println(row));
 
         assertNotNull(companyAccountDTOS);
+    }
+
+    @Test
+    public void 로그인한_회원_이름_조회() {
+
+        Member member = new Member();
+        member.setMemberNo(1);
+
+        CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNo(member.getMemberNo());
+
+        assertEquals("tester", companyAccount.getMemberName());
+        assertEquals("물류팀", companyAccount.getDepartment().getDepartmentName());
     }
 }

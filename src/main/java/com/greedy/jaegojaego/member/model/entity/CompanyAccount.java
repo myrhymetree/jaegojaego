@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.member.model.entity;
 
+import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity(name = "companyAccount")
+@Entity(name = "CompanyAccount")
 @EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
 //@DiscriminatorValue("본사")
@@ -34,5 +35,4 @@ public class CompanyAccount extends Member {
     @ManyToOne
     @JoinColumn(name = "MEMBER_DEPARTMENT")
     private Department department;
-
 }

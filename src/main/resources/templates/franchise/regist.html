@@ -31,7 +31,7 @@
 <div class="large-box text-center animated fadeInDown">
 
     <h3>가맹점 계정등록</h3>
-    <form class="m-t4" id="registForm" role="form" action="/franchise/regist" method="post" onsubmit="preSubmit()">
+    <form class="m-t4" id="registForm" role="form" action="/franchise/regist" method="post" encType="multipart/form-data">
         <div class="mt-5 row">
             <div class="form-group col-6" id="idContainer">
                 <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
@@ -59,59 +59,76 @@
         </div>
 
         <div class="form-group">
-            <input type="text" class="form-control" id="representativePhone" name="representativePhone" placeholder="가맹점 휴대전화 번호를 입력하세요" required>
+            <input type="text" class="form-control" id="representativePhone" name="representativePhone" placeholder="가맹점 휴대전화 번호를 입력하세요" data-mask="(000) 0000-0000">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" id="bankAccountNo" name="bankAccountNo" placeholder="가맹점 계좌번호를 입력하세요" required>
         </div>
 
         <div class="form-group">
             <input type="text" class="form-control" id="businessRegistrationNo" name="businessRegistrationNo" placeholder="가맹점 사업자 등록증 번호를 입력하세요" required>
         </div>
 
-        <select class="select2_demo_3 form-control m-b" name="franchiseContractUpdatedRecords.franchiseContractStatus" id="franchiseContractStatus" required>
+        <select class="select2_demo_3 form-control m-b" name="franchiseContractStatus" id="franchiseContractStatus" required>
             <option></option>
             <option value="계약전">계약전</option>
             <option value="계약중">계약중</option>
             <option value="계약종료임박">계약종료임박</option>
         </select>
         <br>
-        <div class="form-group" id="data_5">
-            <div class="input-daterange input-group" id="datepicker">
-                <input type="text" class="form-control-sm form-control" id="franchiseContractStartedDate" name="franchiseContractUpdatedRecords.franchiseContractStartedDate" placeholder="가맹 계약 시작일을 입력하세요"/>
-                <span class="input-group-addon">to</span>
-                <input type="text" class="form-control-sm form-control" id="franchiseContractExpiredDate" name="franchiseContractUpdatedRecords.franchiseContractExpiredDate" placeholder="가맹 계약 종료일을 입력하세요" />
+<!--        <div class="form-group" id="data_5">-->
+<!--            <div class="input-daterange input-group" id="datepicker">-->
+<!--                <input type="text" class="form-control-sm form-control" id="franchiseContractStartedDate" name="franchiseContractStartedDate" placeholder="가맹 계약 시작일을 입력하세요"/>-->
+<!--                <span class="input-group-addon">to</span>-->
+<!--                <input type="text" class="form-control-sm form-control" id="franchiseContractExpiredDate" name="franchiseContractExpiredDate" placeholder="가맹 계약 종료일을 입력하세요" />-->
+<!--            </div>-->
+<!--        </div>-->
+
+            <div class="form-group">
+                <input type="datetime-local" class="form-control-sm form-control" id="franchiseContractStartedDate" name="franchiseContractStartedDate1" placeholder="가맹 계약 시작일을 입력하세요"/>
             </div>
+            <div class="form-group">
+                <input type="datetime-local" class="form-control-sm form-control" id="franchiseContractExpiredDate" name="franchiseContractExpiredDate1" placeholder="가맹 계약 종료일을 입력하세요" />
+            </div>
+
+
+        <div class="form-group">
+            <input type="text" placeholder="가맹점 유선 전화 번호를 입력하세요" name="phone" class="form-control" data-mask="(00) 0000-0000">
         </div>
 
         <div class="form-group">
-            <input type="text" placeholder="가맹점 유선 전화 번호를 입력하세요" name="phone" class="form-control" data-mask="(000) 0000-0000">
+            <input type="text" placeholder="가맹점 주소를 입력하세요" name="address" class="form-control" required>
         </div>
+
         <div class="form-group">
             <input type="email"  name="" class="form-control" placeholder="가맹점 대표 이메일을 입력하세요">
         </div>
 
         <div class="input-group mt-3">
             <div class="custom-file">
-                <input id="inputGroupFile01" name="inputGroupFile01" type="file" class="custom-file-input">
+                <input id="inputGroupFile01" name="bankAccountFile" type="file" class="custom-file-input">
                 <label class="custom-file-label" for="inputGroupFile01">계좌 확인서를 업로드 하세요</label>
             </div>
         </div>
 
         <div class="input-group mt-3">
             <div class="custom-file">
-                <input id="inputGroupFile02" name="inputGroupFile02" type="file" class="custom-file-input">
-                <label class="custom-file-label" for="inputGroupFile01">사업자 등록증을 업로드 하세요</label>
+                <input id="inputGroupFile02" name="businessRegistrationFile" type="file" class="custom-file-input">
+                <label class="custom-file-label" for="inputGroupFile02">사업자 등록증을 업로드 하세요</label>
             </div>
         </div>
 
         <div class="input-group mt-3">
             <div class="custom-file">
-                <input id="inputGroupFile03" name="inputGroupFile03" type="file" class="custom-file-input">
-                <label class="custom-file-label" for="inputGroupFile01">가맹 계약서를 업로드 하세요</label>
+                <input id="inputGroupFile03" name="contractFile" type="file" class="custom-file-input">
+                <label class="custom-file-label" for="inputGroupFile03">가맹 계약서를 업로드 하세요</label>
             </div>
         </div>
 
         <br>
 
-        <button type="button" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
+        <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
 
     </form>
     <button type="button" class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#registMultipleModal">계정 일괄 생성</button>
