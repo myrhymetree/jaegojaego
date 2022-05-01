@@ -23,12 +23,12 @@
 
 
     <div class="chartAreaWhiteBoard">
-        <button class="button calendar-button" id="calendarButton">일정한눈에보기</button>
+        <button class="button calendar-button" id="calendarButton" style="width: 120px;">일정한눈에보기</button>
 
         <!-- 캘린더 부분 -->
         <div class="whiteboardForCalendar" id="calendarModal" style="display: none;">
             <div class="calendar-modal">
-                <button class="button calendarback-button" id="backcalendarButton">차트보기</button>
+                <button class="button calendarback-button" id="backcalendarButton" style="width: 100px;">차트보기</button>
                 <div class="ibox">
                     <div class="ibox-title">
                         <h4 style="font-weight: bold; margin-left: 5px;">입고처리된날짜가 반영된 일정</h4>
@@ -129,8 +129,8 @@
 
 
         <div class="moveButton" id="moveButton">
-            <button class="button backlogList" id="releasebacklogButton">본사 입고물품 백로그</button>
-            <button class="button backlogList" id="inwarehousebacklogButton">본사 이슈출고 백로그</button>
+            <button class="button backlogList" id="releasebacklogButton" style="width: 150px;">본사 입고물품 백로그</button>
+            <button class="button backlogList" id="inwarehousebacklogButton" style="width: 150px;">본사 이슈출고 백로그</button>
         </div>
 
 
@@ -194,6 +194,13 @@
                                     <td>두둣커피</td>
                                     <td class="center">2022.03.15</td>
                                     <td class="center">400</td>
+                                </tr>
+                                <tr class="gradeA">
+                                    <td>FN-DK-1001-1</td>
+                                    <td>지로스팅 원두 1kg</td>
+                                    <td>브루커피</td>
+                                    <td class="center">2022.03.10</td>
+                                    <td class="center">100</td>
                                 </tr>
                                 <tr class="gradeA">
                                     <td>FN-DK-1001-1</td>
@@ -287,6 +294,14 @@
                                     <td class="center">원두품질불량</td>
                                     <td class="center">2022.04.10</td>
                                 </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>24</td>
+                                    <td class="center">FD-FE-1002-2</td>
+                                    <td>로스팅된 지로스팅 원두 1kg</td>
+                                    <td class="center">원두품질불량</td>
+                                    <td class="center">2022.04.10</td>
+                                </tr>
                                 </tbody>
 <!--                                <tfoot>-->
 <!--                                <tr>-->
@@ -356,7 +371,7 @@
 
     $(document).ready(function(){
         $('.dataTables-example').DataTable({
-            pageLength: 6,
+            pageLength: 7,
             responsive: true,
             lengthChange: false,
             info: false,
@@ -367,16 +382,16 @@
                 // {extend: 'excel', title: 'ExampleFile'},
                 // {extend: 'pdf', title: 'ExampleFile'},
 
-                {extend: '',
-                    customize: function (win){
-                        $(win.document.body).addClass('white-bg');
-                        $(win.document.body).css('font-size', '10px');
-
-                        $(win.document.body).find('table')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    }
-                }
+                // {extend: '',
+                //     customize: function (win){
+                //         $(win.document.body).addClass('white-bg');
+                //         $(win.document.body).css('font-size', '10px');
+                //
+                //         $(win.document.body).find('table')
+                //             .addClass('compact')
+                //             .css('font-size', 'inherit');
+                //     }
+                // }
             ]
 
         });
