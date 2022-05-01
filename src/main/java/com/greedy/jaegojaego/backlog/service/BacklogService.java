@@ -1,8 +1,14 @@
 package com.greedy.jaegojaego.backlog.service;
 
-import com.greedy.jaegojaego.backlog.repository.BacklogRepository;
+import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklogDTO;
+import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog;
+import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklogRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -13,15 +19,25 @@ import org.springframework.stereotype.Service;
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
- * @see BacklogRepository , BacklogController
+ * @see InWarehouseBacklogRepository , BacklogController
  * */
 @Service
 public class BacklogService {
 
-    private final BacklogRepository backlogRepository;
+    private final InWarehouseBacklogRepository inWarehouseBacklogRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public BacklogService(BacklogRepository backlogRepository) {
-        this.backlogRepository = backlogRepository;
+    public BacklogService(InWarehouseBacklogRepository inWarehouseBacklogRepository, ModelMapper modelMapper) {
+        this.inWarehouseBacklogRepository = inWarehouseBacklogRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    public List<InWarehouseBacklogDTO> selectInWarehouseBacklogList() {
+
+        List<InWarehouseBacklog> inWarehouseBacklogList = inWarehouseBacklogRepository.findAll();
+        System.out.println("inWarehouseBacklogList = " + inWarehouseBacklogList);
+
+        return inWarehouseBacklogList.stream().map(inWarehouseBacklog -> modelMapper.map(inWarehouseBacklog, InWarehouseBacklogDTO.class)).collect(Collectors.toList());
     }
 }

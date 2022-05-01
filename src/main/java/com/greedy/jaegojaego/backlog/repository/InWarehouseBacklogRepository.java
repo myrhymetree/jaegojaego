@@ -2,6 +2,10 @@ package com.greedy.jaegojaego.backlog.repository;
 
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface BacklogRepository extends JpaRepository<InWarehouseBacklog, Integer> {
+@Repository
+public interface InWarehouseBacklogRepository extends JpaRepository<InWarehouseBacklog, Integer> {
+
+
 }
