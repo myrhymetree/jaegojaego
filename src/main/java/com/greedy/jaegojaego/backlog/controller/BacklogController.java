@@ -1,10 +1,14 @@
 package com.greedy.jaegojaego.backlog.controller;
 
+import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklogDTO;
 import com.greedy.jaegojaego.backlog.service.BacklogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
- * @see BacklogService, BacklogRepository, BacklogRepository 등
+ * @see BacklogService, InWarehouseBacklogRepository, InWarehouseBacklogRepository 등
  */
 @Controller
 @RequestMapping("backlog")
@@ -30,9 +34,13 @@ public class BacklogController {
 
 
    @GetMapping("list")
-    public String backlogPage() {
+    public ModelAndView backlogPage(ModelAndView mv) {
+       List<InWarehouseBacklogDTO> inWarehouseBacklogList = backlogService.selectInWarehouseBacklogList();
 
-       return "backlog/backlogList";
+       mv.addObject("inWarehouseBacklogList", inWarehouseBacklogList);
+       mv.setViewName("backlog/backlogList");
+
+       return mv;
    }
 
 }
