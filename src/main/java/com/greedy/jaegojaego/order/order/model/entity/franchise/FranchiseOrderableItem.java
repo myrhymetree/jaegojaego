@@ -9,10 +9,8 @@ import java.io.Serializable;
 @Table(name = "FRANCHISE_ORDERABLE_ITEM")
 public class FranchiseOrderableItem implements Serializable {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "ITEM_INFO_NO")
-    private OrderItemInfo orderItemInfo;
+    @EmbeddedId
+    private FranchiseOrderableItemPK franchiseOrderableItem;
 
     @Column(name = "FRANCHISE_ORDERABLE_ITEM_PRICE")
     private int franchiseOrderableItemPrice;
@@ -20,17 +18,17 @@ public class FranchiseOrderableItem implements Serializable {
     public FranchiseOrderableItem() {
     }
 
-    public FranchiseOrderableItem(OrderItemInfo orderItemInfo, int franchiseOrderableItemPrice) {
-        this.orderItemInfo = orderItemInfo;
+    public FranchiseOrderableItem(FranchiseOrderableItemPK franchiseOrderableItem, int franchiseOrderableItemPrice) {
+        this.franchiseOrderableItem = franchiseOrderableItem;
         this.franchiseOrderableItemPrice = franchiseOrderableItemPrice;
     }
 
-    public OrderItemInfo getOrderItemInfo() {
-        return orderItemInfo;
+    public FranchiseOrderableItemPK getFranchiseOrderableItem() {
+        return franchiseOrderableItem;
     }
 
-    public void setOrderItemInfo(OrderItemInfo orderItemInfo) {
-        this.orderItemInfo = orderItemInfo;
+    public void setFranchiseOrderableItem(FranchiseOrderableItemPK franchiseOrderableItem) {
+        this.franchiseOrderableItem = franchiseOrderableItem;
     }
 
     public int getFranchiseOrderableItemPrice() {
@@ -44,7 +42,7 @@ public class FranchiseOrderableItem implements Serializable {
     @Override
     public String toString() {
         return "FranchiseOrderableItem{" +
-                "orderItemInfo=" + orderItemInfo +
+                "franchiseOrderableItem=" + franchiseOrderableItem +
                 ", franchiseOrderableItemPrice=" + franchiseOrderableItemPrice +
                 '}';
     }

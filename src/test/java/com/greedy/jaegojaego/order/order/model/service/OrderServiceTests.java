@@ -3,10 +3,13 @@ package com.greedy.jaegojaego.order.order.model.service;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
+import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractItemRepository;
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
+import com.greedy.jaegojaego.order.franchise.model.entity.OrderFranchiseInfo;
+import com.greedy.jaegojaego.order.franchise.model.repository.FranchiseInfoRepository;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
 import com.greedy.jaegojaego.order.order.model.entity.company.*;
@@ -59,6 +62,9 @@ public class OrderServiceTests {
 
     @Autowired
     private FranchiseOrderRepository franchiseOrderRepository;
+
+    @Autowired
+    private FranchiseInfoRepository franchiseInfoRepository;
 
     @Test
     @DisplayName("본사 발주 내역 목록 조회 메소드 테스트")
@@ -242,14 +248,30 @@ public class OrderServiceTests {
         int memberNo = 107;
         String memberDivision = "본사";
         List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
+        List<FranchiseOrder> franchiseOrderListByCompany = new ArrayList<>();
+
+        List<OrderFranchiseInfo> franchiseNoList = new ArrayList<>();
 
         //when
         if("본사".equals(memberDivision)) {
 
-            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_HeadOfficeSupervisor_MemberNo(memberNo);
+            franchiseNoList = franchiseInfoRepository.findByHeadOfficeSupervisor_MemberNo(memberNo);
+
+            for(int i = 0; i < franchiseNoList.size(); i++) {
+
+                franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(franchiseNoList.get(i).getFranchiseRepresentativeNo());
+
+                for(int j = 0; j < franchiseOrderList.size(); j++) {
+
+                    franchiseOrderListByCompany.add(franchiseOrderList.get(j));
+
+                }
+
+            }
+
         } else if("가맹점".equals(memberDivision)) {
 
-            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_FranchiseRepresentativeNo(memberNo);
+            franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(memberNo);
         }
 
         //then

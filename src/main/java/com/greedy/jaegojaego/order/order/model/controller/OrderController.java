@@ -14,6 +14,7 @@ import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationItemD
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderableItemDTO;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -312,6 +313,36 @@ public class OrderController {
         return gson.toJson("jsonView");
     }
 
+    @GetMapping("/modifycompanyorder")
+    public ModelAndView modifyCompanyOrder(HttpServletRequest request, ModelAndView mv) {
+
+        int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
+
+        CompanyOrderHistoryDTO companyOrderHistory = orderService.selectCompanyOrderHistoryDetail(companyOrderHistoryNo);
+
+        mv.addObject("companyOrderHistory", companyOrderHistory);
+        mv.setViewName("/order/companyOrderModify");
+
+        return mv;
+    }
+
+    @PostMapping("/modifycompanyorder")
+    public String modifyCompanyOrder(HttpServletRequest request, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        String[] itemAmount = request.getParameterValues("itemAmount");
+        String[] clientItemNo = request.getParameterValues("clientItemInfoNo");
+        String[] itemInfoNo = request.getParameterValues("itemInfoNo");
+        String[] clientNo = request.getParameterValues("clientNo");
+        int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
+
+        orderService.updateCompanyOrderHistory(itemAmount, clientItemNo, itemInfoNo, clientNo, customUser.getMemberNo(), companyOrderHistoryNo);
+
+        return "redirect:/order/companyorderlist";
+    }
+
+
     @GetMapping("/franchiseorderlist")
     public ModelAndView selectFranchiseOrderList(ModelAndView mv, Authentication authentication) {
 
@@ -353,19 +384,59 @@ public class OrderController {
         int franchiseOrderNo = Integer.parseInt(request.getParameter("franchiseOrderNo"));
         String orderStatus = request.getParameter("orderStatus");
 
-//        orderService.updateFranchiseOrderStatus(customUser.getMemberNo(), franchiseOrderNo, orderStatus);
+        if("REJECT".equals(orderStatus)) {
+
+            String rejectMessage = request.getParameter("rejectMessage");
+            orderService.updateFranchiseOrderStatus(customUser.getMemberNo(), franchiseOrderNo, orderStatus, rejectMessage);
+
+        } else {
+
+            orderService.updateFranchiseOrderStatus(customUser.getMemberNo(), franchiseOrderNo, orderStatus);
+        }
+
 
         Gson gson = new Gson();
 
         return gson.toJson("jsonView");
     }
 
-    @GetMapping("franchiseorderregist")
+    @GetMapping("/franchiseorderregist")
     public ModelAndView franchiseOrderRegist(ModelAndView mv) {
 
+        List<FranchiseOrderableItemDTO> franchiseOrderableItemList = orderService.selectFranchiseOrderableItemList();
+
+        mv.addObject("itemList", franchiseOrderableItemList);
         mv.setViewName("/order/franchiseOrderRegist");
 
         return mv;
+    }
+
+    @PostMapping("/franchiseorderregist")
+    public String franchiseOrderRegist(HttpServletRequest request, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        int itemInfoNo = Integer.parseInt(request.getParameter("itemInfoNo"));
+        int itemAmount = Integer.parseInt(request.getParameter("itemAmount"));
+
+        orderService.insertFranchiseOrder(customUser.getMemberNo(), itemInfoNo, itemAmount);
+
+        return "redirect:/order/franchiseorderlist";
+    }
+
+    @GetMapping(value = "/selectrejectcontent", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String selectRejectContent(HttpServletRequest request) {
+
+        int franchiseOrderNo = Integer.parseInt(request.getParameter("franchiseOrderNo"));
+
+        System.out.println("franchiseOrderNo = " + franchiseOrderNo);
+
+        String rejectContent = orderService.selectRejectContent(franchiseOrderNo);
+
+        Gson gson = new Gson();
+
+        return gson.toJson(rejectContent);
     }
 
 }

@@ -10,16 +10,18 @@ public class OrderItemInfoDTO {
     private String itemInfoItemSerialNo;
     private OrderMaterialCategoryDTO materialCategory;
     private String itemInfoStatusYn;
+    private String itemInfoDescription;
 
     public OrderItemInfoDTO() {
     }
 
-    public OrderItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategoryDTO materialCategory, String itemInfoStatusYn) {
+    public OrderItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategoryDTO materialCategory, String itemInfoStatusYn, String itemInfoDescription) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
         this.materialCategory = materialCategory;
         this.itemInfoStatusYn = itemInfoStatusYn;
+        this.itemInfoDescription = itemInfoDescription;
     }
 
     public int getItemInfoNo() {
@@ -62,14 +64,23 @@ public class OrderItemInfoDTO {
         this.itemInfoStatusYn = itemInfoStatusYn;
     }
 
+    public String getItemInfoDescription() {
+        return itemInfoDescription;
+    }
+
+    public void setItemInfoDescription(String itemInfoDescription) {
+        this.itemInfoDescription = itemInfoDescription;
+    }
+
     @Override
     public String toString() {
-        return "ItemInfoDTO{" +
+        return "OrderItemInfoDTO{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
                 ", materialCategory=" + materialCategory +
                 ", itemInfoStatusYn='" + itemInfoStatusYn + '\'' +
+                ", itemInfoDescription='" + itemInfoDescription + '\'' +
                 '}';
     }
 }
