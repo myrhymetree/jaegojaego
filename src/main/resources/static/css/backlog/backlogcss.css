@@ -2,9 +2,9 @@
     border: 0.5px solid gray;
     position: absolute;
     left:2%;
-    top: 17%;
-    height: 230px;
-    width: 1260px;
+    top: 14%;
+    height: 340px;
+    width: 1750px;
     background: white;
 }
 
@@ -13,8 +13,8 @@
     position: absolute;
     left:-0.1%;
     top: -0.5%;
-    height: 600px;
-    width: 1262px;
+    height: 760px;
+    width: 1750px;
     background: white;
 }
 
@@ -27,8 +27,8 @@
     position: absolute;
     top: 51%;
     left: 2%;
-    height: 350px;
-    width: 1260px;
+    height: 450px;
+    width: 1750px;
     background: white;
 }
 
@@ -61,29 +61,32 @@
 
 .barGraph {
     border: 0.5px solid gray;
-    height: 215px;
-    width: 650px;
-    position: absolute;
-    left: 2%;
-    top: 3%;
+    height: 300px;
+    width: 850px;
+    position: relative;
+    margin-top: 15px;
+    margin-left: 50px;
+    float: left;
 }
 
 .circleGraph {
     border: 0.5px solid gray;
-    height: 215px;
-    width: 400px;
-    position:absolute;
-    left: 57%;
-    top: 3%;
+    height: 300px;
+    width: 600px;
+    position: relative;
+    margin-top: 15px;
+    margin-left: 50px;
+    float: left;
 }
 
 .barGraphForOut {
     border: 0.5px solid gray;
-    height: 215px;
-    width: 1050px;
-    position: absolute;
-    left: 5%;
-    top: 3%;
+    height: 300px;
+    width: 1500px;
+    position: relative;
+    margin-top: 15px;
+    margin-left: 50px;
+    float: left;
 }
 
 .yearBarGraph {
