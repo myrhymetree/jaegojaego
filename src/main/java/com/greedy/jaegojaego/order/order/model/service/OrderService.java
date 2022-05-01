@@ -1,11 +1,13 @@
 package com.greedy.jaegojaego.order.order.model.service;
 
+import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 import com.greedy.jaegojaego.order.client.model.repository.OrderClientContractItemRepository;
 import com.greedy.jaegojaego.order.client.model.repository.OrderClientRepository;
 import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
+import com.greedy.jaegojaego.order.franchise.model.entity.OrderFranchiseInfo;
 import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 import com.greedy.jaegojaego.order.item.model.repository.OrderItemInfoRepository;
@@ -14,16 +16,18 @@ import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDT
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderableItemDTO;
 import com.greedy.jaegojaego.order.order.model.entity.company.*;
-import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
-import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderItem;
-import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderStatusHistory;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.*;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderHistoryRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.CompanyOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.company.OrderApplicationRepository;
+import com.greedy.jaegojaego.order.franchise.model.repository.FranchiseInfoRepository;
+import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderItemRepository;
 import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderRepository;
 import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderStatusHistoryRepository;
+import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderableItemRepository;
 import com.greedy.jaegojaego.order.warehouse.repository.OrderItemWarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,6 +55,9 @@ public class OrderService {
     private final OrderClientRepository orderClientRepository;
     private final FranchiseOrderRepository franchiseOrderRepository;
     private final FranchiseOrderStatusHistoryRepository franchiseOrderStatusHistoryRepository;
+    private final FranchiseOrderableItemRepository franchiseOrderableItemRepository;
+    private final FranchiseInfoRepository franchiseInfoRepository;
+    private final FranchiseOrderItemRepository franchiseOrderItemRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
@@ -56,7 +65,8 @@ public class OrderService {
             , OrderClientContractItemRepository orderClientContractItemRepository, CompanyOrderItemRepository companyOrderItemRepository
             , OrderApplicationRepository orderApplicationRepository, OrderApplicationItemRepository orderApplicationItemRepository
             , OrderClientRepository orderClientRepository, FranchiseOrderRepository franchiseOrderRepository
-            , FranchiseOrderStatusHistoryRepository franchiseOrderStatusHistoryRepository) {
+            , FranchiseOrderStatusHistoryRepository franchiseOrderStatusHistoryRepository, FranchiseOrderableItemRepository franchiseOrderableItemRepository
+            , FranchiseInfoRepository franchiseInfoRepository, FranchiseOrderItemRepository franchiseOrderItemRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
@@ -69,6 +79,9 @@ public class OrderService {
         this.orderClientRepository = orderClientRepository;
         this.franchiseOrderRepository = franchiseOrderRepository;
         this.franchiseOrderStatusHistoryRepository = franchiseOrderStatusHistoryRepository;
+        this.franchiseOrderableItemRepository = franchiseOrderableItemRepository;
+        this.franchiseInfoRepository = franchiseInfoRepository;
+        this.franchiseOrderItemRepository = franchiseOrderItemRepository;
     }
 
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
@@ -121,7 +134,19 @@ public class OrderService {
 
         List<OrderClientContractItem> orderClientContractItemList = orderClientContractItemRepository.selectClientContractItemList(itemInfoNo);
 
-        return orderClientContractItemList.stream().map(orderClientContractItem -> modelMapper.map(orderClientContractItem, OrderClientContractItemDTO.class)).collect(Collectors.toList());
+        List<OrderClientContractItem> resultClientContractItemList = new ArrayList<>();
+
+        for(int i = 0; i < orderClientContractItemList.size(); i++) {
+
+            if("계약중".equals(orderClientContractItemList.get(i).getOrderClientContractInfo().getClientContractInfoStatus())) {
+
+                resultClientContractItemList.add(orderClientContractItemList.get(i));
+
+            }
+
+        }
+
+        return resultClientContractItemList.stream().map(orderClientContractItem -> modelMapper.map(orderClientContractItem, OrderClientContractItemDTO.class)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -200,18 +225,19 @@ public class OrderService {
         CompanyOrderHistory companyOrderHistory = new CompanyOrderHistory();
         companyOrderHistory.setCompanyOrderHistoryCreatedDate(new Date(System.currentTimeMillis()));
         companyOrderHistory.setOrderCompanyAccount(companyAccount);
+        companyOrderHistory.setCompanyOrderHistoryStaus("BEFORE");
 
         companyOrderHistoryRepository.save(companyOrderHistory);
 
     }
 
-    private void insertCompanyOrderItem(int companyOrderHistoryNo, int itemIntoNo, int itemAmount) {
+    private void insertCompanyOrderItem(int companyOrderHistoryNo, int itemInfoNo, int itemAmount) {
 
         CompanyOrderHistory companyOrderHistory = new CompanyOrderHistory();
 
         companyOrderHistory.setCompanyOrderHistoryNo(companyOrderHistoryNo);
         OrderItemInfo newOrderItemInfo = new OrderItemInfo();
-        newOrderItemInfo.setItemInfoNo(itemIntoNo);
+        newOrderItemInfo.setItemInfoNo(itemInfoNo);
 
         CompanyOrderItemPK companyOrderItemPK = new CompanyOrderItemPK();
         companyOrderItemPK.setCompanyOrderHistory(companyOrderHistory);
@@ -292,13 +318,31 @@ public class OrderService {
     public List<FranchiseOrderDTO> selectFranchiseOrderList(int memberNo, String memberDivision) {
 
         List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
+        List<FranchiseOrder> franchiseOrderListByCompany = new ArrayList<>();
+
+        List<OrderFranchiseInfo> franchiseNoList = new ArrayList<>();
 
         if("본사".equals(memberDivision)) {
 
-            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_HeadOfficeSupervisor_MemberNo(memberNo);
+            franchiseNoList = franchiseInfoRepository.findByHeadOfficeSupervisor_MemberNo(memberNo);
+
+            for(int i = 0; i < franchiseNoList.size(); i++) {
+
+                franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(franchiseNoList.get(i).getFranchiseRepresentativeNo());
+
+                for(int j = 0; j < franchiseOrderList.size(); j++) {
+
+                    franchiseOrderListByCompany.add(franchiseOrderList.get(j));
+
+                }
+
+            }
+
+            return franchiseOrderListByCompany.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
+
         } else if("가맹점".equals(memberDivision)) {
 
-            franchiseOrderList = franchiseOrderRepository.findByOrderFranchiseInfo_FranchiseRepresentativeNo(memberNo);
+            franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(memberNo);
         }
 
         return franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
@@ -313,12 +357,13 @@ public class OrderService {
         for(FranchiseOrderItem order : franchiseOrder.getFranchiseOrderItemList()) {
 
             FranchiseOrderDetailDTO franchiseOrderDetail = new FranchiseOrderDetailDTO();
-            franchiseOrderDetail.setItemName(order.getFranchiseOrderItem().getFranchiseOrderableItem().getOrderItemInfo().getItemInfoName());
+            franchiseOrderDetail.setItemName(order.getFranchiseOrderItem().getFranchiseOrderableItem().getFranchiseOrderableItem().getOrderItemInfo().getItemInfoName());
             franchiseOrderDetail.setItemPrice(order.getFranchiseOrderItem().getFranchiseOrderableItem().getFranchiseOrderableItemPrice());
             franchiseOrderDetail.setItemAmount(order.getFranchiseOrderItemAmount());
 
             franchiseOrderDetailList.add(franchiseOrderDetail);
         }
+
 
         return franchiseOrderDetailList;
     }
@@ -341,5 +386,190 @@ public class OrderService {
 
         franchiseOrderStatusHistoryRepository.save(franchiseOrderStatusHistory);
 
+    }
+
+    @Transactional
+    public void updateFranchiseOrderStatus(int memberNo, int franchiseOrderNo, String orderStatus, String rejectMessage) {
+
+        FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
+        franchiseOrder.setFranchiseOrderStatus(orderStatus);
+        franchiseOrder.setFranchiseOrderStatusDate(new Date(System.currentTimeMillis()));
+        franchiseOrder.setFranchiseOrderStatusRejectionContent(rejectMessage);
+
+        OrderCompanyAccount orderCompanyAccount = new OrderCompanyAccount();
+        orderCompanyAccount.setMemberNo(memberNo);
+
+        FranchiseOrderStatusHistory franchiseOrderStatusHistory = new FranchiseOrderStatusHistory();
+        franchiseOrderStatusHistory.setFranchiseOrderNo(franchiseOrderNo);
+        franchiseOrderStatusHistory.setOrderCompanyAccount(orderCompanyAccount);
+        franchiseOrderStatusHistory.setFranchiseOrderStatus(orderStatus);
+        franchiseOrderStatusHistory.setFranchiseOrderStatusHistoryDate(new Date(System.currentTimeMillis()));
+
+        franchiseOrderStatusHistoryRepository.save(franchiseOrderStatusHistory);
+
+    }
+
+    public String selectRejectContent(int franchiseOrderNo) {
+
+        FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
+
+        String rejectContent = franchiseOrder.getFranchiseOrderStatusRejectionContent();
+
+        return rejectContent;
+    }
+
+    public void updateCompanyOrderHistory(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, String[] clientNo, int memberNo, int companyOrderHistoryNo) {
+
+        List<CompanyOrderItem> deleteCompanyOrderItemList = companyOrderItemRepository.findByCompanyOrderHistoryNo(companyOrderHistoryNo);
+
+        List<OrderApplication> deleteOrderApplicationList = orderApplicationRepository.findByCompanyOrderHistory_CompanyOrderHistoryNo(companyOrderHistoryNo);
+
+        for(int i = 0; i < deleteOrderApplicationList.size(); i++) {
+
+            List<OrderApplicationItem> deleteOrderApplicationItemList = orderApplicationItemRepository.findByOrderApplicationNo(deleteOrderApplicationList.get(i).getOrderApplicationNo());
+
+            for(int j = 0; j < deleteOrderApplicationItemList.size(); j++) {
+
+                orderApplicationItemRepository.delete(deleteOrderApplicationItemList.get(j));
+            }
+        }
+
+        for(int i = 0; i < deleteOrderApplicationList.size(); i++) {
+
+            orderApplicationRepository.delete(deleteOrderApplicationList.get(i));
+
+        }
+
+        for(int i = 0; i < deleteCompanyOrderItemList.size(); i++) {
+            companyOrderItemRepository.delete(deleteCompanyOrderItemList.get(i));
+        }
+
+        Map<Integer, Integer> orderItemInfo = new HashMap<>();
+        List<Integer> clientList = new ArrayList<>();
+
+        for(String item : itemInfoNo) {
+            if(!orderItemInfo.containsKey(Integer.parseInt(item))){
+                orderItemInfo.put(Integer.parseInt(item), 0);
+            }
+        }
+
+        for(String client : clientNo) {
+            if(!clientList.contains(Integer.parseInt(client))) {
+                clientList.add(Integer.parseInt(client));
+            }
+        }
+
+        Iterator<Integer> iter = orderItemInfo.keySet().iterator();
+
+        while(iter.hasNext()) {
+
+            int key = iter.next();
+
+            for(int i = 0; i < itemInfoNo.length; i++) {
+
+                if(key == Integer.parseInt(itemInfoNo[i])) {
+                    orderItemInfo.put(key, orderItemInfo.get(key) + Integer.parseInt(itemAmount[i]));
+                }
+
+            }
+        }
+
+        iter = orderItemInfo.keySet().iterator();
+
+        while(iter.hasNext()) {
+
+            int key = iter.next();
+
+            insertCompanyOrderItem(companyOrderHistoryNo, key, orderItemInfo.get(key));
+
+        }
+
+        insertOrderApplication(companyOrderHistoryNo, clientList);
+
+        insertOrderApplicationItem(clientList, clientItemNo, clientNo, itemAmount);
+
+    }
+
+    public List<FranchiseOrderableItemDTO> selectFranchiseOrderableItemList() {
+
+        List<FranchiseOrderableItem> franchiseOrderableItemList = franchiseOrderableItemRepository.findAll();
+
+        return franchiseOrderableItemList.stream().map(franchiseOrderableItem -> modelMapper.map(franchiseOrderableItem, FranchiseOrderableItemDTO.class)).collect(Collectors.toList());
+    }
+
+    public void insertFranchiseOrder(int memberNo, int itemInfoNo, int itemAmount) {
+
+        Random random = new Random();
+        String orderNumber = "";
+
+        for(int i = 0; i < 4; i++) {
+
+            String ran = Integer.toString((int)((Math.random()*10000)%10));
+
+            orderNumber += ran;
+        }
+
+        java.sql.Date today = new Date(System.currentTimeMillis());
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String todayFormat = dateFormat.format(today);
+
+        String[] splitToday = todayFormat.split("-");
+
+        for(int i = 0; i < splitToday.length; i++) {
+
+            orderNumber += splitToday[i];
+
+        }
+
+        Member member = new Member();
+        member.setMemberNo(memberNo);
+
+        FranchiseOrder franchiseOrder = setFranchiseOrder(today, orderNumber, member);
+
+        franchiseOrderRepository.save(franchiseOrder);
+
+        int franchiseOrderNo = franchiseOrderRepository.selectSequenceNo();
+
+        FranchiseOrderItem franchiseOrderItem = setFranchiseOrderItem(itemInfoNo, itemAmount, franchiseOrderNo);
+
+        franchiseOrderItemRepository.save(franchiseOrderItem);
+    }
+
+    private FranchiseOrder setFranchiseOrder(java.sql.Date today, String orderNumber, Member member) {
+
+        FranchiseOrder franchiseOrder = new FranchiseOrder();
+        franchiseOrder.setFranchiseOrderApplicationDate(today);
+        franchiseOrder.setFranchiseOrderOrderNumber(orderNumber);
+        franchiseOrder.setFranchiseOrderStatus("BEFORE");
+        franchiseOrder.setMember(member);
+
+        return franchiseOrder;
+    }
+
+    private FranchiseOrderItem setFranchiseOrderItem(int itemInfoNo, int itemAmount, int franchiseOrderNo) {
+
+        OrderItemInfo orderItemInfo = new OrderItemInfo();
+        orderItemInfo.setItemInfoNo(itemInfoNo);
+
+        FranchiseOrderableItemPK franchiseOrderableItemPK = new FranchiseOrderableItemPK();
+        franchiseOrderableItemPK.setOrderItemInfo(orderItemInfo);
+
+        FranchiseOrderableItem franchiseOrderableItem = new FranchiseOrderableItem();
+        franchiseOrderableItem.setFranchiseOrderableItem(franchiseOrderableItemPK);
+
+        FranchiseOrder franchiseOrder = new FranchiseOrder();
+        franchiseOrder.setFranchiseOrderNo(franchiseOrderNo);
+
+        FranchiseOrderItemPK franchiseOrderItemPK = new FranchiseOrderItemPK();
+        franchiseOrderItemPK.setFranchiseOrderableItem(franchiseOrderableItem);
+        franchiseOrderItemPK.setFranchiseOrder(franchiseOrder);
+
+        FranchiseOrderItem franchiseOrderItem = new FranchiseOrderItem();
+        franchiseOrderItem.setFranchiseOrderItemAmount(itemAmount);
+        franchiseOrderItem.setFranchiseOrderItem(franchiseOrderItemPK);
+
+        return franchiseOrderItem;
     }
 }

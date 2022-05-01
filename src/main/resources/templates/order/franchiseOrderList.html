@@ -106,6 +106,7 @@
                                     <th>가맹점명</th>
                                     <th>주문번호</th>
                                     <th>신청일자</th>
+                                    <th>신청자</th>
                                     <th>처리일자</th>
                                     <th>처리자</th>
                                     <th>처리상태</th>
@@ -119,10 +120,11 @@
                                     <td th:text="${ franchiseOrder.orderFranchiseInfo.franchiseBranchName }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderOrderNumber }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderApplicationDate }"></td>
+                                    <td th:text="${ franchiseOrder.member.companyAccountDTO.memberName }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderStatusDate }"></td>
                                     <td>
                                         <th:block th:each="franchiseHistory, historyIndex : ${ franchiseOrder.franchiseOrderStatusHistoryList }">
-                                            <th:block th:if="${ franchiseHistory.orderCompanyAccount ne null and #lists.size('franchiseOrderHistory') eq historyIndex.index + 1 }">
+                                            <th:block th:if="${ franchiseHistory.orderCompanyAccount ne null and #lists.size('franchiseOrderHistory') eq historyIndex.index }">
                                                 <th:block th:text="${ franchiseHistory.orderCompanyAccount.memberName }"></th:block>
                                             </th:block>
                                         </th:block>
@@ -139,7 +141,7 @@
                                             <button class="order-complete-btn">승인완료</button>
                                         </th:block>
                                         <th:block th:if="${ franchiseOrder.franchiseOrderStatus eq 'REJECT' }">
-                                            <button class="order-reject-btn">승인거절</button>
+                                            <button class="order-reject-btn" id="reject-check-btn">승인거절</button>
                                         </th:block>
                                     </td>
                                 </tr>
@@ -200,6 +202,21 @@
                         </div>
                     </div>
 
+                    <div class="modal inmodal" id="reject-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">발주 거부 사유서</h4>
+                                </div>
+                                <div class="modal-body" id="reject-modal-body">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="reject-ok-btn">확인</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -220,7 +237,7 @@
 
             $(document).on('click', '.sa-button-container .confirm', function() {
 
-                if(checkSuccess == 1) {
+                if(checkSuccess == 1 || rejectComplete == 1) {
                     history.go(0);
                 }
 
@@ -244,18 +261,14 @@
 
             document.getElementById('reject-save-btn').onclick = function() {
 
-                console.log(insertRejectOrderNo);
-                console.log(insertRejectOrderStatus);
-                console.log(text);
-
-                fetch("/order/modifyfranchiseorderstatus?franchiseOrderNo=" + franchiseOrderNo + "&orderStatus=REJECT&rejectMessage=" + text)
+                fetch("/order/modifyfranchiseorderstatus?franchiseOrderNo=" + insertRejectOrderNo + "&orderStatus=REJECT&rejectMessage=" + text)
                     .then(response => response.json())
                     .then(response => {
                         swal({
                             title: "변경 완료!",
                             text: "승인 거절 처리되었습니다."
                         }), function () {
-
+                            rejectComplete = 1;
                         };
                     })
                     .catch(err => {
@@ -377,6 +390,7 @@
         let checkReject = 0;
         let insertRejectOrderNo = 0;
         let insertRejectOrderStatus = '';
+        let rejectComplete = 0;
         const $OrderCompleteBtn = document.querySelectorAll("#order-complete-btn");
         const $OrderRejectBtn = document.querySelectorAll("#order-reject-btn");
 
@@ -441,6 +455,43 @@
                 });
 
             }
+
+        }
+
+        $rejectCheckBtn = document.querySelectorAll('#reject-check-btn');
+
+        for(let i = 0; i < $rejectCheckBtn.length; i++) {
+
+            $rejectCheckBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+
+                fetch("/order/selectrejectcontent?franchiseOrderNo=" + this.parentNode.parentNode.children[0].value)
+                    .then(response => response.json())
+                    .then(response => {
+
+                        document.getElementById('reject-modal-body').innerText = response;
+
+                    })
+                    .catch(err => {
+                        swal({
+                            title: "오류 발생!",
+                            text: "알수 없는 문제가 발생하였습니다."
+                        });
+                    });
+
+
+                document.getElementById('reject-modal').style.display = 'block';
+
+            }
+
+        }
+
+        document.getElementById('reject-ok-btn').onclick = function() {
+
+            document.getElementById('reject-modal').style.display = 'none';
+
+            $('#reject-modal-body').empty();
 
         }
 

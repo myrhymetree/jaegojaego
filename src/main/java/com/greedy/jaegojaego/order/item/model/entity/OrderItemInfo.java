@@ -36,15 +36,19 @@ public class OrderItemInfo {
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemInfoStatusYn;
 
+    @Column(name = "ITEM_INFO_DESCRIPTION")
+    private String itemInfoDescription;
+
     public OrderItemInfo() {
     }
 
-    public OrderItemInfo(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategory orderMaterialCategory, String itemInfoStatusYn) {
+    public OrderItemInfo(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategory orderMaterialCategory, String itemInfoStatusYn, String itemInfoDescription) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
         this.orderMaterialCategory = orderMaterialCategory;
         this.itemInfoStatusYn = itemInfoStatusYn;
+        this.itemInfoDescription = itemInfoDescription;
     }
 
     public int getItemInfoNo() {
@@ -87,14 +91,23 @@ public class OrderItemInfo {
         this.itemInfoStatusYn = itemInfoStatusYn;
     }
 
+    public String getItemInfoDescription() {
+        return itemInfoDescription;
+    }
+
+    public void setItemInfoDescription(String itemInfoDescription) {
+        this.itemInfoDescription = itemInfoDescription;
+    }
+
     @Override
     public String toString() {
-        return "ItemInfo{" +
+        return "OrderItemInfo{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
-                ", materialCategory=" + orderMaterialCategory +
+                ", orderMaterialCategory=" + orderMaterialCategory +
                 ", itemInfoStatusYn='" + itemInfoStatusYn + '\'' +
+                ", itemInfoDescription='" + itemInfoDescription + '\'' +
                 '}';
     }
 }

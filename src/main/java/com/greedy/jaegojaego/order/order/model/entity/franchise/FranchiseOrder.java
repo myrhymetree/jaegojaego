@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.order.order.model.entity.franchise;
 
+import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.order.franchise.model.entity.OrderFranchiseInfo;
 
 import javax.persistence.*;
@@ -30,10 +31,6 @@ public class FranchiseOrder {
     @Column(name = "FRANCHISE_ORDER_ORDER_NUMBER")
     private String franchiseOrderOrderNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private OrderFranchiseInfo orderFranchiseInfo;
-
     @Column(name = "FRANCHISE_ORDER_STATUS")
     private String franchiseOrderStatus;
 
@@ -51,20 +48,23 @@ public class FranchiseOrder {
     @JoinColumn(name = "FRANCHISE_ORDER_NO")
     private List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList;
 
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_NO")
+    private Member member;
 
     public FranchiseOrder() {
     }
 
-    public FranchiseOrder(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, OrderFranchiseInfo orderFranchiseInfo, List<FranchiseOrderItem> franchiseOrderItemList, List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList, String franchiseOrderStatus, Date franchiseOrderStatusDate, String franchiseOrderStatusRejectionContent) {
+    public FranchiseOrder(int franchiseOrderNo, Date franchiseOrderApplicationDate, String franchiseOrderOrderNumber, String franchiseOrderStatus, Date franchiseOrderStatusDate, String franchiseOrderStatusRejectionContent, List<FranchiseOrderItem> franchiseOrderItemList, List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList, Member member) {
         this.franchiseOrderNo = franchiseOrderNo;
         this.franchiseOrderApplicationDate = franchiseOrderApplicationDate;
         this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
-        this.orderFranchiseInfo = orderFranchiseInfo;
-        this.franchiseOrderItemList = franchiseOrderItemList;
-        this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
         this.franchiseOrderStatus = franchiseOrderStatus;
         this.franchiseOrderStatusDate = franchiseOrderStatusDate;
         this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
+        this.franchiseOrderItemList = franchiseOrderItemList;
+        this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
+        this.member = member;
     }
 
     public int getFranchiseOrderNo() {
@@ -91,30 +91,6 @@ public class FranchiseOrder {
         this.franchiseOrderOrderNumber = franchiseOrderOrderNumber;
     }
 
-    public OrderFranchiseInfo getOrderFranchiseInfo() {
-        return orderFranchiseInfo;
-    }
-
-    public void setOrderFranchiseInfo(OrderFranchiseInfo orderFranchiseInfo) {
-        this.orderFranchiseInfo = orderFranchiseInfo;
-    }
-
-    public List<FranchiseOrderItem> getFranchiseOrderItemList() {
-        return franchiseOrderItemList;
-    }
-
-    public void setFranchiseOrderItemList(List<FranchiseOrderItem> franchiseOrderItemList) {
-        this.franchiseOrderItemList = franchiseOrderItemList;
-    }
-
-    public List<FranchiseOrderStatusHistory> getFranchiseOrderStatusHistoryList() {
-        return franchiseOrderStatusHistoryList;
-    }
-
-    public void setFranchiseOrderStatusHistoryList(List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList) {
-        this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
-    }
-
     public String getFranchiseOrderStatus() {
         return franchiseOrderStatus;
     }
@@ -139,18 +115,42 @@ public class FranchiseOrder {
         this.franchiseOrderStatusRejectionContent = franchiseOrderStatusRejectionContent;
     }
 
+    public List<FranchiseOrderItem> getFranchiseOrderItemList() {
+        return franchiseOrderItemList;
+    }
+
+    public void setFranchiseOrderItemList(List<FranchiseOrderItem> franchiseOrderItemList) {
+        this.franchiseOrderItemList = franchiseOrderItemList;
+    }
+
+    public List<FranchiseOrderStatusHistory> getFranchiseOrderStatusHistoryList() {
+        return franchiseOrderStatusHistoryList;
+    }
+
+    public void setFranchiseOrderStatusHistoryList(List<FranchiseOrderStatusHistory> franchiseOrderStatusHistoryList) {
+        this.franchiseOrderStatusHistoryList = franchiseOrderStatusHistoryList;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     @Override
     public String toString() {
         return "FranchiseOrder{" +
                 "franchiseOrderNo=" + franchiseOrderNo +
                 ", franchiseOrderApplicationDate=" + franchiseOrderApplicationDate +
                 ", franchiseOrderOrderNumber='" + franchiseOrderOrderNumber + '\'' +
-                ", orderFranchiseInfo=" + orderFranchiseInfo +
-                ", franchiseOrderItemList=" + franchiseOrderItemList +
-                ", franchiseOrderStatusHistoryList=" + franchiseOrderStatusHistoryList +
                 ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
                 ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
                 ", franchiseOrderStatusRejectionContent='" + franchiseOrderStatusRejectionContent + '\'' +
+                ", franchiseOrderItemList=" + franchiseOrderItemList +
+                ", franchiseOrderStatusHistoryList=" + franchiseOrderStatusHistoryList +
+                ", member=" + member +
                 '}';
     }
 }
