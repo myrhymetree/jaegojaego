@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego;
+package com.greedy.jaegojaego.outWarehouse;
 
 import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouse;
 //import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseExpandsOutWarehouseStatusHistory;
