@@ -58,27 +58,26 @@ public class OutWarehouseController {
      * @param outWarehouseNo
      * @return
      */
-    @GetMapping("/detail/{outWarehouseNo}")
-    public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
-
-        System.out.println("출고 번호 : " + outWarehouseNo);
-
-        int No = 0;
-        int itemListCnt;
-        List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findOutItemsList(outWarehouseNo);
-        itemListCnt = outWarehouseDetailList.size();
-
-        for(OutWarehouseDetailListDTO detailList : outWarehouseDetailList) {
-            System.out.println("detailList = " + detailList);
-        }
-
-        mv.addObject("No", No);
-        mv.addObject("itemListCnt", itemListCnt);
-        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
-        mv.setViewName("/outWarehouse/detail");
-
-        return mv;
-    }
+//    @GetMapping("/detail/{outWarehouseNo}")
+//    public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
+//
+//        System.out.println("출고 번호 : " + outWarehouseNo);
+//
+//        int No = 0;
+//        int itemListCnt;
+//        List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findOutItemsList(outWarehouseNo);
+//        itemListCnt = outWarehouseDetailList.size();
+//
+//        for(OutWarehouseDetailListDTO detailList : outWarehouseDetailList) {
+//            System.out.println("detailList = " + detailList);
+//        }
+//
+//        mv.addObject("No", No);
+//        mv.addObject("itemListCnt", itemListCnt);
+//        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
+//        mv.setViewName("/outWarehouse/detail");
+//        return mv;
+//    }
 
     /**
      * @param mv

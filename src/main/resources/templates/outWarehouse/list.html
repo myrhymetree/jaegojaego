@@ -48,8 +48,15 @@
 <!-- 테이블 시작 -->
 <div class="ibox-content" th:style="${'width:98%; margin:0 auto;'}">
 
-    <h2>출고 정보</h2>
+    <h2 th:style="${'font-weight:bold;'}">출고 정보</h2>
+    <br>
 
+    <div th:style="${'vertical-align:middle;'}">
+        <h4 th:style="${'float:left;'}">가맹점 발주 상태 "완료" 목록 조회</h4>
+        <button class="checkOrderListBtn btn btn-w-m btn-primary" th:style="${'float:left; margin-left:1%'}">조회</button>
+    </div>
+
+    <br>
     <table class="outWarehouseTbl footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
