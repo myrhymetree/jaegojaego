@@ -1,26 +1,23 @@
 package com.greedy.jaegojaego.warehouse.dto;
 
-import com.greedy.jaegojaego.warehouse.entity.ItemWarehouse;
 import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseStatusHistory;
 
 import java.sql.Date;
 
-public class WarehouseDTO {
+public class WarehouseOrderListDTO {
 
     private int warehouseNo;
     private java.sql.Date warehouseManuDate;
-//    private int warehouseDivisionNo;
     private int warehouseDivisionItem;
-    private WarehouseCompanyOrderHistory orderHistoryNo;
-    private Integer issueNo;                                    //추후 타입 수정 예정!!
-    private WarehouseClientDTO clientNo;
+    private int orderHistoryNo;
+    private int issueNo;
+    private int clientNo;
     private String warehouseWorkingName;
     private java.sql.Date warehouseWorkingDate;
 
-    public WarehouseDTO() {}
+    public WarehouseOrderListDTO() {}
 
-    public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, WarehouseClientDTO clientNo, String warehouseWorkingName, Date warehouseWorkingDate) {
+    public WarehouseOrderListDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, int orderHistoryNo, int issueNo, int clientNo, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;
         this.warehouseDivisionItem = warehouseDivisionItem;
@@ -55,27 +52,27 @@ public class WarehouseDTO {
         this.warehouseDivisionItem = warehouseDivisionItem;
     }
 
-    public WarehouseCompanyOrderHistory getOrderHistoryNo() {
+    public int getOrderHistoryNo() {
         return orderHistoryNo;
     }
 
-    public void setOrderHistoryNo(WarehouseCompanyOrderHistory orderHistoryNo) {
+    public void setOrderHistoryNo(int orderHistoryNo) {
         this.orderHistoryNo = orderHistoryNo;
     }
 
-    public Integer getIssueNo() {
+    public int getIssueNo() {
         return issueNo;
     }
 
-    public void setIssueNo(Integer issueNo) {
+    public void setIssueNo(int issueNo) {
         this.issueNo = issueNo;
     }
 
-    public WarehouseClientDTO getClientNo() {
+    public int getClientNo() {
         return clientNo;
     }
 
-    public void setClientNo(WarehouseClientDTO clientNo) {
+    public void setClientNo(int clientNo) {
         this.clientNo = clientNo;
     }
 
@@ -97,7 +94,7 @@ public class WarehouseDTO {
 
     @Override
     public String toString() {
-        return "WarehouseDTO{" +
+        return "WarehouseOrderListDTO{" +
                 "warehouseNo=" + warehouseNo +
                 ", warehouseManuDate=" + warehouseManuDate +
                 ", warehouseDivisionItem=" + warehouseDivisionItem +

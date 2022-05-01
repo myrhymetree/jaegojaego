@@ -14,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.querydsl.core.types.Ops.DateTimeOps.SYSDATE;
 
 @Service
 public class WarehouseService {
@@ -47,7 +51,33 @@ public class WarehouseService {
         return warehouseCompanyOrderList.stream().map(companyOrder -> modelMapper.map(companyOrder, WarehouseCompanyOrderHistoryDTO.class)).collect(Collectors.toList());
     }
 
-    /* 입고, 입하 상태 목록 조회용 */
+    /** 입고 목록에 발주 승인 완료된 정보 등록용 */
+    @Transactional
+    public Object registNewOrder(int orderNo) {
+
+        Warehouse warehouse = new Warehouse();
+
+
+
+        WarehouseCompanyOrderHistory orderNoList = new WarehouseCompanyOrderHistory();
+
+        orderNoList.setCompanyOrderHistoryNo(orderNo);      //발주내역Entity에 받아온 값(orderNo) 넣어주기
+
+        warehouse.setOrderHistoryNo(orderNoList);           //입고Entity에 받아온 값 넣은 발주내역Entity 넣어주기
+//        warehouse.setWarehouseNo();
+        warehouse.setWarehouseManuDate(new Date(System.currentTimeMillis()));
+        warehouse.setWarehouseDivisionItem(1);
+//        warehouse.setClientNo();
+        warehouse.setWarehouseWorkingName("입하 대기");
+        warehouse.setWarehouseWorkingDate(new Date(System.currentTimeMillis()));
+
+        System.out.println("service orderNoList = " + orderNoList);
+        System.out.println("service warehouse = " + warehouse);
+
+        return warehouseRepository.save(warehouse);
+    }
+
+    /** 입고, 입하 상태 목록 조회용 */
     public List<WarehouseDTO> findAllWarehouseList() {
 
         List<Warehouse> warehouseList = warehouseRepository.findAll();
@@ -55,7 +85,7 @@ public class WarehouseService {
         return warehouseList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
     }
 
-    /* 입고, 입하 상태 상세 조회용 */
+    /** 입고, 입하 상태 상세 조회용 */
     public WarehouseDTO findWarehouseByWarehouseNo(int warehouseNo) {
 
         Warehouse warehouseDetailNo = warehouseRepository.findById(warehouseNo).get();
@@ -65,7 +95,7 @@ public class WarehouseService {
         return modelMapper.map(warehouseDetailNo, WarehouseDTO.class);
     }
 
-    /* 가공 대기 창고 목록 조회용 */
+    /** 가공 대기 창고 목록 조회용 */
 //    public List<WarehouseStatusHistoryDTO> findAllRawList() {
 //
 //        List<WarehouseStatusHistory> itemRawList = itemWarehouseRepository.findAll();
@@ -86,9 +116,6 @@ public class WarehouseService {
 //            rawWarehouse.setWarehouseItemInfoItemSerialNo(itemRawList.get(i).getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoItemSerialNo());
             rawWarehouse.setWarehouseNo(rawWarehouse.getWarehouseNo());
 
-
-
-
             rawWarehouseList.add(rawWarehouse);
         }
 
@@ -96,6 +123,7 @@ public class WarehouseService {
 //        return itemRawList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
 //        return null;
     }
+
 //    public List<WarehouseDTO> findAllRawList() {
 //
 //        List<Warehouse> rawItemList = warehouseRepository.findAll();
@@ -104,8 +132,7 @@ public class WarehouseService {
 //
 //        return modelMapper.map(rawItemList, WarehouseDTO.class);
 //    }
-
-    /* 가공 완성 창고 목록 조회용 */
+    /** 가공 완성 창고 목록 조회용 */
     public List<ItemWarehouseDTO> findAllManuList() {
 
         List<ItemWarehouse> itemManuList = itemWarehouseRepository.findAll();

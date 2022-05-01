@@ -11,7 +11,7 @@
 
 <div class="body-header">
     <div class="menu-title">본사 발주 상태 "완료" 목록 조회</div>
-    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/complete}">본사 발주 상태 "완료" 목록 조회</a></div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/list}">입고, 입하 처리 / </a> <a th:href="@{/warehouse/complete}">본사 발주 상태 "완료" 목록 조회</a></div>
 </div>
 
 <!-- 컨텐츠 작성 영역 -->
@@ -26,8 +26,7 @@
                 <h5>승인 완료 내역</h5>
             </div>
             <div class="ibox-content">
-<!--                <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>-->
-                <h1 class="no-margins">-건</h1>
+                                <h1 class="no-margins" th:text="${ itemCnt - 3 } + 건"></h1>
                 <br>
             </div>
         </div>
@@ -43,35 +42,29 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
-            <th>입고 번호</th>
+            <th>발주 번호</th>
             <th>입고 종류</th>
             <th>발주 일시</th>
-            <th>발주 물품 종류 개수</th>
-            <th>작업 상태</th>
-            <th>상세 정보</th>
+            <th>승인 처리 상태</th>
+            <th>입하 대기 추가</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="warehouse : ${ warehouseCompanyOrderList }">
-            <td th:text="${ warehouse.companyOrderHistoryNo }"></td>                                                              <!-- 받아온 정보에 입고 번호 부여 -->
-            <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>                                                              <!-- 받아온 정보에 입고 번호 부여 -->
-            <td th:text="${ warehouse.companyOrderItemList }"></td>                                                              <!-- 받아온 정보에 입고 번호 부여 -->
-<!--            <td>                                                                                                        &lt;!&ndash; 입고 종류 &ndash;&gt;-->
-<!--                <th:block th:if="${ warehouse.warehouseDivisionItem == 1}">-->
-<!--                    <a>본사 발주</a>-->
-<!--                </th:block>-->
-
-<!--                <th:block th:if="${ warehouse.warehouseDivisionItem == 2}">-->
-<!--                    <a>가맹점 이슈</a>-->
-<!--                </th:block>-->
-<!--            </td>-->
-<!--            <td th:text="${ warehouse.orderHistoryNo.companyOrderHistoryCreatedDate }"></td>                            &lt;!&ndash; 발주 일시 (fk로 받아옴) &ndash;&gt;-->
-<!--            <td th:text="${ warehouse.warehouseNo }"></td>                                                              &lt;!&ndash; 물품 종류 개수 (fk로 받아옴) &ndash;&gt;     &lt;!&ndash; 물품의 개수는 orderApplicationItemAmount &ndash;&gt;-->
-<!--            <td th:text="${ warehouse.warehouseWorkingName }"></td>                                                     &lt;!&ndash; 작업상태 (fk로 받아옴) &ndash;&gt;-->
-<!--            <td>-->
-<!--&lt;!&ndash;                <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>&ndash;&gt;-->
-<!--                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouse.warehouseNo}')|">상세 조회</button>-->
-<!--            </td>-->
+            <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
+                <td th:text="${ warehouse.companyOrderHistoryNo }"></td>
+                <td>본사 발주</td>
+                <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>
+                <td>
+                    <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
+                        <a>승인 완료</a>
+                    </th:block>
+<!--                    <input type="hidden" name="warehouseOrderHistoryNo" value="${ warehouse.companyOrderHistoryNo }">-->
+                </td>
+                <td>
+                    <button class="btn btn-w-m btn-primary" type="submit" value="${ warehouse.companyOrderHistoryNo }" id="warehouseRegistButton" >입하 목록 추가</button>
+                </td>
+            </th:block>
         </tr>
         </tfoot>
     </table>
@@ -81,7 +74,12 @@
 <script>
     function viewDetail(num) {
         let No = num;
-        location.href="/warehouse/detail/" + num;
+        location.href = "/warehouse/detail/" + num;
+    }
+
+    document.getElementById("warehouseRegistButton").onclick = function (){
+        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
+
     }
 </script>
 <th:block th:replace="/common/footer.html"></th:block>

@@ -1,16 +1,24 @@
 package com.greedy.jaegojaego.warehouse.controller;
 
 import com.greedy.jaegojaego.warehouse.dto.*;
+import com.greedy.jaegojaego.warehouse.entity.Warehouse;
+import com.greedy.jaegojaego.warehouse.entity.WarehouseClient;
+import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
 import com.greedy.jaegojaego.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.querydsl.core.types.Ops.DateTimeOps.SYSDATE;
 
 @Controller
 @RequestMapping("/warehouse")
@@ -24,14 +32,21 @@ public class WarehouseController {
         this.warehouseService = warehouseService;
     }
 
-    /* 발주 승인 완료 목록 불러오기 */
+    /** 발주 승인 "완료" 목록 불러오기 */
     @GetMapping("/complete")
-    public ModelAndView warehouseCompleteList(ModelAndView mv) {
+    public ModelAndView warehouseCompleteList(ModelAndView mv, HttpServletRequest request) {
 
         List<WarehouseCompanyOrderHistoryDTO> warehouseCompanyOrderList = warehouseService.selectCompanyOrderList();
+//        List<WarehouseClientDTO> warehouseClient = warehouseService.selectClientList();
+
 
         System.out.println("controller warehouseCompanyOrderList : " + warehouseCompanyOrderList);
 
+        int itemCnt;
+        itemCnt = warehouseCompanyOrderList.size();
+
+        mv.addObject("itemCnt", itemCnt);
+//        mv.addObject("warehouseList", warehouseList);
         mv.addObject("warehouseCompanyOrderList", warehouseCompanyOrderList);
         mv.setViewName("/warehouse/warehouseCompleteList");
 
@@ -39,9 +54,37 @@ public class WarehouseController {
     }
 
 
+//    @GetMapping("/regist")
+//    public ModelAndView warehouseOrderRegist(ModelAndView mv){
+//
+//        mv.setViewName("/warehouse/warehouseCompleteList");
+//
+//        return mv;
+//    }
 
+    /** 발주 목록에서 입고,입하 처리 목록 추가용 */
+    @GetMapping("/regist")
+    public ModelAndView warehouseRegist(ModelAndView mv, HttpServletRequest request) {
 
-    /* 입고, 입하 목록 조회용 */
+        int orderNo = Integer.parseInt(request.getParameter("warehouseOrderHistoryNo"));
+
+        warehouseService.registNewOrder(orderNo);
+
+        mv.setViewName("/warehouse/warehouseList");
+
+        return mv;
+    }
+
+    /** 가맹점 이슈 목록 조회 */
+    @GetMapping("/issue")
+    public ModelAndView warehouseIssueList(ModelAndView mv) {
+
+        mv.setViewName("/warehouse/warehouseIssueList");
+
+        return mv;
+    }
+
+    /** 입고, 입하 목록 조회용 */
     @GetMapping("/list")
     public ModelAndView warehouseList(ModelAndView mv) {
 
@@ -56,7 +99,6 @@ public class WarehouseController {
         int itemCnt;
         itemCnt = warehouseList.size();
 
-
         mv.addObject("itemCnt", itemCnt);
         mv.addObject("warehouseList", warehouseList);
         mv.setViewName("/warehouse/warehouseList");
@@ -64,7 +106,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /* 입고, 입하 상세 조회용 */
+    /** 입고, 입하 상세 조회용 */
     @GetMapping("/detail/{warehouseNo}")
     public ModelAndView findWarehouseByWarehouseNo(ModelAndView mv, @PathVariable int warehouseNo) {
 
@@ -112,7 +154,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /* 가공 대기 창고 목록 조회용 */
+    /** 가공 대기 창고 목록 조회용 */
     @GetMapping("/raw")
     public ModelAndView warehouseRawList(ModelAndView mv) {
 
@@ -145,7 +187,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /* 가공 완성 창고 목록 조회용 */
+    /** 가공 완성 창고 목록 조회용 */
     @GetMapping("/manufacture")
     public ModelAndView warehouseManufactureList(ModelAndView mv) {
 
@@ -167,7 +209,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /* 가공 완성 창고 상세 조회용 */
+    /** 가공 완성 창고 상세 조회용 */
     @GetMapping("/manufacture/{ManuNo}")
     public ModelAndView findWarehouseByManuNo(ModelAndView mv, @PathVariable int ManuNo) {
 
@@ -176,7 +218,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /* 불량 물품 창고 목록 조회용 */
+    /** 불량 물품 창고 목록 조회용 */
     @GetMapping("/quality")
     public ModelAndView warehouseQualityList(ModelAndView mv) {
 
