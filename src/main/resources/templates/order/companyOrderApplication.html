@@ -30,9 +30,16 @@
         }
 
     </style>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
 </head>
 <body>
     <div th:replace="/common/header.html"></div>
+
 
     <div class="ibox ">
         <div class="body-header">
@@ -40,13 +47,15 @@
             <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
         </div>
 
+        <div class="float-right">
+            <button class="btn btn-primary btn-xs" type="button" id="download-btn" style="margin-right: 110px; margin-top: 10px">Download</button>
+            <input type="hidden" th:value="${ companyOrderDetail.clientName }">
+            <input type="hidden" th:value="${ companyOrderDetail.orderCreatedDate }">
+        </div>
         <div class="row justify-content-md-center" style="margin-top: 50px">
             <div class="col-lg-10">
                 <div class="ibox">
-                    <div class="ibox-content">
-                        <div class="float-right">
-                            <button class="btn btn-primary btn-xs" type="button">Download</button>
-                        </div>
+                    <div class="ibox-content" id="order-application-content">
                         <div class="text-center article-title">
                             <h1 style="font-weight: bold">
                                 발주 신청서
@@ -90,7 +99,7 @@
                             </div>
                             <br><br>
                             <span class="item-collection-left">배송지</span>
-                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).getCompanyOrderHistory().companyAccount.email }"></th:block></span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).orderApplicationAddress }"></th:block></span>
 
                         </div>
                         <hr>
@@ -101,6 +110,52 @@
         </div>
 
     </div>
+
+    <script>
+
+        document.getElementById('download-btn').onclick = function () {
+            // location.href = '/order/orderapplicationdownload';
+
+            function saveAs(uri, fileName) {
+                const link = document.createElement("a");
+                link.href = uri;
+                link.download = fileName;
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                document.body.removeChild(link);
+            }
+            html2canvas(document.querySelector("#order-application-content")).then(canvas => {
+
+                let imgData = canvas.toDataURL('image/jpeg');
+
+                let imgWidth = 210;                //A4 기준 가로 길이
+                let pageHeight = imgWidth * 1.414; //A4 기준 세로 길이
+                let imgHeight = pageHeight;
+                let heightLeft = imgHeight;
+                let margin = 0;
+
+                let doc = new jsPDF('p', 'mm', 'a4');
+                let position = 0;
+
+                doc.addImage(imgData, 'jepg', margin, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while(heightLeft >= 20) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'jepg', margin, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                doc.save(this.parentNode.children[1].value + " " + this.parentNode.children[2].value + ' 발주신청서.pdf');
+
+            });
+        }
+
+    </script>
 
     <th:block th:replace="/common/footer.html"></th:block>
 </body>
