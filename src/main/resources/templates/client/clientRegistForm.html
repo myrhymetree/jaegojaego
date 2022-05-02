@@ -54,8 +54,8 @@
                 <button class="client-regist-submit" type="button" id="clientRegistSubmit">등록</button>
                 <button class="client-regist-cancel" type="button" id="clientRegistCancel">취소</button>
             </div>
-
         </form>
+
     </fieldset>
 </div>
 
@@ -145,13 +145,17 @@
                     clientBusinessType : clientBusinessType,
                     clientAddress : clientAddress
                 },
-                dataType: "json",
+                dataType: "text",
                 async : true,
                 success:function(data, status, xhr) {
                     alert("신규 거래처가 등록되었습니다.");
+                    location.href="/client/list";
                 },
                 error:function(xhr, status, error) {
                     alert("등록에 실패하였습니다.");
+                    console.log(error);
+                    console.log(status);
+                    console.log(xhr);
                 }
             });
 

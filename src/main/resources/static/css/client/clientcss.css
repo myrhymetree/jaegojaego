@@ -76,3 +76,14 @@ details summary::-webkit-details-marker{
     margin-left: 3%;
     height: 30px;
 }
+
+.clientMemoInsertForm{
+    height: 60px;
+    width: 78%;
+    margin-left: 17%;
+    border-radius: 15px;
+}
+
+.memoRegistButton{
+
+}
