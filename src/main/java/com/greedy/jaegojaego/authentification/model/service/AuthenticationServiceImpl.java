@@ -67,14 +67,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         for(int i = 0; i < memberRoleDTOList.size(); i++) {
             authorities.add(new SimpleGrantedAuthority(memberRoleDTOList.get(i).getAuthority().getAuthorityName()));
         }
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
-        System.out.println("authorities :" + authorities);
 
         CustomUser customUser = new CustomUser(loginMember, authorities);
 
@@ -89,9 +81,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> memberPermitList = new ArrayList<>();
         List<String> franchisePermitList = new ArrayList<>();
 
-        memberPermitList.add("/");
-
-        adminPermitList.add("/member/regist");
+//        adminPermitList.add("/member/regist");
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("memberPermitList", memberPermitList);

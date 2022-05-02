@@ -12,10 +12,8 @@ import javax.persistence.*;
 @ToString
 @Entity(name = "FranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
+@PrimaryKeyJoinColumn(name = "FRANCHISE_MANAGER_NO")
 public class FranchiseAccount extends Member {
-
-    @Column(name = "FRANCHISE_MANAGER_NO")
-    private Integer managerNo;
 
     @Column(name = "MANAGER_NAME")
     private String managerName;

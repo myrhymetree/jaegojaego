@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.ui.Model;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +53,7 @@ class MemberServiceTest {
     }
 
     @Test
+    @Transactional
     public void 계정생성() {
 
         Department department = departmentRepository.findByDepartmentNo(1);
@@ -60,7 +62,7 @@ class MemberServiceTest {
         CompanyAccount companyAccount = new CompanyAccount();
         companyAccount.setDepartment(department);
         companyAccount.setMemberName("박성준");
-        companyAccount.setMemberId("블라블라7");
+        companyAccount.setMemberId("블라블라8");
         companyAccount.setMemberPwd(passwordEncoder.encode("0000"));
         companyAccount.setMemberPwdInitStatus("Y");
         companyAccount.setMemberCreatedDate(LocalDateTime.now());
@@ -72,6 +74,8 @@ class MemberServiceTest {
         companyAccount.setMemberEmail("dfdfdlk@jaegojaego.com");
 
         companyAccountRepository.save(companyAccount);
+
+        assertEquals("블라블라8", companyAccount.getMemberId());
     }
 
     @Test
@@ -108,7 +112,7 @@ class MemberServiceTest {
         Member member = new Member();
         member.setMemberNo(1);
 
-        CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNo(member.getMemberNo());
+        CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNoAndMemberDivision(member.getMemberNo(), member.getMemberDivision());
 
         assertEquals("tester", companyAccount.getMemberName());
         assertEquals("물류팀", companyAccount.getDepartment().getDepartmentName());

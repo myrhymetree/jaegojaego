@@ -13,7 +13,6 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
-<script th:src="@{/js/member/memberInfo.js}"></script>
 <!-- 본사직원 계정정보조회 모달 -->
 <div class="modal inmodal fade" id="myInfoModal" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -25,17 +24,18 @@
             <div class="modal-body">
                 <div class="form-group row"><label class="col-lg-2 col-form-label">휴대전화번호</label>
 
-                    <div class="col-lg-10"><input type="text" id="memberCellPhone2" name="memberCellPhone"  class="form-control"></div>
+                    <div class="col-lg-10"><input type="text" class="form-control" id="memberInfo-cellPhone" name="memberCellPhone" disabled></div>
                 </div>
 
-                <div class="form-group row"><label class="col-lg-2 col-form-label">사무실 유선전화번호</label>
+                <div class="form-group row">
 
-                    <div class="col-lg-10"><input type="text" id="officePhoneNumber2" name="officePhoneNumber"  class="form-control"></div>
+                    <label class="col-lg-2 col-form-label">사무실 유선전화번호</label>
+
+                    <div class="col-lg-10"><input type="text" id="memberInfo-officePhone" name="officePhoneNumber"  class="form-control" disabled></div>
                 </div>
 
                 <div class="form-group row"><label class="col-lg-2 col-form-label">이메일</label>
-                    <span class="block m-t-xs font-bold" id="memberEmail2"></span>
-<!--                    <div class="col-lg-10"><input type="text" id="memberEmail2" name="memberEmail" class="form-control"></div>-->
+                    <div class="col-lg-10"><input type="text" id="memberInfo-email" name="memberEmail" class="form-control" disabled></div>
                 </div>
 
             </div>

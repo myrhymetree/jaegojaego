@@ -71,6 +71,10 @@ public class FranchiseInfo extends Member {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
     private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false, updatable = false)
+    private List<FranchiseAccount> franchiseAccounts;
+
     @Transient
     private LocalDateTime franchiseContractStartedDate;
 

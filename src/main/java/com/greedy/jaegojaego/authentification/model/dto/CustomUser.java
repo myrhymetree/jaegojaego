@@ -25,7 +25,6 @@ public class CustomUser extends User {
     private LocalDateTime memberCreatedDate;
     private LocalDateTime memberRemovedDate;
     private String memberRemoveStatus;
-    private String franchiseDivision;
     private String officeDivision;
     private String memberDivision;
 

@@ -16,9 +16,9 @@ import java.util.List;
 public class MemberRolePK implements Serializable {
 
     @Column(name = "MEMBER_NO")
-    private int memberNo;
+    private Integer memberNo;
 
     @Column(name = "AUTHORITY_CODE")
-    private int authorityCode;
+    private Integer authorityCode;
 
 }

@@ -10,15 +10,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity(name = "CompanyAccount")
 @EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
 //@DiscriminatorValue("본사")
 public class CompanyAccount extends Member {
-
-    @Column(name = "MEMBER_NO")
-    private Integer memberNo;
 
     @Column(name = "MEMBER_NAME")
     private String memberName;
@@ -35,4 +31,17 @@ public class CompanyAccount extends Member {
     @ManyToOne
     @JoinColumn(name = "MEMBER_DEPARTMENT")
     private Department department;
+
+    @Override
+    public String toString() {
+        return "CompanyAccount{" +
+                "memberNo=" + super.getMemberNo() +
+                ", memberId=" + super.getMemberId() +
+                ", memberName='" + memberName + '\'' +
+                ", memberEmail='" + memberEmail + '\'' +
+                ", memberCellPhone='" + memberCellPhone + '\'' +
+                ", officePhoneNumber='" + officePhoneNumber + '\'' +
+                ", department=" + department +
+                '}';
+    }
 }

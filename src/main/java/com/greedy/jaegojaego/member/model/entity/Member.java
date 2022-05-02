@@ -26,7 +26,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "MEMBER_DIVISION")
-public class Member implements Serializable{
+public class Member implements Serializable {
 
 //    @ElementCollection(fetch = FetchType.LAZY)
 //    @Builder.Default
@@ -88,9 +88,13 @@ public class Member implements Serializable{
     @Column(name = "MEMBER_DIVISION")
     private String memberDivision;
 
-    @JoinColumn(name = "MEMBER_NO", insertable = false, updatable = false)
+    @JoinColumn(name = "MEMBER_NO")
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
+
+//    @JoinColumn(name = "MEMBER_NO")
+//    @OneToOne(cascade = CascadeType.PERSIST)
+//    private MemberRole memberRole;
 
 
 //    @OneToOne

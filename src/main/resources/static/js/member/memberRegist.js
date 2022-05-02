@@ -155,13 +155,13 @@ $(function () {
     $.ajax({
         url: "/member/department",
         success: function (data) {
-            const $departmentNo = $("#department");
-            $departmentNo.html("");
+            const $department = $("#department");
+            $department.html("");
 
-            $departmentNo.append($("<option>"))
+            $department.append($("<option>"))
 
             for (let index in data) {
-                $departmentNo.append($("<option>").val(data[index].departmentNo).text(data[index].departmentName));
+                $department.append($("<option>").val(data[index].departmentNo).text(data[index].departmentName));
             }
 
             $('#memberId').val('');

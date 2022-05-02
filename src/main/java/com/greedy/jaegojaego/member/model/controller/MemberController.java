@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,20 +43,7 @@ public class MemberController {
     }
 
     @GetMapping("/regist")
-    public ModelAndView sendRegistView(ModelAndView mv, Authentication authentication) {
-
-        // 로그인한 계정 정보 찾기 방법 1
-        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
-
-        CustomUser customUser1 = (CustomUser) authentication1.getPrincipal();
-
-        System.out.println("customUser1.getMemberNo() = " + customUser1.getMemberNo());
-
-
-        // 로그인한 계정 정보 찾기 방법 2
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
-
-        System.out.println(customUser.getMemberNo());
+    public ModelAndView sendRegistView(ModelAndView mv, Model model, Authentication authentication) {
 
         mv.setViewName("/member/regist");
 
@@ -120,15 +108,16 @@ public class MemberController {
 
     @GetMapping(value = "/loginMemberInformation", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public CompanyAccountDTO findMemberInformation(Authentication authentication) {
+    public Object findMemberInformation(Authentication authentication, Model model) {
 
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        if(authentication.getPrincipal() != null) {
+            CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
-        Integer memberNo = customUser.getMemberNo();
+            Object loginMember = memberService.findLoginMemberInfo(customUser);
 
-        CompanyAccountDTO loginMember = memberService.findLoginMemberInfo(memberNo);
-
-        return loginMember;
+            return loginMember;
+        }
+        return null;
     }
 
     @PostMapping(value = "/modify")
@@ -139,7 +128,6 @@ public class MemberController {
         member.setMemberNo(customUser.getMemberNo());
 
         memberService.updateLoginMemberInfo(member);
-
 
 
         return mv;
