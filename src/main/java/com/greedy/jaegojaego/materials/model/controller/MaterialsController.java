@@ -1,5 +1,8 @@
 package com.greedy.jaegojaego.materials.model.controller;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.greedy.jaegojaego.materials.model.dto.ClientContractItemDTO;
 import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
 import com.greedy.jaegojaego.materials.model.service.MaterialsService;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -78,6 +82,28 @@ public class MaterialsController {
     public ModelAndView productMaterials(ModelAndView mv) {
 
         mv.setViewName("/materials/productRegist");
+
+        return mv;
+    }
+
+    @GetMapping(value = "/registList", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ModelAndView registproductMaterialsList(ModelAndView mv) {
+
+        List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
+
+        System.out.println("도달했는가" + "" + materialsList);
+        System.out.println("도달했는가" + "" + materialsList);
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        mv.addObject("materialsList", gson.toJson(materialsList));
+        mv.setViewName("jsonView");
 
         return mv;
     }
