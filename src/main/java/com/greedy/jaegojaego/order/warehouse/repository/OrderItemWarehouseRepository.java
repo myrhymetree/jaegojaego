@@ -11,6 +11,6 @@ public interface OrderItemWarehouseRepository extends JpaRepository<OrderItemWar
     @Query(value = "SELECT A.ITEM_WAREHOUSE_ADDRESS " +
             "         FROM ITEM_WAREHOUSE A " +
             "        WHERE ROWNUM < 2 " +
-            "          AND A.ITEM_WAREHOUSE_DIVISION = '가공전'", nativeQuery = true)
+            "          AND A.ITEM_WAREHOUSE_DIVISION = '가공 전 창고'", nativeQuery = true)
     String selectItemWarehouseAddress();
 }
