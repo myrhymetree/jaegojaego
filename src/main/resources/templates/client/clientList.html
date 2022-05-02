@@ -175,7 +175,7 @@
                         body += '<hr style="background-color: darkseagreen; height: 5px">';
                         body += '<strong style="font-size: 20px;">거래처 메모</strong><br><br>';
                         body += '<details><summary class="clientMemoOpen" >메모 열기</summary>'
-                        body += '<div id="clientMemoBody">메모 내용</div></details>'
+                        body += '<div id="clientMemoBody"></div></details>'
 
                         $('#clientDetailArea').append(body);
 
@@ -197,6 +197,11 @@
 
                                     $('#clientMemoBody').empty()
 
+                                    var insert = '';
+                                    insert += '<input type="text" id="clientmemoinsert" class="clientMemoInsertForm" placeholder="메모를 입력하세요">'
+                                    insert += '<button id="clientMemoButton" class="memoRegistButton">저장하기</button>'
+
+                                    $("#clientMemoBody").append(insert);
                                     for(let i = 0; i < data.length; i++){
                                         var body = '';
 
@@ -210,6 +215,37 @@
 
                                         $('#clientMemoBody').append(body);
                                     }
+
+                                    $("#clientMemoButton").click(function (){
+
+                                        let clientMemoBody = $("#clientmemoinsert").val();
+                                        console.log(clientMemoBody)
+
+                                        $.ajax({
+                                            type: 'get',
+                                            url: "/client/registmemo",
+                                            data : {
+                                                clientMemoBody: clientMemoBody
+                                            },
+                                            dataType: "text",
+                                            async : true,
+                                            success : function(xhr, data, status){
+                                                console.log("메모 에이젝스 실행 성공")
+                                                location.href="/client/list";
+                                                console.log(xhr);
+                                                console.log(data);
+                                                console.log(status);
+                                            },
+                                            error : function(xhr, error, status) {
+                                                console.log("메모 에이젝스 실행 실패");
+                                                console.log(xhr);
+                                                console.log(error);
+                                                console.log(status);
+                                            }
+                                        });
+
+
+                                    })
                                 },
                                 error : function(xhr) {
                                     console.log("메모 에이젝스 실행 실패");
@@ -227,19 +263,25 @@
                                     data : {
                                         clientNo: clientNo
                                     },
-                                    dataType: "json",
+                                    dataType: "text",
                                     async : true,
-                                    success : function(data){
+                                    success : function(xhr, data, status){
                                         console.log("삭제 에이젝스 실행 성공")
+                                        location.href="/client/list";
+                                        console.log(xhr);
+                                        console.log(data);
+                                        console.log(status);
                                     },
-                                error : function(xhr) {
+                                error : function(xhr, error, status) {
                                     console.log("삭제 에이젝스 실행 실패");
+                                    console.log(xhr);
+                                    console.log(error);
+                                    console.log(status);
                                 }
+                            });
                         });
-                    });
                     },
                     error : function(xhr) {
-                        console.log("에이젝스 실행 실패");
                         console.log(xhr);
                     }
                 });

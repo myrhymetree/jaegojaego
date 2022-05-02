@@ -27,16 +27,19 @@ public class ClientService {
     private final ClientBusinessTypeRepository clientBusinessTypeRepository;
     private final ClientBusinessItemRepository clientBusinessItemRepository;
     private final ClientMemberRepository clientMemberRepository;
-
+    private final ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository;
+    private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
         this.clientBusinessTypeRepository = clientBusinessTypeRepository;
         this.clientBusinessItemRepository = clientBusinessItemRepository;
         this.clientMemberRepository = clientMemberRepository;
+        this.clientBusinessItemDivisionRepository = clientBusinessItemDivisionRepository;
+        this.clientBusinessTypeDivisionRepository = clientBusinessTypeDivisionRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -115,6 +118,7 @@ public class ClientService {
         return clientMember;
     }
 
+    @Transactional
     public void registClient(ClientDTO clientDTO) {
 
         Client newClient = new Client();
@@ -134,8 +138,46 @@ public class ClientService {
         clientRepository.save(newClient);
     }
 
+    @Transactional
     public void deleteClient(int clientNo) {
 
        clientRepository.deleteById(clientNo);
     }
+
+/*    @Transactional
+    public void registClientBusinessItemDevision(ClientBusinessItemDvisionDTO clientBusinessItemDevisionDTO) {
+
+        ClientBusinessItemDivisionPK newClientBusinessItemDivisionPK = new ClientBusinessItemDivisionPK();
+        newClientBusinessItemDivisionPK.setClientNo(clientBusinessItemDevisionDTO.getClientNo());
+        newClientBusinessItemDivisionPK.setClientBusinessItemNo(clientBusinessItemDevisionDTO.getClientBusinessItemNo());
+
+        ClientBusinessItemDivision newClientBusinessItemDivision = new ClientBusinessItemDivision();
+        newClientBusinessItemDivision.setClientBusinessItemDivisionPK(newClientBusinessItemDivisionPK);
+
+        clientBusinessItemDivisionRepository.save(newClientBusinessItemDivision);
+    }
+
+    @Transactional
+    public void registClientBusinessTypeDevision(ClientBusinessTypeDvisionDTO clientBusinessTypeDvisionDTO) {
+
+        ClientBusinessTypeDivisionPK newClientBusinessTypeDivisionPK = new ClientBusinessTypeDivisionPK();
+        newClientBusinessTypeDivisionPK.setClientNo(clientBusinessTypeDvisionDTO.getClientNo());
+        newClientBusinessTypeDivisionPK.setClientBusinessTypeNo(clientBusinessTypeDvisionDTO.getClientBusinessTypeNo());
+
+        ClientBusinessTypeDivision newClientBusinessTypeDivision = new ClientBusinessTypeDivision();
+        newClientBusinessTypeDivision.setClientBusinessTypeDivisionPK(newClientBusinessTypeDivisionPK);
+
+        clientBusinessTypeDivisionRepository.save(newClientBusinessTypeDivision);
+    }
+
+    public void registClientContractInfo(ClientContractInfoDTO clientContractInfoDTO) {
+
+        ClientContractInfo newClientContractInfo = new ClientContractInfo();
+
+        newClientContractInfo.setClientNo(clientContractInfoDTO.getClientNo());
+        newClientContractInfo.setClientContractInfoStartdate(clientContractInfoDTO.getClientContractInfoStartDate());
+        newClientContractInfo.setClientContractInfoEnddate(clientContractInfoDTO.getClientContractInfoEndDate());
+        if((clientContractInfoDTO.getClientContractInfoStartDate()).)
+
+    }*/
 }

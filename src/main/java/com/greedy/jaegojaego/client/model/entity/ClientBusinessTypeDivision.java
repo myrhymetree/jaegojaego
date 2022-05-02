@@ -4,51 +4,21 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
+@Data
 @Entity(name = "Client_Business_Type_Division")
 @Table(name = "CLIENT_BUSINESS_TYPE_DIVISION")
 public class ClientBusinessTypeDivision implements Serializable {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_NO")
+    @EmbeddedId
+    private ClientBusinessTypeDivisionPK clientBusinessTypeDivisionPK;
+
+    @JoinColumn(name = "CLIENT_NO", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Client clientNo;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_BUSINESS_TYPE_NO")
+
+    @JoinColumn(name = "CLIENT_BUSINESS_TYPE_NO", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private ClientBusinessType clientBusinessTypeNo;
 
-    public ClientBusinessTypeDivision(Client clientNo, ClientBusinessType clientBusinessTypeNo) {
-        this.clientNo = clientNo;
-        this.clientBusinessTypeNo = clientBusinessTypeNo;
-    }
-
-    public ClientBusinessTypeDivision() {
-
-    }
-
-    public Client getClientNo() {
-        return clientNo;
-    }
-
-    public void setClientNo(Client clientNo) {
-        this.clientNo = clientNo;
-    }
-
-    public ClientBusinessType getClientBusinessTypeNo() {
-        return clientBusinessTypeNo;
-    }
-
-    public void setClientBusinessTypeNo(ClientBusinessType clientBusinessTypeNo) {
-        this.clientBusinessTypeNo = clientBusinessTypeNo;
-    }
-
-    @Override
-    public String toString() {
-        return "ClientBusinessTypeDivision{" +
-                "clientNo=" + clientNo +
-                ", clientBusinessTypeNo=" + clientBusinessTypeNo +
-                '}';
-    }
 }

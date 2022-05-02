@@ -32,11 +32,10 @@ public class ClientContractInfo {
     @Column(name = "CLIENT_CONTRACT_INFO_STATUS")
     private String ClientContractInfoStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_NO")
-    private Client clientNo;
+    @Column(name = "CLIENT_NO")
+    private int clientNo;
 
-    public ClientContractInfo(int clientContractInfoNo, Date clientContractInfoStartdate, Date clientContractInfoEnddate, String clientContractInfoStatus, Client clientNo) {
+    public ClientContractInfo(int clientContractInfoNo, Date clientContractInfoStartdate, Date clientContractInfoEnddate, String clientContractInfoStatus, int clientNo) {
         this.clientContractInfoNo = clientContractInfoNo;
         ClientContractInfoStartdate = clientContractInfoStartdate;
         ClientContractInfoEnddate = clientContractInfoEnddate;
@@ -80,11 +79,11 @@ public class ClientContractInfo {
         ClientContractInfoStatus = clientContractInfoStatus;
     }
 
-    public Client getClientNo() {
+    public int getClientNo() {
         return clientNo;
     }
 
-    public void setClientNo(Client clientNo) {
+    public void setClientNo(int clientNo) {
         this.clientNo = clientNo;
     }
 

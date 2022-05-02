@@ -14,6 +14,7 @@ import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Parameter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -120,23 +123,23 @@ public class ClientController {
         return mv;
     }
 
-    @GetMapping(value = "/registclient", produces = "application/json; charset=UTF-8")
+/*    @GetMapping(value = "/registclient")
     @ResponseBody
-    public ModelAndView registClient(@ModelAttribute ClientDTO clientDTO, @ModelAttribute ClientBusinessItemDTO clientBusinessItemDTO,
-                               @ModelAttribute ClientBusinessTypeDTO clientBusinessTypeDTO, @ModelAttribute ClientContractInfoDTO clientContractInfoDTO,
-                               @ModelAttribute ClientMemberDTO clientMemberDTO, HttpServletRequest request, RedirectAttributes rttr, Locale locale, ModelAndView mv)
-            throws JsonProcessingException {
+    public void registClient(@ModelAttribute ClientDTO clientDTO, @ModelAttribute ClientBusinessItemDvisionDTO clientBusinessItemDvisionDTO,
+                               @ModelAttribute ClientBusinessTypeDvisionDTO clientBusinessTypeDvisionDTO, @ModelAttribute ClientContractInfoDTO clientContractInfoDTO,
+                               @ModelAttribute ClientMemberDTO clientMemberDTO, HttpServletRequest request, RedirectAttributes rttr, Locale locale,
+                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date clientContractInfoStartDate,
+                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date clientContractInfoEndDate) {
 
+        System.out.println("컨트롤러 도착");
         String clientName = request.getParameter("clientName");
         String clientCbrNo = request.getParameter("clientCbrNo");
         String clientRepresentativeName = request.getParameter("clientRepresentativeName");
         String clientRepresentativePhone = request.getParameter("clientRepresentativePhone");
         String clientRepresentativeEmail = request.getParameter("clientRepresentativeEmail");
         String clientAddress = request.getParameter("clientAddress");
-        java.sql.Date clientContractInfoStartDate;
-        Date clientContractInfoEndDate;
-        int clientBusinessItem;
-        int clientBusinessType;
+        int clientBusinessItem = Integer.parseInt(request.getParameter("clientBusinessItem"));
+        int clientBusinessType = Integer.parseInt(request.getParameter("clientBusinessType"));
 
         System.out.println("clientName : " + clientName);
 
@@ -147,8 +150,6 @@ public class ClientController {
 
         int memberNo = customUser1.getMemberNo();
         ClientMember loginMember = clientService.findClientLoginNo(memberNo);
-
-
 
         System.out.println("memeberNo : " + memberNo);
 
@@ -163,21 +164,40 @@ public class ClientController {
 
         clientService.registClient(clientDTO);
 
-        mv.setViewName("client/list");
 
-        return mv;
+        clientBusinessItemDvisionDTO.setClientBusinessItemNo(clientBusinessItem);
+        System.out.println("업종번호 : " + clientBusinessItem);
+        clientBusinessItemDvisionDTO.setClientNo(clientDTO.getClientNo());
+        System.out.println("거래처번호 : " + clientDTO.getClientNo());
+        clientService.registClientBusinessItemDevision(clientBusinessItemDvisionDTO);
 
-    }
+        clientBusinessTypeDvisionDTO.setClientBusinessTypeNo(clientBusinessType);
+        System.out.println("업태번호 : " + clientBusinessType);
+        clientBusinessItemDvisionDTO.setClientNo(clientDTO.getClientNo());
+        clientService.registClientBusinessTypeDevision(clientBusinessTypeDvisionDTO);
+
+        clientContractInfoDTO.setClientContractInfoStartDate(clientContractInfoStartDate);
+        clientContractInfoDTO.setClientContractInfoEndDate(clientContractInfoEndDate);
+        clientContractInfoDTO.setClientNo(clientDTO.getClientNo());
+        clientService.registClientContractInfo(clientContractInfoDTO);
+
+    }*/
 
     @GetMapping("/removeclient")
-    @ResponseBody
-    public String removeClient(HttpServletRequest request, RedirectAttributes rttr, Locale locale) {
+    public void removeClient(HttpServletRequest request, RedirectAttributes rttr) {
+
+        rttr.addFlashAttribute("flashAttribute", "removeclient");
+        rttr.addAttribute("attribute","removeclient");
 
         int clientNo = Integer.parseInt(request.getParameter("clientNo"));
 
         clientService.deleteClient(clientNo);
+    }
 
-        return "redirect:/client/list";
+    @GetMapping("/registmemo")
+    public void registMemo(HttpServletRequest request, RedirectAttributes rttr){
+
+        String clientMemoBody = request.getParameter("clientMemoBody");
     }
 
 
