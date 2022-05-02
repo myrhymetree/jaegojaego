@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "FRANCHISE_ORDER")
 @SequenceGenerator(
         name = "FRANCHISE_ORDER_SEQ_GENERATOR",
-        sequenceName = "FRANCHISE_ORDER_NO",
+        sequenceName = "COMPANY_ORDER_HISTORY_NO",
         initialValue = 1,
         allocationSize = 1
 )

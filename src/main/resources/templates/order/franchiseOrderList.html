@@ -51,7 +51,7 @@
             width: 80px;
             display: none;
             position: absolute;
-            margin-left: 47px;
+            margin-left: 70px;
             z-index: 1000;
         }
 
@@ -120,18 +120,11 @@
                                     <td th:text="${ franchiseOrder.orderFranchiseInfo.franchiseBranchName }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderOrderNumber }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderApplicationDate }"></td>
-                                    <td>
-                                        <th:block th:if="${ franchiseOrder.orderFranchiseAccountDTO eq null }">
-                                            <th:block th:text="${ franchiseOrder.orderFranchiseInfo.franchiseRepresentativeName }"></th:block>
-                                        </th:block>
-                                        <th:block th:if="${ franchiseOrder.orderFranchiseAccountDTO ne null }">
-                                            <th:block th:text="${ franchiseOrder.orderFranchiseAccountDTO.managerName }"></th:block>
-                                        </th:block>
-                                    </td>
+                                    <td th:text="${ franchiseOrder.member.companyAccountDTO.memberName }"></td>
                                     <td th:text="${ franchiseOrder.franchiseOrderStatusDate }"></td>
                                     <td>
-                                        <th:block th:each="franchiseHistory : ${ franchiseOrder.franchiseOrderStatusHistoryList }">
-                                            <th:block th:if="${ franchiseHistory.orderCompanyAccount ne null and franchiseHistory.franchiseOrderStatus ne 'BEFORE' }">
+                                        <th:block th:each="franchiseHistory, historyIndex : ${ franchiseOrder.franchiseOrderStatusHistoryList }">
+                                            <th:block th:if="${ franchiseHistory.orderCompanyAccount ne null and #lists.size('franchiseOrderHistory') eq historyIndex.index }">
                                                 <th:block th:text="${ franchiseHistory.orderCompanyAccount.memberName }"></th:block>
                                             </th:block>
                                         </th:block>
@@ -155,7 +148,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="8">
+                                    <td colspan="7">
                                         <ul class="pagination float-right"></ul>
                                     </td>
                                 </tr>
@@ -244,13 +237,7 @@
 
             $(document).on('click', '.sa-button-container .confirm', function() {
 
-                console.log(rejectComplete);
-
-                if(checkSuccess == 1) {
-                    history.go(0);
-                }
-
-                if(rejectComplete == 1) {
+                if(checkSuccess == 1 || rejectComplete == 1) {
                     history.go(0);
                 }
 
@@ -280,7 +267,9 @@
                         swal({
                             title: "변경 완료!",
                             text: "승인 거절 처리되었습니다."
-                        })
+                        }), function () {
+                            rejectComplete = 1;
+                        };
                     })
                     .catch(err => {
                         swal({
@@ -289,7 +278,7 @@
                         });
                     });
 
-                rejectComplete = 1;
+
             }
 
 

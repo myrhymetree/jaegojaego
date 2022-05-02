@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CompanyAccountDTO extends NewMemberDTO {
 
+    private Integer memberNo;
     private String memberName;
     private String memberEmail;
     private String memberCellPhone;
@@ -21,6 +22,7 @@ public class CompanyAccountDTO extends NewMemberDTO {
     @QueryProjection
     public CompanyAccountDTO(Integer memberNo, String memberId, String memberPwd, LocalDateTime memberPwdUpdateDate, String memberPwdInitStatus, LocalDateTime memberCreatedDate, LocalDateTime memberRemovedDate, String memberRemoveStatus, String officeDivision, String memberDivision, CompanyAccountDTO companyAccountDTO, List<AuthorityDTO> authorityDTOList, Integer memberNo1, String memberName, String memberEmail, String memberCellPhone, String officePhoneNumber, DepartmentDTO department) {
         super(memberNo, memberId, memberPwd, memberPwdUpdateDate, memberPwdInitStatus, memberCreatedDate, memberRemovedDate, memberRemoveStatus, officeDivision, memberDivision, companyAccountDTO, authorityDTOList);
+        this.memberNo = memberNo1;
         this.memberName = memberName;
         this.memberEmail = memberEmail;
         this.memberCellPhone = memberCellPhone;

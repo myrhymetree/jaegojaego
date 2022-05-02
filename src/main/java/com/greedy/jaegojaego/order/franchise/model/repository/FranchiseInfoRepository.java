@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface OrderFranchiseInfoRepository extends JpaRepository<OrderFranchiseInfo, Integer> {
+public interface FranchiseInfoRepository extends JpaRepository<OrderFranchiseInfo, Integer> {
 
 
     List<OrderFranchiseInfo> findByHeadOfficeSupervisor_MemberNo(int memberNo);

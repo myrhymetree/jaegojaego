@@ -17,14 +17,8 @@ public interface OrderApplicationRepository extends JpaRepository<OrderApplicati
     @Query(value = "SELECT A.CLIENT_NO " +
             "         FROM ORDER_APPLICATION A " +
             "        WHERE ROWNUM < ?1 " +
-            "        ORDER BY A.CLIENT_NO DESC", nativeQuery = true)
+            "        ORDER BY A.ORDER_APPLICATION_NO DESC", nativeQuery = true)
     List<Integer> selectRecentOrderApplicationClient(int size);
 
     List<OrderApplication> findByCompanyOrderHistory_CompanyOrderHistoryNo(int companyOrderHistoryNo);
-
-    @Query(value = "SELECT * " +
-            "         FROM ORDER_APPLICATION A " +
-            "        WHERE ROWNUM < ?1 " +
-            "        ORDER BY A.ORDER_APPLICATION_NO DESC", nativeQuery = true)
-    List<OrderApplication> selectRecentOrderApplicationList(int size);
 }

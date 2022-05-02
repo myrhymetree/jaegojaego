@@ -119,27 +119,5 @@ public class OrderControllerTests {
 
     }
 
-    @Test
-    @DisplayName("거래처 발주 신청 가능 물품 조회 테스트")
-    public void franchiseOrderRegist() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/order/franchiseorderregist"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-
-    }
-
-    @Test
-    @DisplayName("거래처 발주 거절 사유서 테스트")
-    public void selectRejectContent() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/order/selectrejectcontent")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("franchiseOrderNo", "21"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-
-    }
-
 
 }

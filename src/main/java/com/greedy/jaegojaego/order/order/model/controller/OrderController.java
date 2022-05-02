@@ -11,7 +11,10 @@ import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderDetailDTO
 import com.greedy.jaegojaego.order.order.model.dto.company.CompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationDTO;
 import com.greedy.jaegojaego.order.order.model.dto.company.OrderApplicationItemDTO;
-import com.greedy.jaegojaego.order.order.model.dto.franchise.*;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDetailDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderItemDTO;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderableItemDTO;
 import com.greedy.jaegojaego.order.order.model.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -244,7 +247,8 @@ public class OrderController {
 
             for(int j = 0; j < orderApplicationList.get(i).getOrderApplicationItemList().size(); j++) {
 
-               OrderApplicationItemDTO orderApplicationItem = orderApplicationList.get(i).getOrderApplicationItemList().get(j);
+               OrderApplicationItemDTO orderApplicationItem = new OrderApplicationItemDTO();
+               orderApplicationItem = orderApplicationList.get(i).getOrderApplicationItemList().get(j);
                orderApplicationItemList.add(orderApplicationItem);
             }
         }
@@ -344,8 +348,7 @@ public class OrderController {
 
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
-        List<FranchiseOrderListDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision(), customUser.getOfficeDivision());
-        List<FranchiseOrderListDTO> lastFranchiseOrderList = new ArrayList<>();
+        List<FranchiseOrderDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision());
 
         mv.addObject("franchiseOrderList", franchiseOrderList);
         mv.addObject("member", customUser);
@@ -413,16 +416,8 @@ public class OrderController {
 
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
-        String[] itemInfoNoList = request.getParameterValues("itemInfoNo");
-        String[] itemAmountList = request.getParameterValues("itemAmount");
-        int[] itemInfoNo = new int[itemInfoNoList.length];
-        int[] itemAmount = new int[itemAmountList.length];
-
-        for(int i = 0; i < itemInfoNoList.length; i++) {
-
-            itemInfoNo[i] = Integer.parseInt(itemInfoNoList[i]);
-            itemAmount[i] = Integer.parseInt(itemAmountList[i]);
-        }
+        int itemInfoNo = Integer.parseInt(request.getParameter("itemInfoNo"));
+        int itemAmount = Integer.parseInt(request.getParameter("itemAmount"));
 
         orderService.insertFranchiseOrder(customUser.getMemberNo(), itemInfoNo, itemAmount);
 
@@ -435,19 +430,13 @@ public class OrderController {
 
         int franchiseOrderNo = Integer.parseInt(request.getParameter("franchiseOrderNo"));
 
+        System.out.println("franchiseOrderNo = " + franchiseOrderNo);
+
         String rejectContent = orderService.selectRejectContent(franchiseOrderNo);
 
         Gson gson = new Gson();
 
         return gson.toJson(rejectContent);
-    }
-
-    @GetMapping("/orderapplicationdownload")
-    public ModelAndView downloadOrderApplication(ModelAndView mv) {
-
-        mv.setViewName("/order/test");
-
-        return mv;
     }
 
 }

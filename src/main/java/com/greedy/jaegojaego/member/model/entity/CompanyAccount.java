@@ -17,6 +17,9 @@ import java.util.List;
 //@DiscriminatorValue("본사")
 public class CompanyAccount extends Member {
 
+    @Column(name = "MEMBER_NO")
+    private Integer memberNo;
+
     @Column(name = "MEMBER_NAME")
     private String memberName;
 
