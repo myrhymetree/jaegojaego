@@ -39,7 +39,7 @@ public class WarehouseService {
         this.modelMapper = modelMapper;
     }
 
-    /* 발주 승인 완료 목록 불러오기 */
+    /** 발주 승인 완료 목록 불러오기 */
     public List<WarehouseCompanyOrderHistoryDTO> selectCompanyOrderList() {
 
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
@@ -57,17 +57,14 @@ public class WarehouseService {
 
         Warehouse warehouse = new Warehouse();
 
-
-
         WarehouseCompanyOrderHistory orderNoList = new WarehouseCompanyOrderHistory();
 
         orderNoList.setCompanyOrderHistoryNo(orderNo);      //발주내역Entity에 받아온 값(orderNo) 넣어주기
 
         warehouse.setOrderHistoryNo(orderNoList);           //입고Entity에 받아온 값 넣은 발주내역Entity 넣어주기
-//        warehouse.setWarehouseNo();
+//        warehouse.setWarehouseNo();                       //Entity에 시퀀스로 된 것은 자동으로 처리돼서 기입해줄 필요 없다.
         warehouse.setWarehouseManuDate(new Date(System.currentTimeMillis()));
         warehouse.setWarehouseDivisionItem(1);
-//        warehouse.setClientNo();
         warehouse.setWarehouseWorkingName("입하 대기");
         warehouse.setWarehouseWorkingDate(new Date(System.currentTimeMillis()));
 
@@ -140,5 +137,18 @@ public class WarehouseService {
         System.out.println("Service itemManuList = " + itemManuList);
 
         return itemManuList.stream().map(warehouse -> modelMapper.map(warehouse, ItemWarehouseDTO.class)).collect(Collectors.toList());
+    }
+
+
+    /** 입고, 입하 상태 수정용 */
+    public void modifyStatus(String status, int warehouseNo) {
+
+        Warehouse warehouse = warehouseRepository.findByWarehouseNo(warehouseNo);
+        warehouse.setWarehouseWorkingName(status);
+//        warehouse.setWarehouseManuDate(new Date(System.currentTimeMillis()));
+
+        System.out.println("service warehouse = " + warehouse);
+
+        warehouseRepository.save(warehouse);
     }
 }

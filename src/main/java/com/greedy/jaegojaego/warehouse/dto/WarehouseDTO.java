@@ -14,19 +14,18 @@ public class WarehouseDTO {
     private int warehouseDivisionItem;
     private WarehouseCompanyOrderHistory orderHistoryNo;
     private Integer issueNo;                                    //추후 타입 수정 예정!!
-    private WarehouseClientDTO clientNo;
+//    private WarehouseClientDTO clientNo;
     private String warehouseWorkingName;
     private java.sql.Date warehouseWorkingDate;
 
     public WarehouseDTO() {}
 
-    public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, WarehouseClientDTO clientNo, String warehouseWorkingName, Date warehouseWorkingDate) {
+    public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;
         this.warehouseDivisionItem = warehouseDivisionItem;
         this.orderHistoryNo = orderHistoryNo;
         this.issueNo = issueNo;
-        this.clientNo = clientNo;
         this.warehouseWorkingName = warehouseWorkingName;
         this.warehouseWorkingDate = warehouseWorkingDate;
     }
@@ -71,14 +70,6 @@ public class WarehouseDTO {
         this.issueNo = issueNo;
     }
 
-    public WarehouseClientDTO getClientNo() {
-        return clientNo;
-    }
-
-    public void setClientNo(WarehouseClientDTO clientNo) {
-        this.clientNo = clientNo;
-    }
-
     public String getWarehouseWorkingName() {
         return warehouseWorkingName;
     }
@@ -103,7 +94,6 @@ public class WarehouseDTO {
                 ", warehouseDivisionItem=" + warehouseDivisionItem +
                 ", orderHistoryNo=" + orderHistoryNo +
                 ", issueNo=" + issueNo +
-                ", clientNo=" + clientNo +
                 ", warehouseWorkingName='" + warehouseWorkingName + '\'' +
                 ", warehouseWorkingDate=" + warehouseWorkingDate +
                 '}';

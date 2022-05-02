@@ -41,9 +41,9 @@ public class Warehouse {
     @Column(name = "FRANCHISE_ISSUE_NO")
     private Integer issueNo;
 
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_NO")
-    private WarehouseClient clientNo;
+//    @ManyToOne
+//    @JoinColumn(name = "CLIENT_NO")
+//    private WarehouseClient clientNo;
 
     @OneToMany
     @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
@@ -63,14 +63,12 @@ public class Warehouse {
 
     public Warehouse() {}
 
-
-    public Warehouse(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, WarehouseClient clientNo, List<WarehouseCompanyOrderItem> companyOrderItemList, List<WarehouseOrderApplication> orderApplicationList, String warehouseWorkingName, Date warehouseWorkingDate) {
+    public Warehouse(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, List<WarehouseCompanyOrderItem> companyOrderItemList, List<WarehouseOrderApplication> orderApplicationList, String warehouseWorkingName, Date warehouseWorkingDate) {
         this.warehouseNo = warehouseNo;
         this.warehouseManuDate = warehouseManuDate;
         this.warehouseDivisionItem = warehouseDivisionItem;
         this.orderHistoryNo = orderHistoryNo;
         this.issueNo = issueNo;
-        this.clientNo = clientNo;
         this.companyOrderItemList = companyOrderItemList;
         this.orderApplicationList = orderApplicationList;
         this.warehouseWorkingName = warehouseWorkingName;
@@ -117,14 +115,6 @@ public class Warehouse {
         this.issueNo = issueNo;
     }
 
-    public WarehouseClient getClientNo() {
-        return clientNo;
-    }
-
-    public void setClientNo(WarehouseClient clientNo) {
-        this.clientNo = clientNo;
-    }
-
     public List<WarehouseCompanyOrderItem> getCompanyOrderItemList() {
         return companyOrderItemList;
     }
@@ -165,7 +155,6 @@ public class Warehouse {
                 ", warehouseDivisionItem=" + warehouseDivisionItem +
                 ", orderHistoryNo=" + orderHistoryNo +
                 ", issueNo=" + issueNo +
-                ", clientNo=" + clientNo +
                 ", companyOrderItemList=" + companyOrderItemList +
                 ", orderApplicationList=" + orderApplicationList +
                 ", warehouseWorkingName='" + warehouseWorkingName + '\'' +

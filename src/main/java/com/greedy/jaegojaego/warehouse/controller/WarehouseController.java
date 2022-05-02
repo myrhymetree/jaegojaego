@@ -7,16 +7,14 @@ import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
 import com.greedy.jaegojaego.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.querydsl.core.types.Ops.DateTimeOps.SYSDATE;
 
@@ -37,8 +35,6 @@ public class WarehouseController {
     public ModelAndView warehouseCompleteList(ModelAndView mv, HttpServletRequest request) {
 
         List<WarehouseCompanyOrderHistoryDTO> warehouseCompanyOrderList = warehouseService.selectCompanyOrderList();
-//        List<WarehouseClientDTO> warehouseClient = warehouseService.selectClientList();
-
 
         System.out.println("controller warehouseCompanyOrderList : " + warehouseCompanyOrderList);
 
@@ -46,21 +42,11 @@ public class WarehouseController {
         itemCnt = warehouseCompanyOrderList.size();
 
         mv.addObject("itemCnt", itemCnt);
-//        mv.addObject("warehouseList", warehouseList);
         mv.addObject("warehouseCompanyOrderList", warehouseCompanyOrderList);
         mv.setViewName("/warehouse/warehouseCompleteList");
 
         return mv;
     }
-
-
-//    @GetMapping("/regist")
-//    public ModelAndView warehouseOrderRegist(ModelAndView mv){
-//
-//        mv.setViewName("/warehouse/warehouseCompleteList");
-//
-//        return mv;
-//    }
 
     /** 발주 목록에서 입고,입하 처리 목록 추가용 */
     @GetMapping("/regist")
@@ -118,8 +104,9 @@ public class WarehouseController {
         List<WarehouseInItemDTO> warehouseDetailList = new ArrayList<>();
 
         for (int i = 0; i < warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().size(); i++) {
+
             WarehouseInItemDTO warehouseInItem = new WarehouseInItemDTO();
-            warehouseInItem.setWarehouseClientName(warehouseDetailNo.getClientNo().getClientName());                                       //거래처 이름 받아오기
+            warehouseInItem.setWarehouseClientName(warehouseDetailNo.getOrderHistoryNo().getOrderApplicationList().get(i).getOrderClient().getClientName());                                       //거래처 이름 받아오기
             warehouseInItem.setWarehouseMaterialCategoryName(warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getWarehouseMaterialCategory().getMaterialCategoryName());     //품목
             warehouseInItem.setWarehouseItemInfoItemSerialNo(warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoItemSerialNo());     //품번
             warehouseInItem.setWarehouseItemInfoName(warehouseDetailNo.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoName());           //품명         //품명
@@ -150,6 +137,22 @@ public class WarehouseController {
         mv.addObject("warehouseDetailList", warehouseDetailList);
         mv.addObject("warehouseDetailNo", warehouseDetailNo);
         mv.setViewName("/warehouse/warehouseDetail");
+
+        return mv;
+    }
+
+    /** 입고,입하 상태 수정용 */
+    @PostMapping("modify")
+    public ModelAndView modifyWarehouseStatus(ModelAndView mv, @RequestBody Map<String, Object> warehouseStatus) {
+
+        int warehouseNo = (int) warehouseStatus.get("warehouseNo");
+        String status = (String) warehouseStatus.get("warehouseStatus");
+
+        warehouseService.modifyStatus(status, warehouseNo);
+
+        System.out.println("controller status = " + status);
+
+        mv.setViewName("redirect:/warehouse/detail/" + warehouseNo);
 
         return mv;
     }

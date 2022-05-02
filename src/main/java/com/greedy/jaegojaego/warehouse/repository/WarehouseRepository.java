@@ -12,4 +12,6 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Integer> {
 
     @Query(value = "SELECT a FROM warehouse a ORDER BY a.warehouseNo DESC")
     List<Warehouse> findAll();
+
+    Warehouse findByWarehouseNo(int warehouseNo);
 }

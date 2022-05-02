@@ -52,15 +52,13 @@
     <h2>입고 정보</h2>
 
     <!-- 상태변경 selectbox 시작 -->
-    <div class="ibox-content">
-        <select th:style="${'width:10%; height:2rem; text-align:center; font-size:1rem;'}" class="form-control">
-            <option value="1">입하 대기</option>
-            <option value="2">입하 작업</option>
-            <option value="3">입고 작업</option>
-            <option value="4">입고 완료</option>
+        <select id="warehouseStatus" th:style="${'width:10%; height:2rem; text-align:center; font-size:1rem;'}">
+            <option value="입하 대기">입하 대기</option>
+            <option value="입하 작업">입하 작업</option>
+            <option value="입고 작업">입고 작업</option>
+            <option value="입고 완료">입고 완료</option>
         </select>
-        <button class="modifyBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
-    </div>
+        <button onclick="asyncModifyStatus()" class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
     <!-- 상태변경 selectbox 종료 -->
 
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
@@ -99,6 +97,39 @@
     </table>
 </div>
 <!-- 테이블 끝 -->
+
+<script>
+        const modifyStatusBtn = document.getElementsByClassName("modifyStatusBtn");
+        const warehouseNo = document.getElementById("warehouseNo").innerText;
+
+        function postStatus() {
+        try {
+        let warehouseStatus = document.getElementById("warehouseStatus").value;
+
+        axios.post("/warehouse/modify",
+    {
+        "warehouseNo": parseInt(warehouseNo),
+        "warehouseStatus": warehouseStatus
+    }
+        )
+        .then(function (response) {
+        alert("처리 상태 수정에 성공하셨습니다.");
+        console.log(response)
+    })
+        .then(() => {
+        location.reload();
+    })
+    } catch (e) {
+        alert("처리 상태 수정에 실패하셨습니다.");
+        console.log(e);
+    }
+    }
+
+        async function asyncModifyStatus() {
+        return await postStatus();
+    }
+</script>
+
 
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
