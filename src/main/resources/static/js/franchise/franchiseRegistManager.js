@@ -1,8 +1,5 @@
 $(document).ready(function(){
 
-    $("#memberId").val().empty();
-    $("#memberPwd").val().empty();
-
     <!-- password meter -->
     let options1 = {};
     options1.ui = {
@@ -28,17 +25,16 @@ $(document).ready(function(){
             memberId: {
                 required: true
             },
-            confirm: {
-                required: true,
-                equalTo: "#memberPwd",
-            },
             memberPwd: {
                 required: true,
                 minlength: 8,
                 maxlength: 15
             },
-            memberName: {
-                empty: true,
+            confirm: {
+                required: true,
+                equalTo: "#Pwd"
+            },
+            managerName: {
                 required: true
             }
         }
@@ -57,7 +53,7 @@ $(document).ready(function(){
         allowClear: true
     });
 
-})
+});
 
 $(function() {
     $("input[name='memberId']").on("change", function (){

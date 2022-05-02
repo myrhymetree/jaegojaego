@@ -31,7 +31,7 @@
 <div class="middle-box text-center animated fadeInDown">
 
     <h3>가맹점 계정등록</h3>
-    <form class="m-t4" id="registManagerForm" role="form" action="/franchise/regist/manager" method="post">
+    <form class="m-t4" id="registManagerForm" role="form" action="/franchise/manager" method="post">
         <div>
             <div class="form-group" id="idContainer">
                 <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
@@ -45,7 +45,7 @@
         </div>
         <div id="pwd-container2">
             <div class="form-group">
-                <input type="password" class="form-control example2" id="memberPwd" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
+                <input type="password" class="form-control example2" id="Pwd" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
                 <div class="form-group">
                     <div class="pwstrength_viewport_progress"></div>
                 </div>
@@ -62,13 +62,12 @@
             <input type="text" class="form-control" id="managerPhone" name="managerPhone" placeholder="휴대전화 번호를 입력하세요" data-mask="(000) 0000-0000">
         </div>
 
-        <select class="select2_demo_3 form-control m-b" name="branchName" id="branch" required>
-
+        <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
         </select>
         <br>
 
         <div class="form-group">
-            <input type="email"  name="" class="form-control" placeholder="이메일을 입력하세요">
+            <input type="email"  name="managerEmail" class="form-control" placeholder="이메일을 입력하세요">
         </div>
 
         <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>

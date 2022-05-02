@@ -229,7 +229,7 @@ public class FranchiseController {
 
         franchiseService.registManager(manager);
 
-        mv.setViewName("redirect:/franchise/registManager");
+        mv.setViewName("redirect:/franchise/manager");
 
         return mv;
     }

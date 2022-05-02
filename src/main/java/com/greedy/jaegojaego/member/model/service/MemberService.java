@@ -1,8 +1,11 @@
 package com.greedy.jaegojaego.member.model.service;
 
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
+import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
+import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
+import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
 import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
@@ -29,16 +32,18 @@ public class MemberService {
     private final MemberRoleRepository memberRoleRepository;
     private final CompanyAccountRepository companyAccountRepository;
     private final FranchiseRepository franchiseRepository;
+    private final FranchiseAccountRepository franchiseAccountRepository;
     private final ModelMapper modelMappper;
 
     @Autowired
     public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository,
-                         MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, FranchiseRepository franchiseRepository, ModelMapper modelMappper) {
+                         MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, FranchiseRepository franchiseRepository, FranchiseAccountRepository franchiseAccountRepository, ModelMapper modelMappper) {
         this.memberRepository = memberRepository;
         this.departmentRepository = departmentRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.companyAccountRepository = companyAccountRepository;
         this.franchiseRepository = franchiseRepository;
+        this.franchiseAccountRepository = franchiseAccountRepository;
         this.modelMappper = modelMappper;
     }
 
@@ -122,7 +127,6 @@ public class MemberService {
         if(customUser.getMemberDivision().equals("본사")) {
 
             CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNoAndMemberDivision(memberNo, memberDivision);
-            System.out.println("companyAccount = " + companyAccount);
 
             CompanyAccountDTO loginMember = modelMappper.map(companyAccount, CompanyAccountDTO.class);
 
@@ -138,7 +142,11 @@ public class MemberService {
 
         } else {
 
-            return null;
+            FranchiseAccount franchiseAccount = franchiseAccountRepository.findAllByMemberNoAndMemberDivisionAndOfficeDivision(memberNo, memberDivision, officeDivision);
+
+            FranchiseAccountDTO loginMember = modelMappper.map(franchiseAccount, FranchiseAccountDTO.class);
+
+            return loginMember;
         }
     }
 

@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FranchiseAccountRepository extends JpaRepository<FranchiseAccount, Integer> {
 
+    FranchiseAccount findAllByMemberNoAndMemberDivisionAndOfficeDivision
+            (Integer memberNo, String memberDivision, String officeDivision);
 }

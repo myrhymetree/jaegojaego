@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.franchise.entity;
 
+import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
 
@@ -10,6 +11,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @SequenceGenerator(
         name = "FRANCHISE_INFO_SEQ_GENERATOR",
         sequenceName = "FRANCHISE_REPRESENTATIVE_NO",
@@ -54,7 +57,7 @@ public class FranchiseInfo extends Member {
 
     @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member supervisor;
+    private CompanyAccount supervisor;
 
     @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER_NO",insertable = false,  updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -71,8 +74,7 @@ public class FranchiseInfo extends Member {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
     private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false, updatable = false)
+    @OneToMany(mappedBy = "franchiseInfo")
     private List<FranchiseAccount> franchiseAccounts;
 
     @Transient

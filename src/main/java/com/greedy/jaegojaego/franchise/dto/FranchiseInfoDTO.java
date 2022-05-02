@@ -1,6 +1,8 @@
 package com.greedy.jaegojaego.franchise.dto;
 
+import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +30,7 @@ public class FranchiseInfoDTO extends MemberDTO {
     private Integer writedMemberNo;
     private String phone;
     private Integer headOfficeWritedMemberNo;
-    private MemberDTO supervisor;
+    private CompanyAccountDTO supervisor;
     private MemberDTO writedMember;
     private List<FranchiseAttachmentFileDTO> franchiseAttachmentFiles;
     private List<FranchiseContractUpdatedRecordDTO> franchiseContractUpdatedRecords;

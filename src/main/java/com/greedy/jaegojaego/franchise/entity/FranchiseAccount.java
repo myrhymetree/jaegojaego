@@ -27,4 +27,8 @@ public class FranchiseAccount extends Member {
     @Column(name = "REPRESENTATIVE_NO")
     private Integer representativeNo;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "REPRESENTATIVE_NO", insertable = false, updatable = false)
+    private FranchiseInfo franchiseInfo;
+
 }

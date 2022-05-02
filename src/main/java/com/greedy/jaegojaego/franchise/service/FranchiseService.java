@@ -14,9 +14,11 @@ import com.greedy.jaegojaego.member.model.repository.MemberRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +30,16 @@ public class FranchiseService {
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseContractRepository franchiseContractRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, ModelMapper modelMapper) {
+    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseContractRepository franchiseContractRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.franchiseRepository = franchiseRepository;
         this.franchiseContractRepository = franchiseContractRepository;
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -65,6 +69,12 @@ public class FranchiseService {
     @Transactional
     public void registManager(FranchiseAccountDTO manager) {
 
+        System.out.println("manager = " + manager);
+        
+        manager.setMemberPwd(passwordEncoder.encode(manager.getMemberPwd()));
+        manager.setMemberCreatedDate(LocalDateTime.now());
+        manager.setMemberPwdInitStatus("Y");
+        manager.setMemberRemoveStatus("Y");
         manager.setOfficeDivision("직원");
         manager.setMemberDivision("가맹점");
 
@@ -73,7 +83,7 @@ public class FranchiseService {
         FranchiseAccount result = memberRepository.save(convertedManager);
 
         MemberRolePK memberRolePK = new MemberRolePK();
-        memberRolePK.setAuthorityCode(3);
+        memberRolePK.setAuthorityCode(4);
         memberRolePK.setMemberNo(result.getMemberNo());
         MemberRole memberRole = new MemberRole();
         memberRole.setMemberRolePK(memberRolePK);
