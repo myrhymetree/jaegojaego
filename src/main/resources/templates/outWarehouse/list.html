@@ -52,8 +52,27 @@
     <br>
 
     <div th:style="${'vertical-align:middle;'}">
-        <h4 th:style="${'float:left;'}">가맹점 발주 상태 "완료" 목록 조회</h4>
-        <button class="checkOrderListBtn btn btn-w-m btn-primary" th:style="${'float:left; margin-left:1%'}">조회</button>
+        <h4>가맹점 발주 상태 "완료" 목록 조회</h4>
+        <button class="checkOrderListBtn btn btn-w-m btn-primary">조회</button>
+    </div>
+
+<!--    <div class="modal inmodal fade" id="modal1" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">-->
+<!--        <div class="modal-dialog modal-lg">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="modalLabel">Ready to test</h5>-->
+<!--                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">x</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    test-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cancel</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 
     <br>
@@ -102,9 +121,15 @@
 <th:block th:replace="/common/footer.html"></th:block>
 
 <script>
+    const checkOrderListBtn = document.getElementsByClassName("checkOrderListBtn");
+
     function viewDetail(num) {
         let No = num;
         location.href="/outwarehouse/detail/" + num;
+    }
+
+    checkOrderListBtn.onclick = function() {
+        document.getElementById("moaModal").style.display = "block";
     }
 </script>
 </body>

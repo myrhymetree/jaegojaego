@@ -11,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ */
 /*
  * <pre>
  * Class : OutWarehouseController
@@ -76,6 +79,16 @@ public class OutWarehouseController {
 //        mv.addObject("itemListCnt", itemListCnt);
 //        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
 //        mv.setViewName("/outWarehouse/detail");
+//        return mv;
+//    }
+
+//    @GetMapping("/orderlist")
+//    public ModelAndView selectOrderList(ModelAndView mv) {
+//
+//        // 모든 발주 list 가져와서 담을 변수 만들고 mv에 담아서 화면에 보내준다.
+//
+//        mv.setViewName("redirect:/outWarehouse/list");
+//
 //        return mv;
 //    }
 
