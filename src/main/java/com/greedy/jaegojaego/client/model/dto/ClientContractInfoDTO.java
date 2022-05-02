@@ -19,7 +19,7 @@ public class ClientContractInfoDTO {
     }
 
     public int getClientContractInfoNo() {
-        return clientContractInfoNo;
+        return clientContractInfoNo; 
     }
 
     public void setClientContractInfoNo(int clientContractInfoNo) {
