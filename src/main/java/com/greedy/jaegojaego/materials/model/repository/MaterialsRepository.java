@@ -13,7 +13,8 @@ public interface MaterialsRepository extends JpaRepository<Materials, Integer> {
             "         FROM ITEM_INFO A" +
             "         JOIN FRANCHISE_ORDERABLE_ITEM B ON(A.ITEM_INFO_NO = B.ITEM_INFO_NO)" +
             "         JOIN MATERIAL_CATEGORY C ON(A.MATERIAL_CATEGORY_NO = C.MATERIAL_CATEGORY_NO)" +
-            "        WHERE ITEM_INFO_STATUS_YN = 'N'"
+            "        WHERE ITEM_INFO_STATUS_YN = 'N'" +
+            "        ORDER BY A.ITEM_INFO_NO ASC"
             , nativeQuery = true)
     List<Materials> findAllProductList();
 

@@ -205,30 +205,30 @@
                 <h4 class="modal-title">Modal title</h4>
                 <small>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
             </div>
-            <div class="modal-body">
-                <table class="table table-striped table-bordered table-hover dataTables-example" id="listArea">
-                    <thead>
-                        <tr>
-                            <th>자재 번호</th>
-                            <th>자재 품번</th>
-                            <th>자재 품명</th>
-                            <th>카테고리</th>
-                            <th>가공 유무</th>
-                            <th>판매가격</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="materials : ${materialsList}">
-                            <td th:text="${materials.itemInfoNo}"></td>
-                            <td th:text="${materials.itemSerialNo}"></td>
-                            <td th:text="${materials.itemInfoName}"></td>
-                            <td th:text="${materials.materialsCategory.materialCategoryName}"></td>
-                            <td th:text="${materials.subdivisionYN}"></td>
-                            <td th:text="${materials.itemPrice}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="modal-body" id="productList">
+<!--                <table class="table table-striped table-bordered table-hover dataTables-example" id="listArea">-->
+<!--                    <thead>-->
+<!--                        <tr>-->
+<!--                            <th>자재 번호</th>-->
+<!--                            <th>자재 품번</th>-->
+<!--                            <th>자재 품명</th>-->
+<!--                            <th>카테고리</th>-->
+<!--                            <th>가공 유무</th>-->
+<!--                            <th>판매가격</th>-->
+<!--                        </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                        <tr th:each="materials : ${materialsList}">-->
+<!--                            <td th:text="${materials.itemInfoNo}"></td>-->
+<!--                            <td th:text="${materials.itemSerialNo}"></td>-->
+<!--                            <td th:text="${materials.itemInfoName}"></td>-->
+<!--                            <td th:text="${materials.materialsCategory.materialCategoryName}"></td>-->
+<!--                            <td th:text="${materials.subdivisionYN}"></td>-->
+<!--                            <td th:text="${materials.itemPrice}"></td>-->
+<!--                        </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+           </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
@@ -241,12 +241,54 @@
 <th:blockpi th:replace="/common/footer.html"></th:blockpi>
 
 <script>
-    $("#myModal").addEventListener("click", function (){
+    $("#myModal").click(function (){
 
         $.ajax({
-            url : "/materials/productList",
+            url : "/materials/registList",
             type : "get",
-            success :
+            dataType: "json",
+            success : function (data, textStatus, xhr) {
+
+                console.log("에이젝스 실행 성공");
+                console.log(data);
+                let test = JSON.parse(data.materialsList);
+
+                console.log(test);
+
+                console.log("에이젝스 실행 성공");
+                $("#productList").empty();
+
+                    let body = '';
+                    console.log(data);
+                    body += '<table class="table table-striped table-bordered table-hover dataTables-example" id="listArea">'
+                    body += '<tr>'
+                    body += '<th>자재 번호</th>'
+                    body += '<th>자재 품번</th>'
+                    body += '<th>자재 품명</th>'
+                    body += '<th>카테고리</th>'
+                    body += '<th>가공 유무</th>'
+                    body += '<th>판매 가격</th>'
+                    body += '</tr>'
+                    $.each(test , function(i){
+
+                        body += '<tr>'
+                        body += '<td>' + test[i].itemInfoNo + '</td>'
+                        body += '<td>' + test[i].itemSerialNo + '</td>'
+                        body += '<td>' + test[i].itemInfoName + '</td>'
+                        body += '<td>' + test[i].materialsCategory.materialCategoryName + '</td>'
+                        body += '<td>' + test[i].subdivisionYN + '</td>'
+                        body += '<td>' + test[i].itemPrice + '</td>'
+                        body += '</tr>'
+                    });
+
+                        body += '</table>'
+
+                    $("#productList").append(body);
+
+            },
+            error: function (data) {
+                console.log("error 잘못");
+            }
         });
     });
 
