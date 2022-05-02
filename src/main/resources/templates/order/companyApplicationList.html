@@ -66,12 +66,19 @@
     </div>
 
     <script>
-        document.getElementById("company-order-output").onclick = function() {
 
-            let companyOrderHistoryNo = this.parentNode.children[1].value;
-            let clientNo = this.parentNode.children[2].value;
+        const $companyOrderOutputBtn = document.querySelectorAll('#company-order-output');
 
-            location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
+        for(let i = 0; i < $companyOrderOutputBtn.length; i++) {
+
+            $companyOrderOutputBtn[i].onclick = function() {
+
+                let companyOrderHistoryNo = this.parentNode.children[1].value;
+                let clientNo = this.parentNode.children[2].value;
+
+                location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
+
+            }
 
         }
     </script>

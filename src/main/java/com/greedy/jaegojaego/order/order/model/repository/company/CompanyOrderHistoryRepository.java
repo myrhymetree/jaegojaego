@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompanyOrderHistoryRepository extends JpaRepository<CompanyOrderHistory, Integer> {
 
-    @Query(value = "SELECT A.COMPANY_ORDER_HISTORY_NO " +
-            "         FROM COMPANY_ORDER_HISTORY A " +
-            "        WHERE ROWNUM < 2 " +
-            "        ORDER BY A.COMPANY_ORDER_HISTORY_NO DESC", nativeQuery = true)
+//    @Query(value = "SELECT A.COMPANY_ORDER_HISTORY_NO " +
+//            "         FROM COMPANY_ORDER_HISTORY A " +
+//            "        WHERE ROWNUM < 2" +
+//            "        ORDER BY 1 DESC", nativeQuery = true)
+    @Query(value = "SELECT COMPANY_ORDER_HISTORY_NO.CURRVAL " +
+            "         FROM DUAL ", nativeQuery = true)
     int selectRecentHistoryNo();
 }
