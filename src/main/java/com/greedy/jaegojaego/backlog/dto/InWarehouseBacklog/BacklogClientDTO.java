@@ -1,24 +1,12 @@
-package com.greedy.jaegojaego.backlog.entity;
+package com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity(name = "BacklogClientEntity")
-@Table(name = "CLIENT")
-public class BacklogClient {
-
-    @Id
-    @Column(name = "CLIENT_NO")
+public class BacklogClientDTO {
     private int clientNo;
-
-    @Column(name = "CLIENT_NAME")
     private String clientName;
 
-    public BacklogClient() {}
+    public BacklogClientDTO() {}
 
-    public BacklogClient(int clientNo, String clientName) {
+    public BacklogClientDTO(int clientNo, String clientName) {
         this.clientNo = clientNo;
         this.clientName = clientName;
     }
@@ -41,7 +29,7 @@ public class BacklogClient {
 
     @Override
     public String toString() {
-        return "BacklogClient{" +
+        return "BacklogClientDTO{" +
                 "clientNo=" + clientNo +
                 ", clientName='" + clientName + '\'' +
                 '}';

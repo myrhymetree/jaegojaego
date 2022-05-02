@@ -160,66 +160,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="gradeX">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>마계커피</td>
-                                    <td class="center">2022.04.05</td>
-                                    <td class="center">200</td>
-                                </tr>
-                                <tr class="gradeC">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>인도커피</td>
-                                    <td class="center">2022.03.28</td>
-                                    <td class="center">100</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>포항커피</td>
-                                    <td class="center">2022.03.24</td>
-                                    <td class="center">150</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>지로커피</td>
-                                    <td class="center">2022.03.20</td>
-                                    <td class="center">350</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>두둣커피</td>
-                                    <td class="center">2022.03.15</td>
-                                    <td class="center">400</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>브루커피</td>
-                                    <td class="center">2022.03.10</td>
-                                    <td class="center">100</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>FN-DK-1001-1</td>
-                                    <td>지로스팅 원두 1kg</td>
-                                    <td>브루커피</td>
-                                    <td class="center">2022.03.10</td>
-                                    <td class="center">100</td>
-                                </tr>
+                                <!-- if) 입고 처리 상태명이 = '입고 완료'인 것만!
+                                     if) List라서 이 안에서 또 반복문 돌려야함! -->
+                                    <tr th:each="inbacklog : ${ inWarehouseBacklogList }">
+<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogItemWarehouseList[0].itemInfoNo.itemInfoItemSerialNo }"></td>-->
+<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogItemWarehouseList[0].itemInfoNo.itemInfoName }"></td>-->
+<!--                                        <td th:text="${ inbacklog.inWarehouseNo.clientNo.clientName }"></td>-->
+<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogInWarehouseHistoryList[0].inWarehouseStatusHistoryDate }"></td>-->
+<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogInWarehouseHistoryList[0].inWarehouseStatusAmount }"></td>-->
+                                    </tr>
                                 </tbody>
-
-<!--                                <tfoot> 뭔지모르겠지만 일단 놔둠-->
-<!--                                <tr>-->
-<!--                                    <th>Rendering engine</th>-->
-<!--                                    <th>Browser</th>-->
-<!--                                    <th>Platform(s)</th>-->
-<!--                                    <th>Engine version</th>-->
-<!--                                    <th>CSS grade</th>-->
-<!--                                </tr>-->
-<!--                                </tfoot>-->
                             </table>
                         </div>
 

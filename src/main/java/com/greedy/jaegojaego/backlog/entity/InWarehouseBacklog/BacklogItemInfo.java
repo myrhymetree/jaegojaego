@@ -1,18 +1,30 @@
-package com.greedy.jaegojaego.backlog.dto;
+package com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog;
 
-public class BacklogItemInfoDTO {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity(name = "BacklogItemInfoEntity")
+@Table(name = "ITEM_INFO")
+public class BacklogItemInfo {
+
+    @Id
+    @Column(name = "ITEM_INFO_NO")
     private int itemInfoNo;
+
+    @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
+
+    @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
     private String itemInfoItemSerialNo;
-    private String subdivisionYN; //자재가공유무
 
-    public BacklogItemInfoDTO() {}
+    public BacklogItemInfo() {}
 
-    public BacklogItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, String subdivisionYN) {
+    public BacklogItemInfo(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
-        this.subdivisionYN = subdivisionYN;
     }
 
     public int getItemInfoNo() {
@@ -39,21 +51,12 @@ public class BacklogItemInfoDTO {
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
     }
 
-    public String getSubdivisionYN() {
-        return subdivisionYN;
-    }
-
-    public void setSubdivisionYN(String subdivisionYN) {
-        this.subdivisionYN = subdivisionYN;
-    }
-
     @Override
     public String toString() {
-        return "BacklogItemInfoDTO{" +
+        return "BacklogItemInfo{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
-                ", subdivisionYN='" + subdivisionYN + '\'' +
                 '}';
     }
 }

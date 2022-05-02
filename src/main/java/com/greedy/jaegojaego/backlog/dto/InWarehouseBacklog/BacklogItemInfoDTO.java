@@ -1,34 +1,16 @@
-package com.greedy.jaegojaego.backlog.entity;
+package com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity(name = "BacklogItemInfoEntity")
-@Table(name = "ITEM_INFO")
-public class BacklogItemInfo {
-
-    @Id
-    @Column(name = "ITEM_INFO_NO")
+public class BacklogItemInfoDTO {
     private int itemInfoNo;
-
-    @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
-
-    @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
     private String itemInfoItemSerialNo;
 
-    @Column(name = "SUBDIVISION_YN")
-    private String subdivisionYN;
+    public BacklogItemInfoDTO() {}
 
-    public BacklogItemInfo() {}
-
-    public BacklogItemInfo(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, String subdivisionYN) {
+    public BacklogItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
-        this.subdivisionYN = subdivisionYN;
     }
 
     public int getItemInfoNo() {
@@ -55,21 +37,12 @@ public class BacklogItemInfo {
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
     }
 
-    public String getSubdivisionYN() {
-        return subdivisionYN;
-    }
-
-    public void setSubdivisionYN(String subdivisionYN) {
-        this.subdivisionYN = subdivisionYN;
-    }
-
     @Override
     public String toString() {
-        return "BacklogItemInfo{" +
+        return "BacklogItemInfoDTO{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemInfoItemSerialNo='" + itemInfoItemSerialNo + '\'' +
-                ", subdivisionYN='" + subdivisionYN + '\'' +
                 '}';
     }
 }
