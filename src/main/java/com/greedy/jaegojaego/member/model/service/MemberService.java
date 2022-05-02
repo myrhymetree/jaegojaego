@@ -1,5 +1,9 @@
 package com.greedy.jaegojaego.member.model.service;
 
+import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
+import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
+import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
+import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
@@ -24,14 +28,17 @@ public class MemberService {
     private final DepartmentRepository departmentRepository;
     private final MemberRoleRepository memberRoleRepository;
     private final CompanyAccountRepository companyAccountRepository;
+    private final FranchiseRepository franchiseRepository;
     private final ModelMapper modelMappper;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository, MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, ModelMapper modelMappper) {
+    public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository,
+                         MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, FranchiseRepository franchiseRepository, ModelMapper modelMappper) {
         this.memberRepository = memberRepository;
         this.departmentRepository = departmentRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.companyAccountRepository = companyAccountRepository;
+        this.franchiseRepository = franchiseRepository;
         this.modelMappper = modelMappper;
     }
 
@@ -106,13 +113,33 @@ public class MemberService {
         return count;
     }
 
-    public CompanyAccountDTO findLoginMemberInfo(Integer memberNo) {
+    public Object findLoginMemberInfo(CustomUser customUser) {
 
-        CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNo(memberNo);
+        Integer memberNo = customUser.getMemberNo();
+        String memberDivision = customUser.getMemberDivision();
+        String officeDivision = customUser.getOfficeDivision();
 
-        CompanyAccountDTO loginMember = modelMappper.map(companyAccount, CompanyAccountDTO.class);
+        if(customUser.getMemberDivision().equals("본사")) {
 
-        return loginMember;
+            CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNoAndMemberDivision(memberNo, memberDivision);
+            System.out.println("companyAccount = " + companyAccount);
+
+            CompanyAccountDTO loginMember = modelMappper.map(companyAccount, CompanyAccountDTO.class);
+
+            return loginMember;
+
+        } else if(memberDivision.equals("가맹점") && officeDivision.equals("대표자") ) {
+
+            FranchiseInfo franchiseInfo = franchiseRepository.findAllByMemberNoAndMemberDivisionAndOfficeDivision(memberNo, memberDivision, officeDivision);
+
+            FranchiseInfoDTO loginMember = modelMappper.map(franchiseInfo, FranchiseInfoDTO.class);
+
+            return loginMember;
+
+        } else {
+
+            return null;
+        }
     }
 
     public void updateLoginMemberInfo(CompanyAccountDTO member) {

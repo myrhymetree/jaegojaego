@@ -5,11 +5,12 @@
 
                 console.log("모달정보");
 
-                console.log(data.memberEmail)
+                console.log(data)
+                console.log(data.memberCellPhone)
 
                 $("#memberCellPhone2").val(data.memberCellPhone);
                 $("#officePhoneNumber2").val(data.officePhoneNumber);
-                $("#memberEmail2").text(data.memberEmail);
+                // $("#memberEmail2").text(data.memberEmail);
 
             },
             error:function (xhr) {

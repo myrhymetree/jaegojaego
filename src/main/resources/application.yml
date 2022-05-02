@@ -56,5 +56,6 @@ com:
   greedy:
     jaegojaego:
       upload:
-        path: C:\dev\jaegojaegoUpload
+        path: C:\Users\qandz\Documents\jaegojaego\src\main\resources\static\uploadFiles
+
 

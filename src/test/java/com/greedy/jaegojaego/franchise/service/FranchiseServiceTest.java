@@ -7,7 +7,11 @@ import com.greedy.jaegojaego.config.JpaConfiguration;
 import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseAttachmentFile;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
+import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
 import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
+import com.greedy.jaegojaego.member.model.entity.MemberRole;
+import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
+import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +36,12 @@ class FranchiseServiceTest {
     private FranchiseRepository franchiseRepository;
 
     @Autowired
+    private FranchiseAccountRepository franchiseAccountRepository;
+
+    @Autowired
+    private MemberRoleRepository memberRoleRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -42,14 +53,14 @@ class FranchiseServiceTest {
     }
 
     @Test
-    public void 계정생성() {
+    @Transactional
+    public void 가맹점_대표_계정_생성() {
 
         FranchiseInfo franchiseInfo = new FranchiseInfo();
         franchiseInfo.setMemberId("gangnam333");
         franchiseInfo.setMemberPwd(passwordEncoder.encode("0000"));
         franchiseInfo.setMemberPwdInitStatus("Y");
         franchiseInfo.setMemberCreatedDate(LocalDateTime.now());
-        franchiseInfo.setMemberRemoveStatus("Y");
         franchiseInfo.setMemberRemoveStatus("Y");
         franchiseInfo.setMemberDivision("가맹점");
         franchiseInfo.setOfficeDivision("대표자");
@@ -94,5 +105,39 @@ class FranchiseServiceTest {
         franchiseInfo.setFranchiseAttachmentFiles(franchiseAttachmentFiles);
 
         franchiseRepository.save(franchiseInfo);
+    }
+
+    @Test
+    @Transactional
+    public void 가맹점_직원_계정_생성() {
+
+        FranchiseAccount franchiseAccount = new FranchiseAccount();
+
+        franchiseAccount.setMemberId("undercafe");
+        franchiseAccount.setMemberPwd(passwordEncoder.encode("0000"));
+        franchiseAccount.setMemberPwdInitStatus("Y");
+        franchiseAccount.setMemberCreatedDate(LocalDateTime.now());
+        franchiseAccount.setMemberRemoveStatus("Y");
+        franchiseAccount.setMemberDivision("가맹점");
+        franchiseAccount.setOfficeDivision("직원");
+
+        franchiseAccount.setManagerName("김성준");
+        franchiseAccount.setManagerPhone("010-0000-0000");
+        franchiseAccount.setManagerEmail("abc@gmail.com");
+        franchiseAccount.setRepresentativeNo(1);
+
+        FranchiseAccount account = franchiseAccountRepository.save(franchiseAccount);
+
+        MemberRolePK memberRolePK = new MemberRolePK();
+        memberRolePK.setAuthorityCode(3);
+        memberRolePK.setMemberNo(account.getMemberNo());
+        MemberRole memberRole = new MemberRole();
+        memberRole.setMemberRolePK(memberRolePK);
+
+        MemberRole role = memberRoleRepository.save(memberRole);
+
+        assertEquals(account.getManagerName(), franchiseAccount.getManagerName());
+        assertEquals(role.getMemberRolePK().getAuthorityCode(), 3);
+        assertEquals(role.getAuthority().getAuthorityCode() , account.getMemberNo());
     }
 }

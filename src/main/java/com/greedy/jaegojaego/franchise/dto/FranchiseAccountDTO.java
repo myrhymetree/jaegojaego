@@ -12,14 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class FranchiseAccountDTO extends MemberDTO {
 
-    private Integer managerNo;
-
     private String menagerName;
-
     private String menagerPhone;
-
     private String managerEmail;
-
     private Integer representativeNo;
 
 }

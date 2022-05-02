@@ -1,7 +1,6 @@
 package com.greedy.jaegojaego.member.model.repository;
 
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
-import com.greedy.jaegojaego.member.model.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +13,5 @@ public interface CompanyAccountRepository extends JpaRepository<CompanyAccount, 
 
     Integer countAllBy();
 
-    CompanyAccount findAllByMemberNo(Integer memberNo);
+    CompanyAccount findAllByMemberNoAndMemberDivision(Integer memberNo, String memberDivision);
 }

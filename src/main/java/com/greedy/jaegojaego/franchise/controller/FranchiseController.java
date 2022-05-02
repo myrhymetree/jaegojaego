@@ -1,6 +1,7 @@
 package com.greedy.jaegojaego.franchise.controller;
 
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
+import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseAttachmentFileDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseContractUpdatedRecordDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.Banner;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,91 +62,6 @@ public class FranchiseController {
         return mv;
     }
 
-//    @PostMapping("/regist")
-//    public ModelAndView registMember(ModelAndView mv, FranchiseInfoDTO franchise,
-//                                     @RequestParam  MultipartFile bankAccountFile, @RequestParam  MultipartFile businessRegistrationFile, @RequestParam  MultipartFile contractFile) {
-//
-//        franchise.setMemberPwd(passwordEncoder.encode(franchise.getMemberPwd()));
-//        franchise.setMemberCreatedDate(LocalDateTime.now());
-//        franchise.setMemberPwdInitStatus("Y");
-//        franchise.setMemberRemoveStatus("Y");
-//        franchise.setMemberDivision("가맹점");
-//
-//        /* 업로드 된 파일 */
-//        FranchiseAttachmentFileDTO bankAccountFileDTO = new FranchiseAttachmentFileDTO();
-//        FranchiseAttachmentFileDTO businessRegistrationFileDTO = new FranchiseAttachmentFileDTO();
-//        FranchiseAttachmentFileDTO contractFileDTO = new FranchiseAttachmentFileDTO();
-//
-//        String bankAccountOriginalName = bankAccountFile.getOriginalFilename();
-//        String businessRegistrationFileOriginalName = businessRegistrationFile.getOriginalFilename();
-//        String contractFileOriginalName = contractFile.getOriginalFilename();
-//
-//        String bankAccountfileName = bankAccountOriginalName.substring(bankAccountOriginalName.lastIndexOf("\\" + 1));
-//        String businessRegistrationfileName = businessRegistrationFileOriginalName.substring(bankAccountOriginalName.lastIndexOf("\\" + 1));
-//        String contractfileName = contractFileOriginalName.substring(bankAccountOriginalName.lastIndexOf("\\" + 1));
-//
-//        log.info("bankAccountfileName : " + bankAccountfileName );
-//        log.info("businessRegistrationfileName : " + businessRegistrationfileName );
-//        log.info("contractfileName : " + contractfileName );
-//
-//        //날짜 폴더 생성
-//        String folederPath = makeFolder();
-//
-//        //UUID
-//        String uuid = UUID.randomUUID().toString();
-//
-//        //저장할 파일 이름 중간에 "-"를 이용해서 구분
-//        String bankAccountSaveName = uploadPath + File.separator + folederPath + File.separator + uuid + "_" + bankAccountfileName;
-//        String businessRegistrationSaveName = uploadPath + File.separator + folederPath + File.separator + uuid + "_" + businessRegistrationfileName;
-//        String contractSaveName = uploadPath + File.separator + folederPath + File.separator + uuid + "_" + contractfileName;
-//
-//        Path bankAccountSavePath = Paths.get(bankAccountSaveName);
-//        Path businessRegistrationSavePath = Paths.get(businessRegistrationSaveName);
-//        Path contractSavePath = Paths.get(contractSaveName);
-//
-//        /* file 정보 저장하여 DTO에 insert */
-//        bankAccountFileDTO.setAttachmentFileOriginalName(bankAccountOriginalName);
-//        bankAccountFileDTO.setAttachmentFileChangedName(bankAccountSaveName);
-//        bankAccountFileDTO.setAttachmentFileURL(folederPath);
-//        bankAccountFileDTO.setAttachmentFileDeleteYn("Y");
-//        bankAccountFileDTO.setAttachmentFileCategoryNo(2);
-//
-//        businessRegistrationFileDTO.setAttachmentFileOriginalName(businessRegistrationFileOriginalName);
-//        businessRegistrationFileDTO.setAttachmentFileChangedName(businessRegistrationSaveName);
-//        businessRegistrationFileDTO.setAttachmentFileURL(folederPath);
-//        businessRegistrationFileDTO.setAttachmentFileDeleteYn("Y");
-//        businessRegistrationFileDTO.setAttachmentFileCategoryNo(3);
-//
-//        contractFileDTO.setAttachmentFileOriginalName(contractFileOriginalName);
-//        contractFileDTO.setAttachmentFileChangedName(contractSaveName);
-//        contractFileDTO.setAttachmentFileURL(folederPath);
-//        contractFileDTO.setAttachmentFileDeleteYn("Y");
-//        contractFileDTO.setAttachmentFileCategoryNo(1);
-//
-//        try {
-//            bankAccountFile.transferTo(bankAccountSavePath);
-//            businessRegistrationFile.transferTo(businessRegistrationSavePath);
-//            contractFile.transferTo(contractSavePath);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        List<FranchiseAttachmentFileDTO> attachmentFiles = new ArrayList<>();
-//
-//        attachmentFiles.add(0, bankAccountFileDTO);
-//        attachmentFiles.add(1, bankAccountFileDTO);
-//        attachmentFiles.add(2, bankAccountFileDTO);
-//
-//        franchise.setFranchiseAttachmentFiles(attachmentFiles);
-//
-//        System.out.println("franchise" + franchise);
-//
-//        franchiseService.registFranchise(franchise);
-//
-//        mv.setViewName("redirect:/franchise/regist");
-//
-//        return mv;
-//    }
 
     @PostMapping("/regist")
     public ModelAndView registMember(ModelAndView mv,
@@ -158,11 +75,9 @@ public class FranchiseController {
 
         franchise.setFranchiseContractStartedDate(startDate);
         franchise.setFranchiseContractExpiredDate(expiredDate);
+        franchise.setOfficeDivision("대표자");
 
         System.out.println("startDate = " + startDate);
-
-        System.out.println(franchise.getFranchiseContractStartedDate());
-        System.out.println(franchise.getFranchiseContractExpiredDate());
 
         Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
 
@@ -211,6 +126,7 @@ public class FranchiseController {
             bankAccountFileDTO.setAttachmentFileChangedName(bankAccountSaveName);
             bankAccountFileDTO.setAttachmentFileURL(folederPath);
             bankAccountFileDTO.setAttachmentFileDeleteYn("Y");
+            bankAccountFileDTO.setAttachmentFileCategoryNo(2);
 
             try {
                 bankAccountFile.transferTo(bankAccountSavePath);
@@ -300,6 +216,24 @@ public class FranchiseController {
         return mv;
     }
 
+    @GetMapping("/manager")
+    public ModelAndView sendRegistManagerView(ModelAndView mv) {
+
+        mv.setViewName("/franchise/registManager");
+
+        return mv;
+    }
+
+    @PostMapping("/manager")
+    public ModelAndView reistManager(ModelAndView mv, FranchiseAccountDTO manager) {
+
+        franchiseService.registManager(manager);
+
+        mv.setViewName("redirect:/franchise/registManager");
+
+        return mv;
+    }
+
     private String makeFolder() {
 
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -343,5 +277,12 @@ public class FranchiseController {
         boolean status =  memberService.duplicationCheckId(memberId);
 
         return status;
+    }
+
+    @GetMapping(value = "/branch", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<FranchiseInfoDTO> findAllFranchise() {
+
+        return franchiseService.findAllFranchise();
     }
 }
