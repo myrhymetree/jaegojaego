@@ -345,7 +345,6 @@ public class OrderController {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
         List<FranchiseOrderListDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision(), customUser.getOfficeDivision());
-        List<FranchiseOrderListDTO> lastFranchiseOrderList = new ArrayList<>();
 
         mv.addObject("franchiseOrderList", franchiseOrderList);
         mv.addObject("member", customUser);

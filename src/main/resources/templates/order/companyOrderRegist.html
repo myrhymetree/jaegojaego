@@ -34,6 +34,8 @@
             margin-top: 30px;
             background-color: rgba(169, 169, 169, 0.4);
             height: 300px;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
 
         #ui-id-1 {
@@ -87,7 +89,7 @@
                     </table>
                 </div>
             </form>
-            <button class="btn btn-warning btn-sm demo3" style="margin-top: 20px; margin-left: 1180px; width: 65px; height: 30px">발주</button>
+            <button class="btn btn-warning btn-sm demo3" style="margin-top: 20px; margin-left: 1570px; width: 65px; height: 30px">발주</button>
         </div>
     </div>
 
@@ -221,8 +223,8 @@
                     document.getElementById('searchItems').value = "";
                 }
            }).autocomplete('instance')._renderItem = function(ul, item) {
-               return $('<li style="list-style: none; margin-left: 500px;" id="autocomplete-li">')
-                   .append('<div style="background-color: white; width: 800px; margin-left: 180px">' + item.value.itemInfoName + '</div>')
+               return $('<li style="list-style: none; margin-left: 560px;" id="autocomplete-li">')
+                   .append('<div style="background-color: white; width: 800px; margin-left: 500px">' + item.value.itemInfoName + '</div>')
                    .appendTo(ul);
            };
         });

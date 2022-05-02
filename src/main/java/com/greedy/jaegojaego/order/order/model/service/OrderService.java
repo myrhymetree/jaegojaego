@@ -368,14 +368,14 @@ public class OrderService {
 
                 OrderFranchiseInfo orderFranchiseInfo = orderFranchiseInfoRepository.findById(memberNo).get();
 
-                franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(memberNo);
+                franchiseOrderList = franchiseOrderRepository.findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(memberNo);
 
                 franchiseOrderListDTOList = setFranchiseOrderListByFranchise(franchiseOrderList, orderFranchiseInfo);
             } else {
 
                 OrderFranchiseAccount orderFranchiseAccount = orderFranchiseAccountRepository.findById(memberNo).get();
 
-                franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(orderFranchiseAccount.getFranchiseInfo().getFranchiseRepresentativeNo());
+                franchiseOrderList = franchiseOrderRepository.findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(orderFranchiseAccount.getFranchiseInfo().getFranchiseRepresentativeNo());
 
                 franchiseOrderListDTOList = setFranchiseOrderListByFranchise(franchiseOrderList, orderFranchiseAccount.getFranchiseInfo(), orderFranchiseAccount);
             }

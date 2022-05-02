@@ -13,4 +13,6 @@ public interface FranchiseOrderRepository extends JpaRepository<FranchiseOrder, 
     @Query(value = "SELECT FRANCHISE_ORDER_NO.CURRVAL " +
             "         FROM DUAL ", nativeQuery = true)
     int selectSequenceNo();
+
+    List<FranchiseOrder> findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(int memberNo);
 }
