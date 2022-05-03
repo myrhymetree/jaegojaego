@@ -354,8 +354,6 @@ public class OrderService {
 
             }
 
-            franchiseNoList.forEach(System.out::println);
-
             franchiseOrderList = franchiseOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "franchiseOrderNo"));
 
             franchiseOrderListDTOList = setFranchiseOrderList(franchiseOrderList, franchiseNoList, franchiseAccountList);
@@ -370,14 +368,43 @@ public class OrderService {
 
                 franchiseOrderList = franchiseOrderRepository.findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(memberNo);
 
-                franchiseOrderListDTOList = setFranchiseOrderListByFranchise(franchiseOrderList, orderFranchiseInfo);
+                List<OrderFranchiseAccount> orderFranchiseAccounts = orderFranchiseAccountRepository.findByFranchiseInfo_FranchiseRepresentativeNo(orderFranchiseInfo.getFranchiseRepresentativeNo());
+
+                for(int i = 0; i < orderFranchiseAccounts.size(); i++) {
+
+                    List<FranchiseOrder> accountOrderList = franchiseOrderRepository.findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(orderFranchiseAccounts.get(i).getFranchiseManagerNo());
+
+                    for(int j = 0; j < accountOrderList.size(); j++) {
+
+                        franchiseOrderList.add(accountOrderList.get(j));
+
+                    }
+
+                }
+
+                franchiseOrderListDTOList = setFranchiseOrderListByFranchise(franchiseOrderList, orderFranchiseInfo, orderFranchiseAccounts);
             } else {
 
                 OrderFranchiseAccount orderFranchiseAccount = orderFranchiseAccountRepository.findById(memberNo).get();
 
+                OrderFranchiseInfo orderFranchiseInfo = orderFranchiseInfoRepository.findById(orderFranchiseAccount.getFranchiseInfo().getFranchiseRepresentativeNo()).get();
+
+                List<OrderFranchiseAccount> orderFranchiseAccounts = orderFranchiseAccountRepository.findByFranchiseInfo_FranchiseRepresentativeNo(orderFranchiseInfo.getFranchiseRepresentativeNo());
+
                 franchiseOrderList = franchiseOrderRepository.findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(orderFranchiseAccount.getFranchiseInfo().getFranchiseRepresentativeNo());
 
-                franchiseOrderListDTOList = setFranchiseOrderListByFranchise(franchiseOrderList, orderFranchiseAccount.getFranchiseInfo(), orderFranchiseAccount);
+                for(int i = 0; i < orderFranchiseAccounts.size(); i++) {
+
+                    List<FranchiseOrder> accountOrderList = franchiseOrderRepository.findByMember_MemberNoOrderByFranchiseOrderApplicationDateDesc(orderFranchiseAccounts.get(i).getFranchiseManagerNo());
+
+                    for(int j = 0; j < accountOrderList.size(); j++) {
+
+                        franchiseOrderList.add(accountOrderList.get(j));
+
+                    }
+                }
+
+                franchiseOrderListDTOList = setFranchiseOrderListByFranchise(franchiseOrderList, orderFranchiseAccount.getFranchiseInfo(), orderFranchiseAccounts);
             }
 
         }
@@ -730,58 +757,75 @@ public class OrderService {
         return franchiseOrderListDTOList;
     }
 
-    private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo) {
+//    private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo) {
+//
+//        List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();
+//
+//        List<FranchiseOrderDTO> orderList = franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
+//        OrderFranchiseInfoDTO orderFranchiseInfoDTO = modelMapper.map(orderFranchiseInfo, OrderFranchiseInfoDTO.class);
+//
+//        for(int i = 0; i < orderList.size(); i++) {
+//
+//            FranchiseOrderListDTO franchiseOrderListDTO = new FranchiseOrderListDTO();
+//            franchiseOrderListDTO.setFranchiseOrderItemList(orderList.get(i).getFranchiseOrderItemList());
+//            franchiseOrderListDTO.setOrderFranchiseInfo(orderFranchiseInfoDTO);
+//            franchiseOrderListDTO.setFranchiseOrderNo(orderList.get(i).getFranchiseOrderNo());
+//            franchiseOrderListDTO.setFranchiseOrderOrderNumber(orderList.get(i).getFranchiseOrderOrderNumber());
+//            franchiseOrderListDTO.setFranchiseOrderStatusHistoryList(orderList.get(i).getFranchiseOrderStatusHistoryList());
+//            franchiseOrderListDTO.setFranchiseOrderStatus(orderList.get(i).getFranchiseOrderStatus());
+//            franchiseOrderListDTO.setFranchiseOrderApplicationDate(orderList.get(i).getFranchiseOrderApplicationDate());
+//            franchiseOrderListDTO.setMember(orderList.get(i).getMember());
+//
+//            if(franchiseOrderList.get(i).getFranchiseOrderStatusDate() != null) {
+//
+//                franchiseOrderListDTO.setFranchiseOrderStatusDate(orderList.get(i).getFranchiseOrderStatusDate());
+//                franchiseOrderListDTO.setFranchiseOrderStatusRejectionContent(orderList.get(i).getFranchiseOrderStatusRejectionContent());
+//            }
+//
+//            franchiseOrderListDTOList.add(franchiseOrderListDTO);
+//
+//        }
+//
+//        return franchiseOrderListDTOList;
+//    }
+
+    private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo, List<OrderFranchiseAccount> orderFranchiseAccountList) {
 
         List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();
 
         List<FranchiseOrderDTO> orderList = franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
         OrderFranchiseInfoDTO orderFranchiseInfoDTO = modelMapper.map(orderFranchiseInfo, OrderFranchiseInfoDTO.class);
+        List<OrderFranchiseAccountDTO> orderFranchiseAccounts = orderFranchiseAccountList.stream().map(orderFranchiseAccount -> modelMapper.map(orderFranchiseAccount, OrderFranchiseAccountDTO.class)).collect(Collectors.toList());
 
         for(int i = 0; i < orderList.size(); i++) {
 
             FranchiseOrderListDTO franchiseOrderListDTO = new FranchiseOrderListDTO();
             franchiseOrderListDTO.setFranchiseOrderItemList(orderList.get(i).getFranchiseOrderItemList());
-            franchiseOrderListDTO.setOrderFranchiseInfo(orderFranchiseInfoDTO);
             franchiseOrderListDTO.setFranchiseOrderNo(orderList.get(i).getFranchiseOrderNo());
             franchiseOrderListDTO.setFranchiseOrderOrderNumber(orderList.get(i).getFranchiseOrderOrderNumber());
             franchiseOrderListDTO.setFranchiseOrderStatusHistoryList(orderList.get(i).getFranchiseOrderStatusHistoryList());
             franchiseOrderListDTO.setFranchiseOrderStatus(orderList.get(i).getFranchiseOrderStatus());
             franchiseOrderListDTO.setFranchiseOrderApplicationDate(orderList.get(i).getFranchiseOrderApplicationDate());
             franchiseOrderListDTO.setMember(orderList.get(i).getMember());
+            franchiseOrderListDTO.setOrderFranchiseInfo(orderFranchiseInfoDTO);
 
-            if(franchiseOrderList.get(i).getFranchiseOrderStatusDate() != null) {
+            int orderPresenterNo = orderList.get(i).getMember().getMemberNo();
+            int representativeNo = orderFranchiseInfoDTO.getFranchiseRepresentativeNo();
 
-                franchiseOrderListDTO.setFranchiseOrderStatusDate(orderList.get(i).getFranchiseOrderStatusDate());
-                franchiseOrderListDTO.setFranchiseOrderStatusRejectionContent(orderList.get(i).getFranchiseOrderStatusRejectionContent());
+            if(orderPresenterNo != representativeNo) {
+
+                for(int j = 0; j < orderFranchiseAccounts.size(); j++) {
+
+                    int managerNo = orderFranchiseAccounts.get(j).getFranchiseManagerNo();
+
+                    if(orderPresenterNo == managerNo) {
+
+                        franchiseOrderListDTO.setOrderFranchiseAccountDTO(orderFranchiseAccounts.get(j));
+                    }
+
+                }
+
             }
-
-            franchiseOrderListDTOList.add(franchiseOrderListDTO);
-
-        }
-
-        return franchiseOrderListDTOList;
-    }
-
-    private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo, OrderFranchiseAccount orderFranchiseAccount) {
-
-        List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();
-
-        List<FranchiseOrderDTO> orderList = franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
-        OrderFranchiseInfoDTO orderFranchiseInfoDTO = modelMapper.map(orderFranchiseInfo, OrderFranchiseInfoDTO.class);
-        OrderFranchiseAccountDTO orderFranchiseAccountDTO = modelMapper.map(orderFranchiseAccount, OrderFranchiseAccountDTO.class);
-
-        for(int i = 0; i < orderList.size(); i++) {
-
-            FranchiseOrderListDTO franchiseOrderListDTO = new FranchiseOrderListDTO();
-            franchiseOrderListDTO.setFranchiseOrderItemList(orderList.get(i).getFranchiseOrderItemList());
-            franchiseOrderListDTO.setOrderFranchiseInfo(orderFranchiseInfoDTO);
-            franchiseOrderListDTO.setFranchiseOrderNo(orderList.get(i).getFranchiseOrderNo());
-            franchiseOrderListDTO.setFranchiseOrderOrderNumber(orderList.get(i).getFranchiseOrderOrderNumber());
-            franchiseOrderListDTO.setFranchiseOrderStatusHistoryList(orderList.get(i).getFranchiseOrderStatusHistoryList());
-            franchiseOrderListDTO.setFranchiseOrderStatus(orderList.get(i).getFranchiseOrderStatus());
-            franchiseOrderListDTO.setFranchiseOrderApplicationDate(orderList.get(i).getFranchiseOrderApplicationDate());
-            franchiseOrderListDTO.setMember(orderList.get(i).getMember());
-            franchiseOrderListDTO.setOrderFranchiseAccountDTO(orderFranchiseAccountDTO);
 
             if(franchiseOrderList.get(i).getFranchiseOrderStatusDate() != null) {
 
