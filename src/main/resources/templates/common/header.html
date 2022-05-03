@@ -129,8 +129,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                     <ul class="nav nav-second-level collapse">
                         <!--                            <li><a href="typography.html">Typography</a></li>-->
                         <li><a href="/order/franchiseorderlist">발주 내역</a></li>
-                        <li><a href="/outwarehouse/list">출고 관리</a></li>
-                        <li><a href="/outwarehouse/history">출고 내역</a></li>
+                        <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')"><a href="/outwarehouse/list">출고 관리</a></li>
+                        <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')"><a href="/outwarehouse/history">출고 내역</a></li>
+                        <li><a href="/issue/list">가맹점 이슈</a></li>
                     </ul>
                 </li>
 
