@@ -66,7 +66,7 @@ public class CompanyAccountRepositoryImpl implements CompanyAccountRepositoryCus
     @Transactional
     public void updateMember(CompanyAccount member) {
 
-        UpdateClause<JPAUpdateClause> updateBuilder = updateMember(companyAccount);
+//        UpdateClause<JPAUpdateClause> updateBuilder = updateMember(companyAccount);
 
 //       long result = queryFactory
 //                .update(companyAccount)
