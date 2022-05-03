@@ -5,8 +5,11 @@ import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
 import com.greedy.jaegojaego.member.model.dto.QCompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.QCompanyAccount;
+import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -59,6 +62,23 @@ public class CompanyAccountRepositoryImpl implements CompanyAccountRepositoryCus
 //
     }
 
+    @Override
+    @Transactional
+    public void updateMember(CompanyAccount member) {
+
+        UpdateClause<JPAUpdateClause> updateBuilder = updateMember(companyAccount);
+
+//       long result = queryFactory
+//                .update(companyAccount)
+//                .set(companyAccount.memberPwd, member.getMemberPwd())
+//                .set(companyAccount.memberEmail, member.getMemberEmail())
+//                .set(companyAccount.memberCellPhone, member.getMemberCellPhone())
+//                .set(companyAccount.officePhoneNumber, member.getOfficePhoneNumber())
+//                .where(companyAccount.memberNo.eq(member.getMemberNo()))
+//                .execute();
+
+    }
+
     private BooleanExpression memberIdEq(String memberId) {
         return hasText(memberId) ? companyAccount.memberId.contains(memberId) : null;
     }
@@ -69,6 +89,14 @@ public class CompanyAccountRepositoryImpl implements CompanyAccountRepositoryCus
 
     private BooleanExpression departmentNameEq(String departmentName) {
         return hasText(departmentName) ? department.departmentName.contains(departmentName) : null;
+    }
+
+    private BooleanExpression memberEmailEq(String memberEmail) {
+        return hasText(memberEmail) ? companyAccount.memberEmail.isNotEmpty() : null;
+    }
+
+    private BooleanExpression memberCellPhoneEq(String memberCellPhone) {
+        return hasText(memberCellPhone) ? companyAccount.memberCellPhone.isNotEmpty() : null;
     }
 
     private BooleanExpression allcontains(String memberId, String memberName, String departmentName) {

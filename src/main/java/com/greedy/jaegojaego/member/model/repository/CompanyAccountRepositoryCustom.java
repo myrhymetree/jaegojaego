@@ -9,4 +9,6 @@ import java.util.List;
 public interface CompanyAccountRepositoryCustom {
 
     List<CompanyAccount> searchMembers(MemberSearchCondition condition);
+
+    void updateMember(CompanyAccount member);
 }

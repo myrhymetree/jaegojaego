@@ -12,15 +12,16 @@ import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
 import com.greedy.jaegojaego.member.model.entity.*;
-import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
-import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
-import com.greedy.jaegojaego.member.model.repository.MemberRepository;
-import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
+import com.greedy.jaegojaego.member.model.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,18 +34,22 @@ public class MemberService {
     private final CompanyAccountRepository companyAccountRepository;
     private final FranchiseRepository franchiseRepository;
     private final FranchiseAccountRepository franchiseAccountRepository;
+    private final PasswordUpdatedRecordRepository passwordUpdatedRecordRepository;
     private final ModelMapper modelMappper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository,
-                         MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, FranchiseRepository franchiseRepository, FranchiseAccountRepository franchiseAccountRepository, ModelMapper modelMappper) {
+                         MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, FranchiseRepository franchiseRepository, FranchiseAccountRepository franchiseAccountRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMappper, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.departmentRepository = departmentRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.companyAccountRepository = companyAccountRepository;
         this.franchiseRepository = franchiseRepository;
         this.franchiseAccountRepository = franchiseAccountRepository;
+        this.passwordUpdatedRecordRepository = passwordUpdatedRecordRepository;
         this.modelMappper = modelMappper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public MemberDTO findMemberById(String memberId) {
@@ -150,9 +155,37 @@ public class MemberService {
         }
     }
 
-    public void updateLoginMemberInfo(CompanyAccountDTO member) {
+    @Transactional
+    public void updateLoginMemberInfo(String memberPwd) {
 
-        companyAccountRepository.save(modelMappper.map(member, CompanyAccount.class));
+        /* 로그인 인증 정보 가져오기 */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        /* 비밀번호 변경이력 추가 */
+        PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+
+        passwordUpdatedRecord.setPasswordUpdatedRecordPwd(customUser.getMemberPwd());
+        passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+        passwordUpdatedRecord.setMemberNo(customUser.getMemberNo());
+
+        /* entity타입으로 값 변경 */
+        CompanyAccount companyAccount = new CompanyAccount();
+//        companyAccount.setMemberNo(customUser.getMemberNo());
+//        companyAccount.setMemberPwdInitStatus("N");
+//        companyAccount.setMemberPwd(member.getMemberPwd());
+//        companyAccount.setMemberEmail(member.getMemberEmail());
+//        companyAccount.setOfficePhoneNumber(member.getOfficePhoneNumber());
+//        companyAccount.setMemberCellPhone(member.getMemberCellPhone());
+
+        companyAccount.setMemberNo(customUser.getMemberNo());
+        companyAccount.setMemberPwd(memberPwd);
+        companyAccount.setMemberPwdInitStatus("N");
+
+//        companyAccountRepository.save(companyAccount);
+        companyAccountRepository.updateMember(companyAccount);
+        passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
 
     }
 }

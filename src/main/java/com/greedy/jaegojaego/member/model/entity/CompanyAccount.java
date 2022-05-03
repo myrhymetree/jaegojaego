@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.member.model.entity;
 
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity(name = "CompanyAccount")
 @EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
+@DynamicUpdate
 //@DiscriminatorValue("본사")
 public class CompanyAccount extends Member {
 

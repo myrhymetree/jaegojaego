@@ -121,15 +121,12 @@ public class MemberController {
     }
 
     @PostMapping(value = "/modify")
-    public ModelAndView updateMember(ModelAndView mv, CompanyAccountDTO member, Authentication authentication) {
+    public void updateMember(@RequestParam String memberPwd, @RequestParam String memberCellPhone,
+                             @RequestParam String officePhoneNumber, @RequestParam String memberEmail) {
 
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        System.out.println("memberPwd = " + memberPwd);
+        
+        memberService.updateLoginMemberInfo(memberPwd);
 
-        member.setMemberNo(customUser.getMemberNo());
-
-        memberService.updateLoginMemberInfo(member);
-
-
-        return mv;
     }
 }

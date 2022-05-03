@@ -21,12 +21,12 @@
             element.before(error);
         },
         rules: {
-            confirm: {
-                equalTo: "#password",
+            memberPwd: {
                 minlength: 8,
                 maxlength: 15
             },
-            password: {
+            confirm: {
+                equalTo: "#memberPwd",
                 minlength: 8,
                 maxlength: 15
             },

@@ -11,6 +11,7 @@ import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
+import org.hibernate.annotations.DynamicUpdate;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ class MemberServiceTest {
 
     @Test
     @Transactional
-    public void 계정생성() {
+    public void 본사직원_계정생성() {
 
         Department department = departmentRepository.findByDepartmentNo(1);
 
@@ -107,7 +108,7 @@ class MemberServiceTest {
     }
 
     @Test
-    public void 로그인한_회원_이름_조회() {
+    public void 로그인한_본사_직원_이름_조회() {
 
         Member member = new Member();
         member.setMemberNo(1);
@@ -116,5 +117,22 @@ class MemberServiceTest {
 
         assertEquals("tester", companyAccount.getMemberName());
         assertEquals("물류팀", companyAccount.getDepartment().getDepartmentName());
+    }
+
+    @Test
+    @Transactional
+    public void 로그인한_본사_관리자_및_직원_정보_수정() {
+
+        CompanyAccount member = new CompanyAccount();
+        member.setMemberNo(191);
+        member.setMemberCellPhone("010-1111-1111");
+        member.setOfficePhoneNumber("02-1111-1111");
+        member.setMemberEmail("waitingPark@jaegojaego.com");
+
+        CompanyAccount companyAccount = companyAccountRepository.save(member);
+
+        assertEquals(member.getMemberCellPhone(), companyAccount.getMemberCellPhone());
+        assertEquals(member.getOfficePhoneNumber(), companyAccount.getOfficePhoneNumber());
+        assertEquals(member.getMemberEmail(), companyAccount.getMemberEmail());
     }
 }

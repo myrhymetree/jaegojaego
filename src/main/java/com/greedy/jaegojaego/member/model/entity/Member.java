@@ -2,6 +2,8 @@ package com.greedy.jaegojaego.member.model.entity;
 
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.naming.Name;
 import javax.persistence.*;
@@ -25,6 +27,8 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
+@DynamicUpdate
+@DynamicInsert
 //@DiscriminatorColumn(name = "MEMBER_DIVISION")
 public class Member implements Serializable {
 
@@ -91,6 +95,9 @@ public class Member implements Serializable {
     @JoinColumn(name = "MEMBER_NO")
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
+
+    @OneToMany(mappedBy = "member")
+    private List<PasswordUpdatedRecord> passwordUpdatedRecords;
 
 //    @JoinColumn(name = "MEMBER_NO")
 //    @OneToOne(cascade = CascadeType.PERSIST)

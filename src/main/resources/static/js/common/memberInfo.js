@@ -7,10 +7,15 @@ $(document).ready(function(){
 
                 if(data.memberDivision == "본사") {
 
-                    $("#memberName").val(data.memberName);
+                    console.log(data);
+
+                    $("#memberInfo-memberName").val(data.memberName);
                     $("#memberInfo-cellPhone").val(data.memberCellPhone);
                     $("#memberInfo-officePhone").val(data.officePhoneNumber);
                     $("#memberInfo-email").val(data.memberEmail);
+                    $("#memberInfo-department").val(data.department.departmentName);
+                    $("#memberInfo-cellPhone").val(data.memberCellPhone);
+                    $("#memberInfo-officePhone").val(data.officePhoneNumber);
 
                 } else if(data.memberDivision == "가맹점" && data.officeDivision == "대표자") {
 
