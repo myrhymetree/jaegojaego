@@ -37,7 +37,7 @@ $(document).ready(function(){
     });
 })
 
-$("#btn-submit").click(function() {
+$("#btn-manager-submit").click(function() {
     swal({
             title: "계정생성을 하시겠습니까?",
             text: "계정 생성이 완료됩니다.",
@@ -57,7 +57,7 @@ $("#btn-submit").click(function() {
                     text: "본사 계정 생성이 완료되었습니다.",
                     type: "success",
                 }, function () {
-                    $("#modifyForm").submit();
+                    $("#managerModifyForm").submit();
                 })
             }
             else {

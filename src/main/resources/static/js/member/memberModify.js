@@ -37,7 +37,7 @@
     });
 })
 
- $("#btn-submit").click(function() {
+ $("#btn-member-submit").click(function() {
      swal({
              title: "계정생성을 하시겠습니까?",
              text: "계정 생성이 완료됩니다.",

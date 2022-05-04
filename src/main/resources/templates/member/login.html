@@ -65,35 +65,37 @@
             radioClass: 'iradio_square-green',
         });
     });
-
-
+    
     $(function() {
-        fnInit();   //기본 실행함수에 fnInit(); 함수를 넣어서 실행함
+
+        fnInit();        //기본 실행함수에 fnInit(); 함수를 넣어서 실행함
+
     });
 
-    function frm_check() {
-        saveid();       //saveid함수에는 체크박스에 체크값에 대하여 조건에 따라 시간을 구해주는 기능을 구현함
+    function frm_check(){
+        saveid();        //saveid함수에는 체크박스에 체크값에 대하여 조건에 따라 시간을 구해주는 기능을 구현함
     }
 
-    function fnInit() {
-        let cookieid = getCookie("saveid"); // cookie 변수에 saveid라는 키를 가진 쿠키를 담아줌
+    function fnInit(){
+        let cookieid = getCookie("saveid");     // cookie 변수에 saveid라는 키를 가진 쿠키를 담아줌
         console.log(cookieid);
-        if(cookieid !="") {
-            $("input:checkbox[id='saveId']").prop("checked", true); //checkbox가 체크 될때 true 값 지정
-            $("#loginId").val(cookieid);        //#logid에 cookieid 변수를 값으로 지정함
+        if(cookieid !=""){
+            $("input:checkbox[id='saveId']").prop("checked", true);     //checkbox가 체크 될때 true 값 지정
+            $('#loginId').val(cookieid);        //#logid에 cookieid 변수를 값으로 지정함
         }
+
     }
 
     function setCookie(name, value, expiredays) {
         let todayDate = new Date();
         todayDate.setTime(todayDate.getTime() + 0);     //오늘날짜를 시간으로  환산하고 0을 더해줌
-        console.log( todayDate.setTime(todayDate.getTime() + 0));
-        if(todayDate > expiredays) {
-            document.cookie = name + "=" + escape(value) + "; path=/; expiredays" + ";";
-        } else if(todayDate < expiredays) {     //만료된 날짜가 오늘보다 클 경우
+        if(todayDate > expiredays){
+            document.cookie = name + "=" + escape(value) + "; path=/; expires=" + expiredays + ";";
+        }else if(todayDate < expiredays){       //만료된 날짜가 오늘보다 클 경우
             todayDate.setDate(todayDate.getDate() + expiredays);        //오늘 날짜 + 만료일, 음수가 됨.
-            document.cookie = name + "=" + escape(value) + "; path=/; expires" + todayDate.toGMTString() + ";";
+            document.cookie = name + "=" + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";";
         }
+
 
         console.log(document.cookie);
     }
@@ -102,14 +104,18 @@
         let search = Name + "=";
         console.log("search : " + search);
 
-        if(document.cookie.length > 0) {    //쿠키가 설정되어 있다면
+        if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
             offset = document.cookie.indexOf(search);
             console.log("offset : " + offset);
-            if(offset != -1) {      //쿠키가 존재하면
+            if (offset != -1) {     // 쿠키가 존재하면
                 offset += search.length;
                 // set index of beginning of value
                 end = document.cookie.indexOf(";", offset);
                 console.log("end : " + end);
+                // 쿠키 값의 마지막 위치 인덱스 번호 설정
+                if (end == -1)
+                    end = document.cookie.length;
+                console.log("end위치  : " + end);
 
                 return unescape(document.cookie.substring(offset, end));
             }
@@ -117,21 +123,17 @@
         return "";
     }
 
-    // function saveid() {
-    //     let expdate = new Date();
-    //     if($("#saveId").is(":checkId")) {
-    //         expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30);     //한달
-    //         setCookie("saveid", $("#loginId").val(), expdate);
-    //     } else {
-    //         expdate.setTime(expdate.getTime() - 1000 * 3600 )
-    //     }
-    // }
+    function saveid() {
+        let expdate = new Date();
+        if ($("#saveId").is(":checked")){
+            expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30);     //한달
+            setCookie("saveid", $("#loginId").val(), expdate);
+        }else{
+            expdate.setTime(expdate.getTime() - 1000 * 3600 * 24 * 30);
+            setCookie("saveid", $("#loginId").val(), expdate);
 
-
-
-
-
-
+        }
+    }
 </script>
 
 </body>
