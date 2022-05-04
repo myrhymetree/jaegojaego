@@ -156,36 +156,37 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateLoginMemberInfo(String memberPwd) {
+    public void updateLoginMemberInfo(CompanyAccountDTO member) {
 
         /* 로그인 인증 정보 가져오기 */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
-        /* 비밀번호 변경이력 추가 */
-        PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
-
-        passwordUpdatedRecord.setPasswordUpdatedRecordPwd(customUser.getMemberPwd());
-        passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
-        passwordUpdatedRecord.setMemberNo(customUser.getMemberNo());
-
         /* entity타입으로 값 변경 */
         CompanyAccount companyAccount = new CompanyAccount();
-//        companyAccount.setMemberNo(customUser.getMemberNo());
-//        companyAccount.setMemberPwdInitStatus("N");
-//        companyAccount.setMemberPwd(member.getMemberPwd());
-//        companyAccount.setMemberEmail(member.getMemberEmail());
-//        companyAccount.setOfficePhoneNumber(member.getOfficePhoneNumber());
-//        companyAccount.setMemberCellPhone(member.getMemberCellPhone());
+
+        if(!member.getMemberPwd().isEmpty()) {
+
+            /* 비밀번호 변경이력 추가 */
+            PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+            passwordUpdatedRecord.setPasswordUpdatedRecordPwd(customUser.getMemberPwd());
+            passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+            passwordUpdatedRecord.setMemberNo(customUser.getMemberNo());
+
+            companyAccount.setMemberPwd(passwordEncoder.encode(member.getMemberPwd()));
+            companyAccount.setMemberPwdUpdateDate(LocalDateTime.now());
+            companyAccount.setMemberPwdInitStatus("N");
+
+            passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
+        }
 
         companyAccount.setMemberNo(customUser.getMemberNo());
-        companyAccount.setMemberPwd(memberPwd);
-        companyAccount.setMemberPwdInitStatus("N");
+        companyAccount.setMemberEmail(member.getMemberEmail());
+        companyAccount.setOfficePhoneNumber(member.getOfficePhoneNumber());
+        companyAccount.setMemberCellPhone(member.getMemberCellPhone());
 
-//        companyAccountRepository.save(companyAccount);
         companyAccountRepository.updateMember(companyAccount);
-        passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
 
     }
 }

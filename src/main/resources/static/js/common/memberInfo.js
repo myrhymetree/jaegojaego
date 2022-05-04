@@ -21,29 +21,29 @@ $(document).ready(function(){
 
                     console.log(data);
                     console.log(data.supervisor)
-                    $("#memberInfo-memberName").val(data.representativeName);
-                    $("#memberInfo-cellPhone").val(data.representativePhone);
-                    $("#memberInfo-franchisePhone").val(data.phone);
-                    $("#memberInfo-email").val(data.representativeEmail);
-                    $("#memberInfo-branchName").val(data.branchName);
-                    $("#memberInfo-businessRegistrationNo").val(data.businessRegistrationNo);
-                    $("#memberInfo-address").val(data.address);
-                    $("#memberInfo-bankAccountNo").val(data.bankAccountNo);
-                    $("#memberInfo-supervisor").val(data.supervisor.memberName);
-                    $("#memberInfo-department").val(data.supervisor.department.departmentName);
+                    $("#franchiseInfo-memberName").val(data.representativeName);
+                    $("#franchiseInfo-cellPhone").val(data.representativePhone);
+                    $("#franchiseInfo-franchisePhone").val(data.phone);
+                    $("#franchiseInfo-email").val(data.representativeEmail);
+                    $("#franchiseInfo-branchName").val(data.branchName);
+                    $("#franchiseInfo-businessRegistrationNo").val(data.businessRegistrationNo);
+                    $("#franchiseInfo-address").val(data.address);
+                    $("#franchiseInfo-bankAccountNo").val(data.bankAccountNo);
+                    $("#franchiseInfo-supervisor").val(data.supervisor.memberName);
+                    $("#franchiseInfo-department").val(data.supervisor.department.departmentName);
 
                 } else if(data.memberDivision == "가맹점" && data.officeDivision == "직원") {
 
                     console.log(data);
                     console.log(data.managerPhone)
-                    $("#memberInfo-memberName").val(data.managerName);
-                    $("#memberInfo-cellPhone1").val(data.managerPhone);
-                    $("#memberInfo-branchName").val(data.franchiseInfo.branchName);
-                    $("#memberInfo-supervisor").val(data.franchiseInfo.supervisor.memberName);
-                    $("#memberInfo-department").val(data.franchiseInfo.supervisor.department.departmentName);
-                    $("#memberInfo-address").val(data.franchiseInfo.address);
-                    $("#memberInfo-franchisePhone").val(data.franchiseInfo.phone);
-                    $("#memberInfo-email1").val(data.managerEmail);
+                    $("#managerInfo-memberName").val(data.managerName);
+                    $("#managerInfo-cellPhone").val(data.managerPhone);
+                    $("#managerInfo-branchName").val(data.franchiseInfo.branchName);
+                    $("#managerInfo-supervisor").val(data.franchiseInfo.supervisor.memberName);
+                    $("#managerInfo-department").val(data.franchiseInfo.supervisor.department.departmentName);
+                    $("#managerInfo-address").val(data.franchiseInfo.address);
+                    $("#managerInfo-franchisePhone").val(data.franchiseInfo.phone);
+                    $("#managerInfo-email1").val(data.managerEmail);
 
                 }
 

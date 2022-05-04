@@ -1,19 +1,25 @@
 package com.greedy.jaegojaego.franchise.service;
 
+import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseContractUpdatedRecordDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
 import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseContractUpdatedRecord;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
+import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
 import com.greedy.jaegojaego.franchise.repository.FranchiseContractRepository;
 import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
+import com.greedy.jaegojaego.member.model.entity.PasswordUpdatedRecord;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
+import com.greedy.jaegojaego.member.model.repository.PasswordUpdatedRecordRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,18 +32,22 @@ import java.util.stream.Collectors;
 public class FranchiseService {
 
     private final FranchiseRepository franchiseRepository;
+    private final FranchiseAccountRepository franchiseAccountRepository;
     private final FranchiseContractRepository franchiseContractRepository;
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
+    private final PasswordUpdatedRecordRepository passwordUpdatedRecordRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseContractRepository franchiseContractRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.franchiseRepository = franchiseRepository;
+        this.franchiseAccountRepository = franchiseAccountRepository;
         this.franchiseContractRepository = franchiseContractRepository;
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
+        this.passwordUpdatedRecordRepository = passwordUpdatedRecordRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
@@ -98,5 +108,77 @@ public class FranchiseService {
 
          return franchiseInfos.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
+    }
+
+    @Transactional
+    public void updateManagerInfo(FranchiseAccountDTO manager) {
+
+        /* 로그인 인증 정보 가져오기 */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        /* entity타입으로 값 변경 */
+        FranchiseAccount franchiseAccount = new FranchiseAccount();
+
+        /* 비밀번호가 바뀔경우 변경된 비밀번호와 변경날짜, 변경상태를 넣어준다 */
+        if(!manager.getMemberPwd().isEmpty()) {
+
+            /* 비밀번호 변경이력 추가 */
+            PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+            passwordUpdatedRecord.setPasswordUpdatedRecordPwd(customUser.getMemberPwd());
+            passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+            passwordUpdatedRecord.setMemberNo(customUser.getMemberNo());
+
+            franchiseAccount.setMemberPwd(passwordEncoder.encode(manager.getMemberPwd()));
+            franchiseAccount.setMemberPwdUpdateDate(LocalDateTime.now());
+            franchiseAccount.setMemberPwdInitStatus("N");
+
+            passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
+        }
+
+        franchiseAccount.setMemberNo(customUser.getMemberNo());
+        franchiseAccount.setManagerEmail(manager.getManagerEmail());
+        franchiseAccount.setManagerPhone(manager.getManagerPhone());
+
+        System.out.println("매니저 번호는 = " + franchiseAccount.getMemberNo());
+        System.out.println("franchiseAccount.getMemberPwd() = " + franchiseAccount.getMemberPwd());
+
+        franchiseAccountRepository.updateManager(franchiseAccount);
+
+    }
+
+    @Transactional
+    public void updateFranchiseInfo(FranchiseInfoDTO franchiseInfo) {
+
+        /* 로그인 인증 정보 가져오기 */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        /* entity타입으로 값 변경 */
+        FranchiseInfo franchise = new FranchiseInfo();
+
+        /* 비밀번호가 바뀔 경우 변경된 비밀번호와 변경 날짜, 변경상태를 넣어준다 */
+        if(!franchiseInfo.getMemberPwd().isEmpty()) {
+            /* 비밀번호 변경이력 추가 */
+            PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+            passwordUpdatedRecord.setPasswordUpdatedRecordPwd(customUser.getMemberPwd());
+            passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+            passwordUpdatedRecord.setMemberNo(customUser.getMemberNo());
+
+            franchise.setMemberPwd(passwordEncoder.encode(franchiseInfo.getMemberPwd()));
+            franchise.setMemberPwdUpdateDate(LocalDateTime.now());
+            franchise.setMemberPwdInitStatus("N");
+
+            passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
+        }
+
+        franchise.setMemberNo(customUser.getMemberNo());
+        franchise.setRepresentativeEmail(franchiseInfo.getRepresentativeEmail());
+        franchise.setRepresentativePhone(franchiseInfo.getRepresentativePhone());
+        franchise.setPhone(franchiseInfo.getPhone());
+
+        franchiseRepository.updateFranchise(franchise);
     }
 }

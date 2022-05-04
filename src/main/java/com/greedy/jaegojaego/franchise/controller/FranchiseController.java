@@ -285,4 +285,23 @@ public class FranchiseController {
 
         return franchiseService.findAllFranchise();
     }
+
+    @PostMapping(value = "/modifymanager")
+    public String updateManager(FranchiseAccountDTO manager) {
+
+        System.out.println("manager = " + manager);
+        System.out.println("매니저 비밀번호는 = " + manager.getMemberPwd());
+
+        franchiseService.updateManagerInfo(manager);
+
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/modifyfranchise")
+    public String updateFranchise(FranchiseInfoDTO franchiseInfo) {
+
+        franchiseService.updateFranchiseInfo(franchiseInfo);
+
+        return "redirect:/";
+    }
 }

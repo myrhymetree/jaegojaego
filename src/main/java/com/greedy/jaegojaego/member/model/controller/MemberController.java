@@ -121,12 +121,10 @@ public class MemberController {
     }
 
     @PostMapping(value = "/modify")
-    public void updateMember(@RequestParam String memberPwd, @RequestParam String memberCellPhone,
-                             @RequestParam String officePhoneNumber, @RequestParam String memberEmail) {
+    public String updateMember(CompanyAccountDTO companyAccount) {
 
-        System.out.println("memberPwd = " + memberPwd);
-        
-        memberService.updateLoginMemberInfo(memberPwd);
+        memberService.updateLoginMemberInfo(companyAccount);
 
+        return "redirect:/";
     }
 }
