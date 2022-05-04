@@ -29,16 +29,20 @@ public class OrderCompanyAccount {
     @Column(name = "OFFICE_PHONE_NUMBER")
     private String officePhoneNumber;
 
+    @Column(name = "COMPANY_ADDESS")
+    private String companyAddress;
+
     public OrderCompanyAccount() {
     }
 
-    public OrderCompanyAccount(int memberNo, String memberName, String email, String cellphone, OrderDepartment orderDepartment, String officePhoneNumber) {
+    public OrderCompanyAccount(int memberNo, String memberName, String email, String cellphone, OrderDepartment orderDepartment, String officePhoneNumber, String companyAddress) {
         this.memberNo = memberNo;
         this.memberName = memberName;
         this.email = email;
         this.cellphone = cellphone;
         this.orderDepartment = orderDepartment;
         this.officePhoneNumber = officePhoneNumber;
+        this.companyAddress = companyAddress;
     }
 
     public int getMemberNo() {
@@ -89,6 +93,14 @@ public class OrderCompanyAccount {
         this.officePhoneNumber = officePhoneNumber;
     }
 
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
     @Override
     public String toString() {
         return "OrderCompanyAccount{" +
@@ -98,6 +110,7 @@ public class OrderCompanyAccount {
                 ", cellphone='" + cellphone + '\'' +
                 ", orderDepartment=" + orderDepartment +
                 ", officePhoneNumber='" + officePhoneNumber + '\'' +
+                ", companyAddress='" + companyAddress + '\'' +
                 '}';
     }
 }

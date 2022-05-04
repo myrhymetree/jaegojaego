@@ -113,9 +113,6 @@ public class OrderService {
     public List<OrderApplicationDTO> selectOrderApplicationDetail(int companyOrderHistoryNo, int clientNo) {
 
         CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
-        String warehouseAddress = orderItemWarehouseRepository.selectItemWarehouseAddress();
-
-        System.out.println("warehouseAddress = " + warehouseAddress);
 
         List<OrderApplication> orderApplicationList = new ArrayList<>();
 
@@ -128,10 +125,6 @@ public class OrderService {
         }
 
         List<OrderApplicationDTO> orderApplicationDTOList = orderApplicationList.stream().map(orderApplication -> modelMapper.map(orderApplication, OrderApplicationDTO.class)).collect(Collectors.toList());
-
-        for(int i = 0; i < orderApplicationDTOList.size(); i++) {
-            orderApplicationDTOList.get(i).setOrderApplicationAddress(warehouseAddress);
-        }
 
         return orderApplicationDTOList;
     }

@@ -8,18 +8,18 @@
             width: 500px;
             height: 250px;
             background-color: #d3d3d3;
-            margin-left: 490px;
+            margin-left: 380px;
 
         }
 
         .item-collection-left {
             font-size: 20px;
-            margin-left: 250px;
+            margin-left: 150px;
         }
 
         .item-collection-right {
             font-size: 20px;
-            margin-left: 150px;
+            margin-left: 50px;
         }
 
         .item-collection-area-items {
@@ -48,13 +48,13 @@
         </div>
 
         <div class="float-right">
-            <button class="btn btn-primary btn-xs" type="button" id="download-btn" style="margin-right: 110px; margin-top: 10px">Download</button>
+            <button class="btn btn-primary btn-xs" type="button" id="download-btn" style="margin-right: 310px; margin-top: 10px">Download</button>
             <input type="hidden" th:value="${ companyOrderDetail.clientName }">
             <input type="hidden" th:value="${ companyOrderDetail.orderCreatedDate }">
         </div>
         <div class="row justify-content-md-center" style="margin-top: 50px">
             <div class="col-lg-10">
-                <div class="ibox">
+                <div class="ibox" style="width: 70%; margin-left: 250px">
                     <div class="ibox-content" id="order-application-content">
                         <div class="text-center article-title">
                             <h1 style="font-weight: bold">
@@ -67,7 +67,7 @@
                             <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ companyOrderDetail.clientName }"></th:block></span>
                             <br><br>
                             <span class="item-collection-left">업체 주소</span>
-                            <span class="item-collection-right"><th:block th:text="${ orderApplication.get(0).client.clientAddress }"></th:block></span>
+                            <span class="item-collection-right" style="margin-left: 150px"><th:block th:text="${ orderApplication.get(0).client.clientAddress }"></th:block></span>
                             <br><br>
                             <span class="item-collection-left">업체 대표자 전화번호</span>
                             <span class="item-collection-right" style="margin-left: 45px"><th:block th:text="${ orderApplication.get(0).client.clientRepresentativePhone }"></th:block></span>
@@ -82,7 +82,7 @@
                             <span class="item-collection-right" style="margin-left: 90px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.cellphone }"></th:block></span>
                             <br><br>
                             <span class="item-collection-left">신청 일자</span>
-                            <span class="item-collection-right"><th:block th:text="${ companyOrderDetail.orderCreatedDate }"></th:block></span>
+                            <span class="item-collection-right" style="margin-left: 150px"><th:block th:text="${ companyOrderDetail.orderCreatedDate }"></th:block></span>
                             <br><br>
                             <span class="item-collection-left" style="float: left">신청 물품</span>
                             <div class="item-collection-area">
@@ -99,7 +99,7 @@
                             </div>
                             <br><br>
                             <span class="item-collection-left">배송지</span>
-                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).orderApplicationAddress }"></th:block></span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.companyAddress }"></th:block></span>
 
                         </div>
                         <hr>
