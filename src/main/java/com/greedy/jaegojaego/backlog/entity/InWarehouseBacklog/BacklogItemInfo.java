@@ -1,9 +1,7 @@
 package com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "BacklogItemInfoEntity")
 @Table(name = "ITEM_INFO")
@@ -18,6 +16,10 @@ public class BacklogItemInfo {
 
     @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
     private String itemInfoItemSerialNo;
+
+//    @OneToMany
+//    @Column(name = "ITEM_INFO_NO")
+//    private List<BacklogClientContractItem> clientContractItemList;
 
     public BacklogItemInfo() {}
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link th:href="@{/css/backlog/backlogcss.css}" rel="stylesheet">
 
     <link th:href="@{/css/menu/menucss.css}" rel="stylesheet">
@@ -25,7 +26,7 @@
     <div class="chartAreaWhiteBoard">
         <button class="button calendar-button" id="calendarButton" style="width: 120px;">일정한눈에보기</button>
 
-        <!-- 캘린더 부분 -->
+        <!-- 캘린더 부분 (시간나면 하자)-->
         <div class="whiteboardForCalendar" id="calendarModal" style="display: none;">
             <div class="calendar-modal">
                 <button class="button calendarback-button" id="backcalendarButton" style="width: 100px;">차트보기</button>
@@ -140,9 +141,8 @@
 
             <!-- 입고백로그 목록 -->
             <div class="releasebacklog-modal" id="releasebacklogModal" style="display: block;">
-                <select class="itemListForReleasebacklog">
+                <select class="itemListForInWarehouseBacklog" id="itemListForInWarehouseBacklog">
                     <!-- 동적 생성? 으로 만들어야 함-->
-                    <option>지로스팅 원두 1kg</option>
                 </select>
                 <div class="ibox">
                     <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 입고물품 백로그</h3>
@@ -163,11 +163,11 @@
                                 <!-- if) 입고 처리 상태명이 = '입고 완료'인 것만!
                                      if) List라서 이 안에서 또 반복문 돌려야함! -->
                                     <tr th:each="inbacklog : ${ inWarehouseBacklogList }">
-<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogItemWarehouseList[0].itemInfoNo.itemInfoItemSerialNo }"></td>-->
-<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogItemWarehouseList[0].itemInfoNo.itemInfoName }"></td>-->
-<!--                                        <td th:text="${ inbacklog.inWarehouseNo.clientNo.clientName }"></td>-->
-<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogInWarehouseHistoryList[0].inWarehouseStatusHistoryDate }"></td>-->
-<!--                                        <td th:text="${ inbacklog.inWarehouseNo.backlogInWarehouseHistoryList[0].inWarehouseStatusAmount }"></td>-->
+                                        <td th:text="${ inbacklog.itemInfoNoForInWarehouse.itemInfoItemSerialNo }"></td>
+                                        <td th:text="${ inbacklog.itemInfoNoForInWarehouse.itemInfoName }"></td>
+                                        <td th:text="${ inbacklog.clientNoForInWarehouse.clientName }"></td>
+                                        <td th:text="${ inbacklog.inWarehouseDate }"></td>
+                                        <td th:text="${ inbacklog.inWarehouseAmount }"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -313,6 +313,26 @@
        document.getElementById("charModalForOut").style.display = "block";
        document.getElementById("chartModalForIn").style.display = "none";
    }
+
+   <!-- 입고 물품 불러오기 -->
+    $(function() {
+        $.ajax({
+            url: "/backlog/iteminfolist",
+            success: function(data) {
+                const $itemListForInWarehouseBacklog = $("#itemListForInWarehouseBacklog");
+
+                // $itemListForInWarehouseBacklog.html("");
+                $itemListForInWarehouseBacklog.append($("<option selected>").text("조회할 물품명을 선택해주세요!").attr("disabled", true));
+
+                for(let list in data) {
+                    $itemListForInWarehouseBacklog.append($("<option>").val(data[list]).itemInfoNo).text(data[list].itemInfoName);
+                }
+            },
+            error: function(xhr) {
+                alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+    });
 
 </script>
 <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>

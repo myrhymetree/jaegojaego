@@ -1,24 +1,27 @@
 package com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog;
 
+
 import java.sql.Date;
-import java.util.List;
 
 public class BacklogInWarehouseDTO {
-    /* 입고 DTO */
-    private int inWarehouseNo; //입고 번호(pk)
-    private int inwarehouseDivisionItem;    //입고 물품 구분(혹시모르니)
-    private BacklogCompanyOrderHistoryDTO companyOrderHistoryNo; //본사 발주내역번호(fk) -> 거래처 들고오기 위한 용
-    private List<BacklogItemWarehouseDTO> backlogItemWarehouseList;
-    private List<BacklogInWarehouseHistoryDTO> backlogInWarehouseHistoryList;
+    /* 입고 (내역) DTO */
+
+    private int inWarehouseNo; //pk
+    private String inWarehouseStatus;    //입고 처리 상태 //pk
+    private int inWarehouseAmount;   //입고 수량
+    private Date inWarehouseDate; //입고 처리 날짜
+    private BacklogClientDTO clientNoForInWarehouse; //거래처 번호 fk
+    private BacklogItemInfoDTO itemInfoNoForInWarehouse; //자재번호fk 인데 필요없을수도
 
     public BacklogInWarehouseDTO() {}
 
-    public BacklogInWarehouseDTO(int inWarehouseNo, int inwarehouseDivisionItem, BacklogCompanyOrderHistoryDTO companyOrderHistoryNo, List<BacklogItemWarehouseDTO> backlogItemWarehouseList, List<BacklogInWarehouseHistoryDTO> backlogInWarehouseHistoryList) {
+    public BacklogInWarehouseDTO(int inWarehouseNo, int inWarehouseAmount, String inWarehouseStatus, Date inWarehouseDate, BacklogClientDTO clientNoForInWarehouse, BacklogItemInfoDTO itemInfoNoForInWarehouse) {
         this.inWarehouseNo = inWarehouseNo;
-        this.inwarehouseDivisionItem = inwarehouseDivisionItem;
-        this.companyOrderHistoryNo = companyOrderHistoryNo;
-        this.backlogItemWarehouseList = backlogItemWarehouseList;
-        this.backlogInWarehouseHistoryList = backlogInWarehouseHistoryList;
+        this.inWarehouseAmount = inWarehouseAmount;
+        this.inWarehouseStatus = inWarehouseStatus;
+        this.inWarehouseDate = inWarehouseDate;
+        this.clientNoForInWarehouse = clientNoForInWarehouse;
+        this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
     }
 
     public int getInWarehouseNo() {
@@ -29,46 +32,55 @@ public class BacklogInWarehouseDTO {
         this.inWarehouseNo = inWarehouseNo;
     }
 
-    public int getInwarehouseDivisionItem() {
-        return inwarehouseDivisionItem;
+    public int getInWarehouseAmount() {
+        return inWarehouseAmount;
     }
 
-    public void setInwarehouseDivisionItem(int inwarehouseDivisionItem) {
-        this.inwarehouseDivisionItem = inwarehouseDivisionItem;
+    public void setInWarehouseAmount(int inWarehouseAmount) {
+        this.inWarehouseAmount = inWarehouseAmount;
     }
 
-    public BacklogCompanyOrderHistoryDTO getCompanyOrderHistoryNo() {
-        return companyOrderHistoryNo;
+    public String getInWarehouseStatus() {
+        return inWarehouseStatus;
     }
 
-    public void setCompanyOrderHistoryNo(BacklogCompanyOrderHistoryDTO companyOrderHistoryNo) {
-        this.companyOrderHistoryNo = companyOrderHistoryNo;
+    public void setInWarehouseStatus(String inWarehouseStatus) {
+        this.inWarehouseStatus = inWarehouseStatus;
     }
 
-    public List<BacklogItemWarehouseDTO> getBacklogItemWarehouseList() {
-        return backlogItemWarehouseList;
+    public Date getInWarehouseDate() {
+        return inWarehouseDate;
     }
 
-    public void setBacklogItemWarehouseList(List<BacklogItemWarehouseDTO> backlogItemWarehouseList) {
-        this.backlogItemWarehouseList = backlogItemWarehouseList;
+    public void setInWarehouseDate(Date inWarehouseDate) {
+        this.inWarehouseDate = inWarehouseDate;
     }
 
-    public List<BacklogInWarehouseHistoryDTO> getBacklogInWarehouseHistoryList() {
-        return backlogInWarehouseHistoryList;
+    public BacklogClientDTO getClientNoForInWarehouse() {
+        return clientNoForInWarehouse;
     }
 
-    public void setBacklogInWarehouseHistoryList(List<BacklogInWarehouseHistoryDTO> backlogInWarehouseHistoryList) {
-        this.backlogInWarehouseHistoryList = backlogInWarehouseHistoryList;
+    public void setClientNoForInWarehouse(BacklogClientDTO clientNoForInWarehouse) {
+        this.clientNoForInWarehouse = clientNoForInWarehouse;
+    }
+
+    public BacklogItemInfoDTO getItemInfoNoForInWarehouse() {
+        return itemInfoNoForInWarehouse;
+    }
+
+    public void setItemInfoNoForInWarehouse(BacklogItemInfoDTO itemInfoNoForInWarehouse) {
+        this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
     }
 
     @Override
     public String toString() {
         return "BacklogInWarehouseDTO{" +
                 "inWarehouseNo=" + inWarehouseNo +
-                ", inwarehouseDivisionItem=" + inwarehouseDivisionItem +
-                ", companyOrderHistoryNo=" + companyOrderHistoryNo +
-                ", backlogItemWarehouseList=" + backlogItemWarehouseList +
-                ", backlogInWarehouseHistoryList=" + backlogInWarehouseHistoryList +
+                ", inWarehouseAmount=" + inWarehouseAmount +
+                ", inWarehouseStatus='" + inWarehouseStatus + '\'' +
+                ", inWarehouseDate=" + inWarehouseDate +
+                ", clientNoForInWarehouse=" + clientNoForInWarehouse +
+                ", itemInfoNoForInWarehouse=" + itemInfoNoForInWarehouse +
                 '}';
     }
 }

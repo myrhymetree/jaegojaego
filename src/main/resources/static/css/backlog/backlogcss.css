@@ -119,18 +119,17 @@
     top: 3%;
 }
 
-
-
 .itemList {
     position: absolute;
     left: 1.5%;
     top: 10%;
 }
 
-.itemListForReleasebacklog {
+.itemListForInWarehouseBacklog {
     position: absolute;
-    left: 14%;
-    top: 1%;
+    left: 12%;
+    top: 3%;
+    z-index: 1050;
 }
 
 .month {
