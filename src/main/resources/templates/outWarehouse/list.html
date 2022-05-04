@@ -56,23 +56,25 @@
         <button class="checkOrderListBtn btn btn-w-m btn-primary">조회</button>
     </div>
 
-<!--    <div class="modal inmodal fade" id="modal1" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">-->
-<!--        <div class="modal-dialog modal-lg">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title" id="modalLabel">Ready to test</h5>-->
-<!--                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">-->
-<!--                        <span aria-hidden="true">x</span>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    test-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cancel</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+    <div class="modal inmodal fade" id="orderListModal" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Title</h4>
+                    <button class="close" type="button" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    test
+                    <!-- 조회해온 승인완료된 발주 목록 -->
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal" id="orderListModal-ok-btn">확인</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <br>
@@ -128,8 +130,8 @@
         location.href="/outwarehouse/detail/" + num;
     }
 
-    checkOrderListBtn.onclick = function() {
-        document.getElementById("moaModal").style.display = "block";
+    checkOrderListBtn[0].onclick = function() {
+        document.getElementById("modal1").style.display = "block";
     }
 </script>
 </body>
