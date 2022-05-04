@@ -73,11 +73,11 @@ public class IssueService {
 
                 List<IssueFranchiseAccount> issueFranchiseAccountList = issueFranchiseAccountRepository.findByFranchiseInfo_FranchiseRepresentativeNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
 
-                issueList = issueRepository.findByFranchiseIssuePresenter_MemberNo(customUser.getMemberNo());
+                issueList = issueRepository.findByFranchiseIssuePresenter_MemberNoOrderByFranchiseIssueCreatedDateDesc(customUser.getMemberNo());
 
                 for(int i = 0; i < issueFranchiseAccountList.size(); i++) {
 
-                    List<Issue> accountIssueList = issueRepository.findByFranchiseIssuePresenter_MemberNo(issueFranchiseAccountList.get(i).getFranchiseManagerNo());
+                    List<Issue> accountIssueList = issueRepository.findByFranchiseIssuePresenter_MemberNoOrderByFranchiseIssueCreatedDateDesc(issueFranchiseAccountList.get(i).getFranchiseManagerNo());
 
                     for(int j = 0; j < accountIssueList.size(); j++) {
 
@@ -95,11 +95,11 @@ public class IssueService {
 
                 List<IssueFranchiseAccount> issueFranchiseAccountList = issueFranchiseAccountRepository.findByFranchiseInfo_FranchiseRepresentativeNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
 
-                issueList = issueRepository.findByFranchiseIssuePresenter_MemberNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
+                issueList = issueRepository.findByFranchiseIssuePresenter_MemberNoOrderByFranchiseIssueCreatedDateDesc(issueFranchiseInfo.getFranchiseRepresentativeNo());
 
                 for(int i = 0; i < issueFranchiseAccountList.size(); i++) {
 
-                    List<Issue> accountIssueList = issueRepository.findByFranchiseIssuePresenter_MemberNo(issueFranchiseAccountList.get(i).getFranchiseManagerNo());
+                    List<Issue> accountIssueList = issueRepository.findByFranchiseIssuePresenter_MemberNoOrderByFranchiseIssueCreatedDateDesc(issueFranchiseAccountList.get(i).getFranchiseManagerNo());
 
                     for(int j = 0; j < accountIssueList.size(); j++) {
 

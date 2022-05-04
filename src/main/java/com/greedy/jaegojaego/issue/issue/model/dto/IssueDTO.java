@@ -1,8 +1,10 @@
 package com.greedy.jaegojaego.issue.issue.model.dto;
 
+import com.greedy.jaegojaego.issue.company.model.dto.IssueCompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 
 import java.sql.Date;
+import java.util.List;
 
 public class IssueDTO {
 
@@ -12,13 +14,14 @@ public class IssueDTO {
     private java.sql.Date franchiseIssueCreatedDate;
     private java.sql.Date franchiseIssueStatusFinishDate;
     private String franchiseIssueStatus;
-    private MemberDTO franchiseIssueCompleter;
+    private IssueCompanyAccountDTO franchiseIssueCompleter;
     private MemberDTO franchiseIssuePresenter;
+    private List<IssueItemDTO> issueItemList;
 
     public IssueDTO() {
     }
 
-    public IssueDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, MemberDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter) {
+    public IssueDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccountDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, List<IssueItemDTO> issueItemList) {
         this.franchiseIssueNo = franchiseIssueNo;
         this.franchiseIssueTitle = franchiseIssueTitle;
         this.franchiseIssueBody = franchiseIssueBody;
@@ -27,6 +30,7 @@ public class IssueDTO {
         this.franchiseIssueStatus = franchiseIssueStatus;
         this.franchiseIssueCompleter = franchiseIssueCompleter;
         this.franchiseIssuePresenter = franchiseIssuePresenter;
+        this.issueItemList = issueItemList;
     }
 
     public int getFranchiseIssueNo() {
@@ -77,11 +81,11 @@ public class IssueDTO {
         this.franchiseIssueStatus = franchiseIssueStatus;
     }
 
-    public MemberDTO getFranchiseIssueCompleter() {
+    public IssueCompanyAccountDTO getFranchiseIssueCompleter() {
         return franchiseIssueCompleter;
     }
 
-    public void setFranchiseIssueCompleter(MemberDTO franchiseIssueCompleter) {
+    public void setFranchiseIssueCompleter(IssueCompanyAccountDTO franchiseIssueCompleter) {
         this.franchiseIssueCompleter = franchiseIssueCompleter;
     }
 
@@ -93,9 +97,17 @@ public class IssueDTO {
         this.franchiseIssuePresenter = franchiseIssuePresenter;
     }
 
+    public List<IssueItemDTO> getIssueItemList() {
+        return issueItemList;
+    }
+
+    public void setIssueItemList(List<IssueItemDTO> issueItemList) {
+        this.issueItemList = issueItemList;
+    }
+
     @Override
     public String toString() {
-        return "issueDTO{" +
+        return "IssueDTO{" +
                 "franchiseIssueNo=" + franchiseIssueNo +
                 ", franchiseIssueTitle='" + franchiseIssueTitle + '\'' +
                 ", franchiseIssueBody='" + franchiseIssueBody + '\'' +
@@ -104,6 +116,7 @@ public class IssueDTO {
                 ", franchiseIssueStatus='" + franchiseIssueStatus + '\'' +
                 ", franchiseIssueCompleter=" + franchiseIssueCompleter +
                 ", franchiseIssuePresenter=" + franchiseIssuePresenter +
+                ", issueItemList=" + issueItemList +
                 '}';
     }
 }

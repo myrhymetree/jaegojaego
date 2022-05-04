@@ -14,6 +14,43 @@
             height: 30px;
             margin-right: 20px;
         }
+
+        .issue-before-btn {
+            border: none;
+            cursor: pointer;
+            background-color: yellowgreen;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .issue-reject-btn {
+            border: none;
+            cursor: pointer;
+            background-color: orangered;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .issue-complete-btn {
+            border: none;
+            cursor: pointer;
+            background-color: skyblue;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .status-change-div {
+            width: 80px;
+            display: none;
+            position: absolute;
+            margin-left: 47px;
+            z-index: 1000;
+        }
     </style>
 
 </head>
@@ -64,7 +101,43 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                <tr th:each="issue, index : ${ issueList }" id="issue-list-tr">
+                                    <td th:text="${ index.index + 1 }"></td>
+                                    <td th:text="${ issue.issueFranchiseInfo.franchiseBranchName }"></td>
+                                    <td th:text="${ issue.franchiseIssueTitle }"></td>
+                                    <td th:text="${ issue.franchiseIssueCreatedDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ issue.franchiseIssuePresenter.memberNo eq issue.issueFranchiseInfo.franchiseRepresentativeNo }">
+                                            <th:block th:text="${ issue.issueFranchiseInfo.franchiseRepresentativeName }"></th:block>
+                                        </th:block>
+                                        <th:block th:if="${ issue.issueFranchiseAccount ne null }">
+                                            <th:block th:if="${ issue.franchiseIssuePresenter.memberNo eq issue.issueFranchiseAccount.franchiseManagerNo }">
+                                                <th:block th:text="${ issue.issueFranchiseAccount.managerName }"></th:block>
+                                            </th:block>
+                                        </th:block>
+                                    </td>
+                                    <td th:text="${ issue.franchiseIssueStatusFinishDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ issue.franchiseIssueCompleter ne null }">
+                                            <th:block th:text="${ issue.franchiseIssueCompleter.memberName }"></th:block>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'BEFORE' }">
+                                            <button class="issue-before-btn" id="issue-before-btn">처리전</button>
+                                            <div class="status-change-div" id="status-change-div">
+                                                <button class="issue-change-btn" id="issue-change-btn">교환</button>
+                                                <button class="issue-return-btn" id="issue-return-btn">반품</button>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'CHANGE' }">
+                                            <button class="issue-change-btn">교환</button>
+                                        </th:block>
+                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'RETURN' }">
+                                            <button class="issue-return-btn" id="reject-check-btn">반품</button>
+                                        </th:block>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -83,6 +156,42 @@
     </div>
 
     <th:block th:replace="/common/footer.html"></th:block>
+
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('.footable').footable();
+            $('.footable2').footable();
+
+        });
+
+        if(document.querySelectorAll("#issue-list-tr td")) {
+
+            const $tds = document.querySelectorAll('#issue-list-tr td');
+
+            for(let i = 0; i < $tds.length; i++) {
+
+                $tds[i].onmouseenter = function() {
+                    this.parentNode.style.backgroundColor = "#d3d3d3";
+                    this.parentNode.style.cursor = "pointer";
+                }
+
+                $tds[i].onmouseout = function() {
+                    this.parentNode.style.backgroundColor = "white";
+                }
+
+                $tds[i].onclick = function() {
+
+                }
+
+            }
+
+        }
+
+
+    </script>
 
 </body>
 </html>

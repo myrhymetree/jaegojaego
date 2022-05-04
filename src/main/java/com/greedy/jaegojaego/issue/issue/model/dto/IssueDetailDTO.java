@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.issue.issue.model.dto;
 
+import com.greedy.jaegojaego.issue.company.model.dto.IssueCompanyAccountDTO;
 import com.greedy.jaegojaego.issue.franchise.model.dto.IssueFranchiseAccountDTO;
 import com.greedy.jaegojaego.issue.franchise.model.dto.IssueFranchiseInfoDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
@@ -14,7 +15,7 @@ public class IssueDetailDTO {
     private java.sql.Date franchiseIssueCreatedDate;
     private java.sql.Date franchiseIssueStatusFinishDate;
     private String franchiseIssueStatus;
-    private MemberDTO franchiseIssueCompleter;
+    private IssueCompanyAccountDTO franchiseIssueCompleter;
     private MemberDTO franchiseIssuePresenter;
     private IssueFranchiseInfoDTO issueFranchiseInfo;
     private IssueFranchiseAccountDTO issueFranchiseAccount;
@@ -22,7 +23,7 @@ public class IssueDetailDTO {
     public IssueDetailDTO() {
     }
 
-    public IssueDetailDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, MemberDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, IssueFranchiseInfoDTO issueFranchiseInfo, IssueFranchiseAccountDTO issueFranchiseAccount) {
+    public IssueDetailDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccountDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, IssueFranchiseInfoDTO issueFranchiseInfo, IssueFranchiseAccountDTO issueFranchiseAccount) {
         this.franchiseIssueNo = franchiseIssueNo;
         this.franchiseIssueTitle = franchiseIssueTitle;
         this.franchiseIssueBody = franchiseIssueBody;
@@ -83,11 +84,11 @@ public class IssueDetailDTO {
         this.franchiseIssueStatus = franchiseIssueStatus;
     }
 
-    public MemberDTO getFranchiseIssueCompleter() {
+    public IssueCompanyAccountDTO getFranchiseIssueCompleter() {
         return franchiseIssueCompleter;
     }
 
-    public void setFranchiseIssueCompleter(MemberDTO franchiseIssueCompleter) {
+    public void setFranchiseIssueCompleter(IssueCompanyAccountDTO franchiseIssueCompleter) {
         this.franchiseIssueCompleter = franchiseIssueCompleter;
     }
 

@@ -31,6 +31,7 @@ public class IssueController {
 
         List<IssueDetailDTO> issueList = issueService.selectIssueList(customUser);
 
+        mv.addObject("issueList", issueList);
         mv.addObject("member", customUser);
         mv.setViewName("/issue/issueList");
 

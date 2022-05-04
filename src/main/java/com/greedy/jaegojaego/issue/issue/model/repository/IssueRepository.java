@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findByFranchiseIssuePresenter_MemberNo(int memberNo);
+
+    List<Issue> findByFranchiseIssuePresenter_MemberNoOrderByFranchiseIssueCreatedDateDesc(int memberNo);
+
+    List<Issue> findByFranchiseIssuePresenterOrderByFranchiseIssueCreatedDateDesc(int memberNo);
 }

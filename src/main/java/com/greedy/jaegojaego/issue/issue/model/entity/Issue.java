@@ -1,9 +1,12 @@
 package com.greedy.jaegojaego.issue.issue.model.entity;
 
+import com.greedy.jaegojaego.issue.company.model.entity.IssueCompanyAccount;
+import com.greedy.jaegojaego.issue.issue.model.dto.IssueItemDTO;
 import com.greedy.jaegojaego.member.model.entity.Member;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity(name = "franchiseIssue")
 @Table(name = "FRANCHISE_ISSUE")
@@ -40,16 +43,20 @@ public class Issue {
 
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_ISSUE_COMPLETER")
-    private Member franchiseIssueCompleter;
+    private IssueCompanyAccount franchiseIssueCompleter;
 
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_ISSUE_PRESENTER")
     private Member franchiseIssuePresenter;
 
+    @OneToMany
+    @JoinColumn(name = "FRANCHISE_ISSUE_NO")
+    private List<IssueItem> issueItemList;
+
     public Issue() {
     }
 
-    public Issue(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, Member franchiseIssueCompleter, Member franchiseIssuePresenter) {
+    public Issue(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccount franchiseIssueCompleter, Member franchiseIssuePresenter, List<IssueItem> issueItemList) {
         this.franchiseIssueNo = franchiseIssueNo;
         this.franchiseIssueTitle = franchiseIssueTitle;
         this.franchiseIssueBody = franchiseIssueBody;
@@ -58,6 +65,7 @@ public class Issue {
         this.franchiseIssueStatus = franchiseIssueStatus;
         this.franchiseIssueCompleter = franchiseIssueCompleter;
         this.franchiseIssuePresenter = franchiseIssuePresenter;
+        this.issueItemList = issueItemList;
     }
 
     public int getFranchiseIssueNo() {
@@ -108,11 +116,11 @@ public class Issue {
         this.franchiseIssueStatus = franchiseIssueStatus;
     }
 
-    public Member getFranchiseIssueCompleter() {
+    public IssueCompanyAccount getFranchiseIssueCompleter() {
         return franchiseIssueCompleter;
     }
 
-    public void setFranchiseIssueCompleter(Member franchiseIssueCompleter) {
+    public void setFranchiseIssueCompleter(IssueCompanyAccount franchiseIssueCompleter) {
         this.franchiseIssueCompleter = franchiseIssueCompleter;
     }
 
@@ -122,6 +130,14 @@ public class Issue {
 
     public void setFranchiseIssuePresenter(Member franchiseIssuePresenter) {
         this.franchiseIssuePresenter = franchiseIssuePresenter;
+    }
+
+    public List<IssueItem> getIssueItemList() {
+        return issueItemList;
+    }
+
+    public void setIssueItemList(List<IssueItem> issueItemList) {
+        this.issueItemList = issueItemList;
     }
 
     @Override
@@ -135,6 +151,7 @@ public class Issue {
                 ", franchiseIssueStatus='" + franchiseIssueStatus + '\'' +
                 ", franchiseIssueCompleter=" + franchiseIssueCompleter +
                 ", franchiseIssuePresenter=" + franchiseIssuePresenter +
+                ", issueItemList=" + issueItemList +
                 '}';
     }
 }

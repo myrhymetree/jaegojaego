@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity(name = "issueFranchiseInfo")
 @Table(name = "FRANCHISE_INFO")
-@EqualsAndHashCode
 public class IssueFranchiseInfo {
 
     @Id
