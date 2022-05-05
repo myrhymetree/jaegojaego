@@ -12,16 +12,18 @@ public class BacklogInWarehouseDTO {
     private Date inWarehouseDate; //입고 처리 날짜
     private BacklogClientDTO clientNoForInWarehouse; //거래처 번호 fk
     private BacklogItemInfoDTO itemInfoNoForInWarehouse; //자재번호fk 인데 필요없을수도
+    private Date inWarehouseCompleteDate;
 
     public BacklogInWarehouseDTO() {}
 
-    public BacklogInWarehouseDTO(int inWarehouseNo, int inWarehouseAmount, String inWarehouseStatus, Date inWarehouseDate, BacklogClientDTO clientNoForInWarehouse, BacklogItemInfoDTO itemInfoNoForInWarehouse) {
+    public BacklogInWarehouseDTO(int inWarehouseNo, String inWarehouseStatus, int inWarehouseAmount, Date inWarehouseDate, BacklogClientDTO clientNoForInWarehouse, BacklogItemInfoDTO itemInfoNoForInWarehouse, Date inWarehouseCompleteDate) {
         this.inWarehouseNo = inWarehouseNo;
-        this.inWarehouseAmount = inWarehouseAmount;
         this.inWarehouseStatus = inWarehouseStatus;
+        this.inWarehouseAmount = inWarehouseAmount;
         this.inWarehouseDate = inWarehouseDate;
         this.clientNoForInWarehouse = clientNoForInWarehouse;
         this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
+        this.inWarehouseCompleteDate = inWarehouseCompleteDate;
     }
 
     public int getInWarehouseNo() {
@@ -32,20 +34,20 @@ public class BacklogInWarehouseDTO {
         this.inWarehouseNo = inWarehouseNo;
     }
 
-    public int getInWarehouseAmount() {
-        return inWarehouseAmount;
-    }
-
-    public void setInWarehouseAmount(int inWarehouseAmount) {
-        this.inWarehouseAmount = inWarehouseAmount;
-    }
-
     public String getInWarehouseStatus() {
         return inWarehouseStatus;
     }
 
     public void setInWarehouseStatus(String inWarehouseStatus) {
         this.inWarehouseStatus = inWarehouseStatus;
+    }
+
+    public int getInWarehouseAmount() {
+        return inWarehouseAmount;
+    }
+
+    public void setInWarehouseAmount(int inWarehouseAmount) {
+        this.inWarehouseAmount = inWarehouseAmount;
     }
 
     public Date getInWarehouseDate() {
@@ -72,15 +74,24 @@ public class BacklogInWarehouseDTO {
         this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
     }
 
+    public Date getInWarehouseCompleteDate() {
+        return inWarehouseCompleteDate;
+    }
+
+    public void setInWarehouseCompleteDate(Date inWarehouseCompleteDate) {
+        this.inWarehouseCompleteDate = inWarehouseCompleteDate;
+    }
+
     @Override
     public String toString() {
         return "BacklogInWarehouseDTO{" +
                 "inWarehouseNo=" + inWarehouseNo +
-                ", inWarehouseAmount=" + inWarehouseAmount +
                 ", inWarehouseStatus='" + inWarehouseStatus + '\'' +
+                ", inWarehouseAmount=" + inWarehouseAmount +
                 ", inWarehouseDate=" + inWarehouseDate +
                 ", clientNoForInWarehouse=" + clientNoForInWarehouse +
                 ", itemInfoNoForInWarehouse=" + itemInfoNoForInWarehouse +
+                ", inWarehouseCompleteDate=" + inWarehouseCompleteDate +
                 '}';
     }
 }

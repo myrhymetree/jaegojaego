@@ -184,3 +184,12 @@
 .december {
     left: 82%;
 }
+
+#morris-bar-chart {
+    width: 850px;
+    /*heigth: 20px;*/
+}
+
+svg {
+    height: 270px;
+}

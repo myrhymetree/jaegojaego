@@ -28,18 +28,22 @@ public class BacklogInWarehouse implements Serializable { /* 입고 */
     @JoinColumn(name = "ITEM_INFO_NO")
     private BacklogItemInfo itemInfoNoForInWarehouse; //자재번호fk 인데 필요없을수도
 
+    @Column(name = "IN_WAREHOUSE_COMPLETE_DATE")
+    private Date inWarehouseCompleteDate;
+
 //    @ManyToOne
 //    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
 //    private BacklogClientContractItem clientContractItemNoForInWarehouse; //거래처 판매 계약상품 번호 fk
 
     public BacklogInWarehouse() {}
 
-    public BacklogInWarehouse(BacklogInWarehousePK backlogInWarehousePK, int inWarehouseAmount, Date inWarehouseDate, BacklogClient clientNoForInWarehouse, BacklogItemInfo itemInfoNoForInWarehouse) {
+    public BacklogInWarehouse(BacklogInWarehousePK backlogInWarehousePK, int inWarehouseAmount, Date inWarehouseDate, BacklogClient clientNoForInWarehouse, BacklogItemInfo itemInfoNoForInWarehouse, Date inWarehouseCompleteDate) {
         this.backlogInWarehousePK = backlogInWarehousePK;
         this.inWarehouseAmount = inWarehouseAmount;
         this.inWarehouseDate = inWarehouseDate;
         this.clientNoForInWarehouse = clientNoForInWarehouse;
         this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
+        this.inWarehouseCompleteDate = inWarehouseCompleteDate;
     }
 
     public BacklogInWarehousePK getBacklogInWarehousePK() {
@@ -82,6 +86,14 @@ public class BacklogInWarehouse implements Serializable { /* 입고 */
         this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
     }
 
+    public Date getInWarehouseCompleteDate() {
+        return inWarehouseCompleteDate;
+    }
+
+    public void setInWarehouseCompleteDate(Date inWarehouseCompleteDate) {
+        this.inWarehouseCompleteDate = inWarehouseCompleteDate;
+    }
+
     @Override
     public String toString() {
         return "BacklogInWarehouse{" +
@@ -90,6 +102,7 @@ public class BacklogInWarehouse implements Serializable { /* 입고 */
                 ", inWarehouseDate=" + inWarehouseDate +
                 ", clientNoForInWarehouse=" + clientNoForInWarehouse +
                 ", itemInfoNoForInWarehouse=" + itemInfoNoForInWarehouse +
+                ", inWarehouseCompleteDate=" + inWarehouseCompleteDate +
                 '}';
     }
 }

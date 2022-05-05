@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -54,6 +56,14 @@ public class BacklogController {
    public List<BacklogItemInfoDTO> findItemInfoList() {
 
         return backlogService.findItemInfoList();
+   }
+
+   @GetMapping(value = "selectonebackloglist", produces = "application/json; charset=UTF-8")
+   @ResponseBody
+   public List<BacklogInWarehouseDTO> findBacklogInWarehouseBySelectBox(@RequestParam int itemInfoNo) {
+
+       System.out.println("잘 넘어오나? :" + itemInfoNo);
+        return backlogService.findBacklogInWarehouseBySelectBox(itemInfoNo);
    }
 
 }

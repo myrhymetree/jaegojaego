@@ -9,6 +9,7 @@
 
     <link th:href="@{/css/menu/menucss.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/morris/morris-0.4.3.min.css}" rel="stylesheet">
 
 </head>
 <body>
@@ -69,33 +70,74 @@
 
 
         <!-- 입고 켯을 때 차트 부분 -->
+        <!-- 그 받아온 애 전체 list를 javascript에서 for문 돌려서 const나 let 배열?에다가 넣어주고
+            id가 동일하면 []가 되니까 input type="hidden"으로 배열로 만들자
+            let 년도[] = [2022, 2022, 2022 ...]
+            let 월별[] = 01, 02 이니까 value에는 01로 나오게 하고 , text에는 1, 2 이렇게? [04, 06, 04 ... ]
+            let 실수량[] = [95, 120 ... ]
+            let 총합수량[]
+            if( for(월별for문 돌려서) -> 같으면 실수량 더해서 '총합수량'에 쌓이게) {}
+        -->
         <div class="chart-modalForIn" id="chartModalForIn"style="display: block;">
             <div class="barGraph">
                 <h4 style="font-weight: bold; margin-left: 5px;">각 물품 구매량 증/감소율</h4>
-
-                    <select class="itemListForBarGraph">
-                        <!-- 나중에 물품별로 불러오게 해야함(2022까지) -->
-                        <option value="지로스팅">지로스팅 원두 1kg</option>
+                    <select class="itemListForBarGraph" id="itemListForBarGraph" onchange="selectOneItemInfoForBarGraph(this.value, this.options[this.selectedIndex].text)">
+                        <option selected="selected" disabled="disabled">선택해주세요</option>
                         <!-- selectbox로 년도 보여준다. -->
                     </select>
 
-                    <select class="yearBarGraph">
+                    <!-- 1. 애초에 지로스팅선택되 있는 째로 나오게 할건지-->
+                    <!-- 2. (선택해주세!) 하면서 안보여준다음에 클릭하면 보여주게 할건지-->
+                    <select class="yearBarGraph" onchange="selectBarGraphForInWarehouse();">
                         <!-- 나중에 년도별로 불러오게 해야함(2022까지) -->
-                        <option value="2022">2022</option>
+                        <option value="2022" selected>2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
                         <!-- selectbox로 년도 보여준다. -->
                     </select>
-                    <div class="month january">1</div>
-                    <div class="month february">2</div>
-                    <div class="month march">3</div>
-                    <div class="month april">4</div>
-                    <div class="month may">5</div>
-                    <div class="month june">6</div>
-                    <div class="month july">7</div>
-                    <div class="month august">8</div>
-                    <div class="month september">9</div>
-                    <div class="month october">10</div>
-                    <div class="month november">11</div>
-                    <div class="month december">12</div>
+
+
+                    <div id="morris-bar-chart"></div>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            Morris.Bar({
+                                element: 'morris-bar-chart',
+                                data: [ //y에 그 나눈거 let -> 넣고 , 년도/월별 나눈거 m이랑 비교해서 더한다음에 실수량 a에 보여주기
+                                    { y: '2022', m: '1', a: 60 },
+                                    { y: '2022', m: '2', a: 75 },
+                                    { y: '2022', m: '3', a: 50 },
+                                    { y: '2022', m: '4', a: 75 },
+                                    { y: '2022', m: '5', a: 50 },
+                                    { y: '2022', m: '6', a: 75 },
+                                    { y: '2022', m: '7', a: 75 },
+                                    { y: '2022', m: '8', a: 75 },
+                                    { y: '2022', m: '9', a: 75 },
+                                    { y: '2022', m: '10', a: 75 },
+                                    { y: '2022', m: '11', a: 75 },
+                                    { y: '2022', m: '12', a: 100 }
+                                ],
+                                xkey: 'm',
+                                ykeys: ['a'],
+                                labels: ['총수량'],
+                                hideHover: 'auto',
+                                resize: true, //혹시 모르니 놔두자
+                                barColors: ['#1ab394', '#cacaca'],
+                            });
+                        });
+
+                    </script>
+
 
                 <!-- 막대 그래프 관련 내용 들어갈 예정 -->
                  </div>
@@ -141,8 +183,8 @@
 
             <!-- 입고백로그 목록 -->
             <div class="releasebacklog-modal" id="releasebacklogModal" style="display: block;">
-                <select class="itemListForInWarehouseBacklog" id="itemListForInWarehouseBacklog">
-                    <!-- 동적 생성? 으로 만들어야 함-->
+                <select class="itemListForInWarehouseBacklog" id="itemListForInWarehouseBacklog" onchange="selectOneItemInfo(this.value, this.options[this.selectedIndex].text);">
+                    <option selected="selected" disabled="disabled">선택해주세요</option>
                 </select>
                 <div class="ibox">
                     <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 입고물품 백로그</h3>
@@ -159,14 +201,12 @@
                                     <th>개수</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <!-- if) 입고 처리 상태명이 = '입고 완료'인 것만!
-                                     if) List라서 이 안에서 또 반복문 돌려야함! -->
-                                    <tr th:each="inbacklog : ${ inWarehouseBacklogList }">
+                                <tbody id="tbodyForInWarehouse" class="tbodyForInWarehouse">
+                                    <tr th:each="inbacklog : ${ inWarehouseBacklogList }" id="InWarehouseBacklogList" class="InWarehouseBacklogList">
                                         <td th:text="${ inbacklog.itemInfoNoForInWarehouse.itemInfoItemSerialNo }"></td>
                                         <td th:text="${ inbacklog.itemInfoNoForInWarehouse.itemInfoName }"></td>
                                         <td th:text="${ inbacklog.clientNoForInWarehouse.clientName }"></td>
-                                        <td th:text="${ inbacklog.inWarehouseDate }"></td>
+                                        <td th:text="${ inbacklog.inWarehouseCompleteDate }"></td>
                                         <td th:text="${ inbacklog.inWarehouseAmount }"></td>
                                     </tr>
                                 </tbody>
@@ -314,18 +354,16 @@
        document.getElementById("chartModalForIn").style.display = "none";
    }
 
+
    <!-- 입고 물품 불러오기 -->
     $(function() {
         $.ajax({
             url: "/backlog/iteminfolist",
             success: function(data) {
-                const $itemListForInWarehouseBacklog = $("#itemListForInWarehouseBacklog");
-
-                // $itemListForInWarehouseBacklog.html("");
-                $itemListForInWarehouseBacklog.append($("<option selected>").text("조회할 물품명을 선택해주세요!").attr("disabled", true));
+                const itemListForInWarehouseBacklog = $("#itemListForInWarehouseBacklog");
 
                 for(let list in data) {
-                    $itemListForInWarehouseBacklog.append($("<option>").val(data[list]).itemInfoNo).text(data[list].itemInfoName);
+                    itemListForInWarehouseBacklog.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
                 }
             },
             error: function(xhr) {
@@ -334,8 +372,131 @@
         });
     });
 
+    $(function() {
+        $.ajax({
+            url: "/backlog/iteminfolist",
+            success: function(data) {
+                const itemListForBarGraph = $("#itemListForBarGraph");
+
+                for(let list in data) {
+                    itemListForBarGraph.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
+                }
+            },
+            error: function(xhr) {
+                alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+    });
+
+
+    const $InWarehouseBacklogList = document.getElementById("InWarehouseBacklogList");
+
+    function selectOneItemInfo(value, text) {
+        $.ajax({
+           url: "/backlog/selectonebackloglist",
+            type: "get",
+            data: {"itemInfoNo":value},
+            success: function(data) {
+
+                $InWarehouseBacklogList.remove();
+
+                let str = "";
+
+                for(list in data){
+                    str += '<tr id="InWarehouseBacklogList" class="InWarehouseBacklogList">';
+                    str += '<td>'+data[list].itemInfoNoForInWarehouse.itemInfoItemSerialNo + '</td>';
+                    str += '<td>'+data[list].itemInfoNoForInWarehouse.itemInfoName +'</td>';
+                    str += '<td>'+data[list].clientNoForInWarehouse.clientName+'</td>';
+                    str += '<td>'+data[list].inWarehouseCompleteDate +'</td>';
+                    str += '<td>'+data[list].inWarehouseAmount +'</td>';
+                    str += '</tr>';
+                }
+
+                $("#tbodyForInWarehouse").empty();
+                $("#tbodyForInWarehouse").append(str);
+
+
+            },
+            error: function(xhr) {
+               alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+    }
+
+
+    //날짜를 나눠서 1월은 1월끼리 -> 수량이 더해지고
+   //  window.onload = function() {
+   //     console.log("여긴옴?");
+   //     <!-- 입고 켯을 때 차트 부분 -->
+   //     <!-- 그 받아온 애 전체 list를 javascript에서 for문 돌려서 const나 let 배열?에다가 넣어주고
+   //         id가 동일하면 []가 되니까 input type="hidden"으로 배열로 만들자
+   //         let 년도[] = [2022, 2022, 2022 ...]
+   //         let 월별[] = 01, 02 이니까 value에는 01로 나오게 하고 , text에는 1, 2 이렇게? [04, 06, 04 ... ]
+   //         let 실수량[] = [95, 120 ... ]
+   //         let 총합수량[]
+   //         if( for(월별for문 돌려서) -> 같으면 실수량 더해서 '총합수량'에 쌓이게) {}
+   //
+   //     // for(let inWarehouseList in list) {
+   //     //     console.log("나옴? : " + inWarehouseList[list]);
+   //     // }
+   // };
+    const yearForInWarehouse = document.createElement("input")
+    const monthForInWarehouse = document.createElement("input")
+    const amountForInWarehouse = document.createElement("input")
+    const realAmountForInWarehouse = document.createElement("input")
+
+    yearForInWarehouse.setAttribute("id", "yearForInWarehouse");
+    monthForInWarehouse.setAttribute("id", "monthForInWarehouse");
+    amountForInWarehouse.setAttribute("id", "amountForInWarehouse");
+    realAmountForInWarehouse.setAttribute("id", "realAmountForInWarehouse");
+
+    const yearForInWarehouseArray = $("#yearForInWarehouse");
+    const monthForInWarehouseArray = $("#monthForInWarehouse");
+    const amountForInWarehouseArray = $("#amountForInWarehouse");
+
+    const inWarehouseListForBarGraph = new Array();
+
+    const inWarehouseList = "[[${ inWarehouseBacklogList }]]"
+    console.log("잘나오냐 : "+  inWarehouseList)
+
+    function selectOneItemInfoForBarGraph(value, text) {
+        $.ajax({
+            url: "/backlog/selectonebackloglist",
+            type: "get",
+            data: {"itemInfoNo":value},
+            success: function(data) {
+
+            const test2Month = [];
+            const test1Year = [];
+            const test3Amount = [];
+                for(list in data){
+                    console.log(data[list].inWarehouseCompleteDate); //이 => 년도별 , 월별로 나눠서
+                    console.log(data[list].inWarehouseAmount); //한 백로그 목록 당 300개
+
+                    test2Month.push(data[list].inWarehouseCompleteDate.substring(5, 7).replace(0, ""));
+                    test1Year.push(data[list].inWarehouseCompleteDate.substring(0, 4));
+                    test3Amount.push(data[list].inWarehouseAmount);
+
+                }
+
+                    console.log("년도가 잘 드갔으려나 for문 밖에서: " + test1Year); //ㅇㅋ
+                    console.log("월별이 잘 드갔으려나 for문 밖에서: " + test2Month);
+                    console.log("수량 잘드감?: " + test3Amount); //만약에 test2Month 반복 돌린애들이 같으면 수량 더해준 애들 넣어놓는..그거..(1~ 12월까지 만들기)
+
+            },
+            error: function(xhr) {
+                alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+
+    }
+
 </script>
 <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
+<script th:src="@{/js/plugins/morris/raphael-2.1.0.min.js}"></script>
+<script th:src="@{/js/plugins/morris/morris.js}"></script>
+<script th:src="@{/js/demo/morris-demo.js}"></script>
+<!--        jQuery.ready()-->
 <script>
     $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
 
@@ -367,6 +528,8 @@
         });
 
     });
+
+
 
 </script>
 </body>

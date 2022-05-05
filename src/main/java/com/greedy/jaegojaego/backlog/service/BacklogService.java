@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -74,6 +75,7 @@ public class BacklogService {
                 backlogInWarehouseDTO.setInWarehouseAmount(inWarehouseBacklogList.get(i).getInWarehouseAmount());
                 backlogInWarehouseDTO.setItemInfoNoForInWarehouse(backlogItemInfoDTO);
                 backlogInWarehouseDTO.setClientNoForInWarehouse(backlogClientDTO);
+                backlogInWarehouseDTO.setInWarehouseCompleteDate(inWarehouseBacklogList.get(i).getInWarehouseCompleteDate());
 
                 backlogInWarehouseDTOList.add(backlogInWarehouseDTO);
             }
@@ -92,5 +94,13 @@ public class BacklogService {
         ItemInfoList.forEach(System.out::println);
 
         return ItemInfoList.stream().map(backlogItemInfo -> modelMapper.map(backlogItemInfo, BacklogItemInfoDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<BacklogInWarehouseDTO> findBacklogInWarehouseBySelectBox(int itemInfoNo) {
+
+        List<BacklogInWarehouse> findBacklogInWarehouseBySelectBox = inWarehouseBacklogRepository.findBacklogInWarehouseBySelectBox(itemInfoNo);
+        System.out.println("잘나오냐? : " + findBacklogInWarehouseBySelectBox);
+
+        return findBacklogInWarehouseBySelectBox.stream().map(backlogInWarehouse -> modelMapper.map(backlogInWarehouse, BacklogInWarehouseDTO.class)).collect(Collectors.toList());
     }
 }
