@@ -1,54 +1,64 @@
 package com.greedy.jaegojaego.outWarehouse.model.entity;
 
-import lombok.*;
-
 import javax.persistence.*;
+import java.sql.Date;
 
-@Entity(name = "OutWarehouseFranchiseOrder")
+@Entity(name = "outWarehouseFranchiseOrder")
 @Table(name = "FRANCHISE_ORDER")
-@SequenceGenerator(
-        name = "OUT_WAREHOUSE_FRANCHISE_ORDER_SEQ_GENERATOR",
-        sequenceName = "FRANCHISE_ORDER_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class OutWarehouseFranchiseOrder {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "OUT_WAREHOUSE_FRANCHISE_ORDER_SEQ_GENERATOR"
-    )
     @Column(name = "FRANCHISE_ORDER_NO")
     private int franchiseOrderNo;
 
+    @Column(name = "FRANCHISE_ORDER_STATUS")
+    private String franchiseOrderStatus;
+
+    @Column(name = "FRANCHISE_ORDER_STATUS_DATE")
+    private Date franchiseOrderStatusDate;
+
     @ManyToOne
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
+    @JoinColumn(name = "MEMBER_NO")
+    private OutWarehouseMember memberNo;
 
     public OutWarehouseFranchiseOrder() {}
 
-    public int getFranchiseOrderNo() {
-        return franchiseOrderNo;
+    public OutWarehouseFranchiseOrder(int franchiseOrderNo, String franchiseOrderStatus, Date franchiseOrderStatusDate) {
+        this.franchiseOrderNo = franchiseOrderNo;
+        this.franchiseOrderStatus = franchiseOrderStatus;
+        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
     }
 
-    public OutWarehouseFranchiseInfo getFranchiseRepresentativeNo() {
-        return franchiseRepresentativeNo;
+    public int getFranchiseOrderNo() {
+        return franchiseOrderNo;
     }
 
     public void setFranchiseOrderNo(int franchiseOrderNo) {
         this.franchiseOrderNo = franchiseOrderNo;
     }
 
-    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
-        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    public String getFranchiseOrderStatus() {
+        return franchiseOrderStatus;
+    }
+
+    public void setFranchiseOrderStatus(String franchiseOrderStatus) {
+        this.franchiseOrderStatus = franchiseOrderStatus;
+    }
+
+    public Date getFranchiseOrderStatusDate() {
+        return franchiseOrderStatusDate;
+    }
+
+    public void setFranchiseOrderStatusDate(Date franchiseOrderStatusDate) {
+        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
     }
 
     @Override
     public String toString() {
         return "OutWarehouseFranchiseOrder{" +
                 "franchiseOrderNo=" + franchiseOrderNo +
-                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
+                ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
+                ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
                 '}';
     }
 }
