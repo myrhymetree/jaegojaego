@@ -62,7 +62,7 @@
 .barGraph {
     border: 0.5px solid gray;
     height: 300px;
-    width: 850px;
+    width: 950px;
     position: relative;
     margin-top: 15px;
     margin-left: 50px;
@@ -186,7 +186,7 @@
 }
 
 #morris-bar-chart {
-    width: 850px;
+    width: 950px;
     /*heigth: 20px;*/
 }
 

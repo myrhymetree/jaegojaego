@@ -25,23 +25,23 @@
 
 
     <div class="chartAreaWhiteBoard">
-        <button class="button calendar-button" id="calendarButton" style="width: 120px;">일정한눈에보기</button>
+<!--        <button class="button calendar-button" id="calendarButton" style="width: 120px;">일정한눈에보기</button>-->
 
-        <!-- 캘린더 부분 (시간나면 하자)-->
-        <div class="whiteboardForCalendar" id="calendarModal" style="display: none;">
-            <div class="calendar-modal">
-                <button class="button calendarback-button" id="backcalendarButton" style="width: 100px;">차트보기</button>
-                <div class="ibox">
-                    <div class="ibox-title">
-                        <h4 style="font-weight: bold; margin-left: 5px;">입고처리된날짜가 반영된 일정</h4>
-                    </div>
-                    <div class="ibox-content">
-                        <!-- fullcalendar script쪽에 설정 있을거임 -->
-                       <div id="calendar"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        &lt;!&ndash; 캘린더 부분 (시간나면 하자)&ndash;&gt;-->
+<!--        <div class="whiteboardForCalendar" id="calendarModal" style="display: none;">-->
+<!--            <div class="calendar-modal">-->
+<!--                <button class="button calendarback-button" id="backcalendarButton" style="width: 100px;">차트보기</button>-->
+<!--                <div class="ibox">-->
+<!--                    <div class="ibox-title">-->
+<!--                        <h4 style="font-weight: bold; margin-left: 5px;">입고처리된날짜가 반영된 일정</h4>-->
+<!--                    </div>-->
+<!--                    <div class="ibox-content">-->
+<!--                        &lt;!&ndash; fullcalendar script쪽에 설정 있을거임 &ndash;&gt;-->
+<!--                       <div id="calendar"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- 출고 켯을 때 차트 부분 -->
         <div class="chart-modalForOut" id="charModalForOut" style="display: none;">
@@ -69,77 +69,115 @@
         </div>
 
 
-        <!-- 입고 켯을 때 차트 부분 -->
-        <!-- 그 받아온 애 전체 list를 javascript에서 for문 돌려서 const나 let 배열?에다가 넣어주고
-            id가 동일하면 []가 되니까 input type="hidden"으로 배열로 만들자
-            let 년도[] = [2022, 2022, 2022 ...]
-            let 월별[] = 01, 02 이니까 value에는 01로 나오게 하고 , text에는 1, 2 이렇게? [04, 06, 04 ... ]
-            let 실수량[] = [95, 120 ... ]
-            let 총합수량[]
-            if( for(월별for문 돌려서) -> 같으면 실수량 더해서 '총합수량'에 쌓이게) {}
-        -->
         <div class="chart-modalForIn" id="chartModalForIn"style="display: block;">
             <div class="barGraph">
                 <h4 style="font-weight: bold; margin-left: 5px;">각 물품 구매량 증/감소율</h4>
                     <select class="itemListForBarGraph" id="itemListForBarGraph" onchange="selectOneItemInfoForBarGraph(this.value, this.options[this.selectedIndex].text)">
                         <option selected="selected" disabled="disabled">선택해주세요</option>
-                        <!-- selectbox로 년도 보여준다. -->
                     </select>
 
-                    <!-- 1. 애초에 지로스팅선택되 있는 째로 나오게 할건지-->
-                    <!-- 2. (선택해주세!) 하면서 안보여준다음에 클릭하면 보여주게 할건지-->
-                    <select class="yearBarGraph" onchange="selectBarGraphForInWarehouse();">
-                        <!-- 나중에 년도별로 불러오게 해야함(2022까지) -->
-                        <option value="2022" selected>2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-                        <option value="2013">2013</option>
-                        <option value="2012">2012</option>
-                        <option value="2011">2011</option>
-                        <option value="2010">2010</option>
-                        <option value="2009">2009</option>
-                        <!-- selectbox로 년도 보여준다. -->
-                    </select>
+                    <select class="yearBarGraph" id="yearBarGraph" onchange="selectBarGraphForInWarehouse(this.value, this.options[this.selectedIndex].text);">
 
+                    </select>
 
                     <div id="morris-bar-chart"></div>
                     <script type="text/javascript">
+                        let changeBarGraphCount = 0;
+
                         $(document).ready(function() {
                             Morris.Bar({
                                 element: 'morris-bar-chart',
-                                data: [ //y에 그 나눈거 let -> 넣고 , 년도/월별 나눈거 m이랑 비교해서 더한다음에 실수량 a에 보여주기
-                                    { y: '2022', m: '1', a: 60 },
-                                    { y: '2022', m: '2', a: 75 },
-                                    { y: '2022', m: '3', a: 50 },
-                                    { y: '2022', m: '4', a: 75 },
-                                    { y: '2022', m: '5', a: 50 },
-                                    { y: '2022', m: '6', a: 75 },
-                                    { y: '2022', m: '7', a: 75 },
-                                    { y: '2022', m: '8', a: 75 },
-                                    { y: '2022', m: '9', a: 75 },
-                                    { y: '2022', m: '10', a: 75 },
-                                    { y: '2022', m: '11', a: 75 },
-                                    { y: '2022', m: '12', a: 100 }
+                                data: [
+                                    { m: '1', amount: 0 },
+                                    { m: '2', amount: 0 },
+                                    { m: '3', amount: 0 },
+                                    { m: '4', amount: 0 },
+                                    { m: '5', amount: 0 },
+                                    { m: '6', amount: 0 },
+                                    { m: '7', amount: 0 },
+                                    { m: '8', amount: 0 },
+                                    { m: '9', amount: 0 },
+                                    { m: '10', amount: 0 },
+                                    { m: '11', amount: 0 },
+                                    { m: '12', amount: 0 }
                                 ],
                                 xkey: 'm',
-                                ykeys: ['a'],
+                                ykeys: ['amount'],
                                 labels: ['총수량'],
                                 hideHover: 'auto',
-                                resize: true, //혹시 모르니 놔두자
+                                resize: true,
                                 barColors: ['#1ab394', '#cacaca'],
                             });
                         });
 
+                        function changeBarGraph() {
+                            if(changeBarGraphCount == 1) {
+                                $(document).ready(function() {
+                                    Morris.Bar({
+                                        element: 'morris-bar-chart',
+                                        data: [
+                                            { m: '1', amount: januaryAmount },
+                                            { m: '2', amount: februaryAmount },
+                                            { m: '3', amount: MarchAmount },
+                                            { m: '4', amount: AprilAmount },
+                                            { m: '5', amount: MayAmount },
+                                            { m: '6', amount: JunAmount },
+                                            { m: '7', amount: JulyAmount },
+                                            { m: '8', amount: AugustAmount },
+                                            { m: '9', amount: SeptemberAmount },
+                                            { m: '10', amount: OctoberAmount },
+                                            { m: '11', amount: NovemberAmount },
+                                            { m: '12', amount: DecemberAmount }
+                                        ],
+                                        xkey: 'm',
+                                        ykeys: ['amount'],
+                                        labels: ['총수량'],
+                                        hideHover: 'auto',
+                                        resize: true,
+                                        barColors: ['#1ab394', '#cacaca'],
+                                    });
+                                });
+                            }
+                        }
+
+                        let inWarehlouseListBySelectbox = [];
+                        const $yearSelectboxForBarGraph = $("#yearBarGraph");
+
+                        function selectOneItemInfoForBarGraph(value, text) {
+                            $.ajax({
+                                url: "/backlog/selectonebackloglist",
+                                type: "get",
+                                data: {"itemInfoNo":value},
+                                success: function(data) {
+
+                                        inWarehlouseListBySelectbox.length = 0;
+
+                                    for(list in data){
+                                        inWarehlouseListBySelectbox.push(data[list]); //지로스팅에 대한 정보가 들어있음
+                                        console.log(data[list].inWarehouseCompleteDate); //이 => 년도별 , 월별로 나눠서
+                                        console.log(data[list].inWarehouseAmount); //한 백로그 목록 당 300개
+
+                                    }
+
+                                    const year = [ '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009'];
+
+                                    $yearSelectboxForBarGraph.html("");
+                                    $yearSelectboxForBarGraph.append($("<option selected>").text("년도선택").attr("disabled", true));
+
+                                    for(x in year) {
+                                        const opt = document.createElement("option");
+                                        opt.innerText = year[x];
+                                        opt.value = year[x];
+                                        $yearSelectboxForBarGraph.append(opt);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    alert("에러가 발생하였습니다. 다시 시도해주세요");
+                                }
+                            });
+
+                        }
                     </script>
-
-
-                <!-- 막대 그래프 관련 내용 들어갈 예정 -->
                  </div>
 
 
@@ -169,7 +207,6 @@
             </div>
     </div>
     <!-- 차트 부분 whiteboard 끝 -->
-
 
         <div class="moveButton" id="moveButton">
             <button class="button backlogList" id="releasebacklogButton" style="width: 150px;">본사 입고물품 백로그</button>
@@ -304,12 +341,9 @@
 <!--                                </tfoot>-->
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
         </div>
         </div>
 
@@ -320,25 +354,25 @@
 
 <script>
 
-    document.getElementById("calendarButton").onclick = function () {
-        document.getElementById("calendarModal").style.display = "block";
-        document.getElementById("chartModalForIn").style.display = "none";
-        document.getElementById("charModalForOut").style.display = "none";
-        document.getElementById("releasebacklogModal").style.display = "none";
-        document.getElementById("inwarehousebacklogModal").style.display = "none";
-        document.getElementById("moveButton").style.display = "none";
-        document.getElementById("listModal").style.display = "none";
-
-    }
-   document.getElementById("backcalendarButton").onclick = function () {
-       document.getElementById("calendarModal").style.display = "none";
-       document.getElementById("chartModalForIn").style.display = "block";
-       document.getElementById("releasebacklogModal").style.display = "block";
-       document.getElementById("inwarehousebacklogModal").style.display = "none";
-       document.getElementById("moveButton").style.display = "block";
-       document.getElementById("listModal").style.display = "block";
-
-   }
+   //  document.getElementById("calendarButton").onclick = function () {
+   //      document.getElementById("calendarModal").style.display = "block";
+   //      document.getElementById("chartModalForIn").style.display = "none";
+   //      document.getElementById("charModalForOut").style.display = "none";
+   //      document.getElementById("releasebacklogModal").style.display = "none";
+   //      document.getElementById("inwarehousebacklogModal").style.display = "none";
+   //      document.getElementById("moveButton").style.display = "none";
+   //      document.getElementById("listModal").style.display = "none";
+   //
+   //  }
+   // document.getElementById("backcalendarButton").onclick = function () {
+   //     document.getElementById("calendarModal").style.display = "none";
+   //     document.getElementById("chartModalForIn").style.display = "block";
+   //     document.getElementById("releasebacklogModal").style.display = "block";
+   //     document.getElementById("inwarehousebacklogModal").style.display = "none";
+   //     document.getElementById("moveButton").style.display = "block";
+   //     document.getElementById("listModal").style.display = "block";
+   //
+   // }
    document.getElementById("releasebacklogButton").onclick = function () {
        document.getElementById("releasebacklogModal").style.display = "block";
        document.getElementById("inwarehousebacklogModal").style.display = "none";
@@ -371,6 +405,87 @@
             }
         });
     });
+
+   let januaryAmount = 0;
+   let februaryAmount = 0;
+   let MarchAmount = 0;
+   let AprilAmount = 0;
+   let MayAmount = 0;
+   let JunAmount = 0;
+   let JulyAmount = 0;
+   let AugustAmount = 0;
+   let SeptemberAmount = 0;
+   let OctoberAmount = 0;
+   let NovemberAmount = 0;
+   let DecemberAmount = 0;
+
+   function selectBarGraphForInWarehouse(value, text) { //이거 눌렀을 때 저 그래프가 나오는게 되고 (원래 그래프 되는거 따로 또 두고?)
+
+       console.log("반복해서 안들어오면 : " + inWarehlouseListBySelectbox)
+
+       januaryAmount = 0;
+       februaryAmount = 0;
+       MarchAmount = 0;
+       AprilAmount = 0;
+       MayAmount = 0;
+       JunAmount = 0;
+       JulyAmount = 0;
+       AugustAmount = 0;
+       SeptemberAmount = 0;
+       OctoberAmount = 0;
+       NovemberAmount = 0;
+       DecemberAmount = 0;
+       //--------------------//
+       //자재번호 넘어가서 '로스팅된 지로스팅 1kg'에 대한 list만 data에 들어올 거고 그걸 배열에 담아서 + 여기서 만들어준느거
+
+       for(list in inWarehlouseListBySelectbox) {
+           // Date.push(inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(0, 7));
+           // AmountArray.push(inWarehlouseListBySelectbox[list].inWarehouseAmount);
+
+           let YearForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(0, 4);
+           let MonthForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(5, 7);
+           let Amount = inWarehlouseListBySelectbox[list].inWarehouseAmount;
+
+           console.log("년도 : " + YearForInWarehouse)
+           console.log("셀렉트 클릭한 년도 : " + value)
+           console.log("월별 : " + MonthForInWarehouse)
+
+           //흠..
+           if(YearForInWarehouse == value && MonthForInWarehouse == '01') { //value = 2022 들왓고 , Date의 년도(2022) 부분이 == 같으면 +
+               januaryAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '02') {
+               februaryAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '03') {
+               MarchAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '04') {
+               AprilAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '05') {
+               MayAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '06') {
+               JunAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '07') {
+               JulyAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '08') {
+                AugustAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '09') {
+               SeptemberAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '10') {
+               OctoberAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '10') {
+               NovemberAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '10') {
+               DecemberAmount += Amount;
+           }
+       }
+
+       //morris-bar-chart -> div
+       $("#morris-bar-chart").html("");
+       changeBarGraphCount = 1;
+       changeBarGraph();
+   }
+
+
+
 
     $(function() {
         $.ajax({
@@ -423,74 +538,6 @@
         });
     }
 
-
-    //날짜를 나눠서 1월은 1월끼리 -> 수량이 더해지고
-   //  window.onload = function() {
-   //     console.log("여긴옴?");
-   //     <!-- 입고 켯을 때 차트 부분 -->
-   //     <!-- 그 받아온 애 전체 list를 javascript에서 for문 돌려서 const나 let 배열?에다가 넣어주고
-   //         id가 동일하면 []가 되니까 input type="hidden"으로 배열로 만들자
-   //         let 년도[] = [2022, 2022, 2022 ...]
-   //         let 월별[] = 01, 02 이니까 value에는 01로 나오게 하고 , text에는 1, 2 이렇게? [04, 06, 04 ... ]
-   //         let 실수량[] = [95, 120 ... ]
-   //         let 총합수량[]
-   //         if( for(월별for문 돌려서) -> 같으면 실수량 더해서 '총합수량'에 쌓이게) {}
-   //
-   //     // for(let inWarehouseList in list) {
-   //     //     console.log("나옴? : " + inWarehouseList[list]);
-   //     // }
-   // };
-    const yearForInWarehouse = document.createElement("input")
-    const monthForInWarehouse = document.createElement("input")
-    const amountForInWarehouse = document.createElement("input")
-    const realAmountForInWarehouse = document.createElement("input")
-
-    yearForInWarehouse.setAttribute("id", "yearForInWarehouse");
-    monthForInWarehouse.setAttribute("id", "monthForInWarehouse");
-    amountForInWarehouse.setAttribute("id", "amountForInWarehouse");
-    realAmountForInWarehouse.setAttribute("id", "realAmountForInWarehouse");
-
-    const yearForInWarehouseArray = $("#yearForInWarehouse");
-    const monthForInWarehouseArray = $("#monthForInWarehouse");
-    const amountForInWarehouseArray = $("#amountForInWarehouse");
-
-    const inWarehouseListForBarGraph = new Array();
-
-    const inWarehouseList = "[[${ inWarehouseBacklogList }]]"
-    console.log("잘나오냐 : "+  inWarehouseList)
-
-    function selectOneItemInfoForBarGraph(value, text) {
-        $.ajax({
-            url: "/backlog/selectonebackloglist",
-            type: "get",
-            data: {"itemInfoNo":value},
-            success: function(data) {
-
-            const test2Month = [];
-            const test1Year = [];
-            const test3Amount = [];
-                for(list in data){
-                    console.log(data[list].inWarehouseCompleteDate); //이 => 년도별 , 월별로 나눠서
-                    console.log(data[list].inWarehouseAmount); //한 백로그 목록 당 300개
-
-                    test2Month.push(data[list].inWarehouseCompleteDate.substring(5, 7).replace(0, ""));
-                    test1Year.push(data[list].inWarehouseCompleteDate.substring(0, 4));
-                    test3Amount.push(data[list].inWarehouseAmount);
-
-                }
-
-                    console.log("년도가 잘 드갔으려나 for문 밖에서: " + test1Year); //ㅇㅋ
-                    console.log("월별이 잘 드갔으려나 for문 밖에서: " + test2Month);
-                    console.log("수량 잘드감?: " + test3Amount); //만약에 test2Month 반복 돌린애들이 같으면 수량 더해준 애들 넣어놓는..그거..(1~ 12월까지 만들기)
-
-            },
-            error: function(xhr) {
-                alert("에러가 발생하였습니다. 다시 시도해주세요");
-            }
-        });
-
-    }
-
 </script>
 <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
 <script th:src="@{/js/plugins/morris/raphael-2.1.0.min.js}"></script>
@@ -506,24 +553,6 @@
             responsive: true,
             lengthChange: false,
             info: false,
-            // dom: '<"html5buttons"B>lTfgitp',
-            buttons: [
-                // { extend: 'copy'},
-                // {extend: 'csv'},
-                // {extend: 'excel', title: 'ExampleFile'},
-                // {extend: 'pdf', title: 'ExampleFile'},
-
-                // {extend: '',
-                //     customize: function (win){
-                //         $(win.document.body).addClass('white-bg');
-                //         $(win.document.body).css('font-size', '10px');
-                //
-                //         $(win.document.body).find('table')
-                //             .addClass('compact')
-                //             .css('font-size', 'inherit');
-                //     }
-                // }
-            ]
 
         });
 
