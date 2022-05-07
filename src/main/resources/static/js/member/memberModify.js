@@ -1,5 +1,7 @@
  $(document).ready(function(){
 
+     $("#modifyForm").children("input[class='form-control']").empty();
+
      <!-- password meter -->
     var options1 = {};
     options1.ui = {
@@ -21,12 +23,12 @@
             element.before(error);
         },
         rules: {
-            confirm: {
-                equalTo: "#password",
+            memberPwd: {
                 minlength: 8,
                 maxlength: 15
             },
-            password: {
+            confirm: {
+                equalTo: "#memberPwd",
                 minlength: 8,
                 maxlength: 15
             },
@@ -37,7 +39,7 @@
     });
 })
 
- $("#btn-submit").click(function() {
+ $("#btn-member-submit").click(function() {
      swal({
              title: "계정생성을 하시겠습니까?",
              text: "계정 생성이 완료됩니다.",

@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CompanyAccountRepositoryCustom {
 
-    List<CompanyAccount> searchMembers(MemberSearchCondition condition);
+    List<CompanyAccount> searchMembers(String searchWord);
+
+    void updateMember(CompanyAccount member);
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link th:href="@{/css/menucss.css}" rel="stylesheet">
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<!-- 본사직원 계정정보조회 모달 -->
+<div class="modal inmodal fade" id="franchiseInfoModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+                <h4 class="modal-title">가맹점 대표자 계정 조회</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-lg-2 col-form-label">이름</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-memberName" name="representativeName" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">가맹점 명</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-branchName" name="branchName" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">사업자 등록증 번호</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-businessRegistrationNo" name="businessRegistrationNo" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">가맹점 계좌 번호</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-bankAccountNo" name="bankAccountNo" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">본사 담당 직원</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-supervisor" name="supervisor.memberName" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">본사 담당 부서</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-department" name="supervisor.department.departmentName" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">가맹점 주소</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-address" name="address" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-2 col-form-label">휴대전화번호</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-cellPhone" name="memberCellPhone" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                    <label class="col-lg-2 col-form-label">가맹점 유선전화번호</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="franchiseInfo-franchisePhone" name="phone" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')">
+                    <label class="col-lg-2 col-form-label">사무실 유선전화번호</label>
+                    <div class="col-lg-10">
+                        <input type="text" id="franchiseInfo-officePhone" name="officePhoneNumber"  class="form-control" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group row"><label class="col-lg-2 col-form-label">이메일</label>
+                    <div class="col-lg-10"><input type="text" id="franchiseInfo-email" name="memberEmail" class="form-control" disabled></div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">계정 정보 수정</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

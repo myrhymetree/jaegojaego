@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.franchise.dto;
 
+import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 public class FranchiseAccountDTO extends MemberDTO {
 
-    private String menagerName;
-    private String menagerPhone;
+    private String managerName;
+    private String managerPhone;
     private String managerEmail;
     private Integer representativeNo;
+
+    private FranchiseInfoDTO franchiseInfo;
 
 }

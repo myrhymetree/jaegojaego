@@ -45,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Member member = memberRepository.findMemberByMemberId(username);
-        System.out.println("member = " + member);
+//        System.out.println("member = " + member);
 
         if(member == null) {
             throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
@@ -81,7 +81,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> memberPermitList = new ArrayList<>();
         List<String> franchisePermitList = new ArrayList<>();
 
-//        adminPermitList.add("/member/regist");
+        adminPermitList.add("/member/regist");
+        adminPermitList.add("/member/list");
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("memberPermitList", memberPermitList);

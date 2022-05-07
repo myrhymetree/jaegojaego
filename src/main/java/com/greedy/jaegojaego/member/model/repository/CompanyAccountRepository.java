@@ -14,4 +14,6 @@ public interface CompanyAccountRepository extends JpaRepository<CompanyAccount, 
     Integer countAllBy();
 
     CompanyAccount findAllByMemberNoAndMemberDivision(Integer memberNo, String memberDivision);
+
+    CompanyAccount findByMemberNo(Integer memberNo);
 }

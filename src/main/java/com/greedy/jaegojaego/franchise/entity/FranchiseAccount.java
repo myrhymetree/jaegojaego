@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.franchise.entity;
 
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Entity(name = "FranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
 @PrimaryKeyJoinColumn(name = "FRANCHISE_MANAGER_NO")
+@DynamicUpdate
 public class FranchiseAccount extends Member {
 
     @Column(name = "MANAGER_NAME")
@@ -26,5 +28,9 @@ public class FranchiseAccount extends Member {
 
     @Column(name = "REPRESENTATIVE_NO")
     private Integer representativeNo;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "REPRESENTATIVE_NO", insertable = false, updatable = false)
+    private FranchiseInfo franchiseInfo;
 
 }
