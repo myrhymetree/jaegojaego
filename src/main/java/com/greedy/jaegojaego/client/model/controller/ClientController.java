@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Parameter;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.sql.Date;
 
 @Controller
 @RequestMapping("/client")
@@ -164,24 +165,61 @@ public class ClientController {
 
         clientService.registClient(clientDTO);
 
+        int clientInsertNo = clientService.findClientNoByName(clientName);
+
 
         clientBusinessItemDvisionDTO.setClientBusinessItemNo(clientBusinessItem);
         System.out.println("업종번호 : " + clientBusinessItem);
-        clientBusinessItemDvisionDTO.setClientNo(clientDTO.getClientNo());
-        System.out.println("거래처번호 : " + clientDTO.getClientNo());
+        clientBusinessItemDvisionDTO.setClientNo(clientInsertNo);
+        System.out.println("거래처번호 : " + clientInsertNo);
         clientService.registClientBusinessItemDevision(clientBusinessItemDvisionDTO);
 
         clientBusinessTypeDvisionDTO.setClientBusinessTypeNo(clientBusinessType);
         System.out.println("업태번호 : " + clientBusinessType);
-        clientBusinessItemDvisionDTO.setClientNo(clientDTO.getClientNo());
+        clientBusinessTypeDvisionDTO.setClientNo(clientInsertNo);
         clientService.registClientBusinessTypeDevision(clientBusinessTypeDvisionDTO);
 
         clientContractInfoDTO.setClientContractInfoStartDate(clientContractInfoStartDate);
         clientContractInfoDTO.setClientContractInfoEndDate(clientContractInfoEndDate);
-        clientContractInfoDTO.setClientNo(clientDTO.getClientNo());
+        clientContractInfoDTO.setClientNo(clientInsertNo);
         clientService.registClientContractInfo(clientContractInfoDTO);
 
     }*/
+
+    @GetMapping(value = "/registclient")
+    @ResponseBody
+    public void registClient(@ModelAttribute ClientInsertDTO clientInsert,HttpServletRequest request, RedirectAttributes rttr, Locale locale){
+
+        System.out.println("컨트롤러 도착");
+        String clientName = request.getParameter("clientName");
+        String clientCbrNo = request.getParameter("clientCbrNo");
+        String clientRepresentativeName = request.getParameter("clientRepresentativeName");
+        String clientRepresentativePhone = request.getParameter("clientRepresentativePhone");
+        String clientRepresentativeEmail = request.getParameter("clientRepresentativeEmail");
+        String clientAddress = request.getParameter("clientAddress");
+        int clientBusinessItem = Integer.parseInt(request.getParameter("clientBusinessItem"));
+        int clientBusinessType = Integer.parseInt(request.getParameter("clientBusinessType"));
+
+        System.out.println("clientName : " + clientName);
+
+        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+        CustomUser customUser1 = (CustomUser) authentication1.getPrincipal();
+
+        System.out.println("customUser1.getMemberNo() = " + customUser1.getMemberNo());
+
+        int memberNo = customUser1.getMemberNo();
+        ClientMember loginMember = clientService.findClientLoginNo(memberNo);
+
+        System.out.println("memeberNo : " + memberNo);
+
+        ClientBusinessItemDvisionDTO clientBusinessItemDvision = new ClientBusinessItemDvisionDTO();
+        clientBusinessItemDvision.setClientBusinessItemNo(clientBusinessItem);
+
+/*        ClientBusinessTypeDvisionDTO clientBusinessTypeDvision = new ClientBusinessTypeDvisionDTO();
+        clientBusinessTypeDvision.setClientBusinessTypeNo(clientBusinessType);*/
+
+
+    }
 
     @GetMapping("/removeclient")
     public void removeClient(HttpServletRequest request, RedirectAttributes rttr) {
