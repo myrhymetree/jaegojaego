@@ -1,33 +1,31 @@
 package com.greedy.jaegojaego.warehouse.dto;
 
-import com.greedy.jaegojaego.warehouse.entity.ItemWarehouse;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseStatusHistory;
-
 import java.sql.Date;
 
 public class WarehouseDTO {
 
-    private int warehouseNo;
-    private java.sql.Date warehouseManuDate;
-//    private int warehouseDivisionNo;
-    private int warehouseDivisionItem;
-    private WarehouseCompanyOrderHistory orderHistoryNo;
-    private Integer issueNo;                                    //추후 타입 수정 예정!!
-//    private WarehouseClientDTO clientNo;
-    private String warehouseWorkingName;
-    private java.sql.Date warehouseWorkingDate;
+    private int warehouseNo;                                        //입고 내역 번호
+    private int warehouseAmount;                                    //입고 수량
+    private String warehouseStatus;                                 //입고 처리 상태
+    private java.sql.Date warehouseDate;                            //입고 대기 처리 날짜
+    private int orderApplicationNo;                                 //발주 신청서 번호
+    private int clientContractItemNo;                               //거래처 판매 계약 상품 번호
+    private WarehouseItemInfoDTO itemInfoNo;                        //재고(자재) 번호
+    private WarehouseClientDTO clientNo;                            //거래처 번호
+    private java.sql.Date warehouseCompleteDate;                    //입고 완료 처리 날짜
 
     public WarehouseDTO() {}
 
-    public WarehouseDTO(int warehouseNo, Date warehouseManuDate, int warehouseDivisionItem, WarehouseCompanyOrderHistory orderHistoryNo, Integer issueNo, String warehouseWorkingName, Date warehouseWorkingDate) {
+    public WarehouseDTO(int warehouseNo, int warehouseAmount, String warehouseStatus, Date warehouseDate, int orderApplicationNo, int clientContractItemNo, WarehouseItemInfoDTO itemInfoNo, WarehouseClientDTO clientNo, Date warehouseCompleteDate) {
         this.warehouseNo = warehouseNo;
-        this.warehouseManuDate = warehouseManuDate;
-        this.warehouseDivisionItem = warehouseDivisionItem;
-        this.orderHistoryNo = orderHistoryNo;
-        this.issueNo = issueNo;
-        this.warehouseWorkingName = warehouseWorkingName;
-        this.warehouseWorkingDate = warehouseWorkingDate;
+        this.warehouseAmount = warehouseAmount;
+        this.warehouseStatus = warehouseStatus;
+        this.warehouseDate = warehouseDate;
+        this.orderApplicationNo = orderApplicationNo;
+        this.clientContractItemNo = clientContractItemNo;
+        this.itemInfoNo = itemInfoNo;
+        this.clientNo = clientNo;
+        this.warehouseCompleteDate = warehouseCompleteDate;
     }
 
     public int getWarehouseNo() {
@@ -38,64 +36,82 @@ public class WarehouseDTO {
         this.warehouseNo = warehouseNo;
     }
 
-    public Date getWarehouseManuDate() {
-        return warehouseManuDate;
+    public int getWarehouseAmount() {
+        return warehouseAmount;
     }
 
-    public void setWarehouseManuDate(Date warehouseManuDate) {
-        this.warehouseManuDate = warehouseManuDate;
+    public void setWarehouseAmount(int warehouseAmount) {
+        this.warehouseAmount = warehouseAmount;
     }
 
-    public int getWarehouseDivisionItem() {
-        return warehouseDivisionItem;
+    public String getWarehouseStatus() {
+        return warehouseStatus;
     }
 
-    public void setWarehouseDivisionItem(int warehouseDivisionItem) {
-        this.warehouseDivisionItem = warehouseDivisionItem;
+    public void setWarehouseStatus(String warehouseStatus) {
+        this.warehouseStatus = warehouseStatus;
     }
 
-    public WarehouseCompanyOrderHistory getOrderHistoryNo() {
-        return orderHistoryNo;
+    public Date getWarehouseDate() {
+        return warehouseDate;
     }
 
-    public void setOrderHistoryNo(WarehouseCompanyOrderHistory orderHistoryNo) {
-        this.orderHistoryNo = orderHistoryNo;
+    public void setWarehouseDate(Date warehouseDate) {
+        this.warehouseDate = warehouseDate;
     }
 
-    public Integer getIssueNo() {
-        return issueNo;
+    public int getOrderApplicationNo() {
+        return orderApplicationNo;
     }
 
-    public void setIssueNo(Integer issueNo) {
-        this.issueNo = issueNo;
+    public void setOrderApplicationNo(int orderApplicationNo) {
+        this.orderApplicationNo = orderApplicationNo;
     }
 
-    public String getWarehouseWorkingName() {
-        return warehouseWorkingName;
+    public int getClientContractItemNo() {
+        return clientContractItemNo;
     }
 
-    public void setWarehouseWorkingName(String warehouseWorkingName) {
-        this.warehouseWorkingName = warehouseWorkingName;
+    public void setClientContractItemNo(int clientContractItemNo) {
+        this.clientContractItemNo = clientContractItemNo;
     }
 
-    public Date getWarehouseWorkingDate() {
-        return warehouseWorkingDate;
+    public WarehouseItemInfoDTO getItemInfoNo() {
+        return itemInfoNo;
     }
 
-    public void setWarehouseWorkingDate(Date warehouseWorkingDate) {
-        this.warehouseWorkingDate = warehouseWorkingDate;
+    public void setItemInfoNo(WarehouseItemInfoDTO itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public WarehouseClientDTO getClientNo() {
+        return clientNo;
+    }
+
+    public void setClientNo(WarehouseClientDTO clientNo) {
+        this.clientNo = clientNo;
+    }
+
+    public Date getWarehouseCompleteDate() {
+        return warehouseCompleteDate;
+    }
+
+    public void setWarehouseCompleteDate(Date warehouseCompleteDate) {
+        this.warehouseCompleteDate = warehouseCompleteDate;
     }
 
     @Override
     public String toString() {
         return "WarehouseDTO{" +
                 "warehouseNo=" + warehouseNo +
-                ", warehouseManuDate=" + warehouseManuDate +
-                ", warehouseDivisionItem=" + warehouseDivisionItem +
-                ", orderHistoryNo=" + orderHistoryNo +
-                ", issueNo=" + issueNo +
-                ", warehouseWorkingName='" + warehouseWorkingName + '\'' +
-                ", warehouseWorkingDate=" + warehouseWorkingDate +
+                ", warehouseAmount=" + warehouseAmount +
+                ", warehouseStatus='" + warehouseStatus + '\'' +
+                ", warehouseDate=" + warehouseDate +
+                ", orderApplicationNo=" + orderApplicationNo +
+                ", clientContractItemNo=" + clientContractItemNo +
+                ", itemInfoNo=" + itemInfoNo +
+                ", clientNo=" + clientNo +
+                ", warehouseCompleteDate=" + warehouseCompleteDate +
                 '}';
     }
 }

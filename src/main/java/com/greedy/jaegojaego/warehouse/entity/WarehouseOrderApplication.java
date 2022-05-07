@@ -14,11 +14,6 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class WarehouseOrderApplication {
 
     @Id
@@ -37,16 +32,34 @@ public class WarehouseOrderApplication {
     @JoinColumn(name = "CLIENT_NO")
     private WarehouseClient orderClient;
 
-    @OneToMany
-    @JoinColumn(name = "ORDER_APPLICATION_NO")
-    private List<WarehouseOrderApplicationItem> orderApplicationItemList;
+    public WarehouseOrderApplication() {}
+
+    public WarehouseOrderApplication(int orderApplicationNo, WarehouseClient orderClient) {
+        this.orderApplicationNo = orderApplicationNo;
+        this.orderClient = orderClient;
+    }
+
+    public int getOrderApplicationNo() {
+        return orderApplicationNo;
+    }
+
+    public void setOrderApplicationNo(int orderApplicationNo) {
+        this.orderApplicationNo = orderApplicationNo;
+    }
+
+    public WarehouseClient getOrderClient() {
+        return orderClient;
+    }
+
+    public void setOrderClient(WarehouseClient orderClient) {
+        this.orderClient = orderClient;
+    }
 
     @Override
     public String toString() {
-        return "OrderApplication{" +
+        return "WarehouseOrderApplication{" +
                 "orderApplicationNo=" + orderApplicationNo +
-                ", client=" + orderClient +
-                ", orderApplicationList=" + orderApplicationItemList +
+                ", orderClient=" + orderClient +
                 '}';
     }
 }
