@@ -292,7 +292,61 @@
         });
     });
 
-
+    // function pageLink(curPage, totalPages, funName) {
+    //
+    //     var pageUrl = "";
+    //     var pageLimit = 5;
+    //     var startPage = parseInt((curPage - 1) / pageLimit) * pageLimit + 1;
+    //     var endPage = startPage + pageLimit - 1;
+    //
+    //     if (totalPages < endPage) {
+    //         endPage = totalPages;
+    //     }
+    //
+    //     var nextPage = endPage + 1;
+    //     //console.log(curPage,"curPage,",startPage,"startPage,",endPage,"endPage,",nextPage,"nextPage")
+    //
+    //     //맨 첫 페이지
+    //     if (curPage > 1 && pageLimit < curPage) {
+    //         pageUrl += "<a class='page first' href='javascript:" + funName + "(1);'>" +
+    //             "<i class='fas fa-angle-double-left'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //이전 페이지
+    //     if (curPage > pageLimit) {
+    //         pageUrl += " <a class='page prev' href='javascript:" + funName + "(" + (startPage == 1 ? 1 : startPage - 1) + ");'>" +
+    //             "<i class='fas fa-angle-left'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //~pageLimit 맞게 페이지 수 보여줌
+    //     for (var i = startPage; i <= endPage; i++) {
+    //         //현재페이지면 진하게 표시
+    //         if (i == curPage) {
+    //             pageUrl += " <a href='#'>" +
+    //                 "<strong>" + i + "</strong>" +
+    //                 "</a>"
+    //         } else {
+    //             pageUrl += " <a href='javascript:" + funName + "(" + i + ");'> " + i + " </a>";
+    //         }
+    //     }
+    //
+    //     //다음 페이지
+    //     if (nextPage <= totalPages) {
+    //         pageUrl += "<a class='page next' href='javascript:" + funName + "(" + (nextPage < totalPages ? nextPage : totalPages) + ");'>" +
+    //             "<i class='fas fa-angle-right'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //맨 마지막 페이지
+    //     if (curPage < totalPages && nextPage < totalPages) {
+    //         pageUrl += "<a class='page last' href='javascript:" + funName + "(" + totalPages + ");'>" +
+    //             "<i class='fas fa-angle-double-right'>" +
+    //             "</a>";
+    //     }
+    //     //console.log(pageUrl); return pageUrl;
+    // }
 
 </script>
 </body>
