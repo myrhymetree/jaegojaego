@@ -10,6 +10,7 @@
     <link th:href="@{/css/menu/menucss.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/morris/morris-0.4.3.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/c3/c3.min.css}" rel="stylesheet">
 
 </head>
 <body>
@@ -183,26 +184,20 @@
 
             <div class="circleGraph">
                 <h4 style="font-weight: bold; margin-left: 5px;">품목별 각 거래처 구매율</h4>
-                <select class="YearCircleGraph">
-                    <!-- 나중에 년도별로 불러오게 해야함(2022까지) -->
-                    <option value="20221">2022년 1월</option>
+                <select class="YearCircleGraph" id="YearCircleGraph" onchange="selectYearForCircleGraph(this.value, this.options[this.selectedIndex].text)">
+
                 </select>
-                <select class="itemList">
-                    <option value="지로스팅 1kg">지로스팅 원두 1kg</option>
+                <select class="MonthCircleGraph" id="MonthCircleGraph" onchange="selectMonthForCircleGraph(this.value, this.options[this.selectedIndex].text)">
+
+                </select>
+                <select class="itemListForCircleGraph" id="itemListForCircleGraph" onchange="selectOneitemForCircleGraph(this.value, this.options[this.selectedIndex].text);">
+
                 </select>
 
-            <!-- chart-flow의 원그래프 html인데 적용이 안되네.. 일단 주석 -->
-        <!--            <div class="row">-->
-        <!--                <div class="col-lg-6">-->
-        <!--                    <div class="ibox ">-->
-        <!--                        <div class="ibox-content">-->
-        <!--                            <div class="flot-chart">-->
-        <!--                                <div class="flot-chart-pie-content" id="flot-pie-chart"></div>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
+                <!-- 원그래프 -->
+                <div id="pie"></div>
+
+
                  </div>
             </div>
     </div>
@@ -406,6 +401,23 @@
         });
     });
 
+   <!-- 원그래프에서 물품 불러오기 -->
+   $(function() {
+       $.ajax({
+           url: "/backlog/iteminfolist",
+           success: function(data) {
+               const itemListForCircleGraph = $("#itemListForCircleGraph");
+
+               for(let list in data) {
+                   itemListForCircleGraph.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
+               }
+           },
+           error: function(xhr) {
+               alert("에러가 발생하였습니다. 다시 시도해주세요");
+           }
+       });
+   });
+
    let januaryAmount = 0;
    let februaryAmount = 0;
    let MarchAmount = 0;
@@ -446,10 +458,6 @@
            let MonthForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(5, 7);
            let Amount = inWarehlouseListBySelectbox[list].inWarehouseAmount;
 
-           console.log("년도 : " + YearForInWarehouse)
-           console.log("셀렉트 클릭한 년도 : " + value)
-           console.log("월별 : " + MonthForInWarehouse)
-
            //흠..
            if(YearForInWarehouse == value && MonthForInWarehouse == '01') { //value = 2022 들왓고 , Date의 년도(2022) 부분이 == 같으면 +
                januaryAmount += Amount;
@@ -483,6 +491,65 @@
        changeBarGraphCount = 1;
        changeBarGraph();
    }
+
+
+   let inWarehlouseListBySelectboxForCircle = [];
+   const $yearSelectboxForCircleGraph = $("#YearCircleGraph");
+   function selectOneitemForCircleGraph(value, text) {
+       $.ajax({
+           url: "/backlog/selectonebackloglist",
+           type: "get",
+           data: {"itemInfoNo":value},
+           success: function(data) {
+
+               inWarehlouseListBySelectboxForCircle.length = 0;
+
+               for(list in data){
+                   inWarehlouseListBySelectboxForCircle.push(data[list]); //지로스팅에 대한 정보가 들어있음
+               }
+
+               const year = [ '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009'];
+
+               $yearSelectboxForCircleGraph.html("");
+               $yearSelectboxForCircleGraph.append($("<option selected>").text("년도선택").attr("disabled", true));
+
+               for(x in year) {
+                   const opt = document.createElement("option");
+                   opt.innerText = year[x];
+                   opt.value = year[x];
+                   $yearSelectboxForCircleGraph.append(opt);
+               }
+           },
+           error: function(xhr) {
+               alert("에러가 발생하였습니다. 다시 시도해주세요");
+           }
+       });
+
+   }
+
+   const $MonthSelectboxForCircleGraph = $("#MonthCircleGraph");
+   function selectYearForCircleGraph(value, text) {
+       //년도
+       console.log("월별로 선택되어온 년도 : " + value);
+       const month = [ '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+       $MonthSelectboxForCircleGraph.html("");
+       $MonthSelectboxForCircleGraph.append($("<option selected>").text("월선택").attr("disabled", true));
+
+       for(x in month) {
+           const opt = document.createElement("option");
+           opt.innerText = month[x];
+           opt.value = value + "-" +  month[x];
+           $MonthSelectboxForCircleGraph.append(opt);
+       }
+
+   }
+
+   function selectMonthForCircleGraph(value, text) {
+       console.log("value(2022-03) : " + value);
+       console.log("text(03?) : " + text);
+   }
+
+
 
 
 
@@ -543,7 +610,10 @@
 <script th:src="@{/js/plugins/morris/raphael-2.1.0.min.js}"></script>
 <script th:src="@{/js/plugins/morris/morris.js}"></script>
 <script th:src="@{/js/demo/morris-demo.js}"></script>
-<!--        jQuery.ready()-->
+<script th:src="@{/js/plugins/d3/d3.min.js}"></script>
+<script th:src="@{/js/plugins/c3/c3.min.js}"></script>
+
+        <!--        jQuery.ready()-->
 <script>
     $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
 
@@ -558,6 +628,21 @@
 
     });
 
+
+    c3.generate({
+        bindto: '#pie',
+        data:{
+            columns: [
+                ['data1', 30],
+                ['data2', 120]
+            ],
+            colors:{
+                data1: '#1ab394',
+                data2: '#BABABA'
+            },
+            type : 'pie'
+        }
+    });
 
 
 </script>
