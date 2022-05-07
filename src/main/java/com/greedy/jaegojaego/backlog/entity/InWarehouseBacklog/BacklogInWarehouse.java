@@ -1,107 +1,108 @@
 package com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog;
 
-import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogCompanyOrderHistoryDTO;
-import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogInWarehouseHistoryDTO;
-import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogItemWarehouseDTO;
-
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 @Entity(name = "BacklogInWarehouseEntity")
 @Table(name = "IN_WAREHOUSE")
-public class BacklogInWarehouse { /* 입고 */
+public class BacklogInWarehouse implements Serializable { /* 입고 */
 
-    @Id
-    @Column(name = "IN_WAREHOUSE_NO")
-    private int inWarehouseNo;
+    @EmbeddedId
+    private BacklogInWarehousePK backlogInWarehousePK;
 
-    @Column(name = "IN_WAREHOUSE_DIVISION_ITEM")
-    private int inwarehouseDivisionItem;    //입고 물품 구분(혹시모르니)
+    @Column(name = "IN_WAREHOUSE_AMOUNT")
+    private int inWarehouseAmount;   //입고 수량
 
-    @Column(name = "IN_WAREHOUSE_WORKING_FINISHED_DATE")
-    private Date inwarehouseWorkingFinishedDate;
+
+    @Column(name = "IN_WAREHOUSE_DATE")
+    private Date inWarehouseDate; //입고 처리 날짜
 
     @ManyToOne
-    @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
-    private BacklogCompanyOrderHistory companyOrderHistoryNo;
+    @JoinColumn(name = "CLIENT_NO")
+    private BacklogClient clientNoForInWarehouse; //거래처 번호 fk
+//    private BacklogOrderApplicationItemDTO orderApplicationNoForInWarehouse; //본사발주신청서 번호 fk (ㄱㄷ)
 
-    @JoinColumn(name = "IN_WAREHOUSE_NO")
-    @OneToMany
-    private List<BacklogItemWarehouse> backlogItemWarehouseList;
+    @ManyToOne
+    @JoinColumn(name = "ITEM_INFO_NO")
+    private BacklogItemInfo itemInfoNoForInWarehouse; //자재번호fk 인데 필요없을수도
 
-    @JoinColumn(name = "IN_WAREHOUSE_NO")
-    @OneToMany
-    private List<BacklogInWarehouseHistory> backlogInWarehouseHistoryList;
+    @Column(name = "IN_WAREHOUSE_COMPLETE_DATE")
+    private Date inWarehouseCompleteDate;
+
+//    @ManyToOne
+//    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
+//    private BacklogClientContractItem clientContractItemNoForInWarehouse; //거래처 판매 계약상품 번호 fk
 
     public BacklogInWarehouse() {}
 
-    public BacklogInWarehouse(int inWarehouseNo, int inwarehouseDivisionItem, Date inwarehouseWorkingFinishedDate, BacklogCompanyOrderHistory companyOrderHistoryNo, List<BacklogItemWarehouse> backlogItemWarehouseList, List<BacklogInWarehouseHistory> backlogInWarehouseHistoryList) {
-        this.inWarehouseNo = inWarehouseNo;
-        this.inwarehouseDivisionItem = inwarehouseDivisionItem;
-        this.inwarehouseWorkingFinishedDate = inwarehouseWorkingFinishedDate;
-        this.companyOrderHistoryNo = companyOrderHistoryNo;
-        this.backlogItemWarehouseList = backlogItemWarehouseList;
-        this.backlogInWarehouseHistoryList = backlogInWarehouseHistoryList;
+    public BacklogInWarehouse(BacklogInWarehousePK backlogInWarehousePK, int inWarehouseAmount, Date inWarehouseDate, BacklogClient clientNoForInWarehouse, BacklogItemInfo itemInfoNoForInWarehouse, Date inWarehouseCompleteDate) {
+        this.backlogInWarehousePK = backlogInWarehousePK;
+        this.inWarehouseAmount = inWarehouseAmount;
+        this.inWarehouseDate = inWarehouseDate;
+        this.clientNoForInWarehouse = clientNoForInWarehouse;
+        this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
+        this.inWarehouseCompleteDate = inWarehouseCompleteDate;
     }
 
-    public int getInWarehouseNo() {
-        return inWarehouseNo;
+    public BacklogInWarehousePK getBacklogInWarehousePK() {
+        return backlogInWarehousePK;
     }
 
-    public void setInWarehouseNo(int inWarehouseNo) {
-        this.inWarehouseNo = inWarehouseNo;
+    public void setBacklogInWarehousePK(BacklogInWarehousePK backlogInWarehousePK) {
+        this.backlogInWarehousePK = backlogInWarehousePK;
     }
 
-    public int getInwarehouseDivisionItem() {
-        return inwarehouseDivisionItem;
+    public int getInWarehouseAmount() {
+        return inWarehouseAmount;
     }
 
-    public void setInwarehouseDivisionItem(int inwarehouseDivisionItem) {
-        this.inwarehouseDivisionItem = inwarehouseDivisionItem;
+    public void setInWarehouseAmount(int inWarehouseAmount) {
+        this.inWarehouseAmount = inWarehouseAmount;
     }
 
-    public Date getInwarehouseWorkingFinishedDate() {
-        return inwarehouseWorkingFinishedDate;
+    public Date getInWarehouseDate() {
+        return inWarehouseDate;
     }
 
-    public void setInwarehouseWorkingFinishedDate(Date inwarehouseWorkingFinishedDate) {
-        this.inwarehouseWorkingFinishedDate = inwarehouseWorkingFinishedDate;
+    public void setInWarehouseDate(Date inWarehouseDate) {
+        this.inWarehouseDate = inWarehouseDate;
     }
 
-    public BacklogCompanyOrderHistory getCompanyOrderHistoryNo() {
-        return companyOrderHistoryNo;
+    public BacklogClient getClientNoForInWarehouse() {
+        return clientNoForInWarehouse;
     }
 
-    public void setCompanyOrderHistoryNo(BacklogCompanyOrderHistory companyOrderHistoryNo) {
-        this.companyOrderHistoryNo = companyOrderHistoryNo;
+    public void setClientNoForInWarehouse(BacklogClient clientNoForInWarehouse) {
+        this.clientNoForInWarehouse = clientNoForInWarehouse;
     }
 
-    public List<BacklogItemWarehouse> getBacklogItemWarehouseList() {
-        return backlogItemWarehouseList;
+    public BacklogItemInfo getItemInfoNoForInWarehouse() {
+        return itemInfoNoForInWarehouse;
     }
 
-    public void setBacklogItemWarehouseList(List<BacklogItemWarehouse> backlogItemWarehouseList) {
-        this.backlogItemWarehouseList = backlogItemWarehouseList;
+    public void setItemInfoNoForInWarehouse(BacklogItemInfo itemInfoNoForInWarehouse) {
+        this.itemInfoNoForInWarehouse = itemInfoNoForInWarehouse;
     }
 
-    public List<BacklogInWarehouseHistory> getBacklogInWarehouseHistoryList() {
-        return backlogInWarehouseHistoryList;
+    public Date getInWarehouseCompleteDate() {
+        return inWarehouseCompleteDate;
     }
 
-    public void setBacklogInWarehouseHistoryList(List<BacklogInWarehouseHistory> backlogInWarehouseHistoryList) {
-        this.backlogInWarehouseHistoryList = backlogInWarehouseHistoryList;
+    public void setInWarehouseCompleteDate(Date inWarehouseCompleteDate) {
+        this.inWarehouseCompleteDate = inWarehouseCompleteDate;
     }
 
     @Override
     public String toString() {
         return "BacklogInWarehouse{" +
-                "inWarehouseNo=" + inWarehouseNo +
-                ", inwarehouseDivisionItem=" + inwarehouseDivisionItem +
-                ", inwarehouseWorkingFinishedDate=" + inwarehouseWorkingFinishedDate +
-                ", companyOrderHistoryNo=" + companyOrderHistoryNo +
-                ", backlogItemWarehouseList=" + backlogItemWarehouseList +
-                ", backlogInWarehouseHistoryList=" + backlogInWarehouseHistoryList +
+                "backlogInWarehousePK=" + backlogInWarehousePK +
+                ", inWarehouseAmount=" + inWarehouseAmount +
+                ", inWarehouseDate=" + inWarehouseDate +
+                ", clientNoForInWarehouse=" + clientNoForInWarehouse +
+                ", itemInfoNoForInWarehouse=" + itemInfoNoForInWarehouse +
+                ", inWarehouseCompleteDate=" + inWarehouseCompleteDate +
                 '}';
     }
 }

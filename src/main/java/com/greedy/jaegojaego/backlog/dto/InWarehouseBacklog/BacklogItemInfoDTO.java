@@ -1,9 +1,14 @@
 package com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog;
 
+import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogClientContractItem;
+
+import java.util.List;
+
 public class BacklogItemInfoDTO {
     private int itemInfoNo;
     private String itemInfoName;
     private String itemInfoItemSerialNo;
+//    private List<BacklogClientContractItem> clientContractItemList;
 
     public BacklogItemInfoDTO() {}
 

@@ -62,7 +62,7 @@
 .barGraph {
     border: 0.5px solid gray;
     height: 300px;
-    width: 850px;
+    width: 950px;
     position: relative;
     margin-top: 15px;
     margin-left: 50px;
@@ -115,22 +115,29 @@
 
 .YearCircleGraph {
     position: absolute;
-    left: 76%;
+    left: 67%;
+    top: 3%;
+}
+
+.MonthCircleGraph {
+    position: absolute;
+    left: 83%;
     top: 3%;
 }
 
 
-
-.itemList {
+.itemListForCircleGraph {
     position: absolute;
     left: 1.5%;
     top: 10%;
+    z-index: 1050;
 }
 
-.itemListForReleasebacklog {
+.itemListForInWarehouseBacklog {
     position: absolute;
-    left: 14%;
-    top: 1%;
+    left: 12%;
+    top: 3%;
+    z-index: 1050;
 }
 
 .month {
@@ -184,4 +191,13 @@
 
 .december {
     left: 82%;
+}
+
+#morris-bar-chart {
+    width: 950px;
+    /*heigth: 20px;*/
+}
+
+svg {
+    height: 270px;
 }

@@ -1,13 +1,18 @@
 package com.greedy.jaegojaego.backlog.controller;
 
-import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.InWarehouseBacklogDTO;
+import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogInWarehouseDTO;
+import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogItemInfoDTO;
+import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehouse;
 import com.greedy.jaegojaego.backlog.service.BacklogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -17,6 +22,10 @@ import java.util.List;
  * History
  * 2022/05/01 (이소현) 백로그 관련 초기 설정
  * 2022/05/02 (이소현) 입고 백로그 목록 조회
+ * 2022/05/03 (이소현) 입고 백로그 목록 조회
+ * 2022/05/04 (이소현) 입고 백로그 목록 조회
+ * 2022/05/05 (이소현) 입고 백로그 차트 조회
+ * 2022/05/06 (이소현) 입고 백로그 차트 조회
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -36,12 +45,27 @@ public class BacklogController {
 
    @GetMapping("list")
     public ModelAndView backlogPage(ModelAndView mv) {
-       List<InWarehouseBacklogDTO> inWarehouseBacklogList = backlogService.selectInWarehouseBacklogList();
+       List<BacklogInWarehouseDTO> inWarehouseBacklogList = backlogService.selectInWarehouseBacklogList();
 
        mv.addObject("inWarehouseBacklogList", inWarehouseBacklogList);
        mv.setViewName("backlog/backlogList");
 
        return mv;
+   }
+
+   @GetMapping(value = "iteminfolist", produces = "application/json; charset=UTF-8")
+   @ResponseBody
+   public List<BacklogItemInfoDTO> findItemInfoList() {
+
+        return backlogService.findItemInfoList();
+   }
+
+   @GetMapping(value = "selectonebackloglist", produces = "application/json; charset=UTF-8")
+   @ResponseBody
+   public List<BacklogInWarehouseDTO> findBacklogInWarehouseBySelectBox(@RequestParam int itemInfoNo) {
+
+       System.out.println("잘 넘어오나? :" + itemInfoNo);
+        return backlogService.findBacklogInWarehouseBySelectBox(itemInfoNo);
    }
 
 }
