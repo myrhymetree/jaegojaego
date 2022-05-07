@@ -1,6 +1,9 @@
 # server config
 server:
   port: 8001
+  servlet:
+    session:
+      timeout: 3600
 
 # oracle driver config
 spring:

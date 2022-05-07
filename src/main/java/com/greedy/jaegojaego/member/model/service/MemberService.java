@@ -103,12 +103,7 @@ public class MemberService {
 
     public List<CompanyAccountDTO> findMemberList(String searchWord) {
 
-        MemberSearchCondition condition = new MemberSearchCondition();
-        condition.setMemberId(searchWord);
-        condition.setMemberId(searchWord);
-        condition.setDepaartmentName(searchWord);
-
-        List<CompanyAccount> memberList = companyAccountRepository.searchMembers(condition);
+        List<CompanyAccount> memberList = companyAccountRepository.searchMembers(searchWord);
 
         List<CompanyAccountDTO> memberDTOlist =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
 
@@ -188,5 +183,12 @@ public class MemberService {
 
         companyAccountRepository.updateMember(companyAccount);
 
+    }
+
+    public CompanyAccountDTO findMemberDetailInfo(Integer memberNo) {
+
+        CompanyAccount memberDetailInfo =  companyAccountRepository.findByMemberNo(memberNo);
+
+        return modelMappper.map(memberDetailInfo, CompanyAccountDTO.class);
     }
 }

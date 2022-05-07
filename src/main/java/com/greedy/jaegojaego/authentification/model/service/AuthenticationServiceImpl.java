@@ -81,7 +81,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<String> memberPermitList = new ArrayList<>();
         List<String> franchisePermitList = new ArrayList<>();
 
-//        adminPermitList.add("/member/regist");
+        adminPermitList.add("/member/regist");
+        adminPermitList.add("/member/list");
 
         permitListMap.put("adminPermitList", adminPermitList);
         permitListMap.put("memberPermitList", memberPermitList);

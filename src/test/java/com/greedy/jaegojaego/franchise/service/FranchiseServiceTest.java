@@ -140,4 +140,10 @@ class FranchiseServiceTest {
         assertEquals(role.getMemberRolePK().getAuthorityCode(), 3);
         assertEquals(role.getAuthority().getAuthorityCode() , account.getMemberNo());
     }
+
+    @Test
+    @Transactional
+    public void 가맹점_목록_조회() {
+
+    }
 }

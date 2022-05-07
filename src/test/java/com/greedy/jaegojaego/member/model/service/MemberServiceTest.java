@@ -92,12 +92,9 @@ class MemberServiceTest {
     @Test
     public void 검색테스트() {
         
-        MemberSearchCondition condition = new MemberSearchCondition(); 
-        condition.setMemberId("");
-        condition.setMemberName("");
-        condition.setDepaartmentName("");
+        String searchWord = null;
         
-        List<CompanyAccount> companyAccounts = companyAccountRepository.searchMembers(condition);
+        List<CompanyAccount> companyAccounts = companyAccountRepository.searchMembers(searchWord);
 
         List<CompanyAccountDTO> companyAccountDTOS =
                 companyAccounts.stream().map(companyAccount -> modelMapper.map(companyAccount, CompanyAccountDTO.class)).collect(Collectors.toList());
@@ -134,5 +131,13 @@ class MemberServiceTest {
         assertEquals(member.getMemberCellPhone(), companyAccount.getMemberCellPhone());
         assertEquals(member.getOfficePhoneNumber(), companyAccount.getOfficePhoneNumber());
         assertEquals(member.getMemberEmail(), companyAccount.getMemberEmail());
+    }
+
+    @Test
+    public void 계정_아이디로_해당_회원_정보_찾기() {
+
+        CompanyAccount member = companyAccountRepository.findByMemberNo(70);
+
+        assertEquals(70, member.getMemberNo());
     }
 }

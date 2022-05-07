@@ -78,9 +78,7 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public ModelAndView findMemberList(ModelAndView mv, HttpServletRequest request) {
-
-        String searchWord = request.getParameter("searchWord");
+    public ModelAndView findMemberList(ModelAndView mv, String searchWord) {
 
         List<CompanyAccountDTO> memberList = memberService.findMemberList(searchWord);
 
@@ -126,5 +124,24 @@ public class MemberController {
         memberService.updateLoginMemberInfo(companyAccount);
 
         return "redirect:/";
+    }
+
+    @GetMapping(value = "/detailInfo/{memberNo}", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findMemberDetailInfo(@PathVariable Integer memberNo) {
+
+        CompanyAccountDTO memberInfo =  memberService.findMemberDetailInfo(memberNo);
+
+        System.out.println("멤버 정보는 : " + memberInfo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(memberInfo);
     }
 }

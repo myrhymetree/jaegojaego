@@ -37,18 +37,33 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
 
 
     @Override
-    public List<CompanyAccount> searchMembers(MemberSearchCondition condition) {
+    public List<CompanyAccount> searchMembers(String searchWord) {
 
-        return queryFactory
-                .select(new QCompanyAccount(
-                        companyAccount))
-                .from(companyAccount)
-                .where(
-                        memberIdEq(condition.getMemberId()),
-                        memberNameEq(condition.getMemberName()),
-                        departmentNameEq(condition.getDepaartmentName())
-                )
-                .fetch();
+        if(searchWord != null && searchWord != "") {
+            return queryFactory
+                    .select(new QCompanyAccount(
+                            companyAccount))
+                    .from(companyAccount)
+                    .where(
+                            memberIdContains(searchWord)
+                            .or(memberNameContains(searchWord))
+                            .or( departmentNameContains(searchWord))
+                    )
+                    .fetch();
+        }
+        else {
+            return queryFactory
+                    .select(new QCompanyAccount(
+                            companyAccount))
+                    .from(companyAccount)
+                    .where(
+                            memberIdContains(searchWord),
+                            memberNameContains(searchWord),
+                            departmentNameContains(searchWord)
+                    )
+                    .fetch();
+        }
+
     }
 
     @Override
@@ -78,27 +93,16 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                 .execute();
     }
 
-    private BooleanExpression memberIdEq(String memberId) {
+    private BooleanExpression memberIdContains(String memberId) {
         return hasText(memberId) ? companyAccount.memberId.contains(memberId) : null;
     }
 
-    private BooleanExpression memberNameEq(String memberName) {
+    private BooleanExpression memberNameContains(String memberName) {
         return hasText(memberName) ? companyAccount.memberName.contains(memberName) : null;
     }
 
-    private BooleanExpression departmentNameEq(String departmentName) {
+    private BooleanExpression departmentNameContains(String departmentName) {
         return hasText(departmentName) ? department.departmentName.contains(departmentName) : null;
     }
 
-    private BooleanExpression memberEmailEq(String memberEmail) {
-        return hasText(memberEmail) ? companyAccount.memberEmail.isNotEmpty() : null;
-    }
-
-    private BooleanExpression memberCellPhoneEq(String memberCellPhone) {
-        return hasText(memberCellPhone) ? companyAccount.memberCellPhone.isNotEmpty() : null;
-    }
-
-    private BooleanExpression allcontains(String memberId, String memberName, String departmentName) {
-        return memberIdEq(memberId).or(memberNameEq(memberName)).or(departmentNameEq(departmentName));
-    }
 }

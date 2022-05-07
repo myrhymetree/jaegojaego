@@ -1,5 +1,7 @@
  $(document).ready(function(){
 
+     $("#modifyForm").children("input[class='form-control']").empty();
+
      <!-- password meter -->
     var options1 = {};
     options1.ui = {
