@@ -25,34 +25,34 @@ import javax.persistence.Persistence;
 @AutoConfigureMockMvc
 public class WarehouseControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private OrderController orderController;
-
-    @Test
-    @DisplayName("입고, 입하 정보 목록 조회")
-    public void moveCompanyOrderList() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/warehouse/list"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-    }
-
-    @Test
-    @DisplayName("입고, 입하 정보 상세 조회")
-    public void selectCompanyOrderDetail() throws Exception {
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/warehouse/detail/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .param("warehouseNo", "1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-
-    }
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @Autowired
+//    private OrderService orderService;
+//
+//    @Autowired
+//    private OrderController orderController;
+//
+//    @Test
+//    @DisplayName("입고, 입하 정보 목록 조회")
+//    public void moveCompanyOrderList() throws Exception {
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/warehouse/list"))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andDo(MockMvcResultHandlers.print());
+//    }
+//
+//    @Test
+//    @DisplayName("입고, 입하 정보 상세 조회")
+//    public void selectCompanyOrderDetail() throws Exception {
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/warehouse/detail/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .param("warehouseNo", "1"))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andDo(MockMvcResultHandlers.print());
+//
+//    }
 
 }

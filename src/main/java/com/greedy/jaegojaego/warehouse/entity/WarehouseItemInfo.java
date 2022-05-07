@@ -40,13 +40,6 @@ public class WarehouseItemInfo {
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemInfoStatusYn;
 
-//    @Column(name = "SUBDIVISION_UNIT")
-//    private String subdivisionUnit;
-//
-//    @Column(name = "SUBDIVISION_YN")
-//    private int subdivisionYn;
-
-
     @Override
     public String toString() {
         return "WarehouseItemInfo{" +
