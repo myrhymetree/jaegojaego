@@ -418,6 +418,7 @@ public class OrderService {
             franchiseOrderDetail.setItemName(order.getFranchiseOrderItem().getFranchiseOrderableItem().getFranchiseOrderableItem().getOrderItemInfo().getItemInfoName());
             franchiseOrderDetail.setItemPrice(order.getFranchiseOrderItem().getFranchiseOrderableItem().getFranchiseOrderableItemPrice());
             franchiseOrderDetail.setItemAmount(order.getFranchiseOrderItemAmount());
+            franchiseOrderDetail.setItemNo(order.getFranchiseOrderItem().getFranchiseOrderableItem().getFranchiseOrderableItem().getOrderItemInfo().getItemInfoNo());
 
             franchiseOrderDetailList.add(franchiseOrderDetail);
         }

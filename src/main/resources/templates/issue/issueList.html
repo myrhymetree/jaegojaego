@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .franchise-issue-regist-btn {
+            background-color: #c69500;
+            color: white;
+            cursor: pointer;
+            border: none;
+            width: 80px;
+            height: 30px;
+            margin-right: 20px;
+        }
+
+        .issue-before-btn {
+            border: none;
+            cursor: pointer;
+            background-color: yellowgreen;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .issue-reject-btn {
+            border: none;
+            cursor: pointer;
+            background-color: orangered;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .issue-complete-btn {
+            border: none;
+            cursor: pointer;
+            background-color: skyblue;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .status-change-div {
+            width: 80px;
+            display: none;
+            position: absolute;
+            margin-left: 47px;
+            z-index: 1000;
+        }
+
+        .issue-detail-content {
+            float: left;
+            width: 600px;
+            margin-left: 80px;
+        }
+
+        .issue-detail-modal-body {
+
+            font-size: 20px;
+            width: 600px;
+            margin-top: 15px;
+            font-weight: bold;
+
+        }
+
+        .issue-detail-modal-img-area {
+
+            float: left;
+            width: 700px;
+            height: 600px;
+            position: relative;
+            left: 50px;
+            overflow-y: scroll;
+            background-color: white;
+            box-shadow: 1px 1px 1px 1px gray;
+
+        }
+
+        .select-order-box {
+
+            width: 400px;
+            height: 30px;
+            text-align: center;
+            margin-left: 50px;
+            font-size: 13px;
+
+        }
+
+        .item-area {
+
+            width: 600px;
+            height: 300px;
+            background-color: rgba(128, 128, 128, 0.3);
+            margin-top: 15px;
+            overflow-y: scroll;
+
+        }
+
+        .issue-image {
+
+            border: 1px solid red;
+            width: 500px;
+            height: 250px;
+            margin-left: 100px;
+            margin-top: 15px;
+        }
+
+
+
+    </style>
+
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+</head>
+<body>
+
+    <div th:replace="/common/header.html"></div>
+
+    <div class="ibox ">
+        <div class="body-header">
+            <div class="menu-title">이슈 목록</div>
+            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/issue/list}" style="font-weight: bold">이슈 목록</a></div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <div class="ibox">
+
+                    <div class="ibox-title">
+                        <h2 style="font-weight: bold; margin-left: 10px">이슈 목록</h2>
+
+                        <div class="ibox-tools">
+                            <th:block th:if="${ member.memberDivision eq '가맹점' }">
+                                <button class="franchise-issue-regist-btn" id="issue-regist-btn" data-toggle="modal" data-target="#regist-modal">이슈 제기</button>
+                            </th:block>
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+                               placeholder="검색하고자 하는 내용을 2글자 이상 입력하세요.">
+
+                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>가맹점명</th>
+                                    <th>이슈제목</th>
+                                    <th>제기일자</th>
+                                    <th>제기자</th>
+                                    <th>처리일자</th>
+                                    <th>처리자</th>
+                                    <th>처리상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="issue, index : ${ issueList }" id="issue-list-tr" data-toggle="modal" data-target="#myModal4">
+                                    <input type="hidden" th:value="${ issue.franchiseIssueNo }">
+                                    <td th:text="${ index.index + 1 }"></td>
+                                    <td th:text="${ issue.issueFranchiseInfo.franchiseBranchName }"></td>
+                                    <td th:text="${ issue.franchiseIssueTitle }"></td>
+                                    <td th:text="${ issue.franchiseIssueCreatedDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ issue.franchiseIssuePresenter.memberNo eq issue.issueFranchiseInfo.franchiseRepresentativeNo }">
+                                            <th:block th:text="${ issue.issueFranchiseInfo.franchiseRepresentativeName }"></th:block>
+                                        </th:block>
+                                        <th:block th:if="${ issue.issueFranchiseAccount ne null }">
+                                            <th:block th:if="${ issue.franchiseIssuePresenter.memberNo eq issue.issueFranchiseAccount.franchiseManagerNo }">
+                                                <th:block th:text="${ issue.issueFranchiseAccount.managerName }"></th:block>
+                                            </th:block>
+                                        </th:block>
+                                    </td>
+                                    <td th:text="${ issue.franchiseIssueStatusFinishDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ issue.franchiseIssueCompleter ne null }">
+                                            <th:block th:text="${ issue.franchiseIssueCompleter.memberName }"></th:block>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'BEFORE' }">
+                                            <button class="issue-before-btn" id="issue-before-btn">처리전</button>
+                                            <div class="status-change-div" id="status-change-div">
+                                                <button class="issue-change-btn" id="issue-change-btn">교환</button>
+                                                <button class="issue-return-btn" id="issue-return-btn">반품</button>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'CHANGE' }">
+                                            <button class="issue-change-btn">교환</button>
+                                        </th:block>
+                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'RETURN' }">
+                                            <button class="issue-return-btn" id="reject-check-btn">반품</button>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn" style="width: 1500px; right: 470px">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">이슈 상세</h4>
+                                    <small id="issue-detail-modal-small"></small>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="issue-detail-content">
+                                        <div class="issue-detail-modal-body">이슈 제목 : <span id="issue-title"></span></div>
+                                        <div class="issue-detail-modal-body">이슈 내용 : <span id="issue-body"></span></div>
+                                        <div class="issue-detail-modal-body">
+                                            이슈 물품
+                                            <div class="item-area" id="issue-detail-item">
+                                                <div class="item-tr">
+                                                    <table style="border-collapse: collapse; text-align: center; font-size: 15px; margin-left: 30px; margin-top: 10px">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 400px">물품 이름</th>
+                                                                <th style="width: 140px">수량</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="detail-modal-item-area-tbody">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="issue-detail-modal-img-area">
+                                        <div class="issue-image"></div>
+                                        <div class="issue-image"></div>
+                                        <div class="issue-image"></div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="franchise-order-detail-modal-ok-btn">확인</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal inmodal" id="regist-modal" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn" style="width: 1500px; right: 470px">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">이슈 제기</h4>
+<!--                                    <small id="issue-detail-modal-small"></small>-->
+                                </div>
+                                <div class="modal-body">
+                                    <div class="issue-detail-content">
+                                        <div class="issue-detail-modal-body">이슈 제목 : <input type="text" id="issue-regist-title" style="width: 450px" placeholder="이슈 제목을 입력해주세요." required></div>
+                                        <div class="issue-detail-modal-body">이슈 내용 : <input type="text" id="issue-regist-body" style="width: 450px" placeholder="이슈 내용을 입력해주세요." required></div>
+                                        <div class="issue-detail-modal-body">
+                                            발주 내역 :
+                                            <select id="regist-franchise-order-select-list" style="text-align: center">
+                                                <option selected disabled>발주 내역을 선택해주세요.(주문번호)</option>
+                                            </select>
+                                        </div>
+                                        <div class="issue-detail-modal-body">
+                                            발주 물품 :
+                                            <select id="regist-franchise-order-item-select-list" style="text-align: center">
+                                                <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
+                                            </select>
+                                        </div>
+                                        <div class="issue-detail-modal-body">
+                                            이슈 물품
+                                            <div class="item-area" id="issue-reigst-item">
+                                                <div class="item-tr">
+                                                    <table style="border-collapse: collapse; text-align: center; font-size: 15px; margin-left: 30px; margin-top: 10px">
+                                                        <thead>
+                                                        <tr>
+                                                            <th style="width: 370px;">물품 이름</th>
+                                                            <th style="width: 110px;">수량</th>
+                                                            <th style="width: 40px;">취소</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="regist-modal-item-area-tbody">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="issue-detail-modal-img-area">
+<!--                                        <div class="issue-image"></div>-->
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="franchise-order-regist-modal-ok-btn">제기</button>
+                                    <button type="button" class="btn btn-white" data-dismiss="modal">취소</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('.footable').footable();
+            $('.footable2').footable();
+
+            $(document).on('change', '#regist-franchise-order-select-list', function() {
+
+                let franchiseOrderNo = this.children[this.selectedIndex].value;
+
+                $('#regist-franchise-order-item-select-list').html("");
+
+                let firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>'
+
+                $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
+
+                fetch("/order/franchiseorderdetail?franchiseOrderNo=" + franchiseOrderNo)
+                    .then(response => response.json())
+                    .then(response => {
+
+                        let franchiseIssueOrderItem = '';
+
+                        for(list in response) {
+
+                            franchiseIssueOrderItem += '<option value="' + response[list].itemNo + '">' + response[list].itemName + '(' + response[list].itemAmount +'개)</option>';
+
+                        }
+
+                        $('#regist-franchise-order-item-select-list').append(franchiseIssueOrderItem);
+
+                    })
+                    .catch(err => {
+                        swal({
+                            title: "오류 발생!",
+                            text: "알수 없는 오류가 발생하였습니다."
+                        });
+                    });
+
+
+            });
+
+        });
+
+        if(document.querySelectorAll("#issue-list-tr td")) {
+
+            const $tds = document.querySelectorAll('#issue-list-tr td');
+
+            for(let i = 0; i < $tds.length; i++) {
+
+                $tds[i].onmouseenter = function() {
+                    this.parentNode.style.backgroundColor = "#d3d3d3";
+                    this.parentNode.style.cursor = "pointer";
+                }
+
+                $tds[i].onmouseout = function() {
+                    this.parentNode.style.backgroundColor = "white";
+                }
+
+                $tds[i].onclick = function() {
+
+                    $.ajax({
+                        url: "/issue/detail",
+                        type: "get",
+                        data: {
+                            "issueNo" : $tds[i].parentNode.children[0].value
+                        },
+                        dataType: "json",
+                        success : function(data) {
+
+                            const issueTitle = document.getElementById('issue-title');
+                            const issueBody = document.getElementById('issue-body');
+
+                            issueTitle.innerText = data.franchiseIssueTitle;
+                            issueBody.innerText = data.franchiseIssueBody;
+
+                            let modalDetailItemTbody = '';
+
+                            modalDetailItemTbody += '<tr>';
+
+                            for(let i = 0; i < data.issueItemList.length; i++) {
+
+                                modalDetailItemTbody += '<td>' + data.issueItemList[i].orderItemInfoDTO.itemInfoName + '</td>';
+                                modalDetailItemTbody += '<td>' + data.issueItemList[i].issueItemAmount + '</td>';
+                            }
+
+                            $('#detail-modal-item-area-tbody').append(modalDetailItemTbody);
+
+
+                        },
+                        error : function(xhr) {
+                            swal({
+                                title: "오류 발생!",
+                                text: "알수 없는 오류가 발생하였습니다."
+                            });
+                        }
+                    });
+
+                }
+
+            }
+
+        }
+
+        document.getElementById('issue-regist-btn').onclick = function() {
+
+            $.ajax({
+                url: '/issue/selectissueorder',
+                type: 'get',
+                success : function(data) {
+
+                    let franchiseIssueOrder = '';
+
+                    for(list in data) {
+
+                        franchiseIssueOrder = '<option value="' + data[list].franchiseOrderNo + '">' + data[list].franchiseOrderOrderNumber + '</option>';
+
+                        $('#regist-franchise-order-select-list').append(franchiseIssueOrder);
+
+
+                    }
+
+                },
+                error : function(xhr) {
+                    swal({
+                        title: "오류 발생!",
+                        text: "알수 없는 오류가 발생하였습니다."
+                    });
+                }
+            });
+
+        }
+
+
+    </script>
+
+</body>
+</html>
