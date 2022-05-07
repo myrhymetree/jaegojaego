@@ -11,6 +11,11 @@ import com.greedy.jaegojaego.issue.issue.model.dto.IssueDTO;
 import com.greedy.jaegojaego.issue.issue.model.dto.IssueDetailDTO;
 import com.greedy.jaegojaego.issue.issue.model.entity.Issue;
 import com.greedy.jaegojaego.issue.issue.model.repository.IssueRepository;
+import com.greedy.jaegojaego.issue.outWarehouse.model.entity.IssueOutWarehouse;
+import com.greedy.jaegojaego.issue.outWarehouse.model.repository.IssueOutWarehouseRepository;
+import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
+import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
+import com.greedy.jaegojaego.order.order.model.repository.franchise.FranchiseOrderRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -27,14 +32,19 @@ public class IssueService {
     private final IssueFranchiseAccountRepository issueFranchiseAccountRepository;
     private final IssueRepository issueRepository;
     private final ModelMapper modelMapper;
+    private final FranchiseOrderRepository franchiseOrderRepository;
+    private final IssueOutWarehouseRepository issueOutWarehouseRepository;
 
     @Autowired
     public IssueService(IssueFranchiseInfoRepository issueFranchiseInfoRepository, IssueFranchiseAccountRepository issueFranchiseAccountRepository
-            , IssueRepository issueRepository, ModelMapper modelMapper) {
+            , IssueRepository issueRepository, ModelMapper modelMapper, FranchiseOrderRepository franchiseOrderRepository
+            , IssueOutWarehouseRepository issueOutWarehouseRepository) {
         this.issueFranchiseInfoRepository = issueFranchiseInfoRepository;
         this.issueFranchiseAccountRepository = issueFranchiseAccountRepository;
         this.issueRepository = issueRepository;
         this.modelMapper = modelMapper;
+        this.franchiseOrderRepository = franchiseOrderRepository;
+        this.issueOutWarehouseRepository = issueOutWarehouseRepository;
     }
 
     public List<IssueDetailDTO> selectIssueList(CustomUser customUser) {
@@ -231,4 +241,85 @@ public class IssueService {
 
         return issueDetailList;
     }
+
+    public IssueDTO selectIssueDetail(int issueNo) {
+
+        Issue issue = issueRepository.findById(issueNo).get();
+
+        return modelMapper.map(issue, IssueDTO.class);
+    }
+
+    public List<FranchiseOrderDTO> selectIssueOrderList(CustomUser customUser) {
+
+        List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
+
+        if("대표자".equals(customUser.getOfficeDivision())) {
+
+            IssueFranchiseInfo issueFranchiseInfo = issueFranchiseInfoRepository.findById(customUser.getMemberNo()).get();
+
+            List<IssueFranchiseAccount> issueFranchiseAccountList = issueFranchiseAccountRepository.findByFranchiseInfo_FranchiseRepresentativeNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
+
+            franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
+
+            for(int i = 0; i < issueFranchiseAccountList.size(); i++) {
+
+                List<FranchiseOrder> franchiseOrderListByManager = franchiseOrderRepository.findByMember_MemberNo(issueFranchiseAccountList.get(i).getFranchiseManagerNo());
+
+                for(int j = 0; j < franchiseOrderListByManager.size(); j++) {
+
+                    franchiseOrderList.add(franchiseOrderListByManager.get(j));
+
+                }
+
+            }
+
+            for(int i = 0; i < franchiseOrderList.size(); i++) {
+
+                IssueOutWarehouse issueOutWarehouse = issueOutWarehouseRepository.findByFranchiseOrder_FranchiseOrderNoAndIssueOutWarehouseWorkingStatusName(franchiseOrderList.get(i).getFranchiseOrderNo(), "출고완료");
+
+                if(issueOutWarehouse != null) {
+
+                    franchiseOrderList.remove(i);
+
+                }
+            }
+
+        } else {
+
+            IssueFranchiseAccount issueFranchiseAccount = issueFranchiseAccountRepository.findById(customUser.getMemberNo()).get();
+
+            IssueFranchiseInfo issueFranchiseInfo = issueFranchiseInfoRepository.findById(issueFranchiseAccount.getFranchiseInfo().getFranchiseRepresentativeNo()).get();
+
+            List<IssueFranchiseAccount> issueFranchiseAccountList = issueFranchiseAccountRepository.findByFranchiseInfo_FranchiseRepresentativeNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
+
+            franchiseOrderList = franchiseOrderRepository.findByMember_MemberNo(issueFranchiseInfo.getFranchiseRepresentativeNo());
+
+            for(int i = 0; i < issueFranchiseAccountList.size(); i++) {
+
+                List<FranchiseOrder> franchiseOrderListByManager = franchiseOrderRepository.findByMember_MemberNo(issueFranchiseAccountList.get(i).getFranchiseManagerNo());
+
+                for(int j = 0; j < franchiseOrderListByManager.size(); j++) {
+
+                    franchiseOrderList.add(franchiseOrderListByManager.get(j));
+
+                }
+
+            }
+
+            for(int i = 0; i < franchiseOrderList.size(); i++) {
+
+                IssueOutWarehouse issueOutWarehouse = issueOutWarehouseRepository.findByFranchiseOrder_FranchiseOrderNoAndIssueOutWarehouseWorkingStatusName(franchiseOrderList.get(i).getFranchiseOrderNo(), "출고완료");
+
+                if(issueOutWarehouse != null) {
+
+                    franchiseOrderList.remove(i);
+
+                }
+            }
+
+        }
+
+        return franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
+    }
+
 }

@@ -5,37 +5,25 @@ import com.greedy.jaegojaego.order.item.model.dto.OrderItemInfoDTO;
 
 public class IssueItemDTO {
 
-    private int franchiseIssueNo;
-    private IssueDTO issue;
+    private int franchiseIssueItemNo;
     private int issueItemAmount;
     private OrderItemInfoDTO orderItemInfoDTO;
-    private IssueOutWarehouseDTO issueOutWarehouse;
 
     public IssueItemDTO() {
     }
 
-    public IssueItemDTO(int franchiseIssueNo, IssueDTO issue, int issueItemAmount, OrderItemInfoDTO orderItemInfoDTO, IssueOutWarehouseDTO issueOutWarehouse) {
-        this.franchiseIssueNo = franchiseIssueNo;
-        this.issue = issue;
+    public IssueItemDTO(int franchiseIssueItemNo, int issueItemAmount, OrderItemInfoDTO orderItemInfoDTO) {
+        this.franchiseIssueItemNo = franchiseIssueItemNo;
         this.issueItemAmount = issueItemAmount;
         this.orderItemInfoDTO = orderItemInfoDTO;
-        this.issueOutWarehouse = issueOutWarehouse;
     }
 
-    public int getFranchiseIssueNo() {
-        return franchiseIssueNo;
+    public int getFranchiseIssueItemNo() {
+        return franchiseIssueItemNo;
     }
 
-    public void setFranchiseIssueNo(int franchiseIssueNo) {
-        this.franchiseIssueNo = franchiseIssueNo;
-    }
-
-    public IssueDTO getIssue() {
-        return issue;
-    }
-
-    public void setIssue(IssueDTO issue) {
-        this.issue = issue;
+    public void setFranchiseIssueItemNo(int franchiseIssueItemNo) {
+        this.franchiseIssueItemNo = franchiseIssueItemNo;
     }
 
     public int getIssueItemAmount() {
@@ -54,21 +42,12 @@ public class IssueItemDTO {
         this.orderItemInfoDTO = orderItemInfoDTO;
     }
 
-    public IssueOutWarehouseDTO getIssueOutWarehouse() {
-        return issueOutWarehouse;
-    }
-
-    public void setIssueOutWarehouse(IssueOutWarehouseDTO issueOutWarehouse) {
-        this.issueOutWarehouse = issueOutWarehouse;
-    }
-
     @Override
     public String toString() {
         return "IssueItemDTO{" +
-                "franchiseIssueNo=" + franchiseIssueNo +
+                "franchiseIssueItemNo=" + franchiseIssueItemNo +
                 ", issueItemAmount=" + issueItemAmount +
                 ", orderItemInfoDTO=" + orderItemInfoDTO +
-                ", issueOutWarehouse=" + issueOutWarehouse +
                 '}';
     }
 }

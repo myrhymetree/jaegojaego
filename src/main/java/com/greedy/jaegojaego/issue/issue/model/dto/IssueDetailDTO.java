@@ -6,6 +6,7 @@ import com.greedy.jaegojaego.issue.franchise.model.dto.IssueFranchiseInfoDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 
 import java.sql.Date;
+import java.util.List;
 
 public class IssueDetailDTO {
 
@@ -19,11 +20,13 @@ public class IssueDetailDTO {
     private MemberDTO franchiseIssuePresenter;
     private IssueFranchiseInfoDTO issueFranchiseInfo;
     private IssueFranchiseAccountDTO issueFranchiseAccount;
+    private List<IssueItemDTO> issueItemList;
+    private List<String> issueFileList;
 
     public IssueDetailDTO() {
     }
 
-    public IssueDetailDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccountDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, IssueFranchiseInfoDTO issueFranchiseInfo, IssueFranchiseAccountDTO issueFranchiseAccount) {
+    public IssueDetailDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccountDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, IssueFranchiseInfoDTO issueFranchiseInfo, IssueFranchiseAccountDTO issueFranchiseAccount, List<IssueItemDTO> issueItemList, List<String> issueFileList) {
         this.franchiseIssueNo = franchiseIssueNo;
         this.franchiseIssueTitle = franchiseIssueTitle;
         this.franchiseIssueBody = franchiseIssueBody;
@@ -34,6 +37,8 @@ public class IssueDetailDTO {
         this.franchiseIssuePresenter = franchiseIssuePresenter;
         this.issueFranchiseInfo = issueFranchiseInfo;
         this.issueFranchiseAccount = issueFranchiseAccount;
+        this.issueItemList = issueItemList;
+        this.issueFileList = issueFileList;
     }
 
     public int getFranchiseIssueNo() {
@@ -116,6 +121,22 @@ public class IssueDetailDTO {
         this.issueFranchiseAccount = issueFranchiseAccount;
     }
 
+    public List<IssueItemDTO> getIssueItemList() {
+        return issueItemList;
+    }
+
+    public void setIssueItemList(List<IssueItemDTO> issueItemList) {
+        this.issueItemList = issueItemList;
+    }
+
+    public List<String> getIssueFileList() {
+        return issueFileList;
+    }
+
+    public void setIssueFileList(List<String> issueFileList) {
+        this.issueFileList = issueFileList;
+    }
+
     @Override
     public String toString() {
         return "IssueDetailDTO{" +
@@ -129,6 +150,8 @@ public class IssueDetailDTO {
                 ", franchiseIssuePresenter=" + franchiseIssuePresenter +
                 ", issueFranchiseInfo=" + issueFranchiseInfo +
                 ", issueFranchiseAccount=" + issueFranchiseAccount +
+                ", issueItemList=" + issueItemList +
+                ", issueFileList=" + issueFileList +
                 '}';
     }
 }

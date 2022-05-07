@@ -14,19 +14,17 @@ public class IssueOutWarehouseDTO {
     private Issue issue;
     private java.sql.Date issueOutWarehouseWorkingFinishedDate;
     private String issueOutWarehouseWorkingStatusName;
-    private int issueOutWarehouseTotalOutItemAmount;
 
     public IssueOutWarehouseDTO() {
     }
 
-    public IssueOutWarehouseDTO(int issueOutWarehouseNo, IssueFranchiseInfoDTO issueFranchiseInfo, FranchiseOrderDTO franchiseOrder, Issue issue, Date issueOutWarehouseWorkingFinishedDate, String issueOutWarehouseWorkingStatusName, int issueOutWarehouseTotalOutItemAmount) {
+    public IssueOutWarehouseDTO(int issueOutWarehouseNo, IssueFranchiseInfoDTO issueFranchiseInfo, FranchiseOrderDTO franchiseOrder, Issue issue, Date issueOutWarehouseWorkingFinishedDate, String issueOutWarehouseWorkingStatusName) {
         this.issueOutWarehouseNo = issueOutWarehouseNo;
         this.issueFranchiseInfo = issueFranchiseInfo;
         this.franchiseOrder = franchiseOrder;
         this.issue = issue;
         this.issueOutWarehouseWorkingFinishedDate = issueOutWarehouseWorkingFinishedDate;
         this.issueOutWarehouseWorkingStatusName = issueOutWarehouseWorkingStatusName;
-        this.issueOutWarehouseTotalOutItemAmount = issueOutWarehouseTotalOutItemAmount;
     }
 
     public int getIssueOutWarehouseNo() {
@@ -77,24 +75,13 @@ public class IssueOutWarehouseDTO {
         this.issueOutWarehouseWorkingStatusName = issueOutWarehouseWorkingStatusName;
     }
 
-    public int getIssueOutWarehouseTotalOutItemAmount() {
-        return issueOutWarehouseTotalOutItemAmount;
-    }
-
-    public void setIssueOutWarehouseTotalOutItemAmount(int issueOutWarehouseTotalOutItemAmount) {
-        this.issueOutWarehouseTotalOutItemAmount = issueOutWarehouseTotalOutItemAmount;
-    }
-
     @Override
     public String toString() {
         return "IssueOutWarehouseDTO{" +
                 "issueOutWarehouseNo=" + issueOutWarehouseNo +
                 ", issueFranchiseInfo=" + issueFranchiseInfo +
-                ", franchiseOrder=" + franchiseOrder +
-                ", issue=" + issue +
                 ", issueOutWarehouseWorkingFinishedDate=" + issueOutWarehouseWorkingFinishedDate +
                 ", issueOutWarehouseWorkingStatusName='" + issueOutWarehouseWorkingStatusName + '\'' +
-                ", issueOutWarehouseTotalOutItemAmount=" + issueOutWarehouseTotalOutItemAmount +
                 '}';
     }
 }

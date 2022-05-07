@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.issue.issue.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.greedy.jaegojaego.issue.outWarehouse.model.entity.IssueOutWarehouse;
 import com.greedy.jaegojaego.order.item.model.entity.OrderItemInfo;
 
@@ -17,7 +18,7 @@ public class IssueItem {
 
     @Id
     @Column(name = "FRANCHISE_ISSUE_ITEM_NO")
-    private int franchiseIssueNo;
+    private int franchiseIssueItemNo;
 
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_ISSUE_NO")
@@ -37,20 +38,20 @@ public class IssueItem {
     public IssueItem() {
     }
 
-    public IssueItem(int franchiseIssueNo, Issue issue, int issueItemAmount, OrderItemInfo orderItemInfoDTO, IssueOutWarehouse issueOutWarehouse) {
-        this.franchiseIssueNo = franchiseIssueNo;
+    public IssueItem(int franchiseIssueItemNo, Issue issue, int issueItemAmount, OrderItemInfo orderItemInfoDTO, IssueOutWarehouse issueOutWarehouse) {
+        this.franchiseIssueItemNo = franchiseIssueItemNo;
         this.issue = issue;
         this.issueItemAmount = issueItemAmount;
         this.orderItemInfoDTO = orderItemInfoDTO;
         this.issueOutWarehouse = issueOutWarehouse;
     }
 
-    public int getFranchiseIssueNo() {
-        return franchiseIssueNo;
+    public int getFranchiseIssueItemNo() {
+        return franchiseIssueItemNo;
     }
 
-    public void setFranchiseIssueNo(int franchiseIssueNo) {
-        this.franchiseIssueNo = franchiseIssueNo;
+    public void setFranchiseIssueItemNo(int franchiseIssueItemNo) {
+        this.franchiseIssueItemNo = franchiseIssueItemNo;
     }
 
     public Issue getIssue() {
@@ -88,7 +89,7 @@ public class IssueItem {
     @Override
     public String toString() {
         return "IssueItem{" +
-                "franchiseIssueNo=" + franchiseIssueNo +
+                "franchiseIssueItemNo=" + franchiseIssueItemNo +
                 ", issueItemAmount=" + issueItemAmount +
                 ", orderItemInfoDTO=" + orderItemInfoDTO +
                 '}';

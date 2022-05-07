@@ -17,11 +17,12 @@ public class IssueDTO {
     private IssueCompanyAccountDTO franchiseIssueCompleter;
     private MemberDTO franchiseIssuePresenter;
     private List<IssueItemDTO> issueItemList;
+    private List<String> issueFileList;
 
     public IssueDTO() {
     }
 
-    public IssueDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccountDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, List<IssueItemDTO> issueItemList) {
+    public IssueDTO(int franchiseIssueNo, String franchiseIssueTitle, String franchiseIssueBody, Date franchiseIssueCreatedDate, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, IssueCompanyAccountDTO franchiseIssueCompleter, MemberDTO franchiseIssuePresenter, List<IssueItemDTO> issueItemList, List<String> issueFileList) {
         this.franchiseIssueNo = franchiseIssueNo;
         this.franchiseIssueTitle = franchiseIssueTitle;
         this.franchiseIssueBody = franchiseIssueBody;
@@ -31,6 +32,7 @@ public class IssueDTO {
         this.franchiseIssueCompleter = franchiseIssueCompleter;
         this.franchiseIssuePresenter = franchiseIssuePresenter;
         this.issueItemList = issueItemList;
+        this.issueFileList = issueFileList;
     }
 
     public int getFranchiseIssueNo() {
@@ -105,6 +107,14 @@ public class IssueDTO {
         this.issueItemList = issueItemList;
     }
 
+    public List<String> getIssueFileList() {
+        return issueFileList;
+    }
+
+    public void setIssueFileList(List<String> issueFileList) {
+        this.issueFileList = issueFileList;
+    }
+
     @Override
     public String toString() {
         return "IssueDTO{" +
@@ -117,6 +127,7 @@ public class IssueDTO {
                 ", franchiseIssueCompleter=" + franchiseIssueCompleter +
                 ", franchiseIssuePresenter=" + franchiseIssuePresenter +
                 ", issueItemList=" + issueItemList +
+                ", issueFileList=" + issueFileList +
                 '}';
     }
 }

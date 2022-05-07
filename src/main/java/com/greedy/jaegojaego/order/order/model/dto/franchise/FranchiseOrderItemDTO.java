@@ -2,25 +2,15 @@ package com.greedy.jaegojaego.order.order.model.dto.franchise;
 
 public class FranchiseOrderItemDTO {
 
-    private FranchiseOrderDTO franchiseOrder;
     private int franchiseOrderItemAmount;
     private FranchiseOrderableItemDTO franchiseOrderableItem;
 
     public FranchiseOrderItemDTO() {
     }
 
-    public FranchiseOrderItemDTO(FranchiseOrderDTO franchiseOrder, int franchiseOrderItemAmount, FranchiseOrderableItemDTO franchiseOrderableItem) {
-        this.franchiseOrder = franchiseOrder;
+    public FranchiseOrderItemDTO(int franchiseOrderItemAmount, FranchiseOrderableItemDTO franchiseOrderableItem) {
         this.franchiseOrderItemAmount = franchiseOrderItemAmount;
         this.franchiseOrderableItem = franchiseOrderableItem;
-    }
-
-    public FranchiseOrderDTO getFranchiseOrder() {
-        return franchiseOrder;
-    }
-
-    public void setFranchiseOrder(FranchiseOrderDTO franchiseOrder) {
-        this.franchiseOrder = franchiseOrder;
     }
 
     public int getFranchiseOrderItemAmount() {

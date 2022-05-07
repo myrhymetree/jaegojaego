@@ -1,10 +1,12 @@
 package com.greedy.jaegojaego.issue.issue.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.greedy.jaegojaego.issue.company.model.entity.IssueCompanyAccount;
 import com.greedy.jaegojaego.issue.issue.model.dto.IssueItemDTO;
 import com.greedy.jaegojaego.member.model.entity.Member;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
-public class Issue {
+public class Issue implements Serializable {
 
     @Id
     @Column(name = "FRANCHISE_ISSUE_NO")
@@ -51,6 +53,7 @@ public class Issue {
 
     @OneToMany
     @JoinColumn(name = "FRANCHISE_ISSUE_NO")
+    @JsonBackReference
     private List<IssueItem> issueItemList;
 
     public Issue() {

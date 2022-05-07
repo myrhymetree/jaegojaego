@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.issue.outWarehouse.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.greedy.jaegojaego.issue.franchise.model.entity.IssueFranchiseInfo;
 import com.greedy.jaegojaego.issue.issue.model.entity.Issue;
 import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
@@ -39,20 +40,16 @@ public class IssueOutWarehouse {
     @Column(name = "OUT_WAREHOUSE_WORKING_STATUS_NAME")
     private String issueOutWarehouseWorkingStatusName;
 
-    @Column(name = "OUT_WAREHOUSE_TOTAL_OUT_ITEM_AMOUNT")
-    private int issueOutWarehouseTotalOutItemAmount;
-
     public IssueOutWarehouse() {
     }
 
-    public IssueOutWarehouse(int issueOutWarehouseNo, IssueFranchiseInfo issueFranchiseInfo, FranchiseOrder franchiseOrder, Issue issue, Date issueOutWarehouseWorkingFinishedDate, String issueOutWarehouseWorkingStatusName, int issueOutWarehouseTotalOutItemAmount) {
+    public IssueOutWarehouse(int issueOutWarehouseNo, IssueFranchiseInfo issueFranchiseInfo, FranchiseOrder franchiseOrder, Issue issue, Date issueOutWarehouseWorkingFinishedDate, String issueOutWarehouseWorkingStatusName) {
         this.issueOutWarehouseNo = issueOutWarehouseNo;
         this.issueFranchiseInfo = issueFranchiseInfo;
         this.franchiseOrder = franchiseOrder;
         this.issue = issue;
         this.issueOutWarehouseWorkingFinishedDate = issueOutWarehouseWorkingFinishedDate;
         this.issueOutWarehouseWorkingStatusName = issueOutWarehouseWorkingStatusName;
-        this.issueOutWarehouseTotalOutItemAmount = issueOutWarehouseTotalOutItemAmount;
     }
 
     public int getIssueOutWarehouseNo() {
@@ -103,24 +100,13 @@ public class IssueOutWarehouse {
         this.issueOutWarehouseWorkingStatusName = issueOutWarehouseWorkingStatusName;
     }
 
-    public int getIssueOutWarehouseTotalOutItemAmount() {
-        return issueOutWarehouseTotalOutItemAmount;
-    }
-
-    public void setIssueOutWarehouseTotalOutItemAmount(int issueOutWarehouseTotalOutItemAmount) {
-        this.issueOutWarehouseTotalOutItemAmount = issueOutWarehouseTotalOutItemAmount;
-    }
-
     @Override
     public String toString() {
         return "IssueOutWarehouse{" +
                 "issueOutWarehouseNo=" + issueOutWarehouseNo +
                 ", issueFranchiseInfo=" + issueFranchiseInfo +
-                ", franchiseOrder=" + franchiseOrder +
-                ", issue=" + issue +
                 ", issueOutWarehouseWorkingFinishedDate=" + issueOutWarehouseWorkingFinishedDate +
                 ", issueOutWarehouseWorkingStatusName='" + issueOutWarehouseWorkingStatusName + '\'' +
-                ", issueOutWarehouseTotalOutItemAmount=" + issueOutWarehouseTotalOutItemAmount +
                 '}';
     }
 }
