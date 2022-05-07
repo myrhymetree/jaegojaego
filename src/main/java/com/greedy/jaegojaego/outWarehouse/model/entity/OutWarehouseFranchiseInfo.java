@@ -1,59 +1,49 @@
 package com.greedy.jaegojaego.outWarehouse.model.entity;
 
-import lombok.*;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity(name = "OutWarehouseFranchiseInfo")
-@Table(name = "FRANCHISE_INFO")
-@SequenceGenerator(
-        name = "OUT_WAREHOUSE_FRANCHISE_INFO_SEQ_GENERATOR",
-        sequenceName = "FRANCHISE_REPRESENTATIVE_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
-public class OutWarehouseFranchiseInfo {
+@Entity(name = "outWarehouseFranchiseInfo")
+@Table(name = "FRANCHISE INFO")
+public class OutWarehouseFranchiseInfo implements Serializable {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "OUT_WAREHOUSE_FRANCHISE_INFO_SEQ_GENERATOR"
-    )
-    @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private int franchiseRepresentativeNo;
+    @OneToOne
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private OutWarehouseMember franchiseRepresenetativeNo;
 
     @Column(name = "FRANCHISE_BRANCH_NAME")
-    private String franchiseBranchName;
+    private String franchiseName;
 
     @Column(name = "FRANCHISE_ADDRESS")
     private String franchiseAddress;
 
     public OutWarehouseFranchiseInfo() {}
 
-    public OutWarehouseFranchiseInfo(int franchiseRepresentativeNo, String franchiseBranchName, String franchiseAddress) {
-        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
-        this.franchiseBranchName = franchiseBranchName;
+    public OutWarehouseFranchiseInfo(OutWarehouseMember franchiseRepresenetativeNo, String franchiseName, String franchiseAddress) {
+        this.franchiseRepresenetativeNo = franchiseRepresenetativeNo;
+        this.franchiseName = franchiseName;
         this.franchiseAddress = franchiseAddress;
     }
 
-    public int getFranchiseRepresentativeNo() {
-        return franchiseRepresentativeNo;
+    public OutWarehouseMember getFranchiseRepresenetativeNo() {
+        return franchiseRepresenetativeNo;
     }
 
-    public String getFranchiseBranchName() {
-        return franchiseBranchName;
+    public void setFranchiseRepresenetativeNo(OutWarehouseMember franchiseRepresenetativeNo) {
+        this.franchiseRepresenetativeNo = franchiseRepresenetativeNo;
+    }
+
+    public String getFranchiseName() {
+        return franchiseName;
+    }
+
+    public void setFranchiseName(String franchiseName) {
+        this.franchiseName = franchiseName;
     }
 
     public String getFranchiseAddress() {
         return franchiseAddress;
-    }
-
-    public void setFranchiseRepresentativeNo(int franchiseRepresentativeNo) {
-        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
-    }
-
-    public void setFranchiseBranchName(String franchiseBranchName) {
-        this.franchiseBranchName = franchiseBranchName;
     }
 
     public void setFranchiseAddress(String franchiseAddress) {
@@ -63,8 +53,8 @@ public class OutWarehouseFranchiseInfo {
     @Override
     public String toString() {
         return "OutWarehouseFranchiseInfo{" +
-                "franchiseRepresentativeNo=" + franchiseRepresentativeNo +
-                ", franchiseBranchName='" + franchiseBranchName + '\'' +
+                "franchiseRepresenetativeNo=" + franchiseRepresenetativeNo +
+                ", franchiseName='" + franchiseName + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 '}';
     }

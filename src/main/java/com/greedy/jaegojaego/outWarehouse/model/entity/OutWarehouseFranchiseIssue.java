@@ -1,72 +1,74 @@
 package com.greedy.jaegojaego.outWarehouse.model.entity;
 
-import lombok.*;
-
 import javax.persistence.*;
+import java.sql.Date;
 
-@Entity(name = "OutWarehouseFranchiseIssue")
+@Entity(name = "outWarehouseFranchiseIssue")
 @Table(name = "FRANCHISE_ISSUE")
-@SequenceGenerator(
-        name = "OUT_WAREHOUSE_FRANCHISE_ISSUE_SEQ_GENERATOR",
-        sequenceName = "FRANCHISE_ISSUE_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
 public class OutWarehouseFranchiseIssue {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "OUT_WAREHOUSE_FRANCHISE_ISSUE_SEQ_GENERATOR"
-    )
     @Column(name = "FRANCHISE_ISSUE_NO")
     private int franchiseIssueNo;
+
+    @Column(name = "FANCHISE_ISSUE_STATUS_FINISH_DATE")
+    private Date franchiseIssueStatusFinishDate;
 
     @Column(name = "FRANCHISE_ISSUE_STATUS")
     private String franchiseIssueStatus;
 
     @ManyToOne
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
+    @JoinColumn(name = "FRANCHISE_ISSUE_COMPLETER")
+    private OutWarehouseCompanyAccount franchiseIssueCompleterNo;
 
     public OutWarehouseFranchiseIssue() {}
 
-    public OutWarehouseFranchiseIssue(int franchiseIssueNo, String franchiseIssueStatus, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+    public OutWarehouseFranchiseIssue(int franchiseIssueNo, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, OutWarehouseCompanyAccount franchiseIssueCompleterNo) {
         this.franchiseIssueNo = franchiseIssueNo;
+        this.franchiseIssueStatusFinishDate = franchiseIssueStatusFinishDate;
         this.franchiseIssueStatus = franchiseIssueStatus;
-        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+        this.franchiseIssueCompleterNo = franchiseIssueCompleterNo;
     }
 
     public int getFranchiseIssueNo() {
         return franchiseIssueNo;
     }
 
-    public String getFranchiseIssueStatus() {
-        return franchiseIssueStatus;
-    }
-
-    public OutWarehouseFranchiseInfo getFranchiseRepresentativeNo() {
-        return franchiseRepresentativeNo;
-    }
-
     public void setFranchiseIssueNo(int franchiseIssueNo) {
         this.franchiseIssueNo = franchiseIssueNo;
+    }
+
+    public Date getFranchiseIssueStatusFinishDate() {
+        return franchiseIssueStatusFinishDate;
+    }
+
+    public void setFranchiseIssueStatusFinishDate(Date franchiseIssueStatusFinishDate) {
+        this.franchiseIssueStatusFinishDate = franchiseIssueStatusFinishDate;
+    }
+
+    public String getFranchiseIssueStatus() {
+        return franchiseIssueStatus;
     }
 
     public void setFranchiseIssueStatus(String franchiseIssueStatus) {
         this.franchiseIssueStatus = franchiseIssueStatus;
     }
 
-    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
-        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    public OutWarehouseCompanyAccount getFranchiseIssueCompleterNo() {
+        return franchiseIssueCompleterNo;
+    }
+
+    public void setFranchiseIssueCompleterNo(OutWarehouseCompanyAccount franchiseIssueCompleterNo) {
+        this.franchiseIssueCompleterNo = franchiseIssueCompleterNo;
     }
 
     @Override
     public String toString() {
         return "OutWarehouseFranchiseIssue{" +
                 "franchiseIssueNo=" + franchiseIssueNo +
+                ", franchiseIssueStatusFinishDate=" + franchiseIssueStatusFinishDate +
                 ", franchiseIssueStatus='" + franchiseIssueStatus + '\'' +
-                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
+                ", franchiseIssueCompleterNo=" + franchiseIssueCompleterNo +
                 '}';
     }
 }

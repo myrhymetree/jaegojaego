@@ -1,11 +1,6 @@
 package com.greedy.jaegojaego.outWarehouse.model.dto;
 
-import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseStatusHistory;
-import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseStatusHistoryId;
-import lombok.*;
-
 import java.sql.Date;
-import java.util.List;
 
 public class OutWarehouseListDTO {
 
