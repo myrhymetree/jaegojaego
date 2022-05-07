@@ -29,10 +29,11 @@ public class ClientService {
     private final ClientMemberRepository clientMemberRepository;
     private final ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository;
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
+    private final ClientContractInfoRepository clientContractInfoRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
         this.clientBusinessTypeRepository = clientBusinessTypeRepository;
@@ -40,6 +41,7 @@ public class ClientService {
         this.clientMemberRepository = clientMemberRepository;
         this.clientBusinessItemDivisionRepository = clientBusinessItemDivisionRepository;
         this.clientBusinessTypeDivisionRepository = clientBusinessTypeDivisionRepository;
+        this.clientContractInfoRepository = clientContractInfoRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -118,8 +120,8 @@ public class ClientService {
         return clientMember;
     }
 
-    @Transactional
-    public void registClient(ClientDTO clientDTO) {
+
+/*    public void registClient(ClientDTO clientDTO) {
 
         Client newClient = new Client();
 
@@ -138,13 +140,7 @@ public class ClientService {
         clientRepository.save(newClient);
     }
 
-    @Transactional
-    public void deleteClient(int clientNo) {
 
-       clientRepository.deleteById(clientNo);
-    }
-
-/*    @Transactional
     public void registClientBusinessItemDevision(ClientBusinessItemDvisionDTO clientBusinessItemDevisionDTO) {
 
         ClientBusinessItemDivisionPK newClientBusinessItemDivisionPK = new ClientBusinessItemDivisionPK();
@@ -157,7 +153,7 @@ public class ClientService {
         clientBusinessItemDivisionRepository.save(newClientBusinessItemDivision);
     }
 
-    @Transactional
+
     public void registClientBusinessTypeDevision(ClientBusinessTypeDvisionDTO clientBusinessTypeDvisionDTO) {
 
         ClientBusinessTypeDivisionPK newClientBusinessTypeDivisionPK = new ClientBusinessTypeDivisionPK();
@@ -177,7 +173,21 @@ public class ClientService {
         newClientContractInfo.setClientNo(clientContractInfoDTO.getClientNo());
         newClientContractInfo.setClientContractInfoStartdate(clientContractInfoDTO.getClientContractInfoStartDate());
         newClientContractInfo.setClientContractInfoEnddate(clientContractInfoDTO.getClientContractInfoEndDate());
-        if((clientContractInfoDTO.getClientContractInfoStartDate()).)
+        newClientContractInfo.setClientContractInfoStatus("거래중");
 
+        clientContractInfoRepository.save(newClientContractInfo);
+
+    }
+
+    public int findClientNoByName(String clientName) {
+
+        int clientInsertNo = clientRepository.findClientNoByClientName(clientName);
+
+        return clientInsertNo;
     }*/
+
+    public void deleteClient(int clientNo) {
+
+        clientRepository.deleteById(clientNo);
+    }
 }
