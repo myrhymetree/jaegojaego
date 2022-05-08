@@ -2,9 +2,14 @@ package com.greedy.jaegojaego.warehouse.service;
 
 import com.greedy.jaegojaego.warehouse.dto.WarehouseCompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
+import com.greedy.jaegojaego.warehouse.dto.WarehouseItemAmountDTO;
 import com.greedy.jaegojaego.warehouse.entity.Warehouse;
 import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
+import com.greedy.jaegojaego.warehouse.entity.WarehouseItemAmount;
+import com.greedy.jaegojaego.warehouse.entity.WarehouseItemChangeHistory;
 import com.greedy.jaegojaego.warehouse.repository.WarehouseCompanyOrderRepository;
+import com.greedy.jaegojaego.warehouse.repository.WarehouseItemAmountRepository;
+import com.greedy.jaegojaego.warehouse.repository.WarehouseItemChangeHistoryRepository;
 import com.greedy.jaegojaego.warehouse.repository.WarehouseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +26,17 @@ public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
     private final WarehouseCompanyOrderRepository warehouseCompanyOrderRepository;
+    private final WarehouseItemAmountRepository warehouseItemAmountRepository;
+    private final WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository;
     private final ModelMapper modelMapper;
 
     /* Repository 의존성 주입 */
     @Autowired
-    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseCompanyOrderRepository warehouseCompanyOrderRepository, ModelMapper modelMapper) {
+    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseCompanyOrderRepository warehouseCompanyOrderRepository, WarehouseItemAmountRepository warehouseItemAmountRepository, WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository, ModelMapper modelMapper) {
         this.warehouseRepository = warehouseRepository;
         this.warehouseCompanyOrderRepository = warehouseCompanyOrderRepository;
+        this.warehouseItemAmountRepository = warehouseItemAmountRepository;
+        this.warehouseItemChangeHistoryRepository = warehouseItemChangeHistoryRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -60,7 +69,23 @@ public class WarehouseService {
 
         System.out.println("service warehouse = " + warehouse);
 
+        WarehouseItemChangeHistory itemChangeHistory = new WarehouseItemChangeHistory();
+
+        List<WarehouseItemChangeHistory> item = warehouseItemChangeHistoryRepository.findAll();
+
+//        itemChangeHistory.setItemChangeHistoryNo(2);      //Sequence이므로 필요x
+        itemChangeHistory.setItemInfoNo(warehouse.getItemInfoNo());
+        itemChangeHistory.setItemChangeDivision(1);
+        itemChangeHistory.setItemChangeAmount(warehouse.getWarehouseAmount());
+//        itemChangeHistory.setItemDecrementReasonNo();
+//        itemChangeHistory.setOutWarehouseDivisionNo();
+        itemChangeHistory.setWarehouseStatus("입고 완료");
+
+        /* 수정용 */
         warehouseRepository.save(warehouse);
+
+        /* 재고변동table 추가용 */
+        warehouseItemChangeHistoryRepository.save(itemChangeHistory);
     }
 
     /** 입고 목록에 발주 승인 완료된 정보 등록용 */
@@ -86,11 +111,26 @@ public class WarehouseService {
         return warehouseRepository.save(warehouse);
     }
 
+    /** 재고 관리 목록 조회용 */
+    public List<WarehouseItemAmountDTO> findAllItemAmount() {
 
+        List<WarehouseItemAmount> warehouseItemAmount = warehouseItemAmountRepository.findAll();
 
+        System.out.println("service warehouseItemAmount = " + warehouseItemAmount);
 
+        return warehouseItemAmount.stream().map(warehouseItemAmountList -> modelMapper.map(warehouseItemAmountList, WarehouseItemAmountDTO.class)).collect(Collectors.toList());
+//        return null;
+    }
 
+    /** 발주 "완료" 목록 상세 조회용 */
+    public WarehouseCompanyOrderHistoryDTO findOrderHistoryByCompanyOrderHistoryNo(int companyOrderHistoryNo) {
 
+        WarehouseCompanyOrderHistory orderHistory = warehouseCompanyOrderRepository.findById(companyOrderHistoryNo).get();
+
+        System.out.println("service orderHistory = " + orderHistory);
+
+        return modelMapper.map(orderHistory, WarehouseCompanyOrderHistoryDTO.class);
+    }
 
 
 //    /** 발주 승인 완료 목록 불러오기 */

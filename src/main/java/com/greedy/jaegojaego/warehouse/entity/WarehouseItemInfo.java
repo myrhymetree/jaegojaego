@@ -27,6 +27,10 @@ public class WarehouseItemInfo {
     )
     private int itemInfoNo;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "ITEM_INFO_NO")
+    private WarehouseItemAmount warehouseItemAmount;
+
     @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
 

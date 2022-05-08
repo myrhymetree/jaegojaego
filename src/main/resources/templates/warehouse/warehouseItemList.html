@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="body-header">
+    <div class="menu-title">재고 관리</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/item}">재고 관리</a>
+    </div>
+</div>
+
+<!-- 컨텐츠 작성 영역 -->
+
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>제품 종류</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">3개</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>입고 완료</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">2건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>재고 목록</h2>
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>품목</th>
+            <th>품번</th>
+            <th>품명</th>
+            <th>재고 수량</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse : ${ warehouseItemAmount }">
+            <td th:text="${ warehouse.getWarehouseItemInfo().getItemInfoNo() }"></td>
+<!--            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoNo() }"></td>-->
+            <td th:text="${ warehouse.warehouseItemInfo.getWarehouseMaterialCategory().getMaterialCategoryName() }"></td>
+            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoItemSerialNo() }"></td>
+            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoName() }"></td>
+            <td th:text="${ warehouse.warehouseItemAmount }"></td>
+            <td>
+                <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.warehouseItemInfo.getItemInfoNo()}')|">변동 내역 조회</button>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+<script>
+    function viewDetail(num) {
+        let No = num;
+        location.href="/warehouse/item/detail/" + num;
+    }
+</script>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

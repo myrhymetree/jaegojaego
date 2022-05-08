@@ -1,22 +1,15 @@
 package com.greedy.jaegojaego.warehouse.controller;
 
 import com.greedy.jaegojaego.warehouse.dto.*;
-import com.greedy.jaegojaego.warehouse.entity.Warehouse;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseClient;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
 import com.greedy.jaegojaego.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.querydsl.core.types.Ops.DateTimeOps.SYSDATE;
 
 @Controller
 @RequestMapping("/warehouse")
@@ -30,7 +23,7 @@ public class WarehouseController {
         this.warehouseService = warehouseService;
     }
 
-    /** 입고, 입하 목록 조회용  */
+    /** 입고 목록 조회용  */
     @GetMapping("/list")
     public ModelAndView warehouseList(ModelAndView mv) {
 
@@ -52,7 +45,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /** 입고,입하 상태 수정용 */
+    /** 입고 상태 수정용 + 재고 변동사항추가용 */
     @PostMapping("/modify")
     public ModelAndView modifyWarehouseStatus(ModelAndView mv, @RequestBody Map<String, Object> warehouseStatus) {
 
@@ -68,7 +61,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /** 발주 승인 "완료" 목록 불러오기 */
+    /** 발주 승인 "완료" 목록 조회용 */
     @GetMapping("/complete")
     public ModelAndView warehouseCompleteList(ModelAndView mv, HttpServletRequest request) {
 
@@ -86,7 +79,29 @@ public class WarehouseController {
         return mv;
     }
 
-    /** 발주 목록에서 입고,입하 처리 목록에 추가용 */
+    /** 발주 승인 "완료" 상세 조회용 */
+    @GetMapping("/complete/detail/{companyOrderHistoryNo}")
+    public ModelAndView warehouseCompleteDetail(ModelAndView mv, @PathVariable int companyOrderHistoryNo) {
+
+        WarehouseCompanyOrderHistoryDTO orderHistory = warehouseService.findOrderHistoryByCompanyOrderHistoryNo(companyOrderHistoryNo);
+
+        System.out.println("controller orderHistory = " + orderHistory);
+
+        /* view상단 박스에 갯수를 기입 */
+        int itemCnt = 0;
+        itemCnt = orderHistory.getCompanyOrderItemList().size();
+        /* No를 카운트 하주기 위한 것 */
+        int No = 0;
+
+        mv.addObject("No", No);
+        mv.addObject("itemCnt", itemCnt);
+        mv.addObject("orderHistory", orderHistory);
+        mv.setViewName("/warehouse/warehouseCompleteDetail");
+
+        return mv;
+    }
+
+    /** 발주 상세 목록에서 입고 목록에 추가용 */
     @GetMapping("/regist")
     public ModelAndView warehouseRegist(ModelAndView mv, HttpServletRequest request) {
 
@@ -99,9 +114,28 @@ public class WarehouseController {
         return mv;
     }
 
+    /** 재고 관리 목록 조회용 */
+    @GetMapping("/item")
+    public ModelAndView warehouseItemAmountList(ModelAndView mv) {
 
+        List<WarehouseItemAmountDTO> warehouseItemAmount = warehouseService.findAllItemAmount();
 
+        System.out.println("controller warehouseItemAmount = " + warehouseItemAmount);
 
+        mv.addObject("warehouseItemAmount", warehouseItemAmount);
+        mv.setViewName("/warehouse/warehouseItemList");
+
+        return mv;
+    }
+
+    /** 재고 관리 상세 조회용 */
+    @GetMapping("/item/detail/{itemInfoNo}")
+    public ModelAndView warehouseChangeDetail(ModelAndView mv, @PathVariable int itemInfoNo) {
+
+        mv.setViewName("/warehouse/warehouseItemDetail");
+
+        return mv;
+    }
 
 
 
