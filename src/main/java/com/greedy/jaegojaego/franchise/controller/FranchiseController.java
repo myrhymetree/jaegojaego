@@ -5,12 +5,14 @@ import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseAttachmentFileDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseContractUpdatedRecordDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
+import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.franchise.service.FranchiseService;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner;
@@ -216,6 +218,21 @@ public class FranchiseController {
         return mv;
     }
 
+    @GetMapping("/list")
+    public ModelAndView findFranchiseList(ModelAndView mv,  String searchWord) {
+
+        List<FranchiseInfoDTO> franchiseList = franchiseService.findFranchiseList(searchWord);
+
+        List<FranchiseAccountDTO> managerList = franchiseService.findManagerList(searchWord);
+
+        mv.addObject("franchiseList", franchiseList);
+        mv.addObject("managerList", managerList);
+
+        mv.setViewName("franchise/list");
+
+        return mv;
+    }
+
     @GetMapping("/manager")
     public ModelAndView sendRegistManagerView(ModelAndView mv) {
 
@@ -248,24 +265,6 @@ public class FranchiseController {
         }
 
         return folderPath;
-    }
-
-    @GetMapping("/list")
-    public ModelAndView findMemberList(ModelAndView mv, HttpServletRequest request) {
-
-        String searchWord = request.getParameter("searchWord");
-
-        List<CompanyAccountDTO> memberList = memberService.findMemberList(searchWord);
-
-        Integer count = memberService.countAll();
-
-        mv.addObject("memberList", memberList);
-
-        mv.addObject("count", count);
-
-        mv.setViewName("/member/list");
-
-        return mv;
     }
 
     @GetMapping(value = "/duplication", produces = "application/json; charset=UTF-8")

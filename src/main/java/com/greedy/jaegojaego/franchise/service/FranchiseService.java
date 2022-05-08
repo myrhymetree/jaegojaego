@@ -181,4 +181,37 @@ public class FranchiseService {
 
         franchiseRepository.updateFranchise(franchise);
     }
+
+    public List<FranchiseInfoDTO> findFranchiseList(String searchWord) {
+
+        List<FranchiseInfo> franchiseList = franchiseRepository.searchFranchise(searchWord);
+
+        List<FranchiseInfoDTO> franchises = franchiseList.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+
+        return franchises;
+    }
+
+    public List<FranchiseAccountDTO> findManagerList(String searchWord) {
+
+        List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
+
+        List<FranchiseAccountDTO> members =
+                managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        return members;
+    }
+
+    public FranchiseInfoDTO findFranchiseDetailInfo(Integer franchiseNo) {
+
+        FranchiseInfo franchiseDetailInfo = franchiseRepository.findByMemberNo(franchiseNo);
+
+        return modelMapper.map(franchiseDetailInfo, FranchiseInfoDTO.class);
+    }
+
+    public FranchiseAccountDTO findManagerDetailInfo(Integer managerNo) {
+
+        FranchiseAccount managerDetailInfo = franchiseAccountRepository.findByMemberNo(managerNo);
+
+        return modelMapper.map(managerDetailInfo, FranchiseAccountDTO.class);
+    }
 }

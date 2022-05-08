@@ -4,6 +4,8 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
+import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
+import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
 import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseAttachmentFile;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -143,7 +146,48 @@ class FranchiseServiceTest {
 
     @Test
     @Transactional
-    public void 가맹점_목록_조회() {
+    public void 가맹점_계정_목록_조회() {
+
+        String searchWord = "강남";
+
+        List<FranchiseInfo> franchiseInfos = franchiseRepository.searchFranchise(searchWord);
+
+        List<FranchiseInfoDTO> franchiseInfoDTOS =
+                franchiseInfos.stream().map(franchiseInfo -> modelMapper.map(franchiseInfo, FranchiseInfoDTO.class)).collect(Collectors.toList());
+
+        franchiseInfoDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(franchiseInfos);
 
     }
+
+    @Test
+    @Transactional
+    public void 가맹점_매니저_게정_목록_조회() {
+
+        String searchWord = null;
+
+        List<FranchiseAccount> franchiseAccounts = franchiseAccountRepository.searchManager(searchWord);
+
+        List<FranchiseAccountDTO> franchiseAccountDTOS =
+                franchiseAccounts.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        franchiseAccountDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(franchiseAccountDTOS);
+    }
+
+    @Test
+    public void 가맹점_상세조회() {
+
+        Integer franchiseNo = 429;
+
+        FranchiseInfo franchise = franchiseRepository.findByMemberNo(franchiseNo);
+
+        FranchiseInfoDTO result = modelMapper.map(franchise, FranchiseInfoDTO.class);
+
+        assertEquals(franchiseNo, result.getMemberNo());
+    }
+
+
 }

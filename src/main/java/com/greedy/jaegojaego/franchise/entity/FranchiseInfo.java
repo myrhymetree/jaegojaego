@@ -9,10 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @SequenceGenerator(
         name = "FRANCHISE_INFO_SEQ_GENERATOR",
         sequenceName = "FRANCHISE_REPRESENTATIVE_NO",
@@ -56,23 +56,23 @@ public class FranchiseInfo extends Member {
     private String phone;
 
     @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO", insertable = false, updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private CompanyAccount supervisor;
 
     @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER_NO",insertable = false,  updatable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Member writedMember;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseAttachmentFile> franchiseAttachmentFiles;
 
-    @OneToMany(mappedBy = "franchiseInfo")
-    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
-    private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
+//    @OneToMany(mappedBy = "franchiseInfo")
+//    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
+//
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
+//    private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
 
     @OneToMany(mappedBy = "franchiseInfo")
     private List<FranchiseAccount> franchiseAccounts;
@@ -85,4 +85,29 @@ public class FranchiseInfo extends Member {
 
     @Transient
     private String franchiseContractStatus;
+
+    @Override
+    public String toString() {
+        return "FranchiseInfo{" +
+                "representativeName='" + representativeName + '\'' +
+                ", representativePhone='" + representativePhone + '\'' +
+                ", representativeEmail='" + representativeEmail + '\'' +
+                ", branchName='" + branchName + '\'' +
+                ", businessRegistrationNo='" + businessRegistrationNo + '\'' +
+                ", address='" + address + '\'' +
+                ", bankAccountNo='" + bankAccountNo + '\'' +
+                ", supervisorNo=" + supervisorNo +
+                ", writedMemberNo=" + writedMemberNo +
+                ", phone='" + phone + '\'' +
+                ", supervisor=" + supervisor +
+                ", writedMember=" + writedMember +
+                ", franchiseAttachmentFiles=" + franchiseAttachmentFiles +
+//                ", franchiseContractUpdatedRecords=" + franchiseContractUpdatedRecords +
+//                ", franchiseInfoUpdatedRecords=" + franchiseInfoUpdatedRecords +
+//                ", franchiseAccounts=" + franchiseAccounts +
+                ", franchiseContractStartedDate=" + franchiseContractStartedDate +
+                ", franchiseContractExpiredDate=" + franchiseContractExpiredDate +
+                ", franchiseContractStatus='" + franchiseContractStatus + '\'' +
+                '}';
+    }
 }

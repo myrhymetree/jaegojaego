@@ -1,8 +1,6 @@
 package com.greedy.jaegojaego.franchise.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +11,8 @@ import java.time.LocalDateTime;
         initialValue = 1,
         allocationSize = 1
 )
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "FranchiseContractUpdatedRecord")
@@ -44,4 +43,14 @@ public class FranchiseContractUpdatedRecord {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false, updatable = false)
     private FranchiseInfo franchiseInfo;
 
+    @Override
+    public String toString() {
+        return "FranchiseContractUpdatedRecord{" +
+                "franchiseContractUpdateNo=" + franchiseContractUpdateNo +
+                ", franchiseContractStartedDate=" + franchiseContractStartedDate +
+                ", franchiseContractExpiredDate=" + franchiseContractExpiredDate +
+                ", franchiseContractStatus='" + franchiseContractStatus + '\'' +
+                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
+                '}';
+    }
 }
