@@ -3,17 +3,21 @@ package com.greedy.jaegojaego.backlog.service;
 import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogClientDTO;
 import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogInWarehouseDTO;
 import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogItemInfoDTO;
+import com.greedy.jaegojaego.backlog.dto.OutWarehouseBacklog.OutWarehouseBacklogDTO;
+import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogClient;
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehouse;
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogItemInfo;
-import com.greedy.jaegojaego.backlog.repository.BacklogItemInfoRepository;
-import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklogRepository;
+import com.greedy.jaegojaego.backlog.entity.OutWarehouseBacklog.OutWarehouseBacklog;
+import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.BacklogClientRepository;
+import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.BacklogItemInfoRepository;
+import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.InWarehouseBacklogRepository;
+import com.greedy.jaegojaego.backlog.repository.OutWarehouseBacklog.OutWarehouseBacklogRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -25,8 +29,9 @@ import java.util.stream.Collectors;
  * 2022/05/02 (이소현) 입고 백로그 목록 조회
  * 2022/05/03 (이소현) 입고 백로그 목록 조회
  * 2022/05/04 (이소현) 입고 백로그 목록 조회
- * 2022/05/05 (이소현) 입고 백로그 차트 조회
- * 2022/05/06 (이소현) 입고 백로그 차트 조회
+ * 2022/05/05 (이소현) 입고 백로그 막대 차트 조회
+ * 2022/05/06 (이소현) 입고 백로그 막대 차트 조회
+ * 2022/05/07 (이소현) 입고 백로그 원차트 조회
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -38,12 +43,16 @@ public class BacklogService {
     private final InWarehouseBacklogRepository inWarehouseBacklogRepository;
     private final ModelMapper modelMapper;
     private final BacklogItemInfoRepository backlogItemInfoRepository;
+    private final BacklogClientRepository backlogClientRepository;
+    private final OutWarehouseBacklogRepository outWarehouseBacklogRepository;
 
     @Autowired
-    public BacklogService(InWarehouseBacklogRepository inWarehouseBacklogRepository, ModelMapper modelMapper, BacklogItemInfoRepository backlogItemInfoRepository) {
+    public BacklogService(InWarehouseBacklogRepository inWarehouseBacklogRepository, ModelMapper modelMapper, BacklogItemInfoRepository backlogItemInfoRepository, BacklogClientRepository backlogClientRepository, OutWarehouseBacklogRepository outWarehouseBacklogRepository) {
         this.inWarehouseBacklogRepository = inWarehouseBacklogRepository;
         this.modelMapper = modelMapper;
         this.backlogItemInfoRepository = backlogItemInfoRepository;
+        this.backlogClientRepository = backlogClientRepository;
+        this.outWarehouseBacklogRepository = outWarehouseBacklogRepository;
     }
 
     public List<BacklogInWarehouseDTO> selectInWarehouseBacklogList() {
@@ -104,5 +113,25 @@ public class BacklogService {
         System.out.println("잘나오냐? : " + findBacklogInWarehouseBySelectBox);
 
         return findBacklogInWarehouseBySelectBox.stream().map(backlogInWarehouse -> modelMapper.map(backlogInWarehouse, BacklogInWarehouseDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<BacklogClientDTO> findClientList() {
+
+        List<BacklogClient> clinetList = backlogClientRepository.findAll();
+
+        clinetList.forEach(System.out::println);
+
+        return clinetList.stream().map(backlogClient -> modelMapper.map(backlogClient, BacklogClientDTO.class)).collect(Collectors.toList());
+    }
+
+    public List<OutWarehouseBacklogDTO> selectOutWarehouseBacklogList() {
+
+        List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
+
+        System.out.println("되냐?");
+        outWarehouseBacklogList.forEach(System.out::println);
+        System.out.println("왜안나오냐?");
+
+        return outWarehouseBacklogList.stream().map(outWarehouseBacklog -> modelMapper.map(outWarehouseBacklog, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
     }
 }

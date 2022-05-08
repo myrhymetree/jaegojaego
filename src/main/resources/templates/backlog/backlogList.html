@@ -191,7 +191,7 @@
 
                 </select>
                 <select class="itemListForCircleGraph" id="itemListForCircleGraph" onchange="selectOneitemForCircleGraph(this.value, this.options[this.selectedIndex].text);">
-
+                    <option selected="selected" disabled="disabled">선택해주세요</option>
                 </select>
 
                 <!-- 원그래프 -->
@@ -249,8 +249,7 @@
                 </div>
             </div>
 
-
-            <!-- 출고백로그 목록 -->
+            <!-- 이슈 출고백로그 목록 -->
             <div class="inwarehousebaklog-modal" id="inwarehousebacklogModal" style="display: none;">
                 <div class="ibox">
                         <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 이슈출고 백로그</h3>
@@ -268,72 +267,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="gradeX">
-                                    <td>1</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
-                                </tr>
-                                <tr class="gradeC">
-                                    <td>2</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>3</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>4</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>5</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>24</td>
-                                    <td class="center">FD-FE-1002-2</td>
-                                    <td>로스팅된 지로스팅 원두 1kg</td>
-                                    <td class="center">원두품질불량</td>
-                                    <td class="center">2022.04.10</td>
+                                <tr th:each="outbacklog : ${ outWarehouseBacklogList }" id="OutWarehouseBacklogList" class="OutWarehouseBacklogList">
+                                    <td th:text="${ outbacklog.outWarehouseBacklogNo }"></td>
+                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueNo }"></td>
+                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueItemDTOList.get(0).itemInfoNoForBacklog.itemInfoSerialNo }"></td>
+                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueItemDTOList.get(0).itemInfoNoForBacklog.itemInfoName }"></td>
+                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueTitle }"></td>
+                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueCreatedDate }"></td>
                                 </tr>
                                 </tbody>
-<!--                                <tfoot>-->
-<!--                                <tr>-->
-<!--                                    <th>Rendering engine</th>-->
-<!--                                    <th>Browser</th>-->
-<!--                                    <th>Platform(s)</th>-->
-<!--                                    <th>Engine version</th>-->
-<!--                                    <th>CSS grade</th>-->
-<!--                                </tr>-->
-<!--                                </tfoot>-->
                             </table>
                         </div>
                     </div>
@@ -447,12 +389,8 @@
        OctoberAmount = 0;
        NovemberAmount = 0;
        DecemberAmount = 0;
-       //--------------------//
-       //자재번호 넘어가서 '로스팅된 지로스팅 1kg'에 대한 list만 data에 들어올 거고 그걸 배열에 담아서 + 여기서 만들어준느거
 
        for(list in inWarehlouseListBySelectbox) {
-           // Date.push(inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(0, 7));
-           // AmountArray.push(inWarehlouseListBySelectbox[list].inWarehouseAmount);
 
            let YearForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(0, 4);
            let MonthForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(5, 7);
@@ -486,15 +424,16 @@
            }
        }
 
-       //morris-bar-chart -> div
        $("#morris-bar-chart").html("");
        changeBarGraphCount = 1;
        changeBarGraph();
    }
 
 
+   <!-- 원그래프 관련 ㅇㅇ-->
    let inWarehlouseListBySelectboxForCircle = [];
    const $yearSelectboxForCircleGraph = $("#YearCircleGraph");
+   let itemInfoNoForCircleGraph = 0;
    function selectOneitemForCircleGraph(value, text) {
        $.ajax({
            url: "/backlog/selectonebackloglist",
@@ -502,6 +441,7 @@
            data: {"itemInfoNo":value},
            success: function(data) {
 
+               itemInfoNoForCircleGraph = value;
                inWarehlouseListBySelectboxForCircle.length = 0;
 
                for(list in data){
@@ -544,12 +484,52 @@
 
    }
 
+
    function selectMonthForCircleGraph(value, text) {
+       console.log("list :" + inWarehlouseListBySelectboxForCircle);
+       //지로스팅에 대한 list랑 , 년도랑 , 월별 들어옴
        console.log("value(2022-03) : " + value);
        console.log("text(03?) : " + text);
+
+
+       $.ajax({
+           url: "/backlog/selectcirclelist",
+           type: "get",
+           data: {"date":value, "itemInfoNo":itemInfoNoForCircleGraph },
+           success: function (data) {
+
+           },
+           error: function (xhr) {
+               alert("에러가 발생하였습니다. 다시 시도해주세요!");
+           }
+       })
+
+
+       // for (list in inWarehlouseListBySelectboxForCircle) {
+       //
+       //     let DateForCircleGraph = inWarehlouseListBySelectboxForCircle[list].inWarehouseCompleteDate.substring(0, 7); //2022-04
+       //     let AmountForCircleGraph = inWarehlouseListBySelectboxForCircle[list].inWarehouseAmount; // 300개
+       //     let clientForCircleGraph = inWarehlouseListBySelectboxForCircle[list].clientNoForInWarehouse.clientName; //거래처
+       //     console.log("clientForCircleGraph : " + clientForCircleGraph);
+       //
+       //      for(client in clientList) {
+       //          if(clientList[client] == clientForCircleGraph) {
+       //              testAmount += AmountForCircleGraph;
+       //          }
+       //      }
+       //
+       //     //1) 거래처에 대한 모든 그게 있어야 하잖아? 그러면 차라리 ajax로 모든 client불러와서 저 밑에서 <% %>로 반복시키는거임
+       //     //2) 전부의 거래처가 있는 배열을 만들고 그 배열을 저기 집어넣으면 되지않을까? + 그 거래처 배열과 이 들어온 애 돌렸을 때 같은 경우-> amount 더해지게?
+       //
+       //
+       // }
+
+        selectCircleGraph();
+
+
    }
 
-
+    <!-- 원그래프 관련 끝 -->
 
 
 
@@ -633,17 +613,44 @@
         bindto: '#pie',
         data:{
             columns: [
-                ['data1', 30],
-                ['data2', 120]
+                ['선택해주세요', 100],
             ],
             colors:{
-                data1: '#1ab394',
-                data2: '#BABABA'
+                선택해주세요: '#1ab394',
             },
             type : 'pie'
         }
     });
 
+    // 값 넣을때 이렇게 비스무리하게 하면 될듯 ㅇㅇ
+    // new Morris.Bar({
+    //     element: 'inbody-chart',
+    //     data: [
+    //         <% for(int i=0; i<inbodyList.size(); i++){%>
+    //     { y: '<%=inbodyList.get(i).getRecord().toString()%>',a:<%=inbodyList.get(i).getWeight()%>,
+    //         b: <%=inbodyList.get(i).getFat()%>, c:<%=inbodyList.get(i).getMuscle()%> },<%};%>
+    // ],
+    // xkey: 'y',
+    //     ykeys: ['a', 'b','c'],
+    //     labels: ['몸무게', '체지방','근육량']
+    // });
+
+
+
+    function selectCircleGraph() {
+        c3.generate({
+            bindto: '#pie',
+            data:{
+                columns: [ //기본이 따로 있고, 눌렀을 때 나오는 애가 따로 있고
+                    [clientList, 600], //마계커피  " "
+                ],
+                colors:{
+                    clientList: '#1ab394',
+                },
+                type : 'pie'
+            }
+        });
+    }
 
 </script>
 </body>
