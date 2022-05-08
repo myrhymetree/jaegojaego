@@ -71,7 +71,7 @@
 
             float: left;
             width: 700px;
-            height: 600px;
+            height: 500px;
             position: relative;
             left: 50px;
             overflow-y: scroll;
@@ -93,7 +93,7 @@
         .item-area {
 
             width: 600px;
-            height: 300px;
+            height: 200px;
             background-color: rgba(128, 128, 128, 0.3);
             margin-top: 15px;
             overflow-y: scroll;
@@ -102,14 +102,54 @@
 
         .issue-image {
 
-            border: 1px solid red;
             width: 500px;
             height: 250px;
             margin-left: 100px;
             margin-top: 15px;
         }
 
+        .item-select-cancel-btn {
+            border: none;
+            cursor: pointer;
+            background-color: #db4455;
+            color: white;
+            border-radius: 20px;
+            height: 20px;
+        }
 
+        .img-upload-label {
+            display: inline-block;
+            padding: .5em .75em;
+            color: white;
+            font-size: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            background-color: #337ab7;
+            cursor: pointer; border: 1px solid #ebebeb;
+            border-bottom-color: #e2e2e2;
+            border-radius: .25em;
+        }
+        .img-upload-input {
+            /* 파일 필드 숨기기 */
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip:rect(0,0,0,0);
+            border: 0;
+        }
+
+        .upload-check-message {
+
+            color: red;
+            margin-left: 50px;
+        }
+
+        .regist-btn-area {
+            margin-left: 150px;
+        }
 
     </style>
 
@@ -242,10 +282,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="issue-detail-modal-img-area">
-                                        <div class="issue-image"></div>
-                                        <div class="issue-image"></div>
-                                        <div class="issue-image"></div>
+                                    <div class="issue-detail-modal-img-area" id="issue-detail-modal-img-area">
+
                                     </div>
 
                                 </div>
@@ -263,55 +301,71 @@
                                     <h4 class="modal-title">이슈 제기</h4>
 <!--                                    <small id="issue-detail-modal-small"></small>-->
                                 </div>
-                                <div class="modal-body">
-                                    <div class="issue-detail-content">
-                                        <div class="issue-detail-modal-body">이슈 제목 : <input type="text" id="issue-regist-title" style="width: 450px" placeholder="이슈 제목을 입력해주세요." required></div>
-                                        <div class="issue-detail-modal-body">이슈 내용 : <input type="text" id="issue-regist-body" style="width: 450px" placeholder="이슈 내용을 입력해주세요." required></div>
-                                        <div class="issue-detail-modal-body">
-                                            발주 내역 :
-                                            <select id="regist-franchise-order-select-list" style="text-align: center">
-                                                <option selected disabled>발주 내역을 선택해주세요.(주문번호)</option>
-                                            </select>
-                                        </div>
-                                        <div class="issue-detail-modal-body">
-                                            발주 물품 :
-                                            <select id="regist-franchise-order-item-select-list" style="text-align: center">
-                                                <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
-                                            </select>
-                                        </div>
-                                        <div class="issue-detail-modal-body">
-                                            이슈 물품
-                                            <div class="item-area" id="issue-reigst-item">
-                                                <div class="item-tr">
-                                                    <table style="border-collapse: collapse; text-align: center; font-size: 15px; margin-left: 30px; margin-top: 10px">
-                                                        <thead>
-                                                        <tr>
-                                                            <th style="width: 370px;">물품 이름</th>
-                                                            <th style="width: 110px;">수량</th>
-                                                            <th style="width: 40px;">취소</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody id="regist-modal-item-area-tbody">
-
-                                                        </tbody>
-                                                    </table>
+                                <form action="/issue/regist" method="post" encType="multipart/form-data" id="issue-regist-form">
+                                    <div class="modal-body">
+                                        <div class="issue-detail-content">
+                                                <div class="issue-detail-modal-body">이슈 제목 : <input type="text" name="issueTitle" id="issue-regist-title" style="width: 450px" placeholder="이슈 제목을 입력해주세요." required></div>
+                                            <div class="issue-detail-modal-body">
+                                                이슈 내용 :
+                                                <div>
+                                                    <textarea name="issueBody" id="issue-regist-body" class="issue-regist-body" cols="52" rows="4" style="resize: none" placeholder="이슈 내용을 입력해주세요." required></textarea>
                                                 </div>
                                             </div>
+                                                <div class="issue-detail-modal-body">
+                                                    <input type="hidden" id="issue-order-no" value="0" name="issueOrderNo">
+                                                    발주 내역 :
+                                                    <select id="regist-franchise-order-select-list" style="text-align: center">
+                                                        <option selected disabled>발주 내역을 선택해주세요.(주문번호)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="issue-detail-modal-body">
+                                                    발주 물품 :
+                                                    <select id="regist-franchise-order-item-select-list" style="text-align: center">
+                                                        <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
+                                                    </select>
+                                                </div>
+                                                <div class="issue-detail-modal-body">
+                                                    이슈 물품
+                                                    <div class="item-area" id="issue-reigst-item">
+                                                        <div class="item-tr">
+                                                            <table style="border-collapse: collapse; text-align: center; font-size: 15px; margin-left: 30px; margin-top: 10px">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th style="width: 370px;">물품 이름</th>
+                                                                    <th style="width: 110px;">수량</th>
+                                                                    <th style="width: 40px;">취소</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="regist-modal-item-area-tbody">
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="check-message-area">
+                                            <span class="upload-check-message">* 여러장의 이미지는 한 번에 올려주세요! *</span>
+                                            <br>
+                                            <span class="upload-check-message">따로 업로드 하실 경우 파일이 업로드 되지 않을 수 있습니다.</span>
+                                            <span class="regist-btn-area">
+                                                <button type="button" class="img-upload-label" id="regist-img-reset-btn" style="background-color: brown; margin-bottom:6px;">초기화</button>
+                                                <label class="img-upload-label" for="issue-img-upload-btn">이미지 업로드</label>
+                                                <input type="file" class="img-upload-input" id="issue-img-upload-btn" name="uploadImages" accept=".jpg, .gif, .png, .jpeg" multiple="multiple">
+                                            </span>
+                                        </div>
+                                        <div class="issue-detail-modal-img-area" id="issue-regist-modal-img-area">
+
                                         </div>
                                     </div>
-                                    <div class="issue-detail-modal-img-area">
-<!--                                        <div class="issue-image"></div>-->
-                                    </div>
-
-                                </div>
+                                </form>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" id="franchise-order-regist-modal-ok-btn">제기</button>
-                                    <button type="button" class="btn btn-white" data-dismiss="modal">취소</button>
+                                    <button type="button" class="btn btn-primary" id="franchise-issue-regist-modal-ok-btn">제기</button>
+                                    <button type="button" class="btn btn-white" id="franchise-issue-regist-cancel-btn" data-dismiss="modal">취소</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -331,7 +385,11 @@
 
             $(document).on('change', '#regist-franchise-order-select-list', function() {
 
+                $('#regist-modal-item-area-tbody').html("");
+
                 let franchiseOrderNo = this.children[this.selectedIndex].value;
+
+                document.getElementById('issue-order-no').value = franchiseOrderNo;
 
                 $('#regist-franchise-order-item-select-list').html("");
 
@@ -362,8 +420,185 @@
                     });
 
 
+
             });
 
+            $(document).on('click', '#item-select-cancel-btn', function() {
+
+                this.parentNode.parentNode.remove();
+
+            });
+
+            let checkIssueRegist = 0;
+            let checkTitleValue = '';
+            let checkBodyValue = '';
+
+            $("#issue-regist-title").on("propertychange change keyup paste input", function() {
+
+                checkTitleValue = $(this).val();
+            });
+
+            $("#issue-regist-body").on("propertychange change keyup paste input", function() {
+
+                checkBodyValue = $(this).val();
+            });
+
+            document.getElementById('franchise-issue-regist-modal-ok-btn').onclick = function() {
+
+                const $issueRegistItemAmount = document.querySelectorAll('#issue-regist-item-amount');
+
+                let checkItemAmount = 0;
+                let checkItemAmountNull = 0;
+                let checkItemNull = 0;
+                let checkTitleText = 0;
+                let checkBodyText = 0;
+
+                if($issueRegistItemAmount.length == 0) {
+                    checkItemNull = 1;
+                } else if(checkTitleValue == '') {
+                    checkTitleText = 1;
+                } else if(checkBodyValue == '') {
+                    checkBodyText = 1;
+                }
+
+                for(let i = 0; i < $issueRegistItemAmount.length; i++) {
+
+                    let itemValue = $issueRegistItemAmount[i].value * 1;
+                    let itemAmount = $issueRegistItemAmount[i].max * 1;
+
+                    if(itemValue > itemAmount) {
+                        checkItemAmount++;
+                    } else if(itemValue <= 0) {
+                        checkItemAmountNull++;
+                    }
+                }
+
+                if(checkItemAmount > 0) {
+                    swal({
+                        title: "수량 확인!",
+                        text: "이슈 발생 물품 개수는 \n발주 신청 물품 개수를 초과할 수 없습니다."
+                    });
+                } else if(checkItemAmountNull > 0) {
+                    swal({
+                        title: "수량 확인!",
+                        text: "이슈 발생 물품 개수는 \n1개 이상이여야 합니다."
+                    });
+                } else if(checkItemNull > 0) {
+                    swal({
+                        title: "물품 확인!",
+                        text: "이슈 발생 물품이 선택되지 않았습니다."
+                    });
+                } else if(checkTitleText > 0) {
+                    swal({
+                        title: "제목 확인!",
+                        text: "이슈 제목이 작성되지 않았습니다."
+                    });
+                } else if(checkBodyText > 0) {
+                    swal({
+                        title: "물품 확인!",
+                        text: "이슈 내용이 작성되지 않았습니다."
+                    });
+                } else {
+                    swal({
+                        title: "이슈 제기하시겠습니까?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false
+                    }, function () {
+                        checkIssueRegist = 1;
+                    });
+
+                }
+
+            }
+
+            let checkIssueSuccess = 0;
+
+            $(document).on('click', '.sa-button-container .confirm', function() {
+
+                if(checkIssueSuccess == 1) {
+
+                    $('#issue-regist-form').submit();
+
+                } else if(checkIssueRegist == 1) {
+
+                    swal({
+                        title: "이슈 제기 성공!",
+                        text: "이슈를 제기하셨습니다."
+                    });
+
+                    checkIssueSuccess = 1;
+                }
+
+            });
+
+        });
+
+        document.getElementById('regist-img-reset-btn').onclick = function() {
+
+            $('#issue-regist-modal-img-area').html("");
+
+        }
+
+        const imgFiles = document.getElementById('issue-img-upload-btn');
+
+        let handleFiles = (e) => {
+
+            let selectedImage = [...imgFiles.files];
+
+            for(let i = 0; i < selectedImage.length; i++) {
+
+                imageUploadFunction(selectedImage[i]);
+            }
+
+        };
+
+        function imageUploadFunction(selectedImage) {
+
+            let fileReader = new FileReader();
+
+            fileReader = new FileReader();
+            fileReader.readAsDataURL(selectedImage);
+
+            let imageDiv = '';
+            let imageURL = '';
+
+            fileReader.onload = function() {
+
+                imageURL = fileReader.result;
+
+                imageDiv += '<div class="issue-image">';
+                imageDiv += '<img id="issue-file-image" src="' + imageURL + '" width="100%" height="100%" alt="이미지 영역"/>';
+                imageDiv += '</div>';
+
+                $('#issue-regist-modal-img-area').append(imageDiv);
+            };
+
+        };
+
+        imgFiles.addEventListener("change", handleFiles);
+
+        $(document).on('change', '#regist-franchise-order-item-select-list', function() {
+
+            let registModalItemAreaTBody =  '';
+            let selectedItemIdx = this.selectedIndex;
+            let substringStartIdx = this.children[selectedItemIdx].innerText.indexOf('(');
+            let substringEndIdx = this.children[selectedItemIdx].innerText.indexOf('개');
+
+            let itemName = this.children[selectedItemIdx].innerText.substring(0, substringStartIdx);
+            let itemAmount = this.children[selectedItemIdx].innerText.substring(substringStartIdx + 1, substringEndIdx);
+
+            registModalItemAreaTBody += '<tr>';
+            registModalItemAreaTBody += '<input type="hidden" name="itemNo" value="' + this.children[selectedItemIdx].value + '">';
+            registModalItemAreaTBody += '<td>' + itemName + '</td>';
+            registModalItemAreaTBody += '<td><input type="number" id="issue-regist-item-amount" name="issueItemAmount" min="1" max="' + itemAmount + '" placeholder="이슈 수량" style="width: 100%"></td>';
+            registModalItemAreaTBody += '<td><button class="item-select-cancel-btn" id="item-select-cancel-btn">X</button></td>';
+            registModalItemAreaTBody += '</tr>';
+
+            $('#regist-modal-item-area-tbody').append(registModalItemAreaTBody);
         });
 
         if(document.querySelectorAll("#issue-list-tr td")) {
@@ -383,6 +618,15 @@
 
                 $tds[i].onclick = function() {
 
+                    const issueTitle = document.getElementById('issue-title');
+                    const issueBody = document.getElementById('issue-body');
+
+                    issueTitle.innerText = '';
+                    issueBody.innerText = '';
+
+                    $('#detail-modal-item-area-tbody').html("");
+                    $('#issue-detail-modal-img-area').html("");
+
                     $.ajax({
                         url: "/issue/detail",
                         type: "get",
@@ -392,6 +636,8 @@
                         dataType: "json",
                         success : function(data) {
 
+                            console.log(data);
+
                             const issueTitle = document.getElementById('issue-title');
                             const issueBody = document.getElementById('issue-body');
 
@@ -400,16 +646,27 @@
 
                             let modalDetailItemTbody = '';
 
-                            modalDetailItemTbody += '<tr>';
-
                             for(let i = 0; i < data.issueItemList.length; i++) {
 
+                                modalDetailItemTbody += '<tr>';
                                 modalDetailItemTbody += '<td>' + data.issueItemList[i].orderItemInfoDTO.itemInfoName + '</td>';
                                 modalDetailItemTbody += '<td>' + data.issueItemList[i].issueItemAmount + '</td>';
+                                modalDetailItemTbody += '</tr>';
                             }
 
                             $('#detail-modal-item-area-tbody').append(modalDetailItemTbody);
 
+                            let modalDetailImgDiv = '';
+
+                            for(let i = 0; i < data.issueFileList.length; i++) {
+
+                                modalDetailImgDiv += '<div class="issue-image">';
+                                modalDetailImgDiv += '<img id="issue-file-image" src="' + data.issueFileList[i] + '" width="100%" height="100%" alt="이미지 영역"/>';
+                                modalDetailImgDiv += '</div>';
+
+                            }
+
+                            $('#issue-detail-modal-img-area').append(modalDetailImgDiv);
 
                         },
                         error : function(xhr) {
@@ -427,6 +684,32 @@
         }
 
         document.getElementById('issue-regist-btn').onclick = function() {
+
+            document.getElementById('issue-regist-title').value = '';
+            document.getElementById('issue-regist-body').value = '';
+
+            $('#regist-modal-item-area-tbody').html("");
+
+            $('#regist-franchise-order-select-list').html("");
+
+            let firstSelectIdx = '<option disabled selected>발주 내역을 선택해주세요.(주문번호)</option>';
+
+            $('#regist-franchise-order-select-list').append(firstSelectIdx);
+
+            $('#regist-franchise-order-item-select-list').html("");
+
+            firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>';
+
+            $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
+
+            $('#issue-regist-modal-img-area').html("");
+
+            // let issueRegistModalImgArea = '';
+            //
+            // issueRegistModalImgArea += '<label htmlFor="issue-img-upload-btn">이미지 업로드</label>';
+            // issueRegistModalImgArea += '<input type="file" id="issue-img-upload-btn" name="uploadImages" accept=".jpg, .gif, .png, .jpeg" multiple="multiple">';
+            //
+            // $('#issue-regist-modal-img-area').append(issueRegistModalImgArea);
 
             $.ajax({
                 url: '/issue/selectissueorder',

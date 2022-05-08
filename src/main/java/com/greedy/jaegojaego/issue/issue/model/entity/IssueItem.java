@@ -18,6 +18,10 @@ public class IssueItem {
 
     @Id
     @Column(name = "FRANCHISE_ISSUE_ITEM_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "ISSUE_ITEM_SEQ_GENERATOR"
+    )
     private int franchiseIssueItemNo;
 
     @ManyToOne
