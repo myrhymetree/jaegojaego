@@ -5,12 +5,8 @@ import java.io.Serializable;
 
 @Entity(name = "outWarehouseFranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
-public class OutwarehouseFranchiseAccount implements Serializable {
-
-    @Id
-    @OneToOne
-    @JoinColumn(name = "FRANCHISE_MANAGER_NO")
-    private OutWarehouseMember franchiseManagerNo;
+@PrimaryKeyJoinColumn(name = "FRNACHISE_MEMBER_NO")
+public class OutwarehouseFranchiseAccount extends OutWarehouseMember {
 
     @ManyToOne
     @JoinColumn(name = "REPRESENTATIVE_NO")
@@ -18,17 +14,13 @@ public class OutwarehouseFranchiseAccount implements Serializable {
 
     public OutwarehouseFranchiseAccount() {}
 
-    public OutwarehouseFranchiseAccount(OutWarehouseMember franchiseManagerNo, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
-        this.franchiseManagerNo = franchiseManagerNo;
+    public OutwarehouseFranchiseAccount(OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
         this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
-    public OutWarehouseMember getFranchiseManagerNo() {
-        return franchiseManagerNo;
-    }
-
-    public void setFranchiseManagerNo(OutWarehouseMember franchiseManagerNo) {
-        this.franchiseManagerNo = franchiseManagerNo;
+    public OutwarehouseFranchiseAccount(int memberNo, String officeDivision, String memberDivision, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+        super(memberNo, officeDivision, memberDivision);
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
     public OutWarehouseFranchiseInfo getFranchiseRepresentativeNo() {
@@ -42,8 +34,7 @@ public class OutwarehouseFranchiseAccount implements Serializable {
     @Override
     public String toString() {
         return "OutwarehouseFranchiseAccount{" +
-                "franchiseManagerNo=" + franchiseManagerNo +
-                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
+                "franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 '}';
     }
 }

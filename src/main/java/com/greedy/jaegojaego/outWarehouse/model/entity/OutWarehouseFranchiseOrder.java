@@ -11,22 +11,15 @@ public class OutWarehouseFranchiseOrder {
     @Column(name = "FRANCHISE_ORDER_NO")
     private int franchiseOrderNo;
 
-    @Column(name = "FRANCHISE_ORDER_STATUS")
-    private String franchiseOrderStatus;
-
-    @Column(name = "FRANCHISE_ORDER_STATUS_DATE")
-    private Date franchiseOrderStatusDate;
-
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
     private OutWarehouseMember memberNo;
 
     public OutWarehouseFranchiseOrder() {}
 
-    public OutWarehouseFranchiseOrder(int franchiseOrderNo, String franchiseOrderStatus, Date franchiseOrderStatusDate) {
+    public OutWarehouseFranchiseOrder(int franchiseOrderNo, OutWarehouseMember memberNo) {
         this.franchiseOrderNo = franchiseOrderNo;
-        this.franchiseOrderStatus = franchiseOrderStatus;
-        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+        this.memberNo = memberNo;
     }
 
     public int getFranchiseOrderNo() {
@@ -37,28 +30,19 @@ public class OutWarehouseFranchiseOrder {
         this.franchiseOrderNo = franchiseOrderNo;
     }
 
-    public String getFranchiseOrderStatus() {
-        return franchiseOrderStatus;
+    public OutWarehouseMember getMemberNo() {
+        return memberNo;
     }
 
-    public void setFranchiseOrderStatus(String franchiseOrderStatus) {
-        this.franchiseOrderStatus = franchiseOrderStatus;
-    }
-
-    public Date getFranchiseOrderStatusDate() {
-        return franchiseOrderStatusDate;
-    }
-
-    public void setFranchiseOrderStatusDate(Date franchiseOrderStatusDate) {
-        this.franchiseOrderStatusDate = franchiseOrderStatusDate;
+    public void setMemberNo(OutWarehouseMember memberNo) {
+        this.memberNo = memberNo;
     }
 
     @Override
     public String toString() {
         return "OutWarehouseFranchiseOrder{" +
                 "franchiseOrderNo=" + franchiseOrderNo +
-                ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
-                ", franchiseOrderStatusDate=" + franchiseOrderStatusDate +
+                ", memberNo=" + memberNo +
                 '}';
     }
 }

@@ -1,12 +1,10 @@
 package com.greedy.jaegojaego.outWarehouse.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "outWarehouseMember")
 @Table(name = "MEMBER")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class OutWarehouseMember {
 
     @Id

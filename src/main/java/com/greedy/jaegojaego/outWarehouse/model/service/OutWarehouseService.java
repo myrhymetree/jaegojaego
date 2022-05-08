@@ -58,9 +58,10 @@ public class OutWarehouseService {
     /**
      * @return
      */
+    @Transactional
     public List<OutWarehouseFranchiseOrderListDTO> findAllOrderList() {
 
-        List<OutWarehouseFranchiseOrder> outWarehouseFranchiseOrderInfoList = outWarehouseFranchiseOrderRepository.findAllMemberInfo();
+        List<OutWarehouseFranchiseOrder> outWarehouseFranchiseOrderInfoList = outWarehouseFranchiseOrderRepository.findAllOrderInfo();
         outWarehouseFranchiseOrderInfoList.forEach(System.out::println);
 
 //        List<OutWarehouseFranchiseOrder> outWarehouseFranchiseOrderList = outWarehouseFranchiseOrderRepository.findAllFranchiseOrderList();

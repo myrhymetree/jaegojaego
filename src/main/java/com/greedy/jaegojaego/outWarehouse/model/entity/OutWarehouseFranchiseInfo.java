@@ -5,12 +5,8 @@ import java.io.Serializable;
 
 @Entity(name = "outWarehouseFranchiseInfo")
 @Table(name = "FRANCHISE INFO")
-public class OutWarehouseFranchiseInfo implements Serializable {
-
-    @Id
-    @OneToOne
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private OutWarehouseMember franchiseRepresenetativeNo;
+@PrimaryKeyJoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+public class OutWarehouseFranchiseInfo extends OutWarehouseMember {
 
     @Column(name = "FRANCHISE_BRANCH_NAME")
     private String franchiseName;
@@ -20,18 +16,15 @@ public class OutWarehouseFranchiseInfo implements Serializable {
 
     public OutWarehouseFranchiseInfo() {}
 
-    public OutWarehouseFranchiseInfo(OutWarehouseMember franchiseRepresenetativeNo, String franchiseName, String franchiseAddress) {
-        this.franchiseRepresenetativeNo = franchiseRepresenetativeNo;
+    public OutWarehouseFranchiseInfo(String franchiseName, String franchiseAddress) {
         this.franchiseName = franchiseName;
         this.franchiseAddress = franchiseAddress;
     }
 
-    public OutWarehouseMember getFranchiseRepresenetativeNo() {
-        return franchiseRepresenetativeNo;
-    }
-
-    public void setFranchiseRepresenetativeNo(OutWarehouseMember franchiseRepresenetativeNo) {
-        this.franchiseRepresenetativeNo = franchiseRepresenetativeNo;
+    public OutWarehouseFranchiseInfo(int memberNo, String officeDivision, String memberDivision, String franchiseName, String franchiseAddress) {
+        super(memberNo, officeDivision, memberDivision);
+        this.franchiseName = franchiseName;
+        this.franchiseAddress = franchiseAddress;
     }
 
     public String getFranchiseName() {
@@ -53,8 +46,7 @@ public class OutWarehouseFranchiseInfo implements Serializable {
     @Override
     public String toString() {
         return "OutWarehouseFranchiseInfo{" +
-                "franchiseRepresenetativeNo=" + franchiseRepresenetativeNo +
-                ", franchiseName='" + franchiseName + '\'' +
+                "franchiseName='" + franchiseName + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 '}';
     }
