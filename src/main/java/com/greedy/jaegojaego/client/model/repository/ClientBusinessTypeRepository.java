@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClientBusinessTypeRepository extends JpaRepository<ClientBusinessType, Integer> {
 
+    ClientBusinessType findByClientBusinessTypeNo(int clientBusinessTypeNo);
 }

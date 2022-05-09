@@ -8,6 +8,7 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.client.model.dto.*;
 import com.greedy.jaegojaego.client.model.entity.*;
 import com.greedy.jaegojaego.client.model.service.ClientService;
+import com.greedy.jaegojaego.common.paging.ClientPagenation;
 import com.greedy.jaegojaego.common.paging.Pagenation;
 import com.greedy.jaegojaego.common.paging.PagingButtonInfo;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
@@ -72,7 +73,9 @@ public class ClientController {
     @ResponseBody
     public String clientSelectDetail(HttpServletRequest request, ModelAndView mv, int clientNo) throws JsonProcessingException {
 
-        ClientDetailDTO clientDetail = clientService.findClientDetailByClientNo(clientNo);
+        List<ClientContractInfoDTO> clientContractInfoList = new ArrayList<>();
+
+        clientContractInfoList = clientService.findClientDetailByClientNo(clientNo);
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
@@ -82,7 +85,8 @@ public class ClientController {
                 .disableHtmlEscaping()
                 .create();
 
-        return gson.toJson(clientDetail);
+        System.out.println("상세보기 : " + clientContractInfoList);
+        return gson.toJson(clientContractInfoList);
     }
 
     @GetMapping(value ="/memo", produces = "application/json; charset=UTF-8")
@@ -188,7 +192,7 @@ public class ClientController {
 
     @GetMapping(value = "/registclient")
     @ResponseBody
-    public void registClient(@ModelAttribute ClientInsertDTO clientInsert,HttpServletRequest request, RedirectAttributes rttr, Locale locale){
+    public void registClient(ClientDTO client,ClientContractInfoDTO clientContractInfo, HttpServletRequest request, RedirectAttributes rttr, Locale locale){
 
         System.out.println("컨트롤러 도착");
         String clientName = request.getParameter("clientName");
@@ -197,8 +201,14 @@ public class ClientController {
         String clientRepresentativePhone = request.getParameter("clientRepresentativePhone");
         String clientRepresentativeEmail = request.getParameter("clientRepresentativeEmail");
         String clientAddress = request.getParameter("clientAddress");
-        int clientBusinessItem = Integer.parseInt(request.getParameter("clientBusinessItem"));
-        int clientBusinessType = Integer.parseInt(request.getParameter("clientBusinessType"));
+        int clientBusinessItemNo = Integer.parseInt(request.getParameter("clientBusinessItem"));
+        int clientBusinessTypeNo = Integer.parseInt(request.getParameter("clientBusinessType"));
+        Date clientContractStartDate = Date.valueOf(request.getParameter("clientContractInfoStartDate"));
+        Date clientContractEndDate = Date.valueOf(request.getParameter("clientContractInfoEndDate"));
+
+
+        ClientBusinessItem clientBusinessItem = clientService.findClientBusinessItemNo(clientBusinessItemNo);
+        ClientBusinessType clientBusinessType = clientService.findClientBusinessTypeNo(clientBusinessTypeNo);
 
         System.out.println("clientName : " + clientName);
 
@@ -212,11 +222,21 @@ public class ClientController {
 
         System.out.println("memeberNo : " + memberNo);
 
-        ClientBusinessItemDvisionDTO clientBusinessItemDvision = new ClientBusinessItemDvisionDTO();
-        clientBusinessItemDvision.setClientBusinessItemNo(clientBusinessItem);
+        client.setClientName(clientName);
+        client.setClientCbrNo(clientCbrNo);
+        client.setClientRepresentativeName(clientRepresentativeName);
+        client.setClientRepresentativeEmail(clientRepresentativeEmail);
+        client.setClientRepresentativePhone(clientRepresentativePhone);
+        client.setClientAddress(clientAddress);
+        client.setClientMemberNo(loginMember);
+        client.setClientBusinessItemNo(clientBusinessItem);
+        client.setClientBusinessTypeNo(clientBusinessType);
 
-/*        ClientBusinessTypeDvisionDTO clientBusinessTypeDvision = new ClientBusinessTypeDvisionDTO();
-        clientBusinessTypeDvision.setClientBusinessTypeNo(clientBusinessType);*/
+        clientContractInfo.setClientContractInfoStartDate(clientContractStartDate);
+        clientContractInfo.setClientContractInfoEndDate(clientContractEndDate);
+        clientContractInfo.setClientContractInfoStatus("계약중");
+
+        clientService.registClient(client, clientContractInfo);
 
 
     }
@@ -271,4 +291,30 @@ public class ClientController {
         return mv;
     }*/
 
+
+    @GetMapping("/itemlist")
+    public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Page<ClientContractItemDTO> clientContractItemList = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)){
+            clientContractItemList = clientService.findClientItemSearchList(searchCondition, searchValue, pageable);
+        } else {
+            clientContractItemList = clientService.findClientItemList(pageable);
+        }
+
+        mv.addObject("clientContractItemList", clientContractItemList);
+
+        PagingButtonInfo paging = ClientPagenation.getPagingButtonInfo(clientContractItemList);
+        mv.addObject("paging", paging);
+
+        System.out.println("계약상품 : " + clientContractItemList);
+
+        mv.setViewName("/client/clientContractItemList");
+
+        return mv;
+    }
 }

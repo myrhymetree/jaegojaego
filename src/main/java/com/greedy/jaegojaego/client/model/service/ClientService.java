@@ -30,10 +30,11 @@ public class ClientService {
     private final ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository;
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ClientContractInfoRepository clientContractInfoRepository;
+    private final ClientContractItemRepository clientContractItemRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
         this.clientBusinessTypeRepository = clientBusinessTypeRepository;
@@ -42,6 +43,7 @@ public class ClientService {
         this.clientBusinessItemDivisionRepository = clientBusinessItemDivisionRepository;
         this.clientBusinessTypeDivisionRepository = clientBusinessTypeDivisionRepository;
         this.clientContractInfoRepository = clientContractInfoRepository;
+        this.clientContractItemRepository = clientContractItemRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -75,11 +77,13 @@ public class ClientService {
 
     /* 거래처 상세 조회용 메소드 (뷰페이지 우측 영역) */
     @Transactional
-    public ClientDetailDTO findClientDetailByClientNo(int clientNo) {
+    public List<ClientContractInfoDTO> findClientDetailByClientNo(int clientNo) {
 
-       Client client = clientRepository.findById(clientNo).get();
+       List<ClientContractInfo> clientContractInfoList = new ArrayList<>();
 
-        return modelMapper.map(client, ClientDetailDTO.class);
+       clientContractInfoList = clientContractInfoRepository.findByClient(clientNo);
+
+       return clientContractInfoList.stream().map(clientContractInfo -> modelMapper.map(clientContractInfo, ClientContractInfoDTO.class)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -189,5 +193,80 @@ public class ClientService {
     public void deleteClient(int clientNo) {
 
         clientRepository.deleteById(clientNo);
+    }
+
+    public Page<ClientContractItemDTO> findClientItemSearchList(String searchCondition, String searchValue, Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("clientContractItemNo").descending());
+
+        Page<ClientContractItem> clientContractItemList = null;
+
+/*        if(searchCondition.equals("clientName")){
+            clientList = clientRepository.findByClientNameContainingAnyTypeAndStatus(searchValue, new Integer(1), "Y", pageable);
+        } else if(searchCondition.equals("clientRepresentativeNameTypeAndStatus")){
+            clientList = clientRepository.findByClientRepresentativeNameContainingTypeAndStatus(searchValue, new Integer(1), "Y", pageable);
+        }*/
+
+        return clientContractItemList.map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
+    }
+
+
+    public Page<ClientContractItemDTO> findClientItemList(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("CLIENT_CONTRACT_ITEM_NO").descending());
+
+        Page<ClientContractItemDTO> clientContractItemList = clientContractItemRepository.findAll(pageable).map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
+
+        System.out.println("컨트롤러" + clientContractItemList);
+        return clientContractItemList;
+    }
+
+    public ClientBusinessItem findClientBusinessItemNo(int clientBusinessItemNo) {
+
+        ClientBusinessItem clientBusinessItem = clientBusinessItemRepository.findByClientBusinessItemNo(clientBusinessItemNo);
+
+        return clientBusinessItem;
+    }
+
+    public ClientBusinessType findClientBusinessTypeNo(int clientBusinessTypeNo) {
+
+        ClientBusinessType clientBusinessType = clientBusinessTypeRepository.findByClientBusinessTypeNo(clientBusinessTypeNo);
+
+        return clientBusinessType;
+    }
+
+    public void registClient(ClientDTO client, ClientContractInfoDTO clientContractInfo) {
+
+        Client newClient = new Client();
+
+        newClient.setClientName(client.getClientName());
+        newClient.setClientCbrNo(client.getClientCbrNo());
+        newClient.setClientRepresentativeName(client.getClientRepresentativeName());
+        newClient.setClientRepresentativePhone(client.getClientRepresentativePhone());
+        newClient.setClientRepresentativeEmail(client.getClientRepresentativeEmail());
+        newClient.setClientAddress(client.getClientAddress());
+        newClient.setClientMember(client.getClientMemberNo());
+        newClient.setClientCreatedDate(new Date(System.currentTimeMillis()));
+        newClient.setClientPaymentMethod("일시불");
+
+        System.out.println("newClient : " + newClient);
+
+        clientRepository.save(newClient);
+
+        Client clientNo = clientRepository.findByClientName(newClient.getClientName());
+
+        ClientContractInfo newClientContractInfo = new ClientContractInfo();
+
+        newClientContractInfo.setClientContractInfoStatus("계약중");
+        newClientContractInfo.setClientContractInfoStartdate(clientContractInfo.getClientContractInfoStartDate());
+        newClientContractInfo.setClientContractInfoEnddate(clientContractInfo.getClientContractInfoEndDate());
+        newClientContractInfo.setClient(clientNo);
+
+        clientContractInfoRepository.save(newClientContractInfo);
+
     }
 }
