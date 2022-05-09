@@ -15,4 +15,11 @@ public interface MaterialsClientContractItemRepository extends JpaRepository<Cli
             , nativeQuery = true
     )
     List<ClientContractItem> findAllClientList(int itemInfoNo);
+
+    /*@Query(value = "SELECT * " +
+            "         FROM CLIENT_CONTRACT_ITEM A" +
+            "        WHERE A.ITEM_INFO_NO IS NULL "
+            , nativeQuery = true
+    )
+    List<ClientContractItem> findClientList();*/
 }

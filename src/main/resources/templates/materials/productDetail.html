@@ -64,54 +64,64 @@
                 </div>
 
                 <div class="ibox-content" style="height: 700px;">
-                    <div style="float: left; width: 40%;">자재 정보<hr></hr>
-                        <form method="post">
+                    <div style="float: left; width: 40%;">자재 정보
+                        <button class="btn btn-primary" type="button" id="materialModify" style="float: right;">
+                            <i class="fa fa-check"></i>&nbsp;자재 수정
+                        </button>
+                        <hr></hr>
+                        <form action="/materials/modify" method="post">
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 번호</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" th:value="${materials.itemInfoNo}" name="itemInfoNo" readonly>
+                                    <input type="number" class="form-control" th:value="${materials.itemInfoNo}" name="itemInfoNo" id="itemInfoNo" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 품번</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:value="${materials.itemSerialNo}" name="itemSerialNo" readonly>
+                                    <input type="text" class="form-control" th:value="${materials.itemSerialNo}" name="itemSerialNo" id="itemSerialNo" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 품명</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:value="${materials.itemInfoName}" name="itemInfoName" readonly>
+                                    <input type="text" class="form-control" th:value="${materials.itemInfoName}" name="itemInfoName" id="itemInfoName" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">카테고리</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:value="${materials.materialsCategory.materialCategoryName}" name="materialCategoryName" readonly>
+                                    <input type="text" class="form-control" th:value="${materials.materialsCategory.materialCategoryName}" name="materialsCategory.materialCategoryName" id="materialCategoryName" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">가공 유무</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:value="${materials.subdivisionYN}" name="subdivisionYN" readonly>
+                                    <input type="text" class="form-control" th:value="${materials.subdivisionYN}" name="subdivisionYN" id="subdivisionYN" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">판매 가격</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" th:value="${materials.itemPrice}" name="itemPrice" readonly>
+                                    <input type="number" class="form-control" th:value="${materials.itemPrice}" name="itemPrice" id="itemPrice" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">소분 단위</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" th:value="${materials.subdivisionUnit}" name="subdivisionUnit" readonly>
+                                    <input type="number" class="form-control" th:value="${materials.subdivisionUnit}" name="subdivisionUnit" id="subdivisionUnit" readonly>
                                 </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" type="submit" onclick="location.href='/materials/modify'" style="float: right;">
+                                    <i class="fa fa-check"></i>&nbsp;저장
+                                </button>
                             </div>
                         </form>
                     </div>
+                    <div style="overflow: scroll">
                    <th:block th:each="itemList: ${clientList}">
-                    <div style="float: right; width: 40%;">거래처 정보<hr></hr>
+                    <div style="float: right; width: 40%;" >거래처 정보<hr></hr>
                         <div class="form-group  row">
                             <label class="col-sm-2 col-form-label">상품 번호</label>
                             <div class="col-sm-10">
@@ -157,6 +167,7 @@
                     </div>
                    </th:block>
                 </div>
+                </div>
             </div>
         </div>
     </div>
@@ -167,5 +178,27 @@
 
 <th:blockpi th:replace="/common/footer.html"></th:blockpi>
 
+<script>
+    $("#materialModify").click(function (){
+        document.getElementById('itemSerialNo').readOnly = false;
+        document.getElementById('itemInfoName').readOnly = false;
+        document.getElementById('materialCategoryName').readOnly = false;
+        document.getElementById('subdivisionYN').readOnly = false;
+        document.getElementById('itemPrice').readOnly = false;
+        document.getElementById('subdivisionUnit').readOnly = false;
+
+
+        /*$("#materialModify").click(function (){
+            document.getElementById('itemSerialNo').readOnly = true;
+            document.getElementById('itemInfoName').readOnly = true;
+            document.getElementById('materialCategoryName').readOnly = true;
+            document.getElementById('subdivisionYN').readOnly = true;
+            document.getElementById('itemPrice').readOnly = true;
+            document.getElementById('subdivisionUnit').readOnly = true;
+            return
+        });*/
+    });
+
+</script>
 </body>
 </html>
