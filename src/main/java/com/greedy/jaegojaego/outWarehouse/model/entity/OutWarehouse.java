@@ -11,15 +11,15 @@ public class OutWarehouse {
     @Column(name = "OUT_WAREHOUSE_NO")
     private int outWarehouseNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_ORDER_NO")
     private OutWarehouseFranchiseOrder franchiseOrderNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_ISSUE_NO")
     private OutWarehouseFranchiseIssue franchiseIssueNo;
 

@@ -10,9 +10,8 @@ import java.util.List;
 @Repository
 public interface OutWarehouseFranchiseOrderRepository extends JpaRepository<OutWarehouseFranchiseOrder, Integer> {
 
-    @Query(value = "SELECT a, b FROM outWarehouseFranchiseOrder a" +
-            "         JOIN a.memberNo b")
-    List<OutWarehouseFranchiseOrder> findAllMemberInfo();
-
-//    List<OutWarehouseFranchiseOrder> findAllFranchiseOrderList();
+    @Query(value = "SELECT A.FRANCHISE_ORDER_NO, A.MEMBER_NO " +
+            "         FROM FRANCHISE_ORDER A " +
+            "        WHERE A.FRANCHISE_ORDER_STATUS = 'COMPLETE'", nativeQuery = true)
+    List<OutWarehouseFranchiseOrder> getFranchiseOrderListByStatus(String franchiseOrderStatus);
 }
