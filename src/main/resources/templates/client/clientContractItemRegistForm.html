@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>거래처 신규 등록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/client/clientcss.css}">
+</head>
+<body>
+<div th:replace="/common/header.html"></div>
+
+<div class="body-header" style="min-height: 7%;">
+    <div class="menu-title">거래처정보</div>
+    <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처등록</div>
+</div>
+<div class="client-regist-title">거래처 신규 등록 </div>
+<div class="client-regist-body" style="position: center !important;">
+<div class="panel-body">
+    <fieldset>
+        <form class="client-regist-form" id="clientFrom">
+            <h2> 회사 정보 </h2><hr>
+            <label class="client-regist-label" >상품명 : </label>
+                <input type="text" class="client-regist-text" style="margin-right: 5%;" id="registClientName">
+            <label class="client-regist-label" >공급가 : </label>
+                 <input type="text" class="client-regist-text" style="margin-right: 5%;" id="registClientName">
+            <label class="client-regist-label">거래처 : </label>
+                <select id="clientBusinessType" class="client-regist-select">
+                    <option></option>
+                    <option th:each= " : ${  }" th:value="${  }" th:text="${ }"/>
+                </select>
+            <hr><br>
+            <div class="client-regist-buttonarea">
+                <button class="client-regist-submit" type="button" id="clientRegistSubmit">등록</button>
+                <button class="client-regist-cancel" type="button" id="clientRegistCancel">취소</button>
+            </div>
+        </form>
+
+    </fieldset>
+</div>
+
+</div>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+<script>
+    $(document).ready(function () {
+        $(function () {
+
+            $('#cbrNo').keydown(function (event) {
+                let key = event.charCode || event.keyCode || 0;
+                $text = $(this);
+                if (key !== 8 && key !== 9) {
+                    if ($text.val().length === 3) {
+                        $text.val($text.val() + '-');
+                    }
+                    if ($text.val().length === 6) {
+                        $text.val($text.val() + '-');
+                    }
+                }
+
+                return (key == 8 || key == 9 || key == 46 || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));
+            })
+        });
+
+    });
+</script>
+<script>
+    $("#clientRegistSubmit").click(function (){
+
+        clientName = $("#registClientName").val();
+        clientCbrNo = $("#cbrNo").val();
+        clientRepresentativeName = $("#registClientCeoName").val();
+        clientRepresentativePhone = $("#registClientCeoPhone").val();
+        clientRepresentativeEmail = $("#registClientCeoEmail").val();
+        clientContractInfoStartDate = $("#registClientStartDate").val();
+        clientContractInfoEndDate = $("#registClientEndDate").val();
+        clientAddress = $("#registClientAddress").val();
+        clientBusinessItem = $("#clientBusinessItem").val();
+        clientBusinessType = $("#clientBusinessType").val();
+
+        console.log(clientName);
+        console.log(clientCbrNo);
+        console.log(clientRepresentativeName);
+        console.log(clientRepresentativePhone);
+        console.log(clientRepresentativeEmail);
+        console.log(clientContractInfoStartDate);
+        console.log(clientContractInfoEndDate);
+        console.log(clientBusinessItem);
+        console.log(clientBusinessType);
+
+        if($("#registClientName").val() == "") {
+            alert("회사명을 입력하세요");
+        } else if($("#cbrNo").val() == "") {
+            alert("사업자등록번호를 입력하세요");
+        } else if($("#registClientCeoName").val() == "") {
+            alert("대표자명을 입력하세요");
+        } else if($("#registClientCeoPhone").val() == "") {
+            alert("대표자 연락처를 입력하세요");
+        } else if($("#registClientCeoEmail").val() == "") {
+            alert("대표자 이메일을 입력하세요");
+        } else if($("#registClientStartDate").val() == "") {
+            alert("계약시작일을 입력하세요");
+        } else if($("#registClientEndDate").val() == "") {
+            alert("계약종료일을 입력하세요");
+        } else if($("#clientBusinessItem").val() == "") {
+            alert("업종을 선택하세요");
+        } else if($("#clientBusinessType").val() == "") {
+            alert("업태를 선택하세요");
+        }  else if($("#clientAddress").val() == "") {
+            alert("주소를 입력하세요");
+        } else {
+            $.ajax({
+                url:"/client/registclient",
+                type:"get",
+                data: {
+                    clientName : clientName,
+                    clientCbrNo : clientCbrNo,
+                    clientRepresentativeName : clientRepresentativeName,
+                    clientRepresentativePhone : clientRepresentativePhone,
+                    clientRepresentativeEmail : clientRepresentativeEmail,
+                    clientContractInfoStartDate : clientContractInfoStartDate,
+                    clientContractInfoEndDate : clientContractInfoEndDate,
+                    clientBusinessItem : clientBusinessItem,
+                    clientBusinessType : clientBusinessType,
+                    clientAddress : clientAddress
+                },
+                dataType: "text",
+                async : true,
+                success:function(data, status, xhr) {
+                    alert("신규 거래처가 등록되었습니다.");
+                    location.href="/client/list";
+                },
+                error:function(xhr, status, error) {
+                    alert("등록에 실패하였습니다.");
+                    console.log(error);
+                    console.log(status);
+                    console.log(xhr);
+                }
+            });
+
+        }
+    })
+
+</script>
+</body>
+</html>

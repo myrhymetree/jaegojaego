@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,11 +77,13 @@ public class ClientService {
 
     /* 거래처 상세 조회용 메소드 (뷰페이지 우측 영역) */
     @Transactional
-    public ClientDetailDTO findClientDetailByClientNo(int clientNo) {
+    public List<ClientContractInfoDTO> findClientDetailByClientNo(int clientNo) {
 
-       Client client = clientRepository.findById(clientNo).get();
+       List<ClientContractInfo> clientContractInfoList = new ArrayList<>();
 
-        return modelMapper.map(client, ClientDetailDTO.class);
+       clientContractInfoList = clientContractInfoRepository.findByClient(clientNo);
+
+       return clientContractInfoList.stream().map(clientContractInfo -> modelMapper.map(clientContractInfo, ClientContractInfoDTO.class)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -220,5 +223,50 @@ public class ClientService {
 
         System.out.println("컨트롤러" + clientContractItemList);
         return clientContractItemList;
+    }
+
+    public ClientBusinessItem findClientBusinessItemNo(int clientBusinessItemNo) {
+
+        ClientBusinessItem clientBusinessItem = clientBusinessItemRepository.findByClientBusinessItemNo(clientBusinessItemNo);
+
+        return clientBusinessItem;
+    }
+
+    public ClientBusinessType findClientBusinessTypeNo(int clientBusinessTypeNo) {
+
+        ClientBusinessType clientBusinessType = clientBusinessTypeRepository.findByClientBusinessTypeNo(clientBusinessTypeNo);
+
+        return clientBusinessType;
+    }
+
+    public void registClient(ClientDTO client, ClientContractInfoDTO clientContractInfo) {
+
+        Client newClient = new Client();
+
+        newClient.setClientName(client.getClientName());
+        newClient.setClientCbrNo(client.getClientCbrNo());
+        newClient.setClientRepresentativeName(client.getClientRepresentativeName());
+        newClient.setClientRepresentativePhone(client.getClientRepresentativePhone());
+        newClient.setClientRepresentativeEmail(client.getClientRepresentativeEmail());
+        newClient.setClientAddress(client.getClientAddress());
+        newClient.setClientMember(client.getClientMemberNo());
+        newClient.setClientCreatedDate(new Date(System.currentTimeMillis()));
+        newClient.setClientPaymentMethod("일시불");
+
+        System.out.println("newClient : " + newClient);
+
+        clientRepository.save(newClient);
+
+        Client clientNo = clientRepository.findByClientName(newClient.getClientName());
+
+        ClientContractInfo newClientContractInfo = new ClientContractInfo();
+
+        newClientContractInfo.setClientContractInfoStatus("계약중");
+        newClientContractInfo.setClientContractInfoStartdate(clientContractInfo.getClientContractInfoStartDate());
+        newClientContractInfo.setClientContractInfoEnddate(clientContractInfo.getClientContractInfoEndDate());
+        newClientContractInfo.setClient(clientNo);
+
+        clientContractInfoRepository.save(newClientContractInfo);
+
     }
 }

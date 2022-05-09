@@ -1,9 +1,10 @@
 package com.greedy.jaegojaego.client.model.entity;
 
-import lombok.*;
-import org.springframework.stereotype.Controller;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
         initialValue = 1,
         allocationSize = 1
 )
+@Data
 public class Client {
 
     @Id
@@ -52,118 +54,5 @@ public class Client {
 
     @Column(name = "CLIENT_PAYMENT_METHOD")
     private String clientPaymentMethod;
-
-    public Client(int clientNo, String clientName, String clientCbrNo, String clientRepresentativeName, String clientRepresentativePhone, String clientRepresentativeEmail, String clientAddress, ClientMember clientMember, Date clientCreatedDate, String clientPaymentMethod) {
-        this.clientNo = clientNo;
-        this.clientName = clientName;
-        this.clientCbrNo = clientCbrNo;
-        this.clientRepresentativeName = clientRepresentativeName;
-        this.clientRepresentativePhone = clientRepresentativePhone;
-        this.clientRepresentativeEmail = clientRepresentativeEmail;
-        this.clientAddress = clientAddress;
-        this.clientMember = clientMember;
-        this.clientCreatedDate = clientCreatedDate;
-        this.clientPaymentMethod = clientPaymentMethod;
-    }
-
-    public Client() {
-
-    }
-
-    public int getClientNo() {
-        return clientNo;
-    }
-
-    public void setClientNo(int clientNo) {
-        this.clientNo = clientNo;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
-    public String getClientCbrNo() {
-        return clientCbrNo;
-    }
-
-    public void setClientCbrNo(String clientCbrNo) {
-        this.clientCbrNo = clientCbrNo;
-    }
-
-    public String getClientRepresentativeName() {
-        return clientRepresentativeName;
-    }
-
-    public void setClientRepresentativeName(String clientRepresentativeName) {
-        this.clientRepresentativeName = clientRepresentativeName;
-    }
-
-    public String getClientRepresentativePhone() {
-        return clientRepresentativePhone;
-    }
-
-    public void setClientRepresentativePhone(String clientRepresentativePhone) {
-        this.clientRepresentativePhone = clientRepresentativePhone;
-    }
-
-    public String getClientRepresentativeEmail() {
-        return clientRepresentativeEmail;
-    }
-
-    public void setClientRepresentativeEmail(String clientRepresentativeEmail) {
-        this.clientRepresentativeEmail = clientRepresentativeEmail;
-    }
-
-    public Date getClientCreatedDate() {
-        return clientCreatedDate;
-    }
-
-    public void setClientCreatedDate(Date clientCreatedDate) {
-        this.clientCreatedDate = clientCreatedDate;
-    }
-
-    public String getClientPaymentMethod() {
-        return clientPaymentMethod;
-    }
-
-    public void setClientPaymentMethod(String clientPaymentMethod) {
-        this.clientPaymentMethod = clientPaymentMethod;
-    }
-
-    public String getClientAddress() {
-        return clientAddress;
-    }
-
-    public void setClientAddress(String clientAddress) {
-        this.clientAddress = clientAddress;
-    }
-
-    public ClientMember getClientMember() {
-        return clientMember;
-    }
-
-    public void setClientMember(ClientMember clientMember) {
-        this.clientMember = clientMember;
-    }
-    @Override
-    public String toString() {
-        return "Client{" +
-                "clientNo=" + clientNo +
-                ", clientName='" + clientName + '\'' +
-                ", clientCbrNo='" + clientCbrNo + '\'' +
-                ", clientRepresentativeName='" + clientRepresentativeName + '\'' +
-                ", clientRepresentativePhone='" + clientRepresentativePhone + '\'' +
-                ", clientRepresentativeEmail='" + clientRepresentativeEmail + '\'' +
-                ", clientAddress='" + clientAddress + '\'' +
-                ", clientMember=" + clientMember +
-                ", clientCreatedDate=" + clientCreatedDate +
-                ", clientPaymentMethod='" + clientPaymentMethod + '\'' +
-                '}';
-    }
-
 
 }

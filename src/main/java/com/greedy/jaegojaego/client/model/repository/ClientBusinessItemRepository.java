@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClientBusinessItemRepository extends JpaRepository<ClientBusinessItem, Integer> {
 
+    ClientBusinessItem findByClientBusinessItemNo(int clientBusinessItemNo);
 }

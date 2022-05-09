@@ -13,14 +13,14 @@
 
 <div class="body-header">
     <div class="menu-title">거래처정보</div>
-    <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처정보</div>
+    <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처 판매계약상품</div>
 </div>
     <div id="page-wrapper" class="gray-bg">
 
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="ibox" th:each="clientContractItemList : ${ clientContractItemList }">
+                <div class="col-md-3" th:each="clientContractItemList : ${ clientContractItemList }">
+                    <div class="ibox">
                         <div class="ibox-content product-box">
                             <div class="product-imitation">
                                 [ 사진 들어갈 자리 ]
@@ -29,8 +29,8 @@
 <!--                                <small class="text-muted" th:text="${ clientContractItemList.clientContractItemCategory }"></small>-->
                                 <a href="#" class="product-name" th:text="${ clientContractItemList.clientContractItemName }"></a>
                                 <div class="small m-t-xs">
-                                    <a th:text="${ clientContractItemList.clientContractInfoNo.client.clientName }"></a><br>
-                                    <a th:text="${ clientContractItemList.clientContractItemSupplyPrice }"></a>
+                                    납품업체 : <a th:text="${ clientContractItemList.clientContractInfoNo.client.clientName }"></a><br>
+                                    공급가 : <a th:text="${ clientContractItemList.clientContractItemSupplyPrice }"></a>
                                 </div>
                             </div>
                         </div>

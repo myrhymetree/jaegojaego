@@ -9,8 +9,8 @@ import java.sql.Date;
 @Table(name = "CLIENT_CONTRACT_INFO")
 @SequenceGenerator(
         name = "CLIENT_CONTRACT_INFO_SEQ_GENERATOR",
-        sequenceName = "SEQ_CLIENT_CONTRACT_INFO_NO",
-        initialValue = 1,
+        sequenceName = "CLIENT_CONTRACT_INFO_NO",
+        initialValue = 50,
         allocationSize = 1
 )
 @Data
