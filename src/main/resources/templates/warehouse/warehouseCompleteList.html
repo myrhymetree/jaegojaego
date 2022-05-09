@@ -43,7 +43,6 @@
         <thead>
         <tr>
             <th>발주 번호</th>
-            <th>입고 종류</th>
             <th>발주 일시</th>
             <th>승인 처리 상태</th>
             <th>입하 대기 추가</th>
@@ -53,15 +52,15 @@
         <tr th:each="warehouse : ${ warehouseCompanyOrderList }">
             <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
                 <td th:text="${ warehouse.companyOrderHistoryNo }"></td>
-                <td>본사 발주</td>
                 <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>
+                <td th:text="${ warehouse.companyOrderItemList.get(0).getItemInfo().getItemInfoName() }"></td>
                 <td>
                     <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
                         <a>승인 완료</a>
                     </th:block>
                 </td>
                 <td>
-                    <button class="btn btn-w-m btn-primary" type="submit" value="${ warehouse.companyOrderHistoryNo }" id="warehouseRegistButton" >입하 목록 추가</button>
+                    <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.companyOrderHistoryNo}')|">상세 정보 조회</button>
                 </td>
             </th:block>
         </tr>
@@ -73,14 +72,20 @@
 <script>
     function viewDetail(num) {
         let No = num;
-        location.href = "/warehouse/detail/" + num;
+        location.href="/warehouse/complete/detail/" + num;
     }
+
+
 
     document.getElementById("warehouseRegistButton").onclick = function (){
         location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
 
     }
+
+
 </script>
+
+
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
 </html>

@@ -7,11 +7,20 @@ import java.sql.Date;
 /** 새로 고쳐줌 */
 @Entity(name = "warehouse")
 @Table(name = "IN_WAREHOUSE")
-//@IdClass(WarehousePK.class)
-public class Warehouse implements Serializable {
+@SequenceGenerator(
+        name = "IN_WAREHOUSE_SEQ_GENERATOR",
+        sequenceName = "IN_WAREHOUSE_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
+public class Warehouse {
 
     @Id
     @Column(name = "IN_WAREHOUSE_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "IN_WAREHOUSE_SEQ_GENERATOR"
+    )
     private int warehouseNo;
 
     @Column(name = "IN_WAREHOUSE_AMOUNT")

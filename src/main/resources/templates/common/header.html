@@ -170,10 +170,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                 <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
                     <a th:href="@{/inwarehouse}"><i class="fa fa-edit"></i> <span class="nav-label">입고 관리</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="/warehouse/list">입고, 입하 처리</a></li>
-                        <li><a href="/warehouse/raw">가공 대기 창고</a></li>
-                        <li><a href="/warehouse/manufacture">가공 완성 창고</a></li>
-                        <li><a href="/warehouse/quality">불량 물품 창고</a></li>
+                        <li><a href="/warehouse/list">입고 관리</a></li>
+                        <li><a href="/warehouse/item">재고 관리</a></li>
+                        <li><a href="/warehouse/change">재고 변동 내역</a></li>
                     </ul>
                 </li>
 

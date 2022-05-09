@@ -10,8 +10,9 @@
 <th:block th:include="/common/header.html"></th:block>
 
 <div class="body-header">
-    <div class="menu-title">가공 완성 창고</div>
-    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/manufacturce}">가공 완성 창고</a></div>
+    <div class="menu-title">재고 관리</div>
+    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/item}">재고 관리</a>
+    </div>
 </div>
 
 <!-- 컨텐츠 작성 영역 -->
@@ -23,10 +24,10 @@
     <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>가공 완성 창고</h5>
+                <h5>제품 종류</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">3건</h1>
+                <h1 class="no-margins">3개</h1>
                 <br>
             </div>
         </div>
@@ -49,10 +50,7 @@
 <!-- 테이블 시작 -->
 <div class="ibox-content">
 
-    <h2>가공 완성 창고</h2>
-
-    <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
-           placeholder="Search in table">
+    <h2>재고 목록</h2>
 
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
@@ -62,26 +60,32 @@
             <th>품번</th>
             <th>품명</th>
             <th>재고 수량</th>
-            <th>품질 상태</th>
-            <th>상세 조회</th>
+            <th>수량 변동</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>2</td>
-            <td>20222022</td>
-            <td>Win 95+</td>
-            <td>4</td>
-            <td>4</td>
-            <td>입하 대기</td>
+        <tr th:each="warehouse : ${ warehouseItemAmount }">
+            <td th:text="${ warehouse.getWarehouseItemInfo().getItemInfoNo() }"></td>
+<!--            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoNo() }"></td>-->
+            <td th:text="${ warehouse.warehouseItemInfo.getWarehouseMaterialCategory().getMaterialCategoryName() }"></td>
+            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoItemSerialNo() }"></td>
+            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoName() }"></td>
+            <td th:text="${ warehouse.warehouseItemAmount }"></td>
             <td>
-                <button type="button" class="btn btn-w-m btn-primary">상세 조회</button>
+                <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.warehouseItemInfo.getItemInfoNo()}')|">수량 변경</button>
             </td>
         </tr>
         </tfoot>
     </table>
 </div>
 <!-- 테이블 끝 -->
+<script>
+    function viewDetail(num) {
+        let No = num;
+        location.href="/warehouse/item/detail/" + num;
+    }
+</script>
+
 
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
