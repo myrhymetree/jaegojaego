@@ -1,4 +1,4 @@
-package com.greedy.jaegojaego.backlog.repository;
+package com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog;
 
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehouse;
 import org.springframework.data.jpa.repository.JpaRepository;

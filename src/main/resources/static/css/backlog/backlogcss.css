@@ -85,7 +85,7 @@
     width: 1500px;
     position: relative;
     margin-top: 15px;
-    margin-left: 50px;
+    margin-left: 100px;
     float: left;
 }
 
@@ -201,3 +201,15 @@
 svg {
     height: 270px;
 }
+
+#morris-bar-chart2 {
+    width: 1500px;
+    z-index: 1050;
+    height: 270px;
+}
+
+#morris-bar-chart2 svg {
+    height: 270px;
+
+}
+

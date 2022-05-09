@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ClientContractItemRepository extends JpaRepository<ClientContractItem, ClientPK> {
+public interface MaterialsClientContractItemRepository extends JpaRepository<ClientContractItem, ClientPK> {
 
     @Query(value = "SELECT * " +
             "         FROM CLIENT_CONTRACT_ITEM A" +

@@ -1,16 +1,15 @@
 package com.greedy.jaegojaego.backlog.service;
 
-import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogInWarehouseDTO;
+import com.greedy.jaegojaego.backlog.dto.OutWarehouseBacklog.OutWarehouseBacklogDTO;
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehouse;
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogItemInfo;
-import com.greedy.jaegojaego.backlog.repository.BacklogItemInfoRepository;
-import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklogRepository;
+import com.greedy.jaegojaego.backlog.entity.OutWarehouseBacklog.OutWarehouseBacklog;
+import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.BacklogItemInfoRepository;
+import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.InWarehouseBacklogRepository;
+import com.greedy.jaegojaego.backlog.repository.OutWarehouseBacklog.OutWarehouseBacklogRepository;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
-import com.greedy.jaegojaego.menu.repository.MenuMaterialRepository;
-import com.greedy.jaegojaego.menu.repository.MenuRepository;
-import com.greedy.jaegojaego.menu.repository.RawMaterialRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -18,7 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -34,6 +37,10 @@ public class BacklogServiceTests {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private OutWarehouseBacklogRepository outWarehouseBacklogRepository;
+
 
     @Test
     @DisplayName("서비스 입고 백로그 목록 조회 테스트")
@@ -73,8 +80,50 @@ public class BacklogServiceTests {
         List<BacklogInWarehouse> findBacklogInWarehouseBySelectBox = inWarehouseBacklogRepository.findBacklogInWarehouseBySelectBox(itemInfoNo);
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
+
         //then
         assertNotNull(findBacklogInWarehouseBySelectBox);
     }
+
+    @Test
+    @DisplayName("서비스 이슈 출고 목록 조회 테스트")
+    public void findBacklogOutWarehouseListTests() {
+
+        //given
+
+        //when
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
+
+        //then
+        assertNotNull(outWarehouseBacklogList);
+    }
+
+
+    @Test
+    @DisplayName("서비스 이슈 출고 목록 특정 자재 선택 시 바 그래프 조회 테스트")
+    public void findBacklogOutWarehouseBarGraphListTests() {
+
+        //given
+        int  itemInfoNo = 1;
+
+        //when
+        List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
+        Optional<BacklogItemInfo> itemName = backlogItemInfoRepository.findById(itemInfoNo);
+        String itemNameForRepare = itemName.get().getItemInfoName();
+        List<Date> date = new ArrayList<>();
+
+        for(int i = 0; i < outWarehouseBacklogList.size(); i++) {
+            if(itemNameForRepare.equals(outWarehouseBacklogList.get(i).getOutWarehouseNoForBacklog().getIssueNoForBacklog().getIssueItemDTOList().get(0).getItemInfoNoForBacklog().getItemInfoName())) {
+                date.add(outWarehouseBacklogList.get(i).getOutWarehouseNoForBacklog().getIssueNoForBacklog().getIssueCreatedDate());
+            }
+        }
+
+        assertNotNull(date);
+
+    }
+    
+    
+    
 }
 

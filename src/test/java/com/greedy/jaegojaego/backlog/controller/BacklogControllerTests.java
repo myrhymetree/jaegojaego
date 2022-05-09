@@ -1,6 +1,9 @@
 package com.greedy.jaegojaego.backlog.controller;
 
 import com.greedy.jaegojaego.backlog.dto.InWarehouseBacklog.BacklogInWarehouseDTO;
+import com.greedy.jaegojaego.backlog.dto.OutWarehouseBacklog.OutWarehouseBacklogDTO;
+import com.greedy.jaegojaego.backlog.entity.OutWarehouseBacklog.OutWarehouseBacklog;
+import com.greedy.jaegojaego.backlog.repository.OutWarehouseBacklog.OutWarehouseBacklogRepository;
 import com.greedy.jaegojaego.backlog.service.BacklogService;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
@@ -37,6 +40,9 @@ public class BacklogControllerTests {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private OutWarehouseBacklogRepository outWarehouseBacklogRepository;
 
     @Test
     @DisplayName("백로그관리 이동 및 목록 조회 테스트")
@@ -90,5 +96,36 @@ public class BacklogControllerTests {
         assertNotNull(backlogInWarehouseDTOList);
     }
 
+    //lazy에러로 일단 보류//
+    @Test
+    @DisplayName("컨트롤러 이슈 출고 목록 조회 테스트")
+    public void findBacklogOutWarehouseListTests() {
+
+
+        //given
+
+        //when
+        List<OutWarehouseBacklogDTO> outWarehouseBacklogList = backlogService.selectOutWarehouseBacklogList();
+
+        //then
+        assertNotNull(outWarehouseBacklogList);
+    }
+
+
+    @Test
+    @DisplayName("컨트롤러 이슈 출고 목록 특정 자재 선택 시 바 그래프 조회 테스트")
+    public void findBacklogOutWarehouseBarGraphListTests() {
+
+
+        //given
+        int itemInfoNo = 1;
+
+        //when
+         backlogService.findBacklogOutWarehouseBySelectBox(itemInfoNo);
+
+        //then
+        assertNotNull(backlogService.findBacklogOutWarehouseBySelectBox(itemInfoNo));
+    }
+    
 
 }
