@@ -56,14 +56,14 @@ public class FranchiseInfo extends Member {
     private String phone;
 
     @JoinColumn(name = "HEAD_OFFICE_SUPERVISOR_NO", insertable = false, updatable = false)
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private CompanyAccount supervisor;
 
     @JoinColumn(name = "HEAD_OFFICE_WRITED_MEMBER_NO",insertable = false,  updatable = false)
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Member writedMember;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseAttachmentFile> franchiseAttachmentFiles;
 

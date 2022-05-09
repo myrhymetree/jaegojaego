@@ -121,7 +121,7 @@
                     </div>
                 </div>
             </div>
-        <th:block  th:id="aaaaa" th:replace="/member/detailView.html" th:class="ababa"></th:block>
+        <th:block  th:id="aaaaa" th:replace="/franchise/franchiseDetailView.html" th:class="ababa"></th:block>
         <th:block th:replace="/common/footer.html"></th:block>
         </div>
     </div>
@@ -137,27 +137,43 @@
                 /* td에 숫자가 안나오게 표시함 */
                 let memberNo = this.children[0].innerText;
 
-            //     axios({
-            //         method: 'get',
-            //         url: '/member/detailInfo/' + memberNo,
-            //     })
-            //     .then(function (response) {
-            //         console.log(response);
-            //
-            //         $("#detail-name").text(response.data.memberName);
-            //         $("#detail-id").text(response.data.memberId).val();
-            //         $("#detail-department").text(response.data.department.departmentName).val();
-            //         $("#detail-cellPhone").text(response.data.memberCellPhone).val();
-            //         $("#detail-officePhone").text(response.data.officePhoneNumber).val();
-            //         $("#detail-email").text(response.data.memberEmail).val();
-            //     })
-            //     .catch(function (error) {
-            //         console.log(error)
-            //     })
-            //     .then(function () {
-            //
-            //     });
-            //
+                axios({
+                    method: 'get',
+                    url: '/franchise/franchiseDetail/' + memberNo,
+                })
+                .then(function (response) {
+                    console.log(response);
+
+                    console.log(response.data.branchName);
+
+                    $("#franchise-name").text(response.data.branchName);
+                    $("#representative-id").text(response.data.memberId).val();
+                    $("#representative-name").text(response.data.representativeName).val();
+                    $("#representative-phone").text(response.data.representativePhone).val();
+                    $("#representative-email").text(response.data.representativeEmail).val();
+                    $("#franchise-phone").text(response.data.phone).val();
+                    $("#franchise-updater").text(response.data.writer.memberName).val();
+                    $("#franchise-supervisor-name").text(response.data.supervisor.memberName).val();
+                    $("#franchise-contract-number").text(response.data.businessRegistrationNo).val();
+                    $("#franchise-bankAccount-number").text(response.data.bankAccountNo).val();
+                    $("#franchise-contract-start-date").text(response.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.year + "년" +
+                        response.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.month + "월"+
+                        response.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.day + "일").val();
+                    $("#franchise-contract-end-date").text(response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.year + "년" +
+                        response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.month + "월"+
+                        response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.day + "일").val();
+                    $("#franchise-contract-status").text(response.data.franchiseContractUpdatedRecord.franchiseContractStatus).val();
+
+
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+                .then(function () {
+
+                });
+
             });
         });
     </script>

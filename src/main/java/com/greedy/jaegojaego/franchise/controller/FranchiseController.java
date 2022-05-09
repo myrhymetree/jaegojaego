@@ -1,12 +1,13 @@
 package com.greedy.jaegojaego.franchise.controller;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
-import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
-import com.greedy.jaegojaego.franchise.dto.FranchiseAttachmentFileDTO;
-import com.greedy.jaegojaego.franchise.dto.FranchiseContractUpdatedRecordDTO;
-import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
+import com.greedy.jaegojaego.franchise.dto.*;
 import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
+import com.greedy.jaegojaego.franchise.repository.FranchiseAttachmentRepository;
 import com.greedy.jaegojaego.franchise.service.FranchiseService;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
@@ -16,7 +17,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,6 +56,9 @@ public class FranchiseController {
 
     @Value("${com.greedy.jaegojaego.upload.path}")
     private String uploadPath;
+
+    @Autowired
+    ResourceLoader resourceLoader;
 
     @Autowired
     public FranchiseController(FranchiseService franchiseService, MemberService memberService, PasswordEncoder passwordEncoder) {
@@ -302,5 +313,54 @@ public class FranchiseController {
         franchiseService.updateFranchiseInfo(franchiseInfo);
 
         return "redirect:/";
+    }
+
+    @GetMapping(value = "/franchiseDetail/{memberNo}", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findFranchiseDetailInfo(@PathVariable Integer memberNo) {
+
+        FranchiseDetailViewDTO franchiseDetailInfo = franchiseService.findFranchiseDetailInfo(memberNo);
+        System.out.println("franchiseDetailInfo = " + franchiseDetailInfo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return  gson.toJson(franchiseDetailInfo);
+    }
+
+    @GetMapping("/downloadContractFile/{attachmentFileNo}")
+    public ResponseEntity<Resource> contractFileDownload(@PathVariable Integer attachmentFileNo) {
+
+        try {
+            FranchiseAttachmentFileDTO contractFile = franchiseService.findContractFile(attachmentFileNo);
+
+            String fileName = contractFile.getAttachmentFileChangedName();
+
+            Resource resource = resourceLoader.getResource("classpath:static/uploadFiles/" + fileName);
+
+            File file = resource.getFile();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, file.getName())
+                    .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()))
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString())
+                    .body(resource);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                                .body(null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+
     }
 }

@@ -39,10 +39,6 @@ public class FranchiseContractUpdatedRecord {
     @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
     private Integer franchiseRepresentativeNo;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false, updatable = false)
-    private FranchiseInfo franchiseInfo;
-
     @Override
     public String toString() {
         return "FranchiseContractUpdatedRecord{" +

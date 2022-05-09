@@ -5,12 +5,10 @@ import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
 import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
+import com.greedy.jaegojaego.franchise.dto.FranchiseDetailViewDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
-import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
-import com.greedy.jaegojaego.franchise.entity.FranchiseAttachmentFile;
-import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
-import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
-import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
+import com.greedy.jaegojaego.franchise.entity.*;
+import com.greedy.jaegojaego.franchise.repository.*;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
@@ -39,7 +37,16 @@ class FranchiseServiceTest {
     private FranchiseRepository franchiseRepository;
 
     @Autowired
+    private FranchiseDetailViewReposirory franchiseDetailViewReposirory;
+
+    @Autowired
     private FranchiseAccountRepository franchiseAccountRepository;
+
+    @Autowired
+    private FranchiseContractRepository franchiseContractRepository;
+
+    @Autowired
+    private FranchiseAttachmentRepository attachmentRepository;
 
     @Autowired
     private MemberRoleRepository memberRoleRepository;
@@ -182,11 +189,31 @@ class FranchiseServiceTest {
 
         Integer franchiseNo = 429;
 
-        FranchiseInfo franchise = franchiseRepository.findByMemberNo(franchiseNo);
+        FranchiseDetailView franchise = franchiseDetailViewReposirory.findByMemberNo(franchiseNo);
 
-        FranchiseInfoDTO result = modelMapper.map(franchise, FranchiseInfoDTO.class);
+        FranchiseContractUpdatedRecord record = franchiseContractRepository.findByFranchiseRepresentativeNo(franchiseNo);
+        System.out.println("records = " + record);
+
+        franchise.setFranchiseContractUpdatedRecord(record);
+
+        System.out.println("franchise = " + franchise);
+
+        FranchiseDetailViewDTO result = modelMapper.map(franchise, FranchiseDetailViewDTO.class);
 
         assertEquals(franchiseNo, result.getMemberNo());
+    }
+
+    @Test
+    public void 가맹점_관련_서류_다운로드() {
+
+        Integer fileNo = 1;
+
+        FranchiseAttachmentFile file = attachmentRepository.findByAttachmentNo(fileNo);
+
+        System.out.println("fileNo = " + fileNo);
+
+        assertEquals(1, file.getAttachmentNo());
+
     }
 
 

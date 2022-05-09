@@ -1,15 +1,9 @@
 package com.greedy.jaegojaego.franchise.service;
 
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
-import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
-import com.greedy.jaegojaego.franchise.dto.FranchiseContractUpdatedRecordDTO;
-import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
-import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
-import com.greedy.jaegojaego.franchise.entity.FranchiseContractUpdatedRecord;
-import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
-import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
-import com.greedy.jaegojaego.franchise.repository.FranchiseContractRepository;
-import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
+import com.greedy.jaegojaego.franchise.dto.*;
+import com.greedy.jaegojaego.franchise.entity.*;
+import com.greedy.jaegojaego.franchise.repository.*;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
 import com.greedy.jaegojaego.member.model.entity.PasswordUpdatedRecord;
@@ -32,8 +26,10 @@ import java.util.stream.Collectors;
 public class FranchiseService {
 
     private final FranchiseRepository franchiseRepository;
+    private final FranchiseDetailViewReposirory franchiseDetailViewReposirory;
     private final FranchiseAccountRepository franchiseAccountRepository;
     private final FranchiseContractRepository franchiseContractRepository;
+    private final FranchiseAttachmentRepository franchiseAttachmentRepository;
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
     private final PasswordUpdatedRecordRepository passwordUpdatedRecordRepository;
@@ -41,10 +37,12 @@ public class FranchiseService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.franchiseRepository = franchiseRepository;
+        this.franchiseDetailViewReposirory = franchiseDetailViewReposirory;
         this.franchiseAccountRepository = franchiseAccountRepository;
         this.franchiseContractRepository = franchiseContractRepository;
+        this.franchiseAttachmentRepository = franchiseAttachmentRepository;
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.passwordUpdatedRecordRepository = passwordUpdatedRecordRepository;
@@ -201,11 +199,17 @@ public class FranchiseService {
         return members;
     }
 
-    public FranchiseInfoDTO findFranchiseDetailInfo(Integer franchiseNo) {
+    public FranchiseDetailViewDTO findFranchiseDetailInfo(Integer franchiseNo) {
 
-        FranchiseInfo franchiseDetailInfo = franchiseRepository.findByMemberNo(franchiseNo);
+        FranchiseDetailView franchiseDetailInfo = franchiseDetailViewReposirory.findByMemberNo(franchiseNo);
 
-        return modelMapper.map(franchiseDetailInfo, FranchiseInfoDTO.class);
+        FranchiseContractUpdatedRecord franchiseContractUpdatedRecord = franchiseContractRepository.findByFranchiseRepresentativeNo(franchiseNo);
+
+        franchiseDetailInfo.setFranchiseContractUpdatedRecord(franchiseContractUpdatedRecord);
+
+        System.out.println("franchiseContractUpdatedRecord = " + franchiseContractUpdatedRecord);
+
+        return modelMapper.map(franchiseDetailInfo, FranchiseDetailViewDTO.class);
     }
 
     public FranchiseAccountDTO findManagerDetailInfo(Integer managerNo) {
@@ -213,5 +217,26 @@ public class FranchiseService {
         FranchiseAccount managerDetailInfo = franchiseAccountRepository.findByMemberNo(managerNo);
 
         return modelMapper.map(managerDetailInfo, FranchiseAccountDTO.class);
+    }
+
+    public FranchiseAttachmentFileDTO findContractFile(Integer fileNo) {
+
+        FranchiseAttachmentFile contractFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
+
+        return modelMapper.map(contractFile, FranchiseAttachmentFileDTO.class);
+    }
+
+    public FranchiseAttachmentFileDTO findBusinessRegistration(Integer fileNo) {
+
+        FranchiseAttachmentFile businessRegistrationFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
+
+        return modelMapper.map(businessRegistrationFile, FranchiseAttachmentFileDTO.class);
+    }
+
+    public FranchiseAttachmentFileDTO findBusinesBankAccount(Integer fileNo) {
+
+        FranchiseAttachmentFile bankAccoutFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
+
+        return modelMapper.map(bankAccoutFile, FranchiseAttachmentFileDTO.class);
     }
 }
