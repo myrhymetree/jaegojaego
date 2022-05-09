@@ -195,6 +195,8 @@ public class MemberService {
 
     public void modifyMemberInfo(CompanyAccountDTO member) {
 
+        CompanyAccount companyAccount = new CompanyAccount();
+
         if(!member.getMemberPwd().isEmpty()) {
 
             Member memberPwd = memberRepository.findMemberPwdByMemberNo(member.getMemberNo());
@@ -205,13 +207,33 @@ public class MemberService {
             passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
             passwordUpdatedRecord.setMemberNo(member.getMemberNo());
 
+
+            /*변경된 비밀번호 사항을 저장해준다.*/
+            companyAccount.setMemberPwd(passwordEncoder.encode(member.getMemberPwd()));
+            companyAccount.setMemberPwdUpdateDate(LocalDateTime.now());
             /* 관리자가 임의로 지정한 비밀번호이기 때문에 비밀번호 초기화 여부는 Y로 체크해준다. */
-            member.setMemberPwdInitStatus("Y");
+            companyAccount.setMemberPwdInitStatus("Y");
         }
 
         /* entity 타입으로 값 변경 필요 */
-        CompanyAccount companyAccount = new CompanyAccount();
+        companyAccount.setMemberNo(member.getMemberNo());
+        companyAccount.setMemberEmail(member.getMemberEmail());
+        companyAccount.setOfficePhoneNumber(member.getOfficePhoneNumber());
+        companyAccount.setMemberCellPhone(member.getMemberCellPhone());
+        companyAccount.setDepartmentNo(member.getDepartment().getDepartmentNo());
+
+        companyAccountRepository.updateMember(companyAccount);
+    }
 
 
+    @Transactional
+    public void removeMember(Integer memberNo) {
+
+        Member member = memberRepository.findMemberPwdByMemberNo(memberNo);
+
+        member.setMemberRemoveStatus("N");
+        member.setMemberRemovedDate(LocalDateTime.now());
+
+        memberRepository.save(member);
     }
 }

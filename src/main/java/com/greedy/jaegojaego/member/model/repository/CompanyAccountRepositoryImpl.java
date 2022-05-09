@@ -66,6 +66,18 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
 
     }
 
+    private BooleanExpression memberIdContains(String memberId) {
+        return hasText(memberId) ? companyAccount.memberId.contains(memberId) : null;
+    }
+
+    private BooleanExpression memberNameContains(String memberName) {
+        return hasText(memberName) ? companyAccount.memberName.contains(memberName) : null;
+    }
+
+    private BooleanExpression departmentNameContains(String departmentName) {
+        return hasText(departmentName) ? department.departmentName.contains(departmentName) : null;
+    }
+
     @Override
     @Transactional
     public void updateMember(CompanyAccount member) {
@@ -88,21 +100,15 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
             updateBuilder.set(companyAccount.officePhoneNumber, member.getOfficePhoneNumber());
         }
 
+        if(StringUtils.hasText(String.valueOf(member.getDepartmentNo()))) {
+            updateBuilder.set(companyAccount.departmentNo, member.getDepartmentNo());
+        }
+
         updateBuilder
                 .where(companyAccount.memberNo.eq(member.getMemberNo()))
                 .execute();
     }
 
-    private BooleanExpression memberIdContains(String memberId) {
-        return hasText(memberId) ? companyAccount.memberId.contains(memberId) : null;
-    }
 
-    private BooleanExpression memberNameContains(String memberName) {
-        return hasText(memberName) ? companyAccount.memberName.contains(memberName) : null;
-    }
-
-    private BooleanExpression departmentNameContains(String departmentName) {
-        return hasText(departmentName) ? department.departmentName.contains(departmentName) : null;
-    }
 
 }

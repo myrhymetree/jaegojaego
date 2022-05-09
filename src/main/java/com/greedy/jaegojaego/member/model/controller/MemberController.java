@@ -129,9 +129,11 @@ public class MemberController {
     @PostMapping(value = "/modifyMember")
     public String modifyMember(CompanyAccountDTO companyAccount) {
 
+        System.out.println("멥버 번호는 = " + companyAccount);
+
         memberService.modifyMemberInfo(companyAccount);
 
-        return "redirect:/";
+        return "redirect:/member/list";
     }
 
     @GetMapping(value = "/detailInfo/{memberNo}", produces = "application/json; charset=UTF-8")
@@ -151,5 +153,15 @@ public class MemberController {
                 .create();
 
         return gson.toJson(memberInfo);
+    }
+
+    @GetMapping("/delete/{memberNo}")
+    public String removeMember(@PathVariable Integer memberNo) {
+
+        System.out.println("삭제할 멤버번호는 : " + memberNo);
+
+        memberService.removeMember(memberNo);
+
+        return "redirect:/member/list";
     }
 }

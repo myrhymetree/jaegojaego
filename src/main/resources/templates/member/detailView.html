@@ -22,8 +22,9 @@
                                         class="fa fa-envelope"></i> 수정
                                 </button>
 
-                                <button type="button" class="btn btn-primary btn-sm btn-block"><i
-                                        class="fa fa-envelope"></i> 삭제
+                                <button type="button" id="removeMember" class="btn btn-primary btn-sm btn-block"
+                                >
+                                    <i class="fa fa-envelope"></i> 삭제
                                 </button>
 
                             </div>
@@ -63,6 +64,15 @@
             </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        $(function () {
+            $("#removeMember").click(function () {
 
+                const memberNo = $("#detail-memberNo").val();
+
+                location.href="/member/delete/" + memberNo;
+            });
+        });
+    </script>
 </body>
 </html>

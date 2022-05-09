@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "COMPANY_ACCOUNT")
 @DynamicUpdate
 @NamedEntityGraph(name = "Department.all", attributeNodes = @NamedAttributeNode("department"))
-//@DiscriminatorValue("본사")
+@PrimaryKeyJoinColumn(name = "MEMBER_NO")
 public class CompanyAccount extends Member {
 
     @Column(name = "MEMBER_NAME")
@@ -31,8 +31,11 @@ public class CompanyAccount extends Member {
     @Column(name = "OFFICE_PHONE_NUMBER")
     private String officePhoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_DEPARTMENT")
+    @Column(name = "MEMBER_DEPARTMENT")
+    private Integer departmentNo;
+
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "MEMBER_DEPARTMENT", insertable = false, updatable = false)
     private Department department;
 
     @Override
