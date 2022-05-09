@@ -8,6 +8,7 @@ import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehous
 import com.greedy.jaegojaego.backlog.service.BacklogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,8 @@ import java.util.Map;
  * 2022/05/05 (이소현) 입고 백로그 막대 차트 조회
  * 2022/05/06 (이소현) 입고 백로그 막대 차트 조회
  * 2022/05/07 (이소현) 입고 백로그 원차트 조회
+ * 2022/05/08 (이소현) 출고 백로그 조회
+ * 2022/05/09 (이소현) 출고 백로그 막대 그래프 조회
  * </pre>
  * @version ㄱㄷ
  * @author 이소현
@@ -55,13 +58,21 @@ public class BacklogController {
    @GetMapping("list")
     public ModelAndView backlogPage(ModelAndView mv) {
        List<BacklogInWarehouseDTO> inWarehouseBacklogList = backlogService.selectInWarehouseBacklogList();
-       List<OutWarehouseBacklogDTO> outWarehouseBacklogList = backlogService.selectOutWarehouseBacklogList();
 
        mv.addObject("inWarehouseBacklogList", inWarehouseBacklogList);
-       mv.addObject("outWarehouseBacklogList", outWarehouseBacklogList);
        mv.setViewName("backlog/backlogList");
 
        return mv;
+   }
+
+   @GetMapping("outwarehouselist")
+   public ModelAndView moveOutWarehouseListPage(ModelAndView mv) {
+       List<OutWarehouseBacklogDTO> outWarehouseBacklogList = backlogService.selectOutWarehouseBacklogList();
+
+       mv.addObject("outWarehouseBacklogList", outWarehouseBacklogList);
+       mv.setViewName("backlog/backlogOutWarehouseList");
+
+        return mv;
    }
 
    @GetMapping(value = "iteminfolist", produces = "application/json; charset=UTF-8")
@@ -78,6 +89,12 @@ public class BacklogController {
         return backlogService.findBacklogInWarehouseBySelectBox(itemInfoNo);
    }
 
+   @GetMapping(value = "selectoneoutwarehousebackloglist", produces = "application/json; charset=UTF-8")
+   @ResponseBody
+   public List<Date> findBacklogOutWarehouseBySelectBox(@RequestParam int itemInfoNo) {
+
+        return backlogService.findBacklogOutWarehouseBySelectBox(itemInfoNo);
+   }
 
 
    @GetMapping(value = "selectcirclelist", produces = "application/json; charset=UTF-8")
@@ -126,16 +143,5 @@ public class BacklogController {
        }
         return null;
    }
-
-//   @GetMapping("/outlist") //얘를 list랑 합치자 ㅎㅎ
-//   public ModelAndView outBacklogPage(ModelAndView mv) {
-//
-//       List<OutWarehouseBacklogDTO> outWarehouseBacklogList = backlogService.selectOutWarehouseBacklogList();
-//
-//       mv.addObject("outWarehouseBacklogList", outWarehouseBacklogList);
-//       mv.setViewName("backlog/backlogList");
-//
-//       return mv;
-//   }
 
 }

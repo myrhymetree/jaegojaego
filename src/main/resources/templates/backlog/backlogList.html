@@ -44,33 +44,8 @@
 <!--            </div>-->
 <!--        </div>-->
 
-        <!-- 출고 켯을 때 차트 부분 -->
-        <div class="chart-modalForOut" id="charModalForOut" style="display: none;">
-            <div class="barGraphForOut">
-                <h4 style="font-weight: bold; margin-left: 5px;">물품당 이슈발생빈도</h4>
-                <select class="itemListForOutBarGraph">
-                    <option value="지로스팅">로스팅된 지로스팅 원두 1kg</option>
-                </select>
-                <select class="yearOutBarGraph">
-                    <option value="2022">2022</option>
-                </select>
-                <div class="month january">1</div>
-                <div class="month february">2</div>
-                <div class="month march">3</div>
-                <div class="month april">4</div>
-                <div class="month may">5</div>
-                <div class="month june">6</div>
-                <div class="month july">7</div>
-                <div class="month august">8</div>
-                <div class="month september">9</div>
-                <div class="month october">10</div>
-                <div class="month november">11</div>
-                <div class="month december">12</div>
-            </div>
-        </div>
 
-
-        <div class="chart-modalForIn" id="chartModalForIn"style="display: block;">
+        <div class="chart-modalForIn" id="chartModalForIn">
             <div class="barGraph">
                 <h4 style="font-weight: bold; margin-left: 5px;">각 물품 구매량 증/감소율</h4>
                     <select class="itemListForBarGraph" id="itemListForBarGraph" onchange="selectOneItemInfoForBarGraph(this.value, this.options[this.selectedIndex].text)">
@@ -204,8 +179,7 @@
     <!-- 차트 부분 whiteboard 끝 -->
 
         <div class="moveButton" id="moveButton">
-            <button class="button backlogList" id="releasebacklogButton" style="width: 150px;">본사 입고물품 백로그</button>
-            <button class="button backlogList" id="inwarehousebacklogButton" style="width: 150px;">본사 이슈출고 백로그</button>
+            <button class="button backlogList" id="releasebacklogButton" style="width: 150px;">본사 이슈출고 백로그</button>
         </div>
 
 
@@ -214,7 +188,7 @@
         <div class="backlogListWhiteboard">
 
             <!-- 입고백로그 목록 -->
-            <div class="releasebacklog-modal" id="releasebacklogModal" style="display: block;">
+            <div class="releasebacklog-modal" id="releasebacklogModal">
                 <select class="itemListForInWarehouseBacklog" id="itemListForInWarehouseBacklog" onchange="selectOneItemInfo(this.value, this.options[this.selectedIndex].text);">
                     <option selected="selected" disabled="disabled">선택해주세요</option>
                 </select>
@@ -248,39 +222,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- 이슈 출고백로그 목록 -->
-            <div class="inwarehousebaklog-modal" id="inwarehousebacklogModal" style="display: none;">
-                <div class="ibox">
-                        <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 이슈출고 백로그</h3>
-                    <div class="ibox-content">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover dataTables-example" >
-                                <thead>
-                                <tr>
-                                    <th>번호</th>
-                                    <th>이슈번호</th>
-                                    <th>물품번호</th>
-                                    <th>물품명</th>
-                                    <th>이슈명</th>
-                                    <th>이슈제기일자</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="outbacklog : ${ outWarehouseBacklogList }" id="OutWarehouseBacklogList" class="OutWarehouseBacklogList">
-                                    <td th:text="${ outbacklog.outWarehouseBacklogNo }"></td>
-                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueNo }"></td>
-                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueItemDTOList.get(0).itemInfoNoForBacklog.itemInfoSerialNo }"></td>
-                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueItemDTOList.get(0).itemInfoNoForBacklog.itemInfoName }"></td>
-                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueTitle }"></td>
-                                    <td th:text="${ outbacklog.outWarehouseNoForBacklog.issueNoForBacklog.issueCreatedDate }"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         </div>
 
@@ -301,28 +242,9 @@
    //      document.getElementById("listModal").style.display = "none";
    //
    //  }
-   // document.getElementById("backcalendarButton").onclick = function () {
-   //     document.getElementById("calendarModal").style.display = "none";
-   //     document.getElementById("chartModalForIn").style.display = "block";
-   //     document.getElementById("releasebacklogModal").style.display = "block";
-   //     document.getElementById("inwarehousebacklogModal").style.display = "none";
-   //     document.getElementById("moveButton").style.display = "block";
-   //     document.getElementById("listModal").style.display = "block";
-   //
-   // }
+
    document.getElementById("releasebacklogButton").onclick = function () {
-       document.getElementById("releasebacklogModal").style.display = "block";
-       document.getElementById("inwarehousebacklogModal").style.display = "none";
-       document.getElementById("charModalForOut").style.display = "none";
-       document.getElementById("chartModalForIn").style.display = "block";
-
-
-   }
-   document.getElementById("inwarehousebacklogButton").onclick = function () {
-       document.getElementById("releasebacklogModal").style.display = "none";
-       document.getElementById("inwarehousebacklogModal").style.display = "block";
-       document.getElementById("charModalForOut").style.display = "block";
-       document.getElementById("chartModalForIn").style.display = "none";
+       location.href='/backlog/outwarehouselist';
    }
 
 

@@ -1,9 +1,12 @@
 package com.greedy.jaegojaego.backlog.service;
 
+import com.greedy.jaegojaego.backlog.dto.OutWarehouseBacklog.OutWarehouseBacklogDTO;
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehouse;
 import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogItemInfo;
+import com.greedy.jaegojaego.backlog.entity.OutWarehouseBacklog.OutWarehouseBacklog;
 import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.BacklogItemInfoRepository;
 import com.greedy.jaegojaego.backlog.repository.InWarehouseBacklog.InWarehouseBacklogRepository;
+import com.greedy.jaegojaego.backlog.repository.OutWarehouseBacklog.OutWarehouseBacklogRepository;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
@@ -15,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -30,6 +34,10 @@ public class BacklogServiceTests {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private OutWarehouseBacklogRepository outWarehouseBacklogRepository;
+
 
     @Test
     @DisplayName("서비스 입고 백로그 목록 조회 테스트")
@@ -71,6 +79,20 @@ public class BacklogServiceTests {
 
         //then
         assertNotNull(findBacklogInWarehouseBySelectBox);
+    }
+
+    @Test
+    @DisplayName("서비스 이슈 출고 목록 조회 테스트")
+    public void findBacklogOutWarehouseListTests() {
+
+        //given
+
+        //when
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
+
+        //then
+        assertNotNull(outWarehouseBacklogList);
     }
 }
 
