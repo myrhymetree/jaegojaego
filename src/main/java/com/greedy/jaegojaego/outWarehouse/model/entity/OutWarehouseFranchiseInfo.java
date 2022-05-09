@@ -4,9 +4,20 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "outWarehouseFranchiseInfo")
-@Table(name = "FRANCHISE INFO")
-@PrimaryKeyJoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-public class OutWarehouseFranchiseInfo extends OutWarehouseMember {
+@Table(name = "FRANCHISE_INFO")
+public class OutWarehouseFranchiseInfo implements Serializable{
+
+//    @Id
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+//    private OutWarehouseMember
+
+//    @Id
+//    @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
+//    private int franchiseRepresentativeNo;
+
+    @EmbeddedId
+    private OutWarehouseFranchiseInfoPk franchiseRepresentativeNo;
 
     @Column(name = "FRANCHISE_BRANCH_NAME")
     private String franchiseName;
@@ -16,15 +27,18 @@ public class OutWarehouseFranchiseInfo extends OutWarehouseMember {
 
     public OutWarehouseFranchiseInfo() {}
 
-    public OutWarehouseFranchiseInfo(String franchiseName, String franchiseAddress) {
+    public OutWarehouseFranchiseInfo(OutWarehouseFranchiseInfoPk franchiseRepresentativeNo, String franchiseName, String franchiseAddress) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
         this.franchiseName = franchiseName;
         this.franchiseAddress = franchiseAddress;
     }
 
-    public OutWarehouseFranchiseInfo(int memberNo, String officeDivision, String memberDivision, String franchiseName, String franchiseAddress) {
-        super(memberNo, officeDivision, memberDivision);
-        this.franchiseName = franchiseName;
-        this.franchiseAddress = franchiseAddress;
+    public OutWarehouseFranchiseInfoPk getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
+    }
+
+    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfoPk franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
     public String getFranchiseName() {
@@ -46,7 +60,8 @@ public class OutWarehouseFranchiseInfo extends OutWarehouseMember {
     @Override
     public String toString() {
         return "OutWarehouseFranchiseInfo{" +
-                "franchiseName='" + franchiseName + '\'' +
+                "franchiseRepresentativeNo=" + franchiseRepresentativeNo +
+                ", franchiseName='" + franchiseName + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 '}';
     }

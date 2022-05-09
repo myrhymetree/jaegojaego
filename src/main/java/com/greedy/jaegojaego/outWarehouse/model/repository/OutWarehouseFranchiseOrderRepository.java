@@ -8,9 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OutWarehouseFranchiseOrderRepository extends JpaRepository<OutWarehouseFranchiseOrder, Integer>, OutWarehouseFranchiseOrderRepositoryCustom {
+public interface OutWarehouseFranchiseOrderRepository extends JpaRepository<OutWarehouseFranchiseOrder, Integer> {
 
-    List<OutWarehouseFranchiseOrder> findAllOrderInfo();
-
-//    List<OutWarehouseFranchiseOrder> findAllFranchiseOrderList();
+    @Query(value = "SELECT A.FRANCHISE_ORDER_NO, A.MEMBER_NO " +
+            "         FROM FRANCHISE_ORDER A " +
+            "        WHERE A.FRANCHISE_ORDER_STATUS = 'COMPLETE'", nativeQuery = true)
+    List<OutWarehouseFranchiseOrder> getFranchiseOrderListByStatus(String franchiseOrderStatus);
 }

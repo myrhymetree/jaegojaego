@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -32,7 +33,6 @@ public class OutWarehouseController {
         this.outWarehouseService = outWarehouseService;
     }
 
-
     /**
      * findOutwarehouseList : 출고 목록 조회
      * @param mv : 출고 목록 정보와 화면 경로 정보를 담은 객체
@@ -53,11 +53,11 @@ public class OutWarehouseController {
         return mv;
     }
 
-    /**
-     * @param mv
-     * @param outWarehouseNo
-     * @return
-     */
+//    /**
+//     * @param mv
+//     * @param outWarehouseNo
+//     * @return
+//     */
 //    @GetMapping("/detail/{outWarehouseNo}")
 //    public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
 //
@@ -80,19 +80,25 @@ public class OutWarehouseController {
 //    }
 
     @GetMapping("/orderlist")
-    public String selectOrderList() {
+    @ResponseBody
+    public List<OutWarehouseFranchiseOrderListDTO> selectOrderList() {
 
-        // 모든 발주 list 가져와서 담을 변수 만들고 mv에 담아서 화면에 보내준다.
+        List<OutWarehouseFranchiseOrderListDTO> outWarehouseOrderList = outWarehouseService.findAllOrderList();
+        outWarehouseOrderList.forEach(System.out::println);
 
-        return null;
+        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+
+        return outWarehouseOrderList;
     }
 
     @GetMapping("/getorderlist")
     public ModelAndView getOrderList(ModelAndView mv) {
 
-        List<OutWarehouseFranchiseOrderListDTO> outWarehouseOrderList = outWarehouseService.findAllOrderList();
-
-        mv.addObject("outWarehouseOrderList", outWarehouseOrderList);
         mv.setViewName("/outWarehouse/list");
 
         return mv;

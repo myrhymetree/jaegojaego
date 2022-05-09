@@ -4,18 +4,15 @@ import javax.persistence.*;
 
 @Entity(name = "outWarehouseMember")
 @Table(name = "MEMBER")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class OutWarehouseMember {
 
     @Id
     @Column(name = "MEMBER_NO")
     private int memberNo;
 
-    // 본사인지 가맹점인지
     @Column(name = "OFFICE_DIVISION")
     private String officeDivision;
 
-    // 직급
     @Column(name = "MEMBER_DIVISION")
     private String memberDivision;
 

@@ -6,6 +6,7 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/outWarehouse/outWarehouse.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         .modal-content {
             box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px, rgba(0,0,0,0.5) 2px 2px 3px 3px !important;
@@ -153,6 +154,18 @@
     checkOrderListBtn[0].onclick = function() {
         document.getElementById("orderListModal").style.display = "block";
         document.getElementById("orderListModal").classList.add("show");
+
+        try {
+            axios.get("/outwarehouse/orderlist")
+            .then(function(res) {
+                alert("조회 성공");
+                console.log(res);
+                console.log(res.data[0]);
+            })
+        } catch(e) {
+            alert("조회 실패");
+            console.log(e);
+        }
     }
 
     for(let closeBtn of closeBtns) {

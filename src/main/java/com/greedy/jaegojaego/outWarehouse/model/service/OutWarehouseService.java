@@ -1,12 +1,9 @@
 package com.greedy.jaegojaego.outWarehouse.model.service;
 
-import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseOrderListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
-import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouse;
-import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseFranchiseOrder;
-import com.greedy.jaegojaego.outWarehouse.model.repository.OutWarehouseFranchiseOrderRepository;
-import com.greedy.jaegojaego.outWarehouse.model.repository.OutWarehouseRepository;
+import com.greedy.jaegojaego.outWarehouse.model.entity.*;
+import com.greedy.jaegojaego.outWarehouse.model.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /*
  * <pre>
@@ -32,13 +28,21 @@ public class OutWarehouseService {
     private final OutWarehouseRepository outWarehouseRepository;
     //    private final OutWarehouseDetailRespository outWarehouseDetailRespository;
     private final OutWarehouseFranchiseOrderRepository outWarehouseFranchiseOrderRepository;
+    private final OutWarehouseMemberRepository outWarehouseMemberRepository;
+    private final OutWarehouseFranchiseInfoRepository outWarehouseFranchiseInfoRepository;
+    private final OutWarehouseFranchiseAccountRepository outWarehouseFranchiseAccountRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public OutWarehouseService(OutWarehouseRepository outWarehouseRepository, OutWarehouseFranchiseOrderRepository outWarehouseFranchiseOrderRepository, ModelMapper modelMapper) {
+    public OutWarehouseService(OutWarehouseRepository outWarehouseRepository, OutWarehouseFranchiseOrderRepository outWarehouseFranchiseOrderRepository,
+                               OutWarehouseMemberRepository outWarehouseMemberRepository, OutWarehouseFranchiseInfoRepository outWarehouseFranchiseInfoRepository,
+                               OutWarehouseFranchiseAccountRepository outWarehouseFranchiseAccountRepository, ModelMapper modelMapper) {
         this.outWarehouseRepository = outWarehouseRepository;
 //        this.outWarehouseDetailRespository = outWarehouseDetailRespository;
         this.outWarehouseFranchiseOrderRepository = outWarehouseFranchiseOrderRepository;
+        this.outWarehouseMemberRepository = outWarehouseMemberRepository;
+        this.outWarehouseFranchiseInfoRepository = outWarehouseFranchiseInfoRepository;
+        this.outWarehouseFranchiseAccountRepository = outWarehouseFranchiseAccountRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -61,13 +65,68 @@ public class OutWarehouseService {
     @Transactional
     public List<OutWarehouseFranchiseOrderListDTO> findAllOrderList() {
 
-        List<OutWarehouseFranchiseOrder> outWarehouseFranchiseOrderInfoList = outWarehouseFranchiseOrderRepository.findAllOrderInfo();
-        outWarehouseFranchiseOrderInfoList.forEach(System.out::println);
+        String franchiseOrderStatus = "COMPLETE";
+
+        List<OutWarehouseFranchiseOrder> outWarehouseFranchiseOrderList = outWarehouseFranchiseOrderRepository.getFranchiseOrderListByStatus(franchiseOrderStatus);
+//        outWarehouseFranchiseOrderList.forEach(System.out::println);
+        List<OutWarehouseFranchiseOrderListDTO> list = new ArrayList<>();
+
+        for(int i = 0; i < outWarehouseFranchiseOrderList.size(); i++) {
+            OutWarehouseFranchiseOrderListDTO dto = new OutWarehouseFranchiseOrderListDTO();
+            dto.setFranchiseOrderNo(outWarehouseFranchiseOrderList.get(i).getFranchiseOrderNo());
+            dto.setMemberNo((outWarehouseFranchiseOrderList.get(i).getMemberNo().getMemberNo()));
+
+//            list.add(dto);
+            int memberNo = dto.getMemberNo();
+
+            OutWarehouseMember memberInfo = outWarehouseMemberRepository.getMemberInfo(memberNo);
+
+            System.out.println("memberInfo : " + memberInfo);
+//            System.out.println(memberInfo.getMemberDivision());
+//            System.out.println(memberInfo.getMemberDivision().getClass().getName());
+//            System.out.println(memberInfo.getOfficeDivision());
+//            System.out.println(memberInfo.getOfficeDivision().getClass().getName());
+
+            if("가맹점".equals(memberInfo.getMemberDivision()) && "대표자".equals(memberInfo.getOfficeDivision())) {
+                System.out.println("여긴오니????????????????");
+
+                OutWarehouseFranchiseInfoPk pkParam = new OutWarehouseFranchiseInfoPk();
+                pkParam.setFranchiseRepresentativeNo(memberInfo);
+
+                OutWarehouseFranchiseInfo franchiseInfo = outWarehouseFranchiseInfoRepository.getFranchiseInfo(pkParam);
+
+                System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                System.out.println(franchiseInfo);
+                System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
+                dto.setFranchiseName(franchiseInfo.getFranchiseName());
+                dto.setFranchiseAddress(franchiseInfo.getFranchiseAddress());
+
+                System.out.println("????????????????????????");
+                System.out.println(dto);
+                System.out.println("????????????????????????");
+            } else if("가맹점".equals(memberInfo.getMemberDivision()) && "직원".equals(memberInfo.getOfficeDivision())) {
+                System.out.println("이쪽도 와??????????????????");
+
+                OutWarehouseFranchiseAccountPk accountPkParam = new OutWarehouseFranchiseAccountPk();
+                accountPkParam.setFranchiseManagerNo(memberInfo);
+
+                OutWarehouseFranchiseAccount franchiseAccountInfo = outWarehouseFranchiseAccountRepository.getRepresentativeNo(accountPkParam);
+                dto.setFranchiseName(franchiseAccountInfo.getFranchiseRepresentativeNo().getFranchiseName());
+                dto.setFranchiseAddress(franchiseAccountInfo.getFranchiseRepresentativeNo().getFranchiseAddress());
+
+                System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                System.out.println(dto);
+                System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            }
+
+            list.add(dto);
+        }
 
 //        List<OutWarehouseFranchiseOrder> outWarehouseFranchiseOrderList = outWarehouseFranchiseOrderRepository.findAllFranchiseOrderList();
 
 //        return outWarehouseFranchiseOrderList.stream().map(outWarehouseFranchiseOrder -> modelMapper.map(outWarehouseFranchiseOrder, OutWarehouseFranchiseOrderListDTO.class)).collect(Collectors.toList());
-        return null;
+        return list;
     }
 
     /**

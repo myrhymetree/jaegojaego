@@ -105,14 +105,14 @@
                     "outWarehouseStatus": outWarehouseStatus
                 }
             )
-            .then(function (response) {
+            .then(function(response) {
                 alert("처리 상태 수정에 성공하셨습니다.");
                 console.log(response)
             })
             .then(() => {
                 location.reload();
             })
-        } catch (e) {
+        } catch(e) {
             alert("처리 상태 수정에 실패하셨습니다.");
             console.log(e);
         }
