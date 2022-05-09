@@ -68,6 +68,19 @@
 </div>
 <!-- 테이블 끝 -->
 
+<script>
+
+    document.getElementById("warehouseRegistButton").onclick = function (){
+        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
+
+    }
+
+
+</script>
+
+
+
+
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
 </html>

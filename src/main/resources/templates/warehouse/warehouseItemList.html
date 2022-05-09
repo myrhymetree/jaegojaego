@@ -60,6 +60,7 @@
             <th>품번</th>
             <th>품명</th>
             <th>재고 수량</th>
+            <th>수량 변동</th>
         </tr>
         </thead>
         <tbody>
@@ -71,7 +72,7 @@
             <td th:text="${ warehouse.warehouseItemInfo.getItemInfoName() }"></td>
             <td th:text="${ warehouse.warehouseItemAmount }"></td>
             <td>
-                <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.warehouseItemInfo.getItemInfoNo()}')|">변동 내역 조회</button>
+                <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.warehouseItemInfo.getItemInfoNo()}')|">수량 변경</button>
             </td>
         </tr>
         </tfoot>

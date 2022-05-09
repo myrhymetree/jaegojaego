@@ -27,19 +27,7 @@
                 <h5>품질 관리 창고</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">3건</h1>
-                <br>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-2">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>입고 완료</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">2건</h1>
+                <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
                 <br>
             </div>
         </div>
@@ -59,16 +47,31 @@
             <th>품목</th>
             <th>품번</th>
             <th>품명</th>
-            <th>재고 수량</th>
+            <th>처리일자</th>
+            <th>증가/감소 구분</th>
+            <th>변동 수량</th>
+            <th>변동 사유</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="warehouse : ${ warehouseItemAmount }">
-            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoNo() }"></td>
-            <td th:text="${ warehouse.warehouseItemInfo.getWarehouseMaterialCategory().getMaterialCategoryName() }"></td>
-            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoItemSerialNo() }"></td>
-            <td th:text="${ warehouse.warehouseItemInfo.getItemInfoName() }"></td>
-            <td th:text="${ warehouse.warehouseItemAmount }"></td>
+        <tr th:each="warehouse,num : ${ changeHistory }">
+            <td th:text="${ num.size - num.index }"></td>
+<!--            <td th:text="${ warehouse.getItemInfoNo().getItemInfoNo() }"></td>-->
+            <td th:text="${ warehouse.getItemInfoNo().getMaterialCategory().getMaterialCategoryName() }"></td>
+            <td th:text="${ warehouse.getItemInfoNo().getItemInfoItemSerialNo() }"></td>
+            <td th:text="${ warehouse.getItemInfoNo().getItemInfoName() }"></td>
+            <td th:text="${ warehouse.getWarehouseNo().getWarehouseCompleteDate() }"></td>
+            <td>
+                <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
+                    <a>증가</a>
+                </th:block>
+            </td>
+            <td th:text="${ warehouse.itemChangeAmount }"></td>
+            <td>
+            <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
+                <a>입고</a>
+            </th:block>
+            </td>
         </tr>
         </tfoot>
     </table>

@@ -74,6 +74,15 @@
         let No = num;
         location.href="/warehouse/complete/detail/" + num;
     }
+
+
+
+    document.getElementById("warehouseRegistButton").onclick = function (){
+        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
+
+    }
+
+
 </script>
 
 

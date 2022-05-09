@@ -3,6 +3,7 @@ package com.greedy.jaegojaego.warehouse.service;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseCompanyOrderHistoryDTO;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseItemAmountDTO;
+import com.greedy.jaegojaego.warehouse.dto.WarehouseItemChangeHistoryDTO;
 import com.greedy.jaegojaego.warehouse.entity.Warehouse;
 import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
 import com.greedy.jaegojaego.warehouse.entity.WarehouseItemAmount;
@@ -40,7 +41,7 @@ public class WarehouseService {
         this.modelMapper = modelMapper;
     }
 
-    /** 입고, 입하 상태 목록 조회용 */
+    /** 입고 목록 조회용  */
     public List<WarehouseDTO> findAllWarehouseList() {
 
         List<Warehouse> warehouseList = warehouseRepository.findAll(Sort.by(Sort.Direction.DESC, "warehouseNo"));
@@ -48,10 +49,37 @@ public class WarehouseService {
         return warehouseList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
     }
 
-    /** 발주 승인 완료 목록 불러오기 */
+    /** 입고 상태 수정용 + 재고 변동사항 등록용 */
+    public void modifyStatus(String status, int warehouseNo) {
+
+        /* 입고 정보 수정용 */
+        Warehouse warehouse = warehouseRepository.findByWarehouseNo(warehouseNo);
+        warehouse.setWarehouseStatus(status);
+        warehouse.setWarehouseCompleteDate(new Date(System.currentTimeMillis()));
+
+        System.out.println("service warehouse = " + warehouse);
+
+        /* 수정 후 변동 내역 table 추가용 */
+        WarehouseItemChangeHistory itemChangeHistory = new WarehouseItemChangeHistory();
+
+        itemChangeHistory.setItemInfoNo(warehouse.getItemInfoNo());                 //물품 정보 불러오기
+        itemChangeHistory.setItemChangeDivision(1);                                 //1 = 입고, 증가
+        itemChangeHistory.setWarehouseNo(warehouse);                                //입고 정보 불러오기
+        itemChangeHistory.setItemChangeAmount(warehouse.getWarehouseAmount());      //입고된 수량
+        itemChangeHistory.setWarehouseStatus(warehouse.getWarehouseStatus());       //입고 완료 정보 넣어주기
+//        itemChangeHistory.setItemDecrementReasonNo();                             //감소 사유 아직 필요 x
+//        itemChangeHistory.setOutWarehouseDivisionNo();                            //출고 번호 구분 필요 x
+
+        /* 입고 정보 수정 적용 */
+        warehouseRepository.save(warehouse);
+        /* 변동 내역 table 추가 적용 */
+        warehouseItemChangeHistoryRepository.save(itemChangeHistory);
+    }
+
+    /** 발주 승인 "완료" 목록 조회용 */
     public List<WarehouseCompanyOrderHistoryDTO> selectCompanyOrderList() {
 
-        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+//        modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
         List<WarehouseCompanyOrderHistory> warehouseCompanyOrderList = warehouseCompanyOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "companyOrderHistoryNo"));
 
@@ -60,35 +88,17 @@ public class WarehouseService {
         return warehouseCompanyOrderList.stream().map(companyOrder -> modelMapper.map(companyOrder, WarehouseCompanyOrderHistoryDTO.class)).collect(Collectors.toList());
     }
 
-    /** 입고, 입하 상태 수정용 */
-    public void modifyStatus(String status, int warehouseNo) {
+    /** 발주 "완료" 상세 조회용 */
+    public WarehouseCompanyOrderHistoryDTO findOrderHistoryByCompanyOrderHistoryNo(int companyOrderHistoryNo) {
 
-        Warehouse warehouse = warehouseRepository.findByWarehouseNo(warehouseNo);
-        warehouse.setWarehouseStatus("입고 완료");
-        warehouse.setWarehouseCompleteDate(new Date(System.currentTimeMillis()));
+        WarehouseCompanyOrderHistory orderHistory = warehouseCompanyOrderRepository.findById(companyOrderHistoryNo).get();
 
-        System.out.println("service warehouse = " + warehouse);
+        System.out.println("service orderHistory = " + orderHistory);
 
-        WarehouseItemChangeHistory itemChangeHistory = new WarehouseItemChangeHistory();
-
-        List<WarehouseItemChangeHistory> item = warehouseItemChangeHistoryRepository.findAll();
-
-//        itemChangeHistory.setItemChangeHistoryNo(2);      //Sequence이므로 필요x
-        itemChangeHistory.setItemInfoNo(warehouse.getItemInfoNo());
-        itemChangeHistory.setItemChangeDivision(1);
-        itemChangeHistory.setItemChangeAmount(warehouse.getWarehouseAmount());
-//        itemChangeHistory.setItemDecrementReasonNo();
-//        itemChangeHistory.setOutWarehouseDivisionNo();
-        itemChangeHistory.setWarehouseStatus("입고 완료");
-
-        /* 수정용 */
-        warehouseRepository.save(warehouse);
-
-        /* 재고변동table 추가용 */
-        warehouseItemChangeHistoryRepository.save(itemChangeHistory);
+        return modelMapper.map(orderHistory, WarehouseCompanyOrderHistoryDTO.class);
     }
 
-    /** 입고 목록에 발주 승인 완료된 정보 등록용 */
+    /** 발주 상세 목록에서 제품을 입고 목록에 등록용 */
     @Transactional
     public Object registNewOrder(int orderNo) {
 
@@ -122,15 +132,28 @@ public class WarehouseService {
 //        return null;
     }
 
-    /** 발주 "완료" 목록 상세 조회용 */
-    public WarehouseCompanyOrderHistoryDTO findOrderHistoryByCompanyOrderHistoryNo(int companyOrderHistoryNo) {
+    /** 재고 관리 상세 조회용 */
+    public List<WarehouseItemChangeHistoryDTO> findChangeHistoryByItemInfoNo() {
+//컬럼 이용해서 불러와야하는데 PK이용해서 불러옴
+        List<WarehouseItemChangeHistory> changeHistory = warehouseItemChangeHistoryRepository.findAll();
 
-        WarehouseCompanyOrderHistory orderHistory = warehouseCompanyOrderRepository.findById(companyOrderHistoryNo).get();
+        System.out.println("service changeHistory = " + changeHistory);
 
-        System.out.println("service orderHistory = " + orderHistory);
-
-        return modelMapper.map(orderHistory, WarehouseCompanyOrderHistoryDTO.class);
+        return changeHistory.stream().map(changeHistoryList -> modelMapper.map(changeHistoryList, WarehouseItemChangeHistoryDTO.class)).collect(Collectors.toList());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //    /** 발주 승인 완료 목록 불러오기 */

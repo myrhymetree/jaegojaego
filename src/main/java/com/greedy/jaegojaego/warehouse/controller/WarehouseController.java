@@ -45,7 +45,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /** 입고 상태 수정용 + 재고 변동사항추가용 */
+    /** 입고 상태 수정용 + 재고 변동사항 등록용 */
     @PostMapping("/modify")
     public ModelAndView modifyWarehouseStatus(ModelAndView mv, @RequestBody Map<String, Object> warehouseStatus) {
 
@@ -63,7 +63,7 @@ public class WarehouseController {
 
     /** 발주 승인 "완료" 목록 조회용 */
     @GetMapping("/complete")
-    public ModelAndView warehouseCompleteList(ModelAndView mv, HttpServletRequest request) {
+    public ModelAndView warehouseCompleteList(ModelAndView mv) {
 
         List<WarehouseCompanyOrderHistoryDTO> warehouseCompanyOrderList = warehouseService.selectCompanyOrderList();
 
@@ -87,6 +87,10 @@ public class WarehouseController {
 
         System.out.println("controller orderHistory = " + orderHistory);
 
+        System.out.println("===========================================================================================================");
+        System.out.println("Controller companyOrderHistoryNo" + companyOrderHistoryNo);
+        System.out.println("===========================================================================================================");
+
         /* view상단 박스에 갯수를 기입 */
         int itemCnt = 0;
         itemCnt = orderHistory.getCompanyOrderItemList().size();
@@ -101,7 +105,7 @@ public class WarehouseController {
         return mv;
     }
 
-    /** 발주 상세 목록에서 입고 목록에 추가용 */
+    /** 발주 상세 목록에서 제품을 입고 목록에 등록용 */
     @GetMapping("/regist")
     public ModelAndView warehouseRegist(ModelAndView mv, HttpServletRequest request) {
 
@@ -129,10 +133,23 @@ public class WarehouseController {
     }
 
     /** 재고 관리 상세 조회용 */
-    @GetMapping("/item/detail/{itemInfoNo}")
-    public ModelAndView warehouseChangeDetail(ModelAndView mv, @PathVariable int itemInfoNo) {
+    @GetMapping("/change")
+    public ModelAndView warehouseChangeDetail(ModelAndView mv) {
 
-        mv.setViewName("/warehouse/warehouseItemDetail");
+        List<WarehouseItemChangeHistoryDTO> changeHistory = warehouseService.findChangeHistoryByItemInfoNo();
+
+        System.out.println("controller changeHistory = " + changeHistory);
+
+        /* view상단 박스에 갯수를 기입 */
+        int itemCnt = 0;
+        itemCnt = changeHistory.size();
+        /* No를 카운트 하주기 위한 것 */
+        int No = 0;
+
+        mv.addObject("No", No);
+        mv.addObject("itemCnt", itemCnt);
+        mv.addObject("changeHistory", changeHistory);
+        mv.setViewName("/warehouse/warehouseChangeHistory");
 
         return mv;
     }

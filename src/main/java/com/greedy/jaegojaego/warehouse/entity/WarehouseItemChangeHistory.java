@@ -8,10 +8,20 @@ import javax.persistence.*;
 
 @Entity(name = "warehouseItemChangeHistory")
 @Table(name = "ITEM_CHANGE_HISTORY")
+@SequenceGenerator(
+        name = "ITEM_CHANGE_HISTORY_SEQ_GENERATOR",
+        sequenceName = "ITEM_CHANGE_HISTORY_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class WarehouseItemChangeHistory {
 
     @Id
     @Column(name = "ITEM_CHANGE_HISTORY_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "ITEM_CHANGE_HISTORY_SEQ_GENERATOR"
+    )
     private int itemChangeHistoryNo;
 
     @ManyToOne
