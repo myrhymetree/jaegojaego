@@ -1,14 +1,15 @@
 package com.greedy.jaegojaego.materials.model.service;
 
 import com.greedy.jaegojaego.materials.model.dto.ClientContractItemDTO;
+import com.greedy.jaegojaego.materials.model.dto.ClientContractItemMaterialDTO;
+import com.greedy.jaegojaego.materials.model.dto.ClientMaterialUpdateDTO;
 import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
-import com.greedy.jaegojaego.materials.model.entity.ClientContractItem;
-import com.greedy.jaegojaego.materials.model.entity.Materials;
-import com.greedy.jaegojaego.materials.model.repository.MaterialsClientContractItemRepository;
-import com.greedy.jaegojaego.materials.model.repository.MaterialsRepository;
+import com.greedy.jaegojaego.materials.model.entity.*;
+import com.greedy.jaegojaego.materials.model.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +22,19 @@ public class MaterialsService {
     private final MaterialsRepository materialsRepository;
     private final ModelMapper modelMapper;
     private final MaterialsClientContractItemRepository clientContractItemRepository;
+    private final MaterialsClientContractItemMaterialRepository clientContractItemMaterialRepository;
+    private final MaterialsClientUpdateRepository materialsClientUpdateRepository;
+    private final MaterialsCategoryRepository materialsCategoryRepository;
 
     @Autowired
-    public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, MaterialsClientContractItemRepository clientContractItemRepository){
+    public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, MaterialsClientContractItemRepository clientContractItemRepository, MaterialsClientContractItemMaterialRepository clientContractItemMaterialRepository,
+                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository){
         this.materialsRepository = materialsRepository;
         this.modelMapper = modelMapper;
         this.clientContractItemRepository = clientContractItemRepository;
+        this.clientContractItemMaterialRepository = clientContractItemMaterialRepository;
+        this.materialsClientUpdateRepository = materialsClientUpdateRepository;
+        this.materialsCategoryRepository = materialsCategoryRepository;
     }
 
     public List<MaterialsDTO> findMaterialsList() {
@@ -44,21 +52,9 @@ public class MaterialsService {
 
         MaterialsDTO materialsDTO = modelMapper.map(materials, MaterialsDTO.class);
 
-        System.out.println("여기까지는 되나" + " " + materialsDTO);
-        System.out.println("여기까지는 되나" + " " + materialsDTO);
-        System.out.println("여기까지는 되나" + " " + materialsDTO);
-
         List<ClientContractItem> clientList =  clientContractItemRepository.findAllClientList(itemInfoNo);
 
-        System.out.println("여기까지는 되나22" + " " + clientList);
-        System.out.println("여기까지는 되나22" + " " + clientList);
-        System.out.println("여기까지는 되나22" + " " + clientList);
-
         List<ClientContractItemDTO> clientContractItemDTO = clientList.stream().map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class)).collect(Collectors.toList());
-
-        System.out.println("여기까지는 되나33" + " " + clientContractItemDTO);
-        System.out.println("여기까지는 되나33" + " " + clientContractItemDTO);
-        System.out.println("여기까지는 되나33" + " " + clientContractItemDTO);
 
         for (ClientContractItemDTO list: clientContractItemDTO
              ) {
@@ -71,5 +67,33 @@ public class MaterialsService {
         return productAllList;
     }
 
+
+    public List<ClientContractItemMaterialDTO> findClientList() {
+
+        List<ClientContractItemMaterial> clientMaterialList = clientContractItemMaterialRepository.findClientList();
+
+        return clientMaterialList.stream().map(clientMaterial -> modelMapper.map(clientMaterial, ClientContractItemMaterialDTO.class)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateMapping(/*ClientContractItemMaterialDTO clientContractItemMaterialDTO*/ ClientMaterialUpdateDTO clientMaterialUpdateDTO) {
+
+        ClientMaterialUpdate clientMaterialUpdate = materialsClientUpdateRepository.findUpdate(clientMaterialUpdateDTO.getClientItemNo());
+        clientMaterialUpdate.setItemInfoNo(clientMaterialUpdateDTO.getItemInfoNo());
+    }
+
+    @Transactional
+    public void materialModify(MaterialsDTO MaterialsDTO) {
+
+        /*Materials materials = materialsRepository.findById(MaterialsDTO.getItemInfoNo()).get();
+        MaterialsCategory materialsCategory = materialsCategoryRepository.findByName(MaterialsDTO.getMaterialsCategory()).get();
+        materials.setItemInfoNo(MaterialsDTO.getItemInfoNo());
+        materials.setItemInfoName(MaterialsDTO.getItemInfoName());
+        materials.setItemSerialNo(MaterialsDTO.getItemSerialNo());
+        materials.setMaterialCategory(MaterialsDTO.getMaterialsCategory().getMaterialCategoryName());
+        materials.setSubdivisionUnit(MaterialsDTO.getSubdivisionUnit());
+        materials.setSubdivisionYN(MaterialsDTO.getSubdivisionYN());
+        materials.setItemPrice(MaterialsDTO.getItemPrice());*/
+    }
 }
 
