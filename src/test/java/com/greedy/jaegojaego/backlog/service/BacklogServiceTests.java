@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,6 +80,7 @@ public class BacklogServiceTests {
         List<BacklogInWarehouse> findBacklogInWarehouseBySelectBox = inWarehouseBacklogRepository.findBacklogInWarehouseBySelectBox(itemInfoNo);
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
+
         //then
         assertNotNull(findBacklogInWarehouseBySelectBox);
     }
@@ -94,5 +98,32 @@ public class BacklogServiceTests {
         //then
         assertNotNull(outWarehouseBacklogList);
     }
+
+
+    @Test
+    @DisplayName("서비스 이슈 출고 목록 특정 자재 선택 시 바 그래프 조회 테스트")
+    public void findBacklogOutWarehouseBarGraphListTests() {
+
+        //given
+        int  itemInfoNo = 1;
+
+        //when
+        List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
+        Optional<BacklogItemInfo> itemName = backlogItemInfoRepository.findById(itemInfoNo);
+        String itemNameForRepare = itemName.get().getItemInfoName();
+        List<Date> date = new ArrayList<>();
+
+        for(int i = 0; i < outWarehouseBacklogList.size(); i++) {
+            if(itemNameForRepare.equals(outWarehouseBacklogList.get(i).getOutWarehouseNoForBacklog().getIssueNoForBacklog().getIssueItemDTOList().get(0).getItemInfoNoForBacklog().getItemInfoName())) {
+                date.add(outWarehouseBacklogList.get(i).getOutWarehouseNoForBacklog().getIssueNoForBacklog().getIssueCreatedDate());
+            }
+        }
+
+        assertNotNull(date);
+
+    }
+    
+    
+    
 }
 

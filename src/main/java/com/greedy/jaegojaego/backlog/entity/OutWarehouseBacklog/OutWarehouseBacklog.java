@@ -12,7 +12,7 @@ public class OutWarehouseBacklog {
     @Column(name = "COMPANY_ISSUE_RELEASE_BACKLOG_NO")
     private int outWarehouseBacklogNo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OUT_WAREHOUSE_DIVISION_NO")
     private OutBacklogOutWarehouse outWarehouseNoForBacklog;
 

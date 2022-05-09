@@ -96,23 +96,6 @@ public class BacklogControllerTests {
         assertNotNull(backlogInWarehouseDTOList);
     }
 
-    //ㄱㄷ
-//    @Test
-//    @DisplayName("컨트롤러 셀렉트 박스 선택시 특정 이슈 출고 목록 리스트 조회 테스트")
-//    public void findBacklogOutWarehouseListTests() {
-//
-//        //given
-//        int itemInfoNo = 1;
-//
-//        //when
-//
-//        modelMapper.getConfiguration().setAmbiguityIgnored(true);
-//        List<OutWarehouseBacklogDTO> backlogOutWarehouseDTOList = backlogService.findBacklogOutWarehouseBySelectBox(itemInfoNo).stream().map(outWarehouseBacklog -> modelMapper.map(outWarehouseBacklog, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
-//
-//        //then
-//        assertNotNull(backlogOutWarehouseDTOList);
-//    }
-
     //lazy에러로 일단 보류//
     @Test
     @DisplayName("컨트롤러 이슈 출고 목록 조회 테스트")
@@ -122,13 +105,27 @@ public class BacklogControllerTests {
         //given
 
         //when
-        List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
-//        List<OutWarehouseBacklogDTO> testList = outWarehouseBacklogList.stream().map(outWarehouseBacklog -> modelMapper.map(outWarehouseBacklog, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
-//        backlogService.selectOutWarehouseBacklogList();
+        List<OutWarehouseBacklogDTO> outWarehouseBacklogList = backlogService.selectOutWarehouseBacklogList();
 
         //then
         assertNotNull(outWarehouseBacklogList);
     }
 
+
+    @Test
+    @DisplayName("컨트롤러 이슈 출고 목록 특정 자재 선택 시 바 그래프 조회 테스트")
+    public void findBacklogOutWarehouseBarGraphListTests() {
+
+
+        //given
+        int itemInfoNo = 1;
+
+        //when
+         backlogService.findBacklogOutWarehouseBySelectBox(itemInfoNo);
+
+        //then
+        assertNotNull(backlogService.findBacklogOutWarehouseBySelectBox(itemInfoNo));
+    }
+    
 
 }

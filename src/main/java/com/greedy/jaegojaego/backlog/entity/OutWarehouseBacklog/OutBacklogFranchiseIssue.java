@@ -20,7 +20,7 @@ public class OutBacklogFranchiseIssue {
     @Column(name = "FRANCHISE_ISSUE_CREATED_DATE")
     private Date issueCreatedDate;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "FRANCHISE_ISSUE_NO")
     private List<OutBacklogIssueItem> issueItemDTOList; //OneToMany
 
