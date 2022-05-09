@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity(name = "FranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
 @PrimaryKeyJoinColumn(name = "FRANCHISE_MANAGER_NO")
@@ -33,4 +32,13 @@ public class FranchiseAccount extends Member {
     @JoinColumn(name = "REPRESENTATIVE_NO", insertable = false, updatable = false)
     private FranchiseInfo franchiseInfo;
 
+    @Override
+    public String toString() {
+        return "FranchiseAccount{" +
+                "managerName='" + managerName + '\'' +
+                ", managerPhone='" + managerPhone + '\'' +
+                ", managerEmail='" + managerEmail + '\'' +
+                ", representativeNo=" + representativeNo +
+                '}';
+    }
 }

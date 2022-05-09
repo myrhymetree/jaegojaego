@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -190,5 +191,27 @@ public class MemberService {
         CompanyAccount memberDetailInfo =  companyAccountRepository.findByMemberNo(memberNo);
 
         return modelMappper.map(memberDetailInfo, CompanyAccountDTO.class);
+    }
+
+    public void modifyMemberInfo(CompanyAccountDTO member) {
+
+        if(!member.getMemberPwd().isEmpty()) {
+
+            Member memberPwd = memberRepository.findMemberPwdByMemberNo(member.getMemberNo());
+
+            PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+            /* 새로 변경할 비밀번호가 아닌 이전 비빌번호를 내역에 저장함 */
+            passwordUpdatedRecord.setPasswordUpdatedRecordPwd(memberPwd.getMemberPwd());
+            passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+            passwordUpdatedRecord.setMemberNo(member.getMemberNo());
+
+            /* 관리자가 임의로 지정한 비밀번호이기 때문에 비밀번호 초기화 여부는 Y로 체크해준다. */
+            member.setMemberPwdInitStatus("Y");
+        }
+
+        /* entity 타입으로 값 변경 필요 */
+        CompanyAccount companyAccount = new CompanyAccount();
+
+
     }
 }

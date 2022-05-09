@@ -4,11 +4,11 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
-import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
-import com.greedy.jaegojaego.franchise.entity.FranchiseAttachmentFile;
-import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
-import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
-import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
+import com.greedy.jaegojaego.franchise.dto.FranchiseAccountDTO;
+import com.greedy.jaegojaego.franchise.dto.FranchiseDetailViewDTO;
+import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
+import com.greedy.jaegojaego.franchise.entity.*;
+import com.greedy.jaegojaego.franchise.repository.*;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,7 +37,16 @@ class FranchiseServiceTest {
     private FranchiseRepository franchiseRepository;
 
     @Autowired
+    private FranchiseDetailViewReposirory franchiseDetailViewReposirory;
+
+    @Autowired
     private FranchiseAccountRepository franchiseAccountRepository;
+
+    @Autowired
+    private FranchiseContractRepository franchiseContractRepository;
+
+    @Autowired
+    private FranchiseAttachmentRepository attachmentRepository;
 
     @Autowired
     private MemberRoleRepository memberRoleRepository;
@@ -143,7 +153,68 @@ class FranchiseServiceTest {
 
     @Test
     @Transactional
-    public void 가맹점_목록_조회() {
+    public void 가맹점_계정_목록_조회() {
+
+        String searchWord = "강남";
+
+        List<FranchiseInfo> franchiseInfos = franchiseRepository.searchFranchise(searchWord);
+
+        List<FranchiseInfoDTO> franchiseInfoDTOS =
+                franchiseInfos.stream().map(franchiseInfo -> modelMapper.map(franchiseInfo, FranchiseInfoDTO.class)).collect(Collectors.toList());
+
+        franchiseInfoDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(franchiseInfos);
 
     }
+
+    @Test
+    @Transactional
+    public void 가맹점_매니저_게정_목록_조회() {
+
+        String searchWord = null;
+
+        List<FranchiseAccount> franchiseAccounts = franchiseAccountRepository.searchManager(searchWord);
+
+        List<FranchiseAccountDTO> franchiseAccountDTOS =
+                franchiseAccounts.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        franchiseAccountDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(franchiseAccountDTOS);
+    }
+
+    @Test
+    public void 가맹점_상세조회() {
+
+        Integer franchiseNo = 429;
+
+        FranchiseDetailView franchise = franchiseDetailViewReposirory.findByMemberNo(franchiseNo);
+
+        FranchiseContractUpdatedRecord record = franchiseContractRepository.findByFranchiseRepresentativeNo(franchiseNo);
+        System.out.println("records = " + record);
+
+        franchise.setFranchiseContractUpdatedRecord(record);
+
+        System.out.println("franchise = " + franchise);
+
+        FranchiseDetailViewDTO result = modelMapper.map(franchise, FranchiseDetailViewDTO.class);
+
+        assertEquals(franchiseNo, result.getMemberNo());
+    }
+
+    @Test
+    public void 가맹점_관련_서류_다운로드() {
+
+        Integer fileNo = 1;
+
+        FranchiseAttachmentFile file = attachmentRepository.findByAttachmentNo(fileNo);
+
+        System.out.println("fileNo = " + fileNo);
+
+        assertEquals(1, file.getAttachmentNo());
+
+    }
+
+
 }

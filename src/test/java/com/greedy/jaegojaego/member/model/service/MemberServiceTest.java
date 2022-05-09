@@ -140,4 +140,15 @@ class MemberServiceTest {
 
         assertEquals(70, member.getMemberNo());
     }
+
+    @Test
+    public void 계정_번호로_비밀번호_찾기() {
+
+        Integer memberNo = 1;
+
+        Member member = memberRepository.findMemberPwdByMemberNo(memberNo);
+        System.out.println("pwd = " + member.getMemberPwd());
+        
+        assertNotNull(member.getMemberPwd());
+    }
 }

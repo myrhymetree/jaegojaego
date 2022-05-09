@@ -11,4 +11,6 @@ public interface FranchiseAccountRepository extends JpaRepository<FranchiseAccou
 
     FranchiseAccount findAllByMemberNoAndMemberDivisionAndOfficeDivision
             (Integer memberNo, String memberDivision, String officeDivision);
+
+    FranchiseAccount findByMemberNo(Integer managerNo);
 }
