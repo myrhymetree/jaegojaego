@@ -74,7 +74,7 @@ public class IssueController {
     }
 
     @PostMapping("/regist")
-    public String registIssue(ModelAndView mv, MultipartHttpServletRequest multirequest, HttpServletRequest request, Authentication authentication) {
+    public String registIssue(MultipartHttpServletRequest multirequest, HttpServletRequest request, Authentication authentication) {
 
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
@@ -195,6 +195,118 @@ public class IssueController {
         Gson gson = new Gson();
 
         return gson.toJson(franchiseOrderList);
+    }
+
+    @PostMapping("/modify")
+    public String modifyIssue(MultipartHttpServletRequest multirequest, HttpServletRequest request, Authentication authentication) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        String issueTitle = request.getParameter("issueTitle");
+        String issueBody = request.getParameter("issueBody");
+        String[] issueItemNo = request.getParameterValues("itemNo");
+        String[] issueItemAmount = request.getParameterValues("issueItemAmount");
+        int imgResetCheck = Integer.parseInt(request.getParameter("imgResetCheck"));
+        int issueNo = Integer.parseInt(request.getParameter("issueNo"));
+        int issueOrderNo = Integer.parseInt(request.getParameter("issueOrderNo"));
+
+        IssueDTO issue = new IssueDTO();
+        issue.setFranchiseIssueNo(issueNo);
+        issue.setFranchiseIssueTitle(issueTitle);
+        issue.setFranchiseIssueBody(issueBody);
+
+        List<IssueItemDTO> issueItemList = new ArrayList<>();
+
+        for(int i = 0; i < issueItemNo.length; i++) {
+
+            OrderItemInfoDTO orderItemInfo = new OrderItemInfoDTO();
+            orderItemInfo.setItemInfoNo(Integer.parseInt(issueItemNo[i]));
+
+            IssueItemDTO issueItem = new IssueItemDTO();
+            issueItem.setIssueItemAmount(Integer.parseInt(issueItemAmount[i]));
+            issueItem.setOrderItemInfoDTO(orderItemInfo);
+
+            issueItemList.add(issueItem);
+        }
+
+        String fileUploadDirectory = rootLocation;
+
+        File conversionFileDirectory = new File(fileUploadDirectory);
+
+        if (!conversionFileDirectory.exists()) {
+
+            conversionFileDirectory.mkdirs();
+        }
+
+        List<MultipartFile> fileList = multirequest.getFiles("uploadImages");
+
+        List<IssueAttachmentFileDTO> issueAttachmentFileList = new ArrayList<>();
+        List<String> conversionNameList = new ArrayList<>();
+
+        String originalFileName = ""; //원본 파일명
+        String conversionFileName = ""; //변경 파일명
+
+        if(fileList.get(0).getSize() > 0) {
+            for(MultipartFile mf : fileList) {
+
+                originalFileName = mf.getOriginalFilename();
+                String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+                conversionFileName = "thumbnail_" + UUID.randomUUID().toString().replace("-", "") + ext;
+
+                IssueAttachmentFileCategoryDTO issueAttachmentFileCategory = new IssueAttachmentFileCategoryDTO();
+                issueAttachmentFileCategory.setAttachmentFileCategoryNo(4);
+
+                if(originalFileName != null && originalFileName.length() != 0) {
+
+                    try {
+                        mf.transferTo(new File(fileUploadDirectory + "/" + conversionFileName));
+
+                        conversionNameList.add(fileUploadDirectory + "/" + conversionFileName);
+
+                        String thumbnailPath = "/upload/issue/conversion/" + conversionFileName;
+
+                        IssueAttachmentFileDTO issueAttachmentFile = new IssueAttachmentFileDTO();
+                        issueAttachmentFile.setAttachmentFileOriginalName(originalFileName);
+                        issueAttachmentFile.setAttachmentFileChangedName(conversionFileName);
+                        issueAttachmentFile.setAttachmentFileDeleteYn("N");
+                        issueAttachmentFile.setAttachmentFileDivision("이슈");
+                        issueAttachmentFile.setAttachmentFileUrl(fileUploadDirectory);
+                        issueAttachmentFile.setIssueAttachmentFileCategory(issueAttachmentFileCategory);
+                        issueAttachmentFile.setAttachmentFileThumbnailUrl(thumbnailPath);
+
+                        issueAttachmentFileList.add(issueAttachmentFile);
+
+                    } catch (IllegalStateException | IOException e) {
+                        e.printStackTrace();
+
+                        int deleteCnt = 0;
+
+                        for(int i = 0; i < conversionNameList.size(); i++) {
+
+                            File deleteFile = new File(conversionNameList.get(i));
+                            boolean isDeleted = deleteFile.delete();
+
+                            if(isDeleted) {
+                                deleteCnt++;
+                            }
+
+                        }
+
+                        if(fileList.size() == deleteCnt) {
+                            System.out.println("업로드 실패한 모든 사진 삭제 완료");
+                            e.printStackTrace();
+                        } else {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+        }
+
+        issueService.updateIssue(customUser, issueAttachmentFileList, issue, issueOrderNo, issueItemList, imgResetCheck);
+
+        return "redirect:/issue/list";
     }
 
 }

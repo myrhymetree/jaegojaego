@@ -14,12 +14,13 @@ import com.greedy.jaegojaego.issue.issue.model.dto.IssueDTO;
 import com.greedy.jaegojaego.issue.issue.model.dto.IssueDetailDTO;
 import com.greedy.jaegojaego.issue.issue.model.dto.IssueItemDTO;
 import com.greedy.jaegojaego.issue.issue.model.entity.Issue;
+import com.greedy.jaegojaego.issue.issue.model.entity.IssueHistory;
 import com.greedy.jaegojaego.issue.issue.model.entity.IssueItem;
+import com.greedy.jaegojaego.issue.issue.model.repository.IssueHistoryRepository;
 import com.greedy.jaegojaego.issue.issue.model.repository.IssueItemRepository;
 import com.greedy.jaegojaego.issue.issue.model.repository.IssueRepository;
 import com.greedy.jaegojaego.issue.outWarehouse.model.entity.IssueOutWarehouse;
 import com.greedy.jaegojaego.issue.outWarehouse.model.repository.IssueOutWarehouseRepository;
-import com.greedy.jaegojaego.member.model.entity.AttachmentFile;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.order.order.model.dto.franchise.FranchiseOrderDTO;
 import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrder;
@@ -30,6 +31,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,12 +47,13 @@ public class IssueService {
     private final IssueOutWarehouseRepository issueOutWarehouseRepository;
     private final IssueItemRepository issueItemRepository;
     private final IssueAttachmentFileRepository issueAttachmentFileRepository;
+    private final IssueHistoryRepository issueHistoryRepository;
 
     @Autowired
     public IssueService(IssueFranchiseInfoRepository issueFranchiseInfoRepository, IssueFranchiseAccountRepository issueFranchiseAccountRepository
             , IssueRepository issueRepository, ModelMapper modelMapper, FranchiseOrderRepository franchiseOrderRepository
             , IssueOutWarehouseRepository issueOutWarehouseRepository, IssueItemRepository issueItemRepository
-            , IssueAttachmentFileRepository issueAttachmentFileRepository) {
+            , IssueAttachmentFileRepository issueAttachmentFileRepository, IssueHistoryRepository issueHistoryRepository) {
         this.issueFranchiseInfoRepository = issueFranchiseInfoRepository;
         this.issueFranchiseAccountRepository = issueFranchiseAccountRepository;
         this.issueRepository = issueRepository;
@@ -59,6 +62,7 @@ public class IssueService {
         this.issueOutWarehouseRepository = issueOutWarehouseRepository;
         this.issueItemRepository = issueItemRepository;
         this.issueAttachmentFileRepository = issueAttachmentFileRepository;
+        this.issueHistoryRepository = issueHistoryRepository;
     }
 
     public List<IssueDetailDTO> selectIssueList(CustomUser customUser) {
@@ -304,12 +308,6 @@ public class IssueService {
 
             for(int i = 0; i < franchiseOrderList.size(); i++) {
 
-                System.out.println("!!!!!!!!!!!!!!!! : " + franchiseOrderList.get(i).getFranchiseOrderOrderNumber());
-
-            }
-
-            for(int i = 0; i < franchiseOrderList.size(); i++) {
-
                 IssueOutWarehouse issueOutWarehouse = issueOutWarehouseRepository.findByFranchiseOrder_FranchiseOrderNoAndIssueOutWarehouseWorkingStatusName(franchiseOrderList.get(i).getFranchiseOrderNo(), "출고완료");
 
                 if(issueOutWarehouse != null) {
@@ -380,6 +378,14 @@ public class IssueService {
         Issue itemIssue = new Issue();
         itemIssue.setFranchiseIssueNo(issueNo);
 
+        IssueHistory issueHistory = new IssueHistory();
+        issueHistory.setIssue(itemIssue);
+        issueHistory.setFranchiseIssueHistoryUpdateMember(member);
+        issueHistory.setFranchiseIssueHistoryStatus("BEFORE");
+        issueHistory.setFranchiseIssueHistoryDate(new Date(System.currentTimeMillis()));
+
+        issueHistoryRepository.save(issueHistory);
+
         IssueOutWarehouse issueOutWarehouse = issueOutWarehouseRepository.findByFranchiseOrder_FranchiseOrderNoAndIssueOutWarehouseWorkingStatusName(orderNo, "출고완료");
 
         for(int i = 0; i < issueItemList.size(); i++) {
@@ -398,6 +404,70 @@ public class IssueService {
                 registIssueAttachmentFileList.get(i).setIssue(registIssue);
 
                 issueAttachmentFileRepository.save(registIssueAttachmentFileList.get(i));
+
+            }
+        }
+
+    }
+
+    @Transactional
+    public void updateIssue(CustomUser customUser, List<IssueAttachmentFileDTO> issueAttachmentFileList, IssueDTO issue, int issueOrderNo, List<IssueItemDTO> issueItemList, int imgResetCheck) {
+
+        Issue updateIssue = issueRepository.findById(issue.getFranchiseIssueNo()).get();
+        updateIssue.setFranchiseIssueTitle(issue.getFranchiseIssueTitle());
+        updateIssue.setFranchiseIssueBody(issue.getFranchiseIssueBody());
+
+        List<IssueItem> issueItems = issueItemRepository.findByIssue_FranchiseIssueNo(issue.getFranchiseIssueNo());
+
+        for(int i = 0; i < issueItems.size(); i++) {
+            issueItemRepository.delete(issueItems.get(i));
+        }
+
+        Member member = new Member();
+        member.setMemberNo(customUser.getMemberNo());
+
+        IssueHistory issueHistory = new IssueHistory();
+        issueHistory.setIssue(updateIssue);
+        issueHistory.setFranchiseIssueHistoryUpdateMember(member);
+        issueHistory.setFranchiseIssueHistoryStatus("BEFORE");
+        issueHistory.setFranchiseIssueHistoryDate(new Date(System.currentTimeMillis()));
+
+        issueHistoryRepository.save(issueHistory);
+
+        IssueOutWarehouse issueOutWarehouse = issueOutWarehouseRepository.findByFranchiseOrder_FranchiseOrderNoAndIssueOutWarehouseWorkingStatusName(issueOrderNo, "출고완료");
+
+        List<IssueItem> updateIssueItemList = issueItemList.stream().map(issueItem -> modelMapper.map(issueItem, IssueItem.class)).collect(Collectors.toList());
+
+        for(int i = 0; i < issueItemList.size(); i++) {
+
+            updateIssueItemList.get(i).setIssue(updateIssue);
+            updateIssueItemList.get(i).setIssueOutWarehouse(issueOutWarehouse);
+
+            issueItemRepository.save(updateIssueItemList.get(i));
+        }
+
+        if(imgResetCheck == 1) {
+
+            List<IssueAttachmentFile> deleteIssueAttachmentFileList = issueAttachmentFileRepository.findByIssue_FranchiseIssueNoAndAttachmentFileDeleteYn(updateIssue.getFranchiseIssueNo(), "N");
+
+            for(int i = 0; i < deleteIssueAttachmentFileList.size(); i++) {
+                deleteIssueAttachmentFileList.get(i).setAttachmentFileDeleteYn("Y");
+            }
+        }
+
+        List<IssueAttachmentFile> updateIssueAttachmentFileList = null;
+
+        if(issueAttachmentFileList != null) {
+            updateIssueAttachmentFileList = issueAttachmentFileList.stream().map(issueAttachmentFile -> modelMapper.map(issueAttachmentFile, IssueAttachmentFile.class)).collect(Collectors.toList());
+        }
+
+        if(updateIssueAttachmentFileList != null) {
+
+            for(int i = 0; i < updateIssueAttachmentFileList.size(); i++) {
+
+                updateIssueAttachmentFileList.get(i).setIssue(updateIssue);
+
+                issueAttachmentFileRepository.save(updateIssueAttachmentFileList.get(i));
 
             }
         }
