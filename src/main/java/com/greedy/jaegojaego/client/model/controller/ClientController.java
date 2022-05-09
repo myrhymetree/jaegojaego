@@ -271,4 +271,30 @@ public class ClientController {
         return mv;
     }*/
 
+
+    @GetMapping("/itemlist")
+    public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Page<ClientContractItemDTO> clientContractItemList = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)){
+            clientContractItemList = clientService.findClientItemSearchList(searchCondition, searchValue, pageable);
+        } else {
+            clientContractItemList = clientService.findClientItemList(pageable);
+        }
+
+        mv.addObject("clientContractItemList", clientContractItemList);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(clientContractItemList);
+        mv.addObject("paging", paging);
+
+        System.out.println("계약상품 : " + clientContractItemList);
+
+        mv.setViewName("/client/clientContractItemList");
+
+        return mv;
+    }
 }

@@ -4,7 +4,7 @@ import com.greedy.jaegojaego.materials.model.dto.ClientContractItemDTO;
 import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
 import com.greedy.jaegojaego.materials.model.entity.ClientContractItem;
 import com.greedy.jaegojaego.materials.model.entity.Materials;
-import com.greedy.jaegojaego.materials.model.repository.ClientContractItemRepository;
+import com.greedy.jaegojaego.materials.model.repository.MaterialsClientContractItemRepository;
 import com.greedy.jaegojaego.materials.model.repository.MaterialsRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ public class MaterialsService {
 
     private final MaterialsRepository materialsRepository;
     private final ModelMapper modelMapper;
-    private final ClientContractItemRepository clientContractItemRepository;
+    private final MaterialsClientContractItemRepository clientContractItemRepository;
 
     @Autowired
-    public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, ClientContractItemRepository clientContractItemRepository){
+    public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, MaterialsClientContractItemRepository clientContractItemRepository){
         this.materialsRepository = materialsRepository;
         this.modelMapper = modelMapper;
         this.clientContractItemRepository = clientContractItemRepository;
