@@ -1,0 +1,7 @@
+.main {
+    background: url("../../img/mainImage.png") no-repeat center;
+    background-size: cover;
+    margin: 50px;
+    width: 1750px;
+    height: 850px;
+}
