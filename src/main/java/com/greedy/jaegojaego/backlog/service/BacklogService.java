@@ -61,13 +61,11 @@ public class BacklogService {
 
     public List<BacklogInWarehouseDTO> selectInWarehouseBacklogList() {
 
+        /** 입고 목록 전체 조회 */
         List<BacklogInWarehouse> inWarehouseBacklogList = inWarehouseBacklogRepository.findAll();
-//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
-        System.out.println("엔티티 전체조회");
-        inWarehouseBacklogList.forEach(System.out::println);
-        /* DTO에 넣어주고 */
+        /** DTO에 넣음 */
         List<BacklogInWarehouseDTO> backlogInWarehouseDTOList = new ArrayList<>();
 
         for(int i = 0; i < inWarehouseBacklogList.size(); i++) {
@@ -95,8 +93,6 @@ public class BacklogService {
                 backlogInWarehouseDTOList.add(backlogInWarehouseDTO);
             }
         }
-
-
         return backlogInWarehouseDTOList;
 
     }
@@ -104,8 +100,6 @@ public class BacklogService {
     public List<BacklogItemInfoDTO> findItemInfoList() {
 
         List<BacklogItemInfo> ItemInfoList = backlogItemInfoRepository.findAll();
-
-        ItemInfoList.forEach(System.out::println);
 
         return ItemInfoList.stream().map(backlogItemInfo -> modelMapper.map(backlogItemInfo, BacklogItemInfoDTO.class)).collect(Collectors.toList());
     }
@@ -121,8 +115,6 @@ public class BacklogService {
 
         List<BacklogClient> clinetList = backlogClientRepository.findAll();
 
-        clinetList.forEach(System.out::println);
-
         return clinetList.stream().map(backlogClient -> modelMapper.map(backlogClient, BacklogClientDTO.class)).collect(Collectors.toList());
     }
 
@@ -130,35 +122,20 @@ public class BacklogService {
 
         List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
 
-        System.out.println("되냐?");
-        outWarehouseBacklogList.forEach(System.out::println);
-
-
         return outWarehouseBacklogList.stream().map(outWarehouseBacklog -> modelMapper.map(outWarehouseBacklog, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
     }
 
-//    public List<OutWarehouseBacklogDTO> findBacklogOutWarehouseBySelectBox(int itemInfoNo) {
-//
-//        List<OutWarehouseBacklog> findBacklogOutWarehouseBySelectBox = outWarehouseBacklogRepository.findBacklogOutWarehouseBySelectBox(itemInfoNo);
-//        System.out.println("잘나오냐? : " + findBacklogOutWarehouseBySelectBox);
-//
-//        return findBacklogOutWarehouseBySelectBox.stream().map(backlogOutWarehouse -> modelMapper.map(backlogOutWarehouse, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
-//
-//
-//    }
-
     public List<Date> findBacklogOutWarehouseBySelectBox(int itemInfoNo) {
 
-        // 1) 일단 전체를 불러온다!
+        /** 출고 목록 전체 조회 */ 
         List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
 
-        // 2) itemInfoNo로 자재이름을 받아온다.
+        /** 자재 이름 조회 */
         Optional<BacklogItemInfo> itemName = backlogItemInfoRepository.findById(itemInfoNo);
         String itemNameForRepare = itemName.get().getItemInfoName();
 
 
-
-        // 3) 그 자재이름이랑 전체 불러온 애들 비교해서 맞으면 새로운 List에다가 넣음 ㅇㅇ
+        /** 자재 이름과 출고 목록 전체 조회의 자재 이름 비교 */
         List<Date> date = new ArrayList<>();
 
         for(int i = 0; i < outWarehouseBacklogList.size(); i++) {
@@ -167,11 +144,8 @@ public class BacklogService {
             }
         }
 
-        System.out.println("리스트");
-        date.forEach(System.out::println);
-        // 4) 글고 그친구 반환!
+        /** 반환 */
         return date;
 
-//        return findBacklogOutWarehouseBySelectBox.stream().map(backlogOutWarehouse -> modelMapper.map(backlogOutWarehouse, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
     }
 }

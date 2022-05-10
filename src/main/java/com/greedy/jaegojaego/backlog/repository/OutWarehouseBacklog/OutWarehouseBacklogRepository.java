@@ -1,18 +1,28 @@
 package com.greedy.jaegojaego.backlog.repository.OutWarehouseBacklog;
 
+import com.greedy.jaegojaego.backlog.entity.InWarehouseBacklog.BacklogInWarehouse;
 import com.greedy.jaegojaego.backlog.entity.OutWarehouseBacklog.OutWarehouseBacklog;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.util.List;
 
+/**
+ * <pre>
+ * Class : OutWarehouseBacklogRepository
+ * Comment : OutWarehouseBacklog Entity관련 메소드를 모아놓은 Repository입니다.
+ * History
+ * 2022/05/08 (이소현) OutWarehouseBacklogRepository 기본 설정 작성, 출고 백로그 조회
+ * </pre>
+ * @version ㄱㄷ
+ * @author 이소현
+ * @see OutWarehouseBacklog , BacklogService, OutWarehouseBacklogDTO
+ * */
 @Repository
 public interface OutWarehouseBacklogRepository extends JpaRepository<OutWarehouseBacklog,Integer> {
 
-    @Query( //필요한 애들만 select하게(부적접한열나옴 ㄱㄷ)
+    @Query(
             value = "SELECT * " +
                     "  FROM COMPANY_ISSUE_RELEASE_BACKLOG A " +
                     "  JOIN OUT_WAREHOUSE B ON(A.OUT_WAREHOUSE_DIVISION_NO = B.OUT_WAREHOUSE_NO) " +
@@ -22,9 +32,5 @@ public interface OutWarehouseBacklogRepository extends JpaRepository<OutWarehous
                     " WHERE E.ITEM_INFO_NO = :itemInfoNo " , nativeQuery = true
     )
     List<OutWarehouseBacklog> findBacklogOutWarehouseBySelectBox(int itemInfoNo);
-
-//    @Override
-//    @EntityGraph(attributePaths = {"test"})
-//    List<OutWarehouseBacklog> findAll();
 
 }

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MenuMaterialRepository extends JpaRepository<MenuMaterial, Integer> {
 
-
     @Query(
             value = "SELECT * " +
                     "  FROM ITEM_INFO A " +

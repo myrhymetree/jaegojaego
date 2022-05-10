@@ -8,7 +8,7 @@ import java.util.List;
 @SequenceGenerator(
         name = "MENU_SEQ_GENERATOR",
         sequenceName = "MENU_NO",
-        initialValue = 1, //1로 하면 무결성 떠서 일단 11로
+        initialValue = 1,
         allocationSize = 1
 )
 public class Menu {

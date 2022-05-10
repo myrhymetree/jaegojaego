@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Table(name = "FRANCHISE_ORDERABLE_ITEM")
 public class MenuFranchiseOrderableItem implements Serializable {
 
-    //얘가 pk/fk
     @Id
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")

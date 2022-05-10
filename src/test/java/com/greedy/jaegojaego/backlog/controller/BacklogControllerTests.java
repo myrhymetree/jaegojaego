@@ -89,7 +89,6 @@ public class BacklogControllerTests {
         int itemInfoNo = 1;
 
         //when
-
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<BacklogInWarehouseDTO> backlogInWarehouseDTOList = backlogService.findBacklogInWarehouseBySelectBox(itemInfoNo).stream().map(backlogInWarehouseDTO -> modelMapper.map(backlogInWarehouseDTO, BacklogInWarehouseDTO.class)).collect(Collectors.toList());
 

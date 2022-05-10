@@ -151,7 +151,6 @@ public class MenuServiceTests {
             rawMaterial.setRawMaterialName(menu.getMenuName());
             rawMaterial.setRawMaterialCapacity(menuCapacity);
 
-            System.out.println(rawMaterial);
             rawMaterialRepository.save(rawMaterial);
 
             assertNotNull(rawMaterialRepository.save(rawMaterial));

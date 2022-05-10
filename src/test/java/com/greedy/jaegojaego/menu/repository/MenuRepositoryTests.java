@@ -12,11 +12,7 @@ public class MenuRepositoryTests {
 
     }
 
-    @Test
-    @DisplayName("레파지토리 상세조회용 메소드 테스트")
-    public void selectOneMenuTest() {
-        //할게없음
-    }
+
 
 
 
