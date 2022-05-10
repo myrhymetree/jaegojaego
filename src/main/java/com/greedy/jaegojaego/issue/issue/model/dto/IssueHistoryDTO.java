@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.issue.issue.model.dto;
 
+import com.greedy.jaegojaego.issue.company.model.dto.IssueCompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 
 import java.sql.Date;
@@ -9,14 +10,14 @@ public class IssueHistoryDTO {
     private int franchiseIssueHistoryNo;
     private IssueDTO issue;
     private String franchiseIssueHistoryStatus;
-    private MemberDTO franchiseIssueHistoryCompleter;
+    private IssueCompanyAccountDTO franchiseIssueHistoryCompleter;
     private java.sql.Date franchiseIssueHistoryDate;
     private MemberDTO franchiseIssueHistoryUpdateMember;
 
     public IssueHistoryDTO() {
     }
 
-    public IssueHistoryDTO(int franchiseIssueHistoryNo, IssueDTO issue, String franchiseIssueHistoryStatus, MemberDTO franchiseIssueHistoryCompleter, Date franchiseIssueHistoryDate, MemberDTO franchiseIssueHistoryUpdateMember) {
+    public IssueHistoryDTO(int franchiseIssueHistoryNo, IssueDTO issue, String franchiseIssueHistoryStatus, IssueCompanyAccountDTO franchiseIssueHistoryCompleter, Date franchiseIssueHistoryDate, MemberDTO franchiseIssueHistoryUpdateMember) {
         this.franchiseIssueHistoryNo = franchiseIssueHistoryNo;
         this.issue = issue;
         this.franchiseIssueHistoryStatus = franchiseIssueHistoryStatus;
@@ -49,11 +50,11 @@ public class IssueHistoryDTO {
         this.franchiseIssueHistoryStatus = franchiseIssueHistoryStatus;
     }
 
-    public MemberDTO getFranchiseIssueHistoryCompleter() {
+    public IssueCompanyAccountDTO getFranchiseIssueHistoryCompleter() {
         return franchiseIssueHistoryCompleter;
     }
 
-    public void setFranchiseIssueHistoryCompleter(MemberDTO franchiseIssueHistoryCompleter) {
+    public void setFranchiseIssueHistoryCompleter(IssueCompanyAccountDTO franchiseIssueHistoryCompleter) {
         this.franchiseIssueHistoryCompleter = franchiseIssueHistoryCompleter;
     }
 

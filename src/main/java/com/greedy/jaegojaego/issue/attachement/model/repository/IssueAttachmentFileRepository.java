@@ -9,4 +9,6 @@ import java.util.List;
 public interface IssueAttachmentFileRepository extends JpaRepository<IssueAttachmentFile, Integer> {
 
     List<IssueAttachmentFile> findByIssue_FranchiseIssueNoAndAttachmentFileDeleteYn(int issueNo, String deleteYn);
+
+    List<IssueAttachmentFile> findByIssue_FranchiseIssueNo(int removeIssueNo);
 }

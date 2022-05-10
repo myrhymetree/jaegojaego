@@ -1,8 +1,6 @@
 package com.greedy.jaegojaego.issue.issue.model.controller;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileCategoryDTO;
 import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileDTO;
@@ -16,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -307,6 +302,35 @@ public class IssueController {
         issueService.updateIssue(customUser, issueAttachmentFileList, issue, issueOrderNo, issueItemList, imgResetCheck);
 
         return "redirect:/issue/list";
+    }
+
+    @PostMapping(value = "/remove", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String removeIssue(@RequestBody int removeIssueNo) {
+
+        issueService.deleteIssue(removeIssueNo);
+
+        Gson gson = new Gson();
+
+        return gson.toJson("success");
+    }
+
+    @PostMapping(value = "/modifystatus", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String modifyStatus(Authentication authentication, @RequestBody String statusChangeIssueInfo) {
+
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse(statusChangeIssueInfo);
+        int issueNo = Integer.parseInt(jsonElement.getAsJsonObject().get("statusIssueNo").getAsString());
+        String status = jsonElement.getAsJsonObject().get("statusName").getAsString();
+
+        issueService.updateIssueStatus(customUser, issueNo, status);
+
+        Gson gson = new Gson();
+
+        return gson.toJson("success");
     }
 
 }

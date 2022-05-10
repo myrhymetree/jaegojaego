@@ -4,6 +4,8 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileDTO;
 import com.greedy.jaegojaego.issue.attachement.model.entity.IssueAttachmentFile;
 import com.greedy.jaegojaego.issue.attachement.model.repository.IssueAttachmentFileRepository;
+import com.greedy.jaegojaego.issue.company.model.entity.IssueCompanyAccount;
+import com.greedy.jaegojaego.issue.company.model.repository.IssueCompanyAccountRepository;
 import com.greedy.jaegojaego.issue.franchise.model.dto.IssueFranchiseAccountDTO;
 import com.greedy.jaegojaego.issue.franchise.model.dto.IssueFranchiseInfoDTO;
 import com.greedy.jaegojaego.issue.franchise.model.entity.IssueFranchiseAccount;
@@ -48,12 +50,15 @@ public class IssueService {
     private final IssueItemRepository issueItemRepository;
     private final IssueAttachmentFileRepository issueAttachmentFileRepository;
     private final IssueHistoryRepository issueHistoryRepository;
+    private final IssueCompanyAccountRepository issueCompanyAccountRepository;
 
     @Autowired
     public IssueService(IssueFranchiseInfoRepository issueFranchiseInfoRepository, IssueFranchiseAccountRepository issueFranchiseAccountRepository
             , IssueRepository issueRepository, ModelMapper modelMapper, FranchiseOrderRepository franchiseOrderRepository
             , IssueOutWarehouseRepository issueOutWarehouseRepository, IssueItemRepository issueItemRepository
-            , IssueAttachmentFileRepository issueAttachmentFileRepository, IssueHistoryRepository issueHistoryRepository) {
+            , IssueAttachmentFileRepository issueAttachmentFileRepository, IssueHistoryRepository issueHistoryRepository
+            , IssueCompanyAccountRepository issueCompanyAccountRepository) {
+
         this.issueFranchiseInfoRepository = issueFranchiseInfoRepository;
         this.issueFranchiseAccountRepository = issueFranchiseAccountRepository;
         this.issueRepository = issueRepository;
@@ -63,6 +68,7 @@ public class IssueService {
         this.issueItemRepository = issueItemRepository;
         this.issueAttachmentFileRepository = issueAttachmentFileRepository;
         this.issueHistoryRepository = issueHistoryRepository;
+        this.issueCompanyAccountRepository = issueCompanyAccountRepository;
     }
 
     public List<IssueDetailDTO> selectIssueList(CustomUser customUser) {
@@ -471,6 +477,63 @@ public class IssueService {
 
             }
         }
+
+    }
+
+    public void deleteIssue(int removeIssueNo) {
+
+        Issue deleteIssue = issueRepository.findById(removeIssueNo).get();
+        List<IssueItem> deleteIssueItemList = issueItemRepository.findByIssue_FranchiseIssueNo(removeIssueNo);
+        List<IssueHistory> deleteIssueHistoryList = issueHistoryRepository.findByIssue_FranchiseIssueNo(removeIssueNo);
+        List<IssueAttachmentFile> deleteIssueAttachmentFileList = issueAttachmentFileRepository.findByIssue_FranchiseIssueNo(removeIssueNo);
+
+        for(int i = 0; i < deleteIssueAttachmentFileList.size(); i++) {
+
+            issueAttachmentFileRepository.delete(deleteIssueAttachmentFileList.get(i));
+        }
+
+
+        for(int i = 0; i < deleteIssueHistoryList.size(); i++) {
+
+            issueHistoryRepository.delete(deleteIssueHistoryList.get(i));
+        }
+
+
+        for(int i = 0; i < deleteIssueItemList.size(); i++) {
+
+            issueItemRepository.delete(deleteIssueItemList.get(i));
+
+        }
+
+        issueRepository.delete(deleteIssue);
+
+    }
+
+    public void updateIssueStatus(CustomUser customUser, int issueNo, String status) {
+
+        Issue issue = issueRepository.findById(issueNo).get();
+        issue.setFranchiseIssueStatus(status);
+
+        Member member = new Member();
+        member.setMemberNo(customUser.getMemberNo());
+
+        IssueHistory issueHistory = new IssueHistory();
+        issueHistory.setIssue(issue);
+        issueHistory.setFranchiseIssueHistoryUpdateMember(member);
+        issueHistory.setFranchiseIssueHistoryStatus(status);
+        issueHistory.setFranchiseIssueHistoryDate(new Date(System.currentTimeMillis()));
+
+        if("COMPLETE".equals(status)) {
+
+            IssueCompanyAccount issueCompanyAccount = issueCompanyAccountRepository.findById(member.getMemberNo()).get();
+
+            issue.setFranchiseIssueCompleter(issueCompanyAccount);
+            issue.setFranchiseIssueStatusFinishDate(new Date(System.currentTimeMillis()));
+
+            issueHistory.setFranchiseIssueHistoryCompleter(issueCompanyAccount);
+        }
+
+        issueHistoryRepository.save(issueHistory);
 
     }
 }
