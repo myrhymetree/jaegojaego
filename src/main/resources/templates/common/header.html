@@ -7,6 +7,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>INSPINIA | Dashboard</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+
 
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
@@ -99,8 +101,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                 <!-- 가맹점 헤더 (조건 걸기 나중에) -->
 
                 <!-- 메인페이지 -->
-                <li class="active" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_FRANCHISE', 'ROLE_FRANCHISE_MANAGER')">
-                    <a th:href="@{/main}"><i class="fa fa-th-large"></i> <span class="nav-label">메인페이지</span></a>
+                <li class="active" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_FRANCHISE', 'ROLE_FRANCHISE_MANAGER')" style="background: none !important; border: none !important;">
+                    <a th:href="@{/main}"><i class="fa fa-th-large"></i> <span class="nav-label" style="font-weight: normal;">메인페이지</span></a>
                 </li>
 
                 <!-- 공지게시판 -->
