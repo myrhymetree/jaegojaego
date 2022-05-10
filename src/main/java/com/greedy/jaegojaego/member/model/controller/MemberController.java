@@ -126,6 +126,14 @@ public class MemberController {
         return "redirect:/";
     }
 
+    @PostMapping(value = "/modifyMember")
+    public String modifyMember(CompanyAccountDTO companyAccount) {
+
+        memberService.modifyMemberInfo(companyAccount);
+
+        return "redirect:/";
+    }
+
     @GetMapping(value = "/detailInfo/{memberNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String findMemberDetailInfo(@PathVariable Integer memberNo) {

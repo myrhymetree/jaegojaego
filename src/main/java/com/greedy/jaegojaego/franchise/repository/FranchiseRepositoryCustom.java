@@ -2,7 +2,9 @@ package com.greedy.jaegojaego.franchise.repository;
 
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 
-public interface FranchiseRepositoryCustom {
+import java.util.List;
 
+public interface FranchiseRepositoryCustom {
     void updateFranchise(FranchiseInfo franchise);
+    List<FranchiseInfo> searchFranchise(String searchWord);
 }

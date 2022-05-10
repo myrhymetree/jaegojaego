@@ -3,16 +3,13 @@ package com.greedy.jaegojaego.materials.model.controller;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.greedy.jaegojaego.materials.model.dto.ClientContractItemDTO;
-import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
+import com.greedy.jaegojaego.materials.model.dto.*;
 import com.greedy.jaegojaego.materials.model.service.MaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -86,12 +83,48 @@ public class MaterialsController {
         return mv;
     }
 
+    @PostMapping("/update")
+    public ModelAndView itemMapping(ModelAndView mv, @RequestParam Map<String, String> parameter, RedirectAttributes rttr) {
+        
+
+        Integer itemInfoNo = Integer.valueOf((parameter.get("itemInfoNo")));
+        int clientItemNo = Integer.parseInt(parameter.get("clientItemNo"));
+
+        ClientMaterialUpdateDTO clientMaterialUpdateDTO = new ClientMaterialUpdateDTO();
+        clientMaterialUpdateDTO.setItemInfoNo(itemInfoNo);
+        clientMaterialUpdateDTO.setClientItemNo(clientItemNo);
+
+        materialsService.updateMapping(clientMaterialUpdateDTO);
+
+        String message = "등록에 성공하셨습니다.";
+        rttr.addFlashAttribute("message", message);
+
+        mv.setViewName("redirect:/materials/regist");
+
+       return mv;
+    }
+
+    @PostMapping("/modify")
+    public ModelAndView materialModify(ModelAndView mv, @ModelAttribute MaterialsDTO materialsDTO ,RedirectAttributes rttr) {
+
+        materialsService.materialModify(materialsDTO);
+
+        String message = "수정에 성공하셨습니다.";
+
+        rttr.addFlashAttribute("message", message);
+        mv.setViewName("redirect:/materials/productDetail");
+
+        return mv;
+    }
+
     @GetMapping(value = "/registList", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ModelAndView registproductMaterialsList(ModelAndView mv) {
 
-        List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
+//        if(materialsList.subdivisionUnit = null) {
 
+            List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
+//        }
         System.out.println("도달했는가" + "" + materialsList);
         System.out.println("도달했는가" + "" + materialsList);
         Gson gson = new GsonBuilder()
@@ -103,6 +136,33 @@ public class MaterialsController {
                 .create();
 
         mv.addObject("materialsList", gson.toJson(materialsList));
+        mv.setViewName("jsonView");
+
+        return mv;
+    }
+
+    @GetMapping(value = "/registClientList", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ModelAndView registproductClientList(ModelAndView mv) {
+
+        System.out.println("일단 들어 오는가");
+        System.out.println("일단 들어 오는가");
+        System.out.println("일단 들어 오는가");
+
+        List<ClientContractItemMaterialDTO> clientList =  materialsService.findClientList();
+
+        System.out.println("도달했는가" + "" + clientList);
+        System.out.println("도달했는가" + "" + clientList);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        mv.addObject("clientList", gson.toJson(clientList));
         mv.setViewName("jsonView");
 
         return mv;

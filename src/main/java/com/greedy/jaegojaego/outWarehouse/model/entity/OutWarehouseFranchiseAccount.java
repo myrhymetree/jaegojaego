@@ -5,29 +5,32 @@ import java.io.Serializable;
 
 @Entity(name = "outWarehouseFranchiseAccount")
 @Table(name = "FRANCHISE_ACCOUNT")
-public class OutwarehouseFranchiseAccount implements Serializable {
+public class OutWarehouseFranchiseAccount implements Serializable{
 
-    @Id
-    @OneToOne
-    @JoinColumn(name = "FRANCHISE_MANAGER_NO")
-    private OutWarehouseMember franchiseManagerNo;
+//    @Id
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "FRANCHISE_MANAGER_NO")
+//    private OutWarehouseMember franchiseManagerNo;
 
-    @ManyToOne
+    @EmbeddedId
+    private OutWarehouseFranchiseAccountPk franchiseManagerNo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REPRESENTATIVE_NO")
     private OutWarehouseFranchiseInfo franchiseRepresentativeNo;
 
-    public OutwarehouseFranchiseAccount() {}
+    public OutWarehouseFranchiseAccount() {}
 
-    public OutwarehouseFranchiseAccount(OutWarehouseMember franchiseManagerNo, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
+    public OutWarehouseFranchiseAccount(OutWarehouseFranchiseAccountPk franchiseManagerNo, OutWarehouseFranchiseInfo franchiseRepresentativeNo) {
         this.franchiseManagerNo = franchiseManagerNo;
         this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
-    public OutWarehouseMember getFranchiseManagerNo() {
+    public OutWarehouseFranchiseAccountPk getFranchiseManagerNo() {
         return franchiseManagerNo;
     }
 
-    public void setFranchiseManagerNo(OutWarehouseMember franchiseManagerNo) {
+    public void setFranchiseManagerNo(OutWarehouseFranchiseAccountPk franchiseManagerNo) {
         this.franchiseManagerNo = franchiseManagerNo;
     }
 
@@ -41,7 +44,7 @@ public class OutwarehouseFranchiseAccount implements Serializable {
 
     @Override
     public String toString() {
-        return "OutwarehouseFranchiseAccount{" +
+        return "OutWarehouseFranchiseAccount{" +
                 "franchiseManagerNo=" + franchiseManagerNo +
                 ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 '}';

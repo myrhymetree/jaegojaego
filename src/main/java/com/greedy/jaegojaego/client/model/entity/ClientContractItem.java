@@ -39,8 +39,11 @@ public class ClientContractItem {
     private Date clientContractItemCreatedDate;
 
     @ManyToOne
-    @JoinColumn(name = "CLIENT_CONTRACT_INFO_NO")
-    private ClientContractInfo clientContractInfoNo;
+    @JoinColumn(name = "CLIENT_CONTRACT_INFO_NO", insertable = false, updatable = false)
+    private ClientContractInfo clientContractInfo;
+
+    @Column(name = "CLIENT_CONTRACT_INFO_NO")
+    private int clientContractInfoNo;
 
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")

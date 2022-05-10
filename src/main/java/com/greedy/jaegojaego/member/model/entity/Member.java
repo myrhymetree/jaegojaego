@@ -30,7 +30,7 @@ import java.util.Set;
 @DynamicUpdate
 @DynamicInsert
 //@DiscriminatorColumn(name = "MEMBER_DIVISION")
-public class Member implements Serializable {
+public class Member {
 
 //    @ElementCollection(fetch = FetchType.LAZY)
 //    @Builder.Default

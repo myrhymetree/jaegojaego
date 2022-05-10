@@ -4,13 +4,20 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity(name = "outWarehouseFranchiseInfo")
-@Table(name = "FRANCHISE INFO")
-public class OutWarehouseFranchiseInfo implements Serializable {
+@Table(name = "FRANCHISE_INFO")
+public class OutWarehouseFranchiseInfo implements Serializable{
 
-    @Id
-    @OneToOne
-    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
-    private OutWarehouseMember franchiseRepresenetativeNo;
+//    @Id
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+//    private OutWarehouseMember
+
+//    @Id
+//    @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
+//    private int franchiseRepresentativeNo;
+
+    @EmbeddedId
+    private OutWarehouseFranchiseInfoPk franchiseRepresentativeNo;
 
     @Column(name = "FRANCHISE_BRANCH_NAME")
     private String franchiseName;
@@ -20,18 +27,18 @@ public class OutWarehouseFranchiseInfo implements Serializable {
 
     public OutWarehouseFranchiseInfo() {}
 
-    public OutWarehouseFranchiseInfo(OutWarehouseMember franchiseRepresenetativeNo, String franchiseName, String franchiseAddress) {
-        this.franchiseRepresenetativeNo = franchiseRepresenetativeNo;
+    public OutWarehouseFranchiseInfo(OutWarehouseFranchiseInfoPk franchiseRepresentativeNo, String franchiseName, String franchiseAddress) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
         this.franchiseName = franchiseName;
         this.franchiseAddress = franchiseAddress;
     }
 
-    public OutWarehouseMember getFranchiseRepresenetativeNo() {
-        return franchiseRepresenetativeNo;
+    public OutWarehouseFranchiseInfoPk getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
     }
 
-    public void setFranchiseRepresenetativeNo(OutWarehouseMember franchiseRepresenetativeNo) {
-        this.franchiseRepresenetativeNo = franchiseRepresenetativeNo;
+    public void setFranchiseRepresentativeNo(OutWarehouseFranchiseInfoPk franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
     public String getFranchiseName() {
@@ -53,7 +60,7 @@ public class OutWarehouseFranchiseInfo implements Serializable {
     @Override
     public String toString() {
         return "OutWarehouseFranchiseInfo{" +
-                "franchiseRepresenetativeNo=" + franchiseRepresenetativeNo +
+                "franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 ", franchiseName='" + franchiseName + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 '}';

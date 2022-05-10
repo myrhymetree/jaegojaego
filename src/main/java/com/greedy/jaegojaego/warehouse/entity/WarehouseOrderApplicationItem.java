@@ -14,27 +14,30 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WarehouseOrderApplicationItem implements Serializable {
+public class WarehouseOrderApplicationItem {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "ORDER_APPLICATION_NO")
-    private WarehouseOrderApplication orderApplicationNo;
+    @EmbeddedId
+    private WarehouseOrderApplicationItemPK orderApplicationItemPK;
+
+//    @Id
+//    @ManyToOne
+//    @JoinColumn(name = "ORDER_APPLICATION_NO")
+//    private WarehouseOrderApplication orderApplicationNo;
+
+
+//    @Id
+//    @ManyToOne
+//    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
+//    private WarehouseOrderApplication clientContractItemNo;
 
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-    private WarehouseOrderApplication clientContractItemNo;
-
     @Override
     public String toString() {
         return "WarehouseOrderApplicationItem{" +
-                "orderApplicationNo=" + orderApplicationNo +
+                "orderApplicationItemPK=" + orderApplicationItemPK +
                 ", orderApplicationItemAmount=" + orderApplicationItemAmount +
-                ", clientContractItemNo=" + clientContractItemNo +
                 '}';
     }
 }

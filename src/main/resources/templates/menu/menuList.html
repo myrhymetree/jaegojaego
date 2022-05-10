@@ -173,18 +173,22 @@
         const $materialCapacityForModify = $("#materialCapacityForModify");
         const deleteMenuButton = document.getElementById("deleteMenuButton");
 
-        document.getElementById("registMenuButton").onclick = function() {
-            document.getElementById("forz-index").style.display = "block";
+        if("[[${ authentication.memberDivision }]]" === '본사') {
+            document.getElementById("registMenuButton").onclick = function() {
+                document.getElementById("forz-index").style.display = "block";
+            }
         }
 
         document.getElementById("registMenuCancelButton").onclick = function() {
             document.getElementById("forz-index").style.display = "none";
         }
 
-        document.getElementById("modifyMenuButton").onclick = function() {
-            document.getElementById("forz-indexForModify").style.display = "block";
-        }
+        if("[[${ authentication.memberDivision }]]" === '본사') {
+            document.getElementById("modifyMenuButton").onclick = function() {
+                document.getElementById("forz-indexForModify").style.display = "block";
+            }
 
+        }
         document.getElementById("modifyMenuCancelButtonForModify").onclick = function () {
             document.getElementById("forz-indexForModify").style.display = "none";
             // $("#rawMaterialListForModify").empty(); 없어도 될듯 일단 나둬
@@ -314,10 +318,13 @@
 
             for(let i = 0; i < $tr.length; i++) {
 
-                $menuNoTh[i].onmouseenter = function() {
-                    this.style.cursor  = "pointer";
-                    this.style.color = "darkgreen";
-                    this.style.opacity = "35%";
+
+                if("[[${ authentication.memberDivision }]]" === '본사') {
+                    $menuNoTh[i].onmouseenter = function() {
+                        this.style.cursor  = "pointer";
+                        this.style.color = "darkgreen";
+                        this.style.opacity = "35%";
+                    }
                 }
 
                 $menuNoTh[i].onmouseleave = function() {
@@ -371,6 +378,7 @@
                             });
                     }
                 }
+
 
                 $menuNameTh[i].addEventListener("click", function() {
 
@@ -452,7 +460,6 @@
                         document.getElementById("selectOneMenu").style.display = "block";
                         document.getElementById("defualtOneMenu").style.display = "none";
                 });
-
             }
         }
 

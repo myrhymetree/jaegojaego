@@ -11,13 +11,13 @@ public class OutWarehouseFranchiseIssue {
     @Column(name = "FRANCHISE_ISSUE_NO")
     private int franchiseIssueNo;
 
-    @Column(name = "FANCHISE_ISSUE_STATUS_FINISH_DATE")
+    @Column(name = "FRANCHISE_ISSUE_STATUS_FINISH_DATE")
     private Date franchiseIssueStatusFinishDate;
 
     @Column(name = "FRANCHISE_ISSUE_STATUS")
     private String franchiseIssueStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FRANCHISE_ISSUE_COMPLETER")
     private OutWarehouseCompanyAccount franchiseIssueCompleterNo;
 

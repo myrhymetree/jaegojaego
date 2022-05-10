@@ -15,6 +15,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
 @DynamicUpdate
+@NamedEntityGraph(name = "Department.all", attributeNodes = @NamedAttributeNode("department"))
 //@DiscriminatorValue("본사")
 public class CompanyAccount extends Member {
 
@@ -30,7 +31,7 @@ public class CompanyAccount extends Member {
     @Column(name = "OFFICE_PHONE_NUMBER")
     private String officePhoneNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_DEPARTMENT")
     private Department department;
 

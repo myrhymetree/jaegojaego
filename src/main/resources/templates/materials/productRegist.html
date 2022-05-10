@@ -44,7 +44,8 @@
 </div>
 
 <!-- 시작 -->
-<div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+<div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
     <div class="pace-progress-inner"></div>
 </div>
     <div class="pace-activity"></div>
@@ -62,119 +63,122 @@
                         </a>
                     </div>
                 </div>
-
+                <form action="/materials/update" method="post">
                 <div class="ibox-content" style="height: 700px;">
                     <div style="float: left; width: 40%;">자재 정보
-                        <button class="btn btn-primary " type="button" style="float: right;" data-toggle="modal" data-target="#myModal10" id="myModal">
+                        <button class="btn btn-primary " type="button" style="float: right;" data-toggle="modal" data-target="#materialModalList" id="materialModal">
                             <i class="fa fa-check"></i>&nbsp;자재 검색
                         </button><hr></hr>
-                        <form method="post">
+
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 번호</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="itemInfoNo" readonly>
+                                    <input type="number" class="form-control" name="itemInfoNo" id="itemInfoNo" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 품번</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="itemSerialNo" readonly>
+                                    <input type="text" class="form-control" name="itemSerialNo" id="itemSerialNo" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 품명</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="itemInfoName" readonly>
+                                    <input type="text" class="form-control" name="itemInfoName" id="itemInfoName" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">카테고리</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="materialCategoryName" readonly>
+                                    <input type="text" class="form-control" name="materialCategoryName" id="materialCategoryName" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">가공 유무</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="subdivisionYN" readonly>
+                                    <input type="text" class="form-control" name="subdivisionYN" id="subdivisionYN" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">판매 가격</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="itemPrice" readonly>
+                                    <input type="number" class="form-control" name="itemPrice" id="itemPrice" readonly>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">소분 단위</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="subdivisionUnit" readonly>
+                                    <input type="number" class="form-control" name="subdivisionUnit" id="subdivisionUnit" readonly>
                                 </div>
                             </div>
-                        </form>
                     </div>
-                    <div style="float: right; width: 40%;">거래처 정보<button class="btn btn-primary " type="button" style="float: right;" data-toggle="modal" data-target="#myModal4">
-                        <i class="fa fa-check"></i>&nbsp;거래처 검색
-                    </button><hr></hr>
-                        <div class="form-group  row">
+                    <div style="float: right; width: 40%;">거래처 정보
+                        <button class="btn btn-primary " type="button" style="float: right;" data-toggle="modal" data-target="#clientList" id="clientModal">
+                            <i class="fa fa-check"></i>&nbsp;거래처 검색
+                        </button><hr></hr>
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">상품 번호</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="itemInfoNo" readonly>
+                                <input type="number" class="form-control" name="clientItemNo" id="clientItemNo" readonly>
                             </div>
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">상품명</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="itemSerialNo" readonly>
+                                <input type="text" class="form-control" name="clientItemName" id="clientItemName" readonly>
                             </div>
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">공급가</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="itemInfoName" readonly>
+                                <input type="text" class="form-control" name="clientPrice" id="clientPrice" readonly>
                             </div>
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">거래처 명</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="itemPrice" readonly>
+                                <input type="text" class="form-control" name="clientName" id="clientName" readonly>
                             </div>
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">이메일</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="subdivisionUnit" readonly>
+                                <input type="text" class="form-control" name="clientEmail" id="clientEmail" readonly>
                             </div>
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">대표 핸드폰</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="subdivisionUnit" readonly>
+                                <input type="text" class="form-control" name="clientPhone" id="clientPhone" readonly>
                             </div>
                         </div>
-                        <div class="form-group  row">
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label">사업자 번호</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="subdivisionUnit" readonly>
+                                <input type="text" class="form-control" name="registrationNo" id="registrationNo" readonly>
                             </div>
                         </div>
+
                         <div style="margin-top: 100px;">
                             <button class="btn btn-primary " type="button" style="float: right; margin-left: 20px;" onclick="location.href='/materials/regist'">
                                 <i class="fa fa-check"></i>&nbsp;취소
                             </button>
-                            <button class="btn btn-primary " type="button" style="float: right;" onclick="location.href='/materials/regist'">
+                            <button class="btn btn-primary " type="submit" style="float: right" id="mapping">
                                 <i class="fa fa-check"></i>&nbsp;저장
                             </button>
                         </div>
+
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 <!-- 거래처 검색 모달 -->
-<div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal inmodal" id="clientList" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated fadeIn">
             <div class="modal-header">
@@ -183,10 +187,7 @@
                 <h4 class="modal-title">Modal title</h4>
                 <small>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
             </div>
-            <div class="modal-body">
-                <p><strong>Lorem Ipsum is simply dummy</strong> text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged.</p>
+            <div class="modal-body" id="clientProductList">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -197,7 +198,7 @@
 </div>
 
 <!-- 자재 검색 모달 -->
-<div class="modal inmodal" id="myModal10" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal inmodal" id="materialModalList" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated fadeIn">
             <div class="modal-header">
@@ -206,28 +207,7 @@
                 <small>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>
             </div>
             <div class="modal-body" id="productList">
-<!--                <table class="table table-striped table-bordered table-hover dataTables-example" id="listArea">-->
-<!--                    <thead>-->
-<!--                        <tr>-->
-<!--                            <th>자재 번호</th>-->
-<!--                            <th>자재 품번</th>-->
-<!--                            <th>자재 품명</th>-->
-<!--                            <th>카테고리</th>-->
-<!--                            <th>가공 유무</th>-->
-<!--                            <th>판매가격</th>-->
-<!--                        </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody>-->
-<!--                        <tr th:each="materials : ${materialsList}">-->
-<!--                            <td th:text="${materials.itemInfoNo}"></td>-->
-<!--                            <td th:text="${materials.itemSerialNo}"></td>-->
-<!--                            <td th:text="${materials.itemInfoName}"></td>-->
-<!--                            <td th:text="${materials.materialsCategory.materialCategoryName}"></td>-->
-<!--                            <td th:text="${materials.subdivisionYN}"></td>-->
-<!--                            <td th:text="${materials.itemPrice}"></td>-->
-<!--                        </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
+
            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -241,7 +221,7 @@
 <th:blockpi th:replace="/common/footer.html"></th:blockpi>
 
 <script>
-    $("#myModal").click(function (){
+    $("#materialModal").click(function (){
 
         $.ajax({
             url : "/materials/registList",
@@ -268,6 +248,7 @@
                     body += '<th>카테고리</th>'
                     body += '<th>가공 유무</th>'
                     body += '<th>판매 가격</th>'
+                    body += '<th>소분 단위</th>'
                     body += '</tr>'
                     $.each(test , function(i){
 
@@ -278,6 +259,7 @@
                         body += '<td>' + test[i].materialsCategory.materialCategoryName + '</td>'
                         body += '<td>' + test[i].subdivisionYN + '</td>'
                         body += '<td>' + test[i].itemPrice + '</td>'
+                        body += '<td>' + test[i].subdivisionUnit + '</td>'
                         body += '</tr>'
                     });
 
@@ -285,6 +267,63 @@
 
                     $("#productList").append(body);
 
+                if(document.querySelectorAll("#listArea tr")) {
+                    const $tds = document.querySelectorAll("#listArea tr");
+                    let $itemInfo = "";
+                    for(let i = 0; i < $tds.length; i++) {
+
+                        $tds[i].onclick = function() {
+                            // const itemInfoNo = this.parentNode.children[0].innerText;
+                            // location.href = "/materials/" + itemInfoNo;
+
+                            $('#materialModalList').modal('hide');
+                            $itemInfo += $tds[i].innerHTML;
+                            // $itemInfo += $tds[i].itemInfoNo.innerHTML;
+                            // $itemInfo += $tds[i].itemSerialNo.innerHTML;
+                            // $itemInfo += $tds[i].itemInfoName.innerHTML;
+                            // $itemInfo += $tds[i].materialsCategory.materialCategoryName.innerHTML;
+                            // $itemInfo += $tds[i].subdivisionYN.innerHTML;
+                            // $itemInfo += $tds[i].itemPrice.innerHTML;
+
+                            // console.log($itemInfo);
+                            // console.log(typeof($itemInfo));
+                            // let $itemInfoTd = $itemInfo.replaceAll("<td>", "");
+                            // let $itemInfoList = $itemInfoTd.replaceAll("</td>", "");
+                            // $itemInfo.replace("<td>", "");
+                            // $itemInfo.replace("</td>", "");
+                            // console.log($itemInfoList);
+
+                            let $firstSplit = $itemInfo.split("<td>");
+                            let $secondSplit = String($firstSplit).split("</td>");
+                            let $thirdSplit = String($secondSplit).split(",");
+                            let $filtered = $thirdSplit.filter(e => e !== "");
+
+                            console.log($filtered);
+                            console.log($filtered);
+
+                            let $itemInfoNo = $filtered[0];
+                            let $itemSerialNo = $filtered[1];
+                            let $itemInfoName = $filtered[2];
+                            let $materialCategoryName = $filtered[3];
+                            let $subdivisionYN = $filtered[4];
+                            let $itemPrice = $filtered[5];
+                            let $subdivisionUnit = $filtered[6];
+
+                            $("input[name=itemInfoNo]").attr('value', $itemInfoNo);
+                            $("input[name=itemSerialNo]").attr('value', $itemSerialNo);
+                            $("input[name=itemInfoName]").attr('value', $itemInfoName);
+                            $("input[name=materialCategoryName]").attr('value', $materialCategoryName);
+                            $("input[name=subdivisionYN]").attr('value', $subdivisionYN);
+                            $("input[name=itemPrice]").attr('value', $itemPrice);
+                            $("input[name=subdivisionUnit]").attr('value', $subdivisionUnit);
+                            // for(let i = 0; i < $filtered.length; i++) {
+                            //
+                            // }
+
+
+                        }
+                    }
+                }
             },
             error: function (data) {
                 console.log("error 잘못");
@@ -292,8 +331,169 @@
         });
     });
 
+    // function pageLink(curPage, totalPages, funName) {
+    //
+    //     var pageUrl = "";
+    //     var pageLimit = 5;
+    //     var startPage = parseInt((curPage - 1) / pageLimit) * pageLimit + 1;
+    //     var endPage = startPage + pageLimit - 1;
+    //
+    //     if (totalPages < endPage) {
+    //         endPage = totalPages;
+    //     }
+    //
+    //     var nextPage = endPage + 1;
+    //     //console.log(curPage,"curPage,",startPage,"startPage,",endPage,"endPage,",nextPage,"nextPage")
+    //
+    //     //맨 첫 페이지
+    //     if (curPage > 1 && pageLimit < curPage) {
+    //         pageUrl += "<a class='page first' href='javascript:" + funName + "(1);'>" +
+    //             "<i class='fas fa-angle-double-left'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //이전 페이지
+    //     if (curPage > pageLimit) {
+    //         pageUrl += " <a class='page prev' href='javascript:" + funName + "(" + (startPage == 1 ? 1 : startPage - 1) + ");'>" +
+    //             "<i class='fas fa-angle-left'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //~pageLimit 맞게 페이지 수 보여줌
+    //     for (var i = startPage; i <= endPage; i++) {
+    //         //현재페이지면 진하게 표시
+    //         if (i == curPage) {
+    //             pageUrl += " <a href='#'>" +
+    //                 "<strong>" + i + "</strong>" +
+    //                 "</a>"
+    //         } else {
+    //             pageUrl += " <a href='javascript:" + funName + "(" + i + ");'> " + i + " </a>";
+    //         }
+    //     }
+    //
+    //     //다음 페이지
+    //     if (nextPage <= totalPages) {
+    //         pageUrl += "<a class='page next' href='javascript:" + funName + "(" + (nextPage < totalPages ? nextPage : totalPages) + ");'>" +
+    //             "<i class='fas fa-angle-right'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //맨 마지막 페이지
+    //     if (curPage < totalPages && nextPage < totalPages) {
+    //         pageUrl += "<a class='page last' href='javascript:" + funName + "(" + totalPages + ");'>" +
+    //             "<i class='fas fa-angle-double-right'>" +
+    //             "</a>";
+    //     }
+    //     //console.log(pageUrl); return pageUrl;
+    // }
 
 
 </script>
+
+<script>
+
+    $("#clientModal").click(function (){
+
+        $.ajax({
+            url : "/materials/registClientList",
+            type : "get",
+            dataType: "json",
+            success : function (data, textStatus, xhr) {
+
+                console.log("에이젝스 실행 성공");
+                console.log(data);
+                let materialClient = JSON.parse(data.clientList);
+
+                console.log(materialClient);
+
+                console.log("에이젝스 실행 성공");
+                $("#clientProductList").empty();
+
+                let clientBody = '';
+                console.log(data);
+                clientBody += '<table class="table table-striped table-bordered table-hover dataTables-example" id="listArea">'
+                clientBody += '<tr>'
+                clientBody += '<th>상품 번호</th>'
+                clientBody += '<th>상품 명</th>'
+                clientBody += '<th>공급 가</th>'
+                clientBody += '<th>거래처 명</th>'
+                clientBody += '<th>이메일</th>'
+                clientBody += '<th>대표 핸드폰</th>'
+                clientBody += '<th>사업자 번호</th>'
+                clientBody += '</tr>'
+                $.each(materialClient , function(i){
+
+                    clientBody += '<tr>'
+                    clientBody += '<td>' + materialClient[i].clientItemNo + '</td>'
+                    clientBody += '<td>' + materialClient[i].clientItemName + '</td>'
+                    clientBody += '<td>' + materialClient[i].clientPrice + '</td>'
+                    clientBody += '<td>' + materialClient[i].clientContractInfoJoin.client.clientName + '</td>'
+                    clientBody += '<td>' + materialClient[i].clientContractInfoJoin.client.clientEmail + '</td>'
+                    clientBody += '<td>' + materialClient[i].clientContractInfoJoin.client.clientPhone + '</td>'
+                    clientBody += '<td>' + materialClient[i].clientContractInfoJoin.client.registrationNo + '</td>'
+                    clientBody += '</tr>'
+                });
+
+                clientBody += '</table>'
+
+                $("#clientProductList").append(clientBody);
+
+                if(document.querySelectorAll("#listArea tr")) {
+                    const $trs = document.querySelectorAll("#listArea tr");
+                    let $clientInfo = "";
+                    for(let i = 0; i < $trs.length; i++) {
+
+                        $trs[i].onclick = function() {
+                            // const itemInfoNo = this.parentNode.children[0].innerText;
+                            // location.href = "/materials/" + itemInfoNo;
+
+                            $('#clientList').modal('hide');
+                            $clientInfo += $trs[i].innerHTML;
+
+                            let $clientFirstSplit = $clientInfo.split("<td>");
+                            let $clientSecondSplit = String($clientFirstSplit).split("</td>");
+                            let $clientThirdSplit = String($clientSecondSplit).split(",");
+                            let $clientFiltered = $clientThirdSplit.filter(e => e !== "");
+
+                            console.log($clientFiltered);
+                            console.log($clientFiltered);
+
+                            let $clientItemNo = $clientFiltered[0];
+                            let $clientItemName = $clientFiltered[1];
+                            let $clientPrice = $clientFiltered[2];
+                            let $clientName = $clientFiltered[3];
+                            let $clientEmail = $clientFiltered[4];
+                            let $clientPhone = $clientFiltered[5];
+                            let $registrationNo = $clientFiltered[6];
+
+                            $("input[name=clientItemNo]").attr('value', $clientItemNo);
+                            $("input[name=clientItemName]").attr('value', $clientItemName);
+                            $("input[name=clientPrice]").attr('value', $clientPrice);
+                            $("input[name=clientName]").attr('value', $clientName);
+                            $("input[name=clientEmail]").attr('value', $clientEmail);
+                            $("input[name=clientPhone]").attr('value', $clientPhone);
+                            $("input[name=registrationNo]").attr('value', $registrationNo);
+
+                        }
+                    }
+                }
+            },
+            error: function (data) {
+                console.log("error 잘못");
+            }
+        });
+    });
+
+</script>
+
+<!--<script>-->
+<!--    let clientItemNo = document.getElementById("clientItemNo").value;-->
+<!--    let itemInfoNo = document.getElementById("itemInfoNo").value;-->
+<!--    if(clientItemNo || itemInfoNo != "" && !null) {-->
+<!--        $("#mapping").click(function () {-->
+
+<!--        });-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>

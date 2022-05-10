@@ -1,9 +1,6 @@
 package com.greedy.jaegojaego.outWarehouse.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "outWarehouseMember")
 @Table(name = "MEMBER")
@@ -13,11 +10,9 @@ public class OutWarehouseMember {
     @Column(name = "MEMBER_NO")
     private int memberNo;
 
-    // 본사인지 가맹점인지
     @Column(name = "OFFICE_DIVISION")
     private String officeDivision;
 
-    // 직급
     @Column(name = "MEMBER_DIVISION")
     private String memberDivision;
 

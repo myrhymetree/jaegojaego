@@ -59,6 +59,13 @@ com:
   greedy:
     jaegojaego:
       upload:
-        path: C:\Users\qandz\Documents\jaegojaego\src\main\resources\static\uploadFiles
+        path: C:\Users\qandz\Documents\jaegojaego\src\main\resources\static\upload\account
 
 
+jaegojaego:
+  issue:
+    upload:
+        path: D:\jaegojaego\src\main\resources\static\upload\issue\conversion
+  client:
+    upload:
+      path: D:\jaegojaego\src\main\resources\static\upload\client\conversion

@@ -10,8 +10,8 @@
     <th:block th:include="/common/header.html"></th:block>
 
     <div class="body-header">
-        <div class="menu-title">계정 생성</div>
-        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="">계정 목록</a></div>
+        <div class="menu-title">계정 목록</div>
+        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="/member/list">계정 목록</a></div>
     </div>
 
     <div class="wrapper wrapper-content  animated fadeInRight">
@@ -84,6 +84,7 @@
                     </div>
                 </div>
             </div>
+        <th:block th:include="/member/employeeInfoModifyModal.html"></th:block>
         <th:block  th:id="aaaaa" th:replace="/member/detailView.html" th:class="ababa"></th:block>
         <th:block th:replace="/common/footer.html"></th:block>
         </div>
@@ -91,6 +92,51 @@
 
     <script th:inline="javascript">
         $(document).ready(function () {
+
+            <!-- password meter -->
+            let options1 = {};
+            options1.ui = {
+                container: "#pwd-container2",
+                showVerdictsInsideProgressBar: true,
+                viewports: {
+                    progress: ".pwstrength_viewport_progress"
+                }
+            };
+            options1.common = {
+                debug: false,
+            };
+
+            $('.example2').pwstrength(options1);
+
+            <!-- input mask, validation(password equality, length, email validation) -->
+            $("#modifyForm").ready().validate({
+
+                errorPlacement: function (error, element) {
+                    element.before(error);
+                },
+                rules: {
+                    confirm: {
+                        equalTo: "#memberPwd",
+                    },
+                    memberPwd: {
+                        minlength: 8,
+                        maxlength: 15
+                    }
+                }
+
+            });
+
+            $(".select2_demo_1").select2({
+                theme: 'bootstrap4',
+            });
+            $(".select2_demo_2").select2({
+                theme: 'bootstrap4',
+            });
+            $(".select2_demo_3").select2({
+                theme: 'bootstrap4',
+                placeholder: "부서를 선택하세요.",
+                allowClear: true
+            });
 
             $('.memberNo').attr('style', "display:none;");
             $(".ababa").attr('style', "display:none;");
@@ -100,6 +146,8 @@
                 /* td에 숫자가 안나오게 표시함 */
                 let memberNo = this.children[0].innerText;
 
+                $("#modal-memberNo").val(memberNo);
+
                 console.log(memberNo);
 
                 $('#ababa').attr('style', "display;");
@@ -108,15 +156,42 @@
                     method: 'get',
                     url: '/member/detailInfo/' + memberNo,
                 })
-                .then(function (response) {
-                    console.log(response);
+                .then(function (response1) {
+                    console.log(response1);
 
-                    $("#detail-name").text(response.data.memberName);
-                    $("#detail-id").text(response.data.memberId).val();
-                    $("#detail-department").text(response.data.department.departmentName).val();
-                    $("#detail-cellPhone").text(response.data.memberCellPhone).val();
-                    $("#detail-officePhone").text(response.data.officePhoneNumber).val();
-                    $("#detail-email").text(response.data.memberEmail).val();
+                    $("#detail-name").text(response1.data.memberName);
+                    $("#detail-id").text(response1.data.memberId).val();
+                    $("#detail-department").text(response1.data.department.departmentName).val();
+                    $("#detail-cellPhone").text(response1.data.memberCellPhone).val();
+                    $("#detail-officePhone").text(response1.data.officePhoneNumber).val();
+                    $("#detail-email").text(response1.data.memberEmail).val();
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+                .then(function () {
+
+                });
+
+                axios({
+                    method: 'get',
+                    url: '/member/department'
+                })
+                .then(function (response2) {
+                    console.log(response2);
+
+                    const $department = $("#department");
+                    $department.html("");
+
+                    $department.append($("<option>"))
+
+                    console.log(response2.data);
+                    console.log(response2.data[0].departmentNo);
+                    console.log(response2.data[0].departmentName);
+
+                    for (let i = 0; i < response2.data[7].departmentNo; i++) {
+                        $department.append($("<option>").val(response2.data[i].departmentNo).text(response2.data[i].departmentName));
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -126,6 +201,7 @@
                 });
 
             });
+
         });
     </script>
 
