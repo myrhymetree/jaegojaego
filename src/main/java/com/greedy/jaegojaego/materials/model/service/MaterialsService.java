@@ -101,6 +101,8 @@ public class MaterialsService {
 
     public void removeMaterial(int itemInfoNo) {
 
+        Material material = materialRepository.findById(itemInfoNo).get();
+        material.setItemStatus("Y");
     }
 }
 
