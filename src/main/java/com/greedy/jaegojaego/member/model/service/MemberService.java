@@ -7,10 +7,7 @@ import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
 import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
-import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
-import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
-import com.greedy.jaegojaego.member.model.dto.MemberDTO;
-import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
+import com.greedy.jaegojaego.member.model.dto.*;
 import com.greedy.jaegojaego.member.model.entity.*;
 import com.greedy.jaegojaego.member.model.repository.*;
 import org.modelmapper.ModelMapper;
@@ -102,13 +99,21 @@ public class MemberService {
         return status;
     }
 
-    public List<CompanyAccountDTO> findMemberList(String searchWord) {
+    public MemberListDTO findMemberList(String searchWord) {
 
+        /* 본사 직원 계정 목록 조회 */
         List<CompanyAccount> memberList = companyAccountRepository.searchMembers(searchWord);
+        List<CompanyAccountDTO> memberDTOList =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
 
-        List<CompanyAccountDTO> memberDTOlist =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
+        /* 삭제된 본사 직원 계정 목록 조회 */
+        List<CompanyAccount> removedMemberList = companyAccountRepository.searchRemovedMember(searchWord);
+        List<CompanyAccountDTO> removedMembers = removedMemberList.stream().map(removedMember -> modelMappper.map(removedMember, CompanyAccountDTO.class)).collect(Collectors.toList());
 
-        return memberDTOlist;
+        MemberListDTO memberListDTO = new MemberListDTO();
+        memberListDTO.setMembers(memberDTOList);
+        memberListDTO.setRemovedMembers(removedMembers);
+
+        return memberListDTO;
 
     }
 

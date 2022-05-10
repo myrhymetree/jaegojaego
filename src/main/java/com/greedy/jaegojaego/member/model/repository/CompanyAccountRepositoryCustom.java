@@ -12,4 +12,6 @@ public interface CompanyAccountRepositoryCustom {
     List<CompanyAccount> searchMembers(String searchWord);
 
     void updateMember(CompanyAccount member);
+
+    List<CompanyAccount> searchRemovedMember(String searchWord);
 }

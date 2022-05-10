@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div class="col-sm-4">
+ <div class="col-sm-4 memberDetailView" style="display: none">
         <div class="ibox selected">
 
             <div class="ibox-content">
@@ -63,15 +56,3 @@
             </div>
         </div>
     </div>
-    <script th:inline="javascript">
-        $(function () {
-            $("#removeMember").click(function () {
-
-                const memberNo = $("#detail-memberNo").val();
-
-                location.href="/member/delete/" + memberNo;
-            });
-        });
-    </script>
-</body>
-</html>

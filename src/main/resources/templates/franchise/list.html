@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!--    <style> tr:active { display : block  }</style>-->
 </head>
 <body>
     <th:block th:include="/common/header.html"></th:block>
@@ -124,14 +125,8 @@
                     </div>
                 </div>
             </div>
-
-        <th:block th:replace="/franchise/franchiseDetailInfoModifyModal.html"></th:block>
-
-
-<!--            #httpSession.getAttribute("success")-->
-        <th:block th:if="${ true }">
+            <th:block th:replace="/franchise/franchiseDetailInfoModifyModal.html"></th:block>
             <th:block th:replace="/franchise/franchiseDetailView.html"></th:block>
-        </th:block>
         </div>
         <th:block th:replace="/common/footer.html"></th:block>
     </div>
@@ -141,23 +136,11 @@
 
             $('.memberNo').attr('style', "display:none;");
 
-
             $("#franchiseTable tbody").on("click", "tr", function () {
 
-                 // let $th_block = document.createElement("th:block");
-                 // $th_block.setAttribute("th:replace", "/franchise/franchiseDetailView.html");
-                 // let verygood = document.getElementById("veryGood");
-                 //
-                 // verygood.appendChild($th_block);
-
-                // $("#veryGood").load("/franchise/franchiseDetailView.html");
+                $(".franchiseDetailView").addClass("active").attr('style', "display:block");
 
                 let memberNo = this.children[0].innerText;
-
-                let signal = 1;
-
-                // sessionStorage.removeItem("success");
-                sessionStorage.setItem("success", memberNo);
 
                 axios({
                     method: 'get',
@@ -194,13 +177,100 @@
                 .then(function () {
 
                 });
-
             });
 
-            $("#tab-2").click( function () {
+            $("#managerTable tbody").on("click", "tr", function () {
 
+                $(".franchiseDetailView").addClass("active").attr('style', "display:block");
+
+                let memberNo = this.children[0].innerText;
+
+                axios({
+                    method: 'get',
+                    url: '/franchise/managerDetail/' + memberNo,
+                })
+                    .then(function (response) {
+                        console.log(response);
+
+                        console.log(response.data.branchName);
+
+                        // $("#detail-memberNo").val(response.data.memberNo);
+                        // $("#franchise-name").text(response.data.branchName);
+                        // $("#representative-id").text(response.data.memberId).val();
+                        // $("#representative-name").text(response.data.representativeName).val();
+                        // $("#representative-phone").text(response.data.representativePhone).val();
+                        // $("#representative-email").text(response.data.representativeEmail).val();
+                        // $("#franchise-phone").text(response.data.phone).val();
+                        // $("#franchise-updater").text(response.data.writer.memberName).val();
+                        // $("#franchise-supervisor-name").text(response.data.supervisor.memberName).val();
+                        // $("#franchise-contract-number").text(response.data.businessRegistrationNo).val();
+                        // $("#franchise-bankAccount-number").text(response.data.bankAccountNo).val();
+                        // $("#franchise-contract-start-date").text(response.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.year + "년" +
+                        //     response.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.month + "월"+
+                        //     response.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.day + "일").val();
+                        // $("#franchise-contract-end-date").text(response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.year + "년" +
+                        //     response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.month + "월"+
+                        //     response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.day + "일").val();
+                        // $("#franchise-contract-status").text(response.data.franchiseContractUpdatedRecord.franchiseContractStatus).val();
+
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+                    .then(function () {
+
+                    });
             });
 
+            $("#removedFranchiseTable tbody").on("click", "tr", function () {
+
+                $(".franchiseDetailView").addClass("active").attr('style', "display:block");
+
+                let memberNo = this.children[0].innerText;
+
+                axios({
+                    method: 'get',
+                    url: '/franchise/franchiseDetail/' + memberNo,
+                })
+                    .then(function (response1) {
+                        console.log(response1);
+
+                        console.log(response1.data.branchName);
+
+                        $("#detail-memberNo").val(response1.data.memberNo);
+                        $("#franchise-name").text(response1.data.branchName);
+                        $("#representative-id").text(response1.data.memberId).val();
+                        $("#representative-name").text(response1.data.representativeName).val();
+                        $("#representative-phone").text(response1.data.representativePhone).val();
+                        $("#representative-email").text(response1.data.representativeEmail).val();
+                        $("#franchise-phone").text(response1.data.phone).val();
+                        $("#franchise-updater").text(response1.data.writer.memberName).val();
+                        $("#franchise-supervisor-name").text(response1.data.supervisor.memberName).val();
+                        $("#franchise-contract-number").text(response1.data.businessRegistrationNo).val();
+                        $("#franchise-bankAccount-number").text(response1.data.bankAccountNo).val();
+                        $("#franchise-contract-start-date").text(response1.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.year + "년" +
+                            response1.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.month + "월"+
+                            response1.data.franchiseContractUpdatedRecord.franchiseContractStartedDate.date.day + "일").val();
+                        $("#franchise-contract-end-date").text(response1.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.year + "년" +
+                            response1.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.month + "월"+
+                            response1.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.day + "일").val();
+                        $("#franchise-contract-status").text(response1.data.franchiseContractUpdatedRecord.franchiseContractStatus).val();
+
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+                    .then(function () {
+
+                    });
+                });
+
+            $(function () {
+                $("#removeFranchise").click(function () {
+                    const memberNo = $("#detail-memberNo").val();
+                    location.href="/franchise/delete/" + memberNo;
+                });
+            });
         });
     </script>
 

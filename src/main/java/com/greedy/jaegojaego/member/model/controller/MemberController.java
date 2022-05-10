@@ -7,6 +7,7 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
+import com.greedy.jaegojaego.member.model.dto.MemberListDTO;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,14 +81,12 @@ public class MemberController {
     @GetMapping("/list")
     public ModelAndView findMemberList(ModelAndView mv, String searchWord) {
 
-        List<CompanyAccountDTO> memberList = memberService.findMemberList(searchWord);
+        MemberListDTO memberList = memberService.findMemberList(searchWord);
 
-        Integer count = memberService.countAll();
+//        Integer count = memberService.countAll();
 
-        mv.addObject("memberList", memberList);
-
-        mv.addObject("count", count);
-
+        mv.addObject("memberList", memberList.getMembers());
+        mv.addObject("removedMemberList",  memberList.getRemovedMembers());
         mv.setViewName("/member/list");
 
         return mv;

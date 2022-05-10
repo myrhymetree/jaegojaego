@@ -334,6 +334,23 @@ public class FranchiseController {
         return  gson.toJson(franchiseDetailInfo);
     }
 
+    @GetMapping(value = "/managerDetail/{memberNo}", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findManagerDetailInfo(@PathVariable Integer memberNo) {
+
+        FranchiseAccountDTO franchiseAccount = franchiseService.findManagerDetailInfo(memberNo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(franchiseAccount);
+    }
+
     @GetMapping("/downloadContractFile/{attachmentFileNo}")
     public ResponseEntity<Resource> contractFileDownload(@PathVariable Integer attachmentFileNo) {
 

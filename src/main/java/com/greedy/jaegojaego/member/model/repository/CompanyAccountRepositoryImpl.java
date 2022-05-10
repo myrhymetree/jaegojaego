@@ -116,6 +116,39 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                 .execute();
     }
 
+    @Override
+    public List<CompanyAccount> searchRemovedMember(String searchWord) {
 
+        if(searchWord != null && searchWord != "") {
+            return queryFactory
+                    .select(new QCompanyAccount(
+                            companyAccount))
+                    .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
+                    .where(
+                            companyAccount.memberRemoveStatus.eq("N")
+                                    .or(memberIdContains(searchWord))
+                                    .or(memberNameContains(searchWord))
+                                    .or( departmentNameContains(searchWord))
 
+                    )
+                    .orderBy(companyAccount.memberNo.asc())
+                    .fetch();
+        }
+        else {
+            return queryFactory
+                    .select(new QCompanyAccount(
+                            companyAccount))
+                    .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
+                    .where(
+                            memberIdContains(searchWord),
+                            memberNameContains(searchWord),
+                            departmentNameContains(searchWord),
+                            companyAccount.memberRemoveStatus.eq("N")
+                    )
+                    .orderBy(companyAccount.memberNo.asc())
+                    .fetch();
+        }
+    }
 }
