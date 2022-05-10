@@ -7,14 +7,20 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/outWarehouse/outWarehouse.css}">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         .modal-content {
             box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px, rgba(0,0,0,0.5) 2px 2px 3px 3px !important;
         }
 
-        #orderListModal-table{
-            border-bottom: solid 1px black;
+        #orderListModal-table {
             width: 100%;
+        }
+
+        #orderListModal-tbl-header {
+            border-bottom: solid 1px black;
+            margin-bottom: 1px;
+            /*width: 100%;*/
         }
     </style>
 </head>
@@ -119,15 +125,12 @@
                 <div class="modal-body">
                     <!-- 조회해온 승인완료된 발주 목록 -->
                     <table id="orderListModal-table">
-                        <th>
-                            <td>발주번호</td>
-                            <td>발주 요청 가맹점명</td>
-                            <td>가맹점 주소</td>
-                            <td>
-<!--                                <button class="btn btn-primary">추가</button>-->
-                                출고 추가 여부
-                            </td>
-                        </th>
+                        <tr id="orderListModal-tbl-header">
+                            <th>발주번호</th>
+                            <th>발주 요청 가맹점명</th>
+                            <th>가맹점 주소</th>
+                            <th>출고 추가 여부</th>
+                        </tr>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -145,6 +148,8 @@
     const checkOrderListBtn = document.getElementsByClassName("checkOrderListBtn");
     const closeBtns = document.getElementsByClassName("close");
     const modalCloseBtn = document.getElementById("orderListModalCloseBtn");
+    const $orderListTbl = document.getElementById("orderListModal-table");
+    let $insertBtn;
 
     function viewDetail(num) {
         let No = num;
@@ -158,9 +163,81 @@
         try {
             axios.get("/outwarehouse/orderlist")
             .then(function(res) {
-                alert("조회 성공");
-                console.log(res);
-                console.log(res.data[0]);
+                // alert("조회 성공");
+                // console.log(res);
+                // console.log(res.data[0]);
+                // console.log(res.data);
+                // console.log(res.data[0].franchiseOrderNo);
+
+                const franchiseOrderList = res.data;
+                // console.log(">>>>>>>>>>>");
+                // console.log(franchiseOrderList);
+
+                franchiseOrderList.sort(function (a, b) {
+                    return a.franchiseOrderNo - b.franchiseOrderNo;
+                });
+
+                // console.log("<<<<<<<<<<<<");
+                // console.log(sorted);
+
+                // let $tr = $("<tr align='center'>", {});
+                // let $td1 = $("<td>", {text:1});
+                // let $td2 = $("<td>", {text:2});
+                // let $td3 = $("<td>", {text:3});
+                // let $td4 = $("<td>", {});
+                // let $btn = $("<button>", {text:"추가"});
+
+
+
+                // tr.setAttribute("th:each", "franchiseOrder : ${ outWarehouseOrderList }");
+                // td1.setAttribute("th:text", "${ franchiseOrder.franchiseOrderNo }");
+                // td2.setAttribute("th:text", "${ franchiseOrder.franchiseName }");
+                // td3.setAttribute("th:text", "${ franchiseOrder.franchiseAddress }");
+
+                // debugger;
+
+                for(let i = 0; i < franchiseOrderList.length; i++) {
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    let td2 = document.createElement("td");
+                    let td3 = document.createElement("td");
+                    let td4 = document.createElement("td");
+                    let btn = document.createElement("button");
+
+                    btn.className = "insertBtn btn btn-primary";
+                    btn.innerHTML = "추가";
+                    btn.setAttribute("value", res.data[i].franchiseOrderNo);
+
+                    td1.innerHTML = res.data[i].franchiseOrderNo;
+                    td2.innerHTML = res.data[i].franchiseName;
+                    td3.innerHTML = res.data[i].franchiseAddress;
+
+                    td4.appendChild(btn);
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+
+                    $orderListTbl.children[0].appendChild(tr);
+                }
+
+                // td4.appendChild(btn);
+                // tr.appendChild(td1);
+                // tr.appendChild(td2);
+                // tr.appendChild(td3);
+                // tr.appendChild(td4);
+
+                // $td4.append($btn);
+                //
+                // $tr.append($td1)
+                //     .append($td2)
+                //     .append($td3)
+                //     .append($td4);
+                //
+                // $orderListTbl.children[0].append($tr);
+
+                $insertBtn = document.getElementsByClassName("insertBtn");
+                console.log($insertBtn);
             })
         } catch(e) {
             alert("조회 실패");
@@ -171,12 +248,66 @@
     for(let closeBtn of closeBtns) {
         closeBtn.onclick = function() {
             document.getElementById("orderListModal").style.display = "none";
+
+            $orderListTbl.children[0].innerHTML = "";
+            // $orderListTbl.children[0].append("<tr id='orderListModal-tbl-header'>");
+            // $orderListTbl.children[0].append("<th>발주번호</th>");
+            // $orderListTbl.children[0].append("<th>발주 요청 가맹점명</th>");
+            // $orderListTbl.children[0].append("<th>가맹점 주소</th>");
+            // $orderListTbl.children[0].append("<th>출고 추가 여부</th>");
+            // $orderListTbl.children[0].append("</tr>");
+
+            let tr = document.createElement("tr");
+            tr.id = "orderListModal-tbl-header";
+            let th1 = document.createElement("th");
+            th1.innerHTML = "발주번호";
+            let th2 = document.createElement("th");
+            th2.innerHTML = "발주 요청 가맹점명";
+            let th3 = document.createElement("th");
+            th3.innerHTML = "가맹점 주소";
+            let th4 = document.createElement("th");
+            th4.innerHTML = "출고 추가 여부";
+
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            tr.appendChild(th3);
+            tr.appendChild(th4);
+
+            $orderListTbl.children[0].appendChild(tr);
         }
     }
 
     modalCloseBtn.onclick = function() {
         document.getElementById("orderListModal").style.display = "none";
+
+        $orderListTbl.children[0].innerHTML = "";
+        // $orderListTbl.children[0].append("<tr id='orderListModal-tbl-header'>");
+        // $orderListTbl.children[0].append("<th>발주번호</th>");
+        // $orderListTbl.children[0].append("<th>발주 요청 가맹점명</th>");
+        // $orderListTbl.children[0].append("<th>가맹점 주소</th>");
+        // $orderListTbl.children[0].append("<th>출고 추가 여부</th>");
+        // $orderListTbl.children[0].append("</tr>");
+
+        let tr = document.createElement("tr");
+        tr.id = "orderListModal-tbl-header";
+        let th1 = document.createElement("th");
+        th1.innerHTML = "발주번호";
+        let th2 = document.createElement("th");
+        th2.innerHTML = "발주 요청 가맹점명";
+        let th3 = document.createElement("th");
+        th3.innerHTML = "가맹점 주소";
+        let th4 = document.createElement("th");
+        th4.innerHTML = "출고 추가 여부";
+
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+
+        $orderListTbl.children[0].appendChild(tr);
     }
+
+
 </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.service.OutWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -81,19 +82,14 @@ public class OutWarehouseController {
 
     @GetMapping("/orderlist")
     @ResponseBody
-    public List<OutWarehouseFranchiseOrderListDTO> selectOrderList() {
+    public Model selectOrderList(Model model) {
 
         List<OutWarehouseFranchiseOrderListDTO> outWarehouseOrderList = outWarehouseService.findAllOrderList();
         outWarehouseOrderList.forEach(System.out::println);
 
-        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
-        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
-        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
-        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
-        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
-        System.out.println("@@@@@@@@@@@@@ check @@@@@@@@@@@@@@@@");
+        model.addAttribute("outWarehouseOrderList", outWarehouseOrderList);
 
-        return outWarehouseOrderList;
+        return model;
     }
 
     @GetMapping("/getorderlist")
