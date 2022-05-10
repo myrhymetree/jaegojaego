@@ -1,9 +1,6 @@
 package com.greedy.jaegojaego.materials.model.service;
 
-import com.greedy.jaegojaego.materials.model.dto.ClientContractItemDTO;
-import com.greedy.jaegojaego.materials.model.dto.ClientContractItemMaterialDTO;
-import com.greedy.jaegojaego.materials.model.dto.ClientMaterialUpdateDTO;
-import com.greedy.jaegojaego.materials.model.dto.MaterialsDTO;
+import com.greedy.jaegojaego.materials.model.dto.*;
 import com.greedy.jaegojaego.materials.model.entity.*;
 import com.greedy.jaegojaego.materials.model.repository.*;
 import org.modelmapper.ModelMapper;
@@ -83,17 +80,28 @@ public class MaterialsService {
     }
 
     @Transactional
-    public void materialModify(MaterialsDTO MaterialsDTO) {
+    public void materialModify(MaterialDTO materialDTO) {
 
-        /*Materials materials = materialsRepository.findById(MaterialsDTO.getItemInfoNo()).get();
-        MaterialsCategory materialsCategory = materialsCategoryRepository.findByName(MaterialsDTO.getMaterialsCategory()).get();
-        materials.setItemInfoNo(MaterialsDTO.getItemInfoNo());
-        materials.setItemInfoName(MaterialsDTO.getItemInfoName());
-        materials.setItemSerialNo(MaterialsDTO.getItemSerialNo());
-        materials.setMaterialCategory(MaterialsDTO.getMaterialsCategory().getMaterialCategoryName());
-        materials.setSubdivisionUnit(MaterialsDTO.getSubdivisionUnit());
-        materials.setSubdivisionYN(MaterialsDTO.getSubdivisionYN());
-        materials.setItemPrice(MaterialsDTO.getItemPrice());*/
+        System.out.println("test1");
+        MaterialsCategoryDTO materialsCategoryDTO = new MaterialsCategoryDTO();
+        MaterialsCategory category = materialsCategoryRepository.findByMaterialCategoryName(materialDTO.getMaterialsCategory().getMaterialCategoryName());
+        System.out.println("category = " + category);
+
+        System.out.println("teste2");
+        System.out.println("materialsDTO.getItemInfoNo() = " + materialDTO.getItemInfoNo());
+        Materials materials = materialsRepository.findById(materialDTO.getItemInfoNo()).get();
+        System.out.println("teste3");
+        System.out.println("materialsDTO.getMaterialsCategory().getMaterialCategoryName() = " + materialDTO.getMaterialsCategory().getMaterialCategoryName());
+
+        System.out.println("teste4");
+        //        MaterialsCategory materialsCategory = materialsCategoryRepository.findByName(MaterialsDTO.getMaterialsCategory()).get();
+        materials.setItemInfoNo(materialDTO.getItemInfoNo());
+        materials.setItemInfoName(materialDTO.getItemInfoName());
+        materials.setItemSerialNo(materialDTO.getItemSerialNo());
+        materials.setMaterialCategory(category);
+        materials.setSubdivisionUnit(materialDTO.getSubdivisionUnit());
+        materials.setSubdivisionYN(materialDTO.getSubdivisionYN());
+        materials.setItemPrice(materialDTO.getItemPrice());
     }
 }
 

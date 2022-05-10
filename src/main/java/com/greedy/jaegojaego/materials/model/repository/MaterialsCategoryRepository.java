@@ -4,4 +4,5 @@ import com.greedy.jaegojaego.materials.model.entity.MaterialsCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MaterialsCategoryRepository extends JpaRepository<MaterialsCategory, Integer> {
+    MaterialsCategory findByMaterialCategoryName(String materialCategoryName);
 }

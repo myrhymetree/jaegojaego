@@ -105,9 +105,10 @@ public class MaterialsController {
     }
 
     @PostMapping("/modify")
-    public ModelAndView materialModify(ModelAndView mv, @ModelAttribute MaterialsDTO materialsDTO ,RedirectAttributes rttr) {
+    public ModelAndView materialModify(ModelAndView mv, @ModelAttribute MaterialDTO materialDTO ,RedirectAttributes rttr) {
 
-        materialsService.materialModify(materialsDTO);
+        System.out.println("materialsDTO = " + materialDTO);
+        materialsService.materialModify(materialDTO);
 
         String message = "수정에 성공하셨습니다.";
 
