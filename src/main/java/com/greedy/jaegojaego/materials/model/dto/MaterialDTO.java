@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.materials.model.dto;
 
 public class MaterialDTO {
 
+    private int itemInfoNo;
     private FranchiseOrderableItemDTO franchiseOrderableItem;      //자재 번호
     private String itemInfoName;                       //자재 품명
     private String itemSerialNo;                       //자재 품번
@@ -13,7 +14,8 @@ public class MaterialDTO {
     public MaterialDTO() {
     }
 
-    public MaterialDTO(FranchiseOrderableItemDTO franchiseOrderableItem, String itemInfoName, String itemSerialNo, MaterialsCategoryDTO materialsCategory, String itemStatus, Integer subdivisionUnit, String subdivisionYN) {
+    public MaterialDTO(int itemInfoNo, FranchiseOrderableItemDTO franchiseOrderableItem, String itemInfoName, String itemSerialNo, MaterialsCategoryDTO materialsCategory, String itemStatus, Integer subdivisionUnit, String subdivisionYN) {
+        this.itemInfoNo = itemInfoNo;
         this.franchiseOrderableItem = franchiseOrderableItem;
         this.itemInfoName = itemInfoName;
         this.itemSerialNo = itemSerialNo;
@@ -21,6 +23,14 @@ public class MaterialDTO {
         this.itemStatus = itemStatus;
         this.subdivisionUnit = subdivisionUnit;
         this.subdivisionYN = subdivisionYN;
+    }
+
+    public int getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(int itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
     }
 
     public FranchiseOrderableItemDTO getFranchiseOrderableItem() {
@@ -82,7 +92,8 @@ public class MaterialDTO {
     @Override
     public String toString() {
         return "MaterialDTO{" +
-                "franchiseOrderableItem=" + franchiseOrderableItem +
+                "itemInfoNo=" + itemInfoNo +
+                ", franchiseOrderableItem=" + franchiseOrderableItem +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemSerialNo='" + itemSerialNo + '\'' +
                 ", materialsCategory=" + materialsCategory +

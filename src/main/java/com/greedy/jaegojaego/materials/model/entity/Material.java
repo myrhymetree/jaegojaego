@@ -15,11 +15,14 @@ public class Material implements Serializable {
 
 
     @Id
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "ITEM_SEQ_GENERATOR"
     )
+    @Column(name = "ITEM_INFO_NO")
+    private int itemInfoNo;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_INFO_NO")
     private FranchiseOrderableItem franchiseOrderableItem;
 

@@ -20,7 +20,7 @@ class MaterialsCategoryRepositoryTest {
     @Test
     public void initTest() {
 
-        assertNotNull();
+
     }
 
 }

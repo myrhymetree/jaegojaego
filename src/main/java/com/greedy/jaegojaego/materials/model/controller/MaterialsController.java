@@ -67,10 +67,23 @@ public class MaterialsController {
         System.out.println("상세조회3" + " " + clientList);
         System.out.println("상세조회3" + " " + clientList);
 
-
         mv.addObject("materials", materials);
         mv.addObject("clientList", clientList);
         mv.setViewName("materials/productDetail");
+
+        return mv;
+    }
+
+    @GetMapping("/delete/{itemInfoNo}")
+    public ModelAndView removeMaterialNo(ModelAndView mv, @PathVariable int itemInfoNo, RedirectAttributes rttr) {
+
+        materialsService.removeMaterial(itemInfoNo);
+
+        String successMessage = "삭제 성공하셨습니다.";
+
+        rttr.addFlashAttribute("successMessage", successMessage);
+
+        mv.setViewName("redirect:/materials/productList");
 
         return mv;
     }
@@ -96,8 +109,8 @@ public class MaterialsController {
 
         materialsService.updateMapping(clientMaterialUpdateDTO);
 
-        String message = "등록에 성공하셨습니다.";
-        rttr.addFlashAttribute("message", message);
+        String successMessage = "등록에 성공하셨습니다.";
+        rttr.addFlashAttribute("successMessage", successMessage);
 
         mv.setViewName("redirect:/materials/regist");
 
@@ -110,10 +123,10 @@ public class MaterialsController {
         System.out.println("materialsDTO = " + materialDTO);
         materialsService.materialModify(materialDTO);
 
-        String message = "수정에 성공하셨습니다.";
+        String successMessage = "수정에 성공하셨습니다.";
 
-        rttr.addFlashAttribute("message", message);
-        mv.setViewName("redirect:/materials/productDetail");
+        rttr.addFlashAttribute("successMessage", successMessage);
+        mv.setViewName("redirect:/materials/productList");
 
         return mv;
     }
