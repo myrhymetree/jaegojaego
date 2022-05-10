@@ -62,22 +62,22 @@
 .barGraph {
     border: 0.5px solid gray;
     height: 300px;
-    width: 950px;
+    width: 1650px;
     position: relative;
     margin-top: 15px;
     margin-left: 50px;
     float: left;
 }
 
-.circleGraph {
-    border: 0.5px solid gray;
-    height: 300px;
-    width: 600px;
-    position: relative;
-    margin-top: 15px;
-    margin-left: 50px;
-    float: left;
-}
+/*.circleGraph {*/
+/*    border: 0.5px solid gray;*/
+/*    height: 300px;*/
+/*    width: 600px;*/
+/*    position: relative;*/
+/*    margin-top: 15px;*/
+/*    margin-left: 50px;*/
+/*    float: left;*/
+/*}*/
 
 .barGraphForOut {
     border: 0.5px solid gray;
@@ -103,13 +103,13 @@
 
 .itemListForBarGraph {
     position: absolute;
-    left: 69%;
+    left: 75%;
     top: 3%;
 }
 
 .itemListForOutBarGraph {
     position: absolute;
-    left: 75%;
+    left: 76%;
     top: 3%;
 }
 
@@ -145,56 +145,8 @@
     top: 85%;
 }
 
-.january {
-    left: 5%;
-}
-
-.february {
-    left: 12%;
-}
-
-.march {
-    left: 19%;
-}
-
-.april {
-    left: 26%;
-}
-
-.may {
-    left: 33%;
-}
-
-.june {
-    left: 40%;
-}
-
-.july {
-    left: 47%;
-}
-
-.august {
-    left: 54%;
-}
-
-.september {
-    left: 61%;
-}
-
-.october {
-    left: 68%;
-}
-
-.november {
-    left: 75%;
-}
-
-.december {
-    left: 82%;
-}
-
 #morris-bar-chart {
-    width: 950px;
+    width: 1650px;
     /*heigth: 20px;*/
 }
 

@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -101,6 +102,7 @@ public class BacklogServiceTests {
 
 
     @Test
+    @Transactional
     @DisplayName("서비스 이슈 출고 목록 특정 자재 선택 시 바 그래프 조회 테스트")
     public void findBacklogOutWarehouseBarGraphListTests() {
 

@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,8 +97,8 @@ public class BacklogControllerTests {
         assertNotNull(backlogInWarehouseDTOList);
     }
 
-    //lazy에러로 일단 보류//
     @Test
+    @Transactional
     @DisplayName("컨트롤러 이슈 출고 목록 조회 테스트")
     public void findBacklogOutWarehouseListTests() {
 
@@ -113,6 +114,7 @@ public class BacklogControllerTests {
 
 
     @Test
+    @Transactional
     @DisplayName("컨트롤러 이슈 출고 목록 특정 자재 선택 시 바 그래프 조회 테스트")
     public void findBacklogOutWarehouseBarGraphListTests() {
 

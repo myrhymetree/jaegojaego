@@ -26,25 +26,6 @@
 
 
     <div class="chartAreaWhiteBoard">
-<!--        <button class="button calendar-button" id="calendarButton" style="width: 120px;">일정한눈에보기</button>-->
-
-<!--        &lt;!&ndash; 캘린더 부분 (시간나면 하자)&ndash;&gt;-->
-<!--        <div class="whiteboardForCalendar" id="calendarModal" style="display: none;">-->
-<!--            <div class="calendar-modal">-->
-<!--                <button class="button calendarback-button" id="backcalendarButton" style="width: 100px;">차트보기</button>-->
-<!--                <div class="ibox">-->
-<!--                    <div class="ibox-title">-->
-<!--                        <h4 style="font-weight: bold; margin-left: 5px;">입고처리된날짜가 반영된 일정</h4>-->
-<!--                    </div>-->
-<!--                    <div class="ibox-content">-->
-<!--                        &lt;!&ndash; fullcalendar script쪽에 설정 있을거임 &ndash;&gt;-->
-<!--                       <div id="calendar"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-
         <div class="chart-modalForIn" id="chartModalForIn">
             <div class="barGraph">
                 <h4 style="font-weight: bold; margin-left: 5px;">각 물품 구매량 증/감소율</h4>
@@ -157,23 +138,23 @@
                  </div>
 
 
-            <div class="circleGraph">
-                <h4 style="font-weight: bold; margin-left: 5px;">품목별 각 거래처 구매율</h4>
-                <select class="YearCircleGraph" id="YearCircleGraph" onchange="selectYearForCircleGraph(this.value, this.options[this.selectedIndex].text)">
+<!--            <div class="circleGraph">-->
+<!--                <h4 style="font-weight: bold; margin-left: 5px;">품목별 각 거래처 구매율</h4>-->
+<!--                <select class="YearCircleGraph" id="YearCircleGraph" onchange="selectYearForCircleGraph(this.value, this.options[this.selectedIndex].text)">-->
 
-                </select>
-                <select class="MonthCircleGraph" id="MonthCircleGraph" onchange="selectMonthForCircleGraph(this.value, this.options[this.selectedIndex].text)">
+<!--                </select>-->
+<!--                <select class="MonthCircleGraph" id="MonthCircleGraph" onchange="selectMonthForCircleGraph(this.value, this.options[this.selectedIndex].text)">-->
 
-                </select>
-                <select class="itemListForCircleGraph" id="itemListForCircleGraph" onchange="selectOneitemForCircleGraph(this.value, this.options[this.selectedIndex].text);">
-                    <option selected="selected" disabled="disabled">선택해주세요</option>
-                </select>
+<!--                </select>-->
+<!--                <select class="itemListForCircleGraph" id="itemListForCircleGraph" onchange="selectOneitemForCircleGraph(this.value, this.options[this.selectedIndex].text);">-->
+<!--                    <option selected="selected" disabled="disabled">선택해주세요</option>-->
+<!--                </select>-->
 
-                <!-- 원그래프 -->
-                <div id="pie"></div>
+<!--                &lt;!&ndash; 원그래프 &ndash;&gt;-->
+<!--                <div id="pie"></div>-->
 
 
-                 </div>
+<!--                 </div>-->
             </div>
     </div>
     <!-- 차트 부분 whiteboard 끝 -->
@@ -232,17 +213,6 @@
 
 <script>
 
-   //  document.getElementById("calendarButton").onclick = function () {
-   //      document.getElementById("calendarModal").style.display = "block";
-   //      document.getElementById("chartModalForIn").style.display = "none";
-   //      document.getElementById("charModalForOut").style.display = "none";
-   //      document.getElementById("releasebacklogModal").style.display = "none";
-   //      document.getElementById("inwarehousebacklogModal").style.display = "none";
-   //      document.getElementById("moveButton").style.display = "none";
-   //      document.getElementById("listModal").style.display = "none";
-   //
-   //  }
-
    document.getElementById("releasebacklogButton").onclick = function () {
        location.href='/backlog/outwarehouselist';
    }
@@ -266,21 +236,21 @@
     });
 
    <!-- 원그래프에서 물품 불러오기 -->
-   $(function() {
-       $.ajax({
-           url: "/backlog/iteminfolist",
-           success: function(data) {
-               const itemListForCircleGraph = $("#itemListForCircleGraph");
-
-               for(let list in data) {
-                   itemListForCircleGraph.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
-               }
-           },
-           error: function(xhr) {
-               alert("에러가 발생하였습니다. 다시 시도해주세요");
-           }
-       });
-   });
+   // $(function() {
+   //     $.ajax({
+   //         url: "/backlog/iteminfolist",
+   //         success: function(data) {
+   //             const itemListForCircleGraph = $("#itemListForCircleGraph");
+   //
+   //             for(let list in data) {
+   //                 itemListForCircleGraph.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
+   //             }
+   //         },
+   //         error: function(xhr) {
+   //             alert("에러가 발생하였습니다. 다시 시도해주세요");
+   //         }
+   //     });
+   // });
 
    let januaryAmount = 0;
    let februaryAmount = 0;
@@ -352,104 +322,84 @@
    }
 
 
-   <!-- 원그래프 관련 ㅇㅇ-->
-   let inWarehlouseListBySelectboxForCircle = [];
-   const $yearSelectboxForCircleGraph = $("#YearCircleGraph");
-   let itemInfoNoForCircleGraph = 0;
-   function selectOneitemForCircleGraph(value, text) {
-       $.ajax({
-           url: "/backlog/selectonebackloglist",
-           type: "get",
-           data: {"itemInfoNo":value},
-           success: function(data) {
-
-               itemInfoNoForCircleGraph = value;
-               inWarehlouseListBySelectboxForCircle.length = 0;
-
-               for(list in data){
-                   inWarehlouseListBySelectboxForCircle.push(data[list]); //지로스팅에 대한 정보가 들어있음
-               }
-
-               const year = [ '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009'];
-
-               $yearSelectboxForCircleGraph.html("");
-               $yearSelectboxForCircleGraph.append($("<option selected>").text("년도선택").attr("disabled", true));
-
-               for(x in year) {
-                   const opt = document.createElement("option");
-                   opt.innerText = year[x];
-                   opt.value = year[x];
-                   $yearSelectboxForCircleGraph.append(opt);
-               }
-           },
-           error: function(xhr) {
-               alert("에러가 발생하였습니다. 다시 시도해주세요");
-           }
-       });
-
-   }
-
-   const $MonthSelectboxForCircleGraph = $("#MonthCircleGraph");
-   function selectYearForCircleGraph(value, text) {
-       //년도
-       console.log("월별로 선택되어온 년도 : " + value);
-       const month = [ '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-       $MonthSelectboxForCircleGraph.html("");
-       $MonthSelectboxForCircleGraph.append($("<option selected>").text("월선택").attr("disabled", true));
-
-       for(x in month) {
-           const opt = document.createElement("option");
-           opt.innerText = month[x];
-           opt.value = value + "-" +  month[x];
-           $MonthSelectboxForCircleGraph.append(opt);
-       }
-
-   }
-
-
-   function selectMonthForCircleGraph(value, text) {
-       console.log("list :" + inWarehlouseListBySelectboxForCircle);
-       //지로스팅에 대한 list랑 , 년도랑 , 월별 들어옴
-       console.log("value(2022-03) : " + value);
-       console.log("text(03?) : " + text);
-
-
-       $.ajax({
-           url: "/backlog/selectcirclelist",
-           type: "get",
-           data: {"date":value, "itemInfoNo":itemInfoNoForCircleGraph },
-           success: function (data) {
-
-           },
-           error: function (xhr) {
-               alert("에러가 발생하였습니다. 다시 시도해주세요!");
-           }
-       })
-
-
-       // for (list in inWarehlouseListBySelectboxForCircle) {
-       //
-       //     let DateForCircleGraph = inWarehlouseListBySelectboxForCircle[list].inWarehouseCompleteDate.substring(0, 7); //2022-04
-       //     let AmountForCircleGraph = inWarehlouseListBySelectboxForCircle[list].inWarehouseAmount; // 300개
-       //     let clientForCircleGraph = inWarehlouseListBySelectboxForCircle[list].clientNoForInWarehouse.clientName; //거래처
-       //     console.log("clientForCircleGraph : " + clientForCircleGraph);
-       //
-       //      for(client in clientList) {
-       //          if(clientList[client] == clientForCircleGraph) {
-       //              testAmount += AmountForCircleGraph;
-       //          }
-       //      }
-       //
-       //     //1) 거래처에 대한 모든 그게 있어야 하잖아? 그러면 차라리 ajax로 모든 client불러와서 저 밑에서 <% %>로 반복시키는거임
-       //     //2) 전부의 거래처가 있는 배열을 만들고 그 배열을 저기 집어넣으면 되지않을까? + 그 거래처 배열과 이 들어온 애 돌렸을 때 같은 경우-> amount 더해지게?
-       //
-       //
-       // }
-
-        selectCircleGraph();
-
-
-   }
+   // <!-- 원그래프 관련 ㅇㅇ-->
+   // let inWarehlouseListBySelectboxForCircle = [];
+   // const $yearSelectboxForCircleGraph = $("#YearCircleGraph");
+   // let itemInfoNoForCircleGraph = 0;
+   // function selectOneitemForCircleGraph(value, text) {
+   //     $.ajax({
+   //         url: "/backlog/selectonebackloglist",
+   //         type: "get",
+   //         data: {"itemInfoNo":value},
+   //         success: function(data) {
+   //
+   //             itemInfoNoForCircleGraph = value;
+   //             inWarehlouseListBySelectboxForCircle.length = 0;
+   //
+   //             for(list in data){
+   //                 inWarehlouseListBySelectboxForCircle.push(data[list]); //지로스팅에 대한 정보가 들어있음
+   //             }
+   //
+   //             const year = [ '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009'];
+   //
+   //             $yearSelectboxForCircleGraph.html("");
+   //             $yearSelectboxForCircleGraph.append($("<option selected>").text("년도선택").attr("disabled", true));
+   //
+   //             for(x in year) {
+   //                 const opt = document.createElement("option");
+   //                 opt.innerText = year[x];
+   //                 opt.value = year[x];
+   //                 $yearSelectboxForCircleGraph.append(opt);
+   //             }
+   //         },
+   //         error: function(xhr) {
+   //             alert("에러가 발생하였습니다. 다시 시도해주세요");
+   //         }
+   //     });
+   //
+   // }
+   //
+   // const $MonthSelectboxForCircleGraph = $("#MonthCircleGraph");
+   // function selectYearForCircleGraph(value, text) {
+   //     //년도
+   //     console.log("월별로 선택되어온 년도 : " + value);
+   //     const month = [ '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+   //     $MonthSelectboxForCircleGraph.html("");
+   //     $MonthSelectboxForCircleGraph.append($("<option selected>").text("월선택").attr("disabled", true));
+   //
+   //     for(x in month) {
+   //         const opt = document.createElement("option");
+   //         opt.innerText = month[x];
+   //         opt.value = value + "-" +  month[x];
+   //         $MonthSelectboxForCircleGraph.append(opt);
+   //     }
+   //
+   // }
+   //
+   //
+   // function selectMonthForCircleGraph(value, text) {
+   //     console.log("list :" + inWarehlouseListBySelectboxForCircle);
+   //     //지로스팅에 대한 list랑 , 년도랑 , 월별 들어옴
+   //     console.log("value(2022-03) : " + value);
+   //     console.log("text(03?) : " + text);
+   //
+   //
+   //     $.ajax({
+   //         url: "/backlog/selectcirclelist",
+   //         type: "get",
+   //         data: {"date":value, "itemInfoNo":itemInfoNoForCircleGraph },
+   //         success: function (data) {
+   //
+   //         },
+   //         error: function (xhr) {
+   //             alert("에러가 발생하였습니다. 다시 시도해주세요!");
+   //         }
+   //     })
+   //
+   //      selectCircleGraph();
+   //
+   //
+   // }
 
     <!-- 원그래프 관련 끝 -->
 
@@ -531,48 +481,33 @@
     });
 
 
-    c3.generate({
-        bindto: '#pie',
-        data:{
-            columns: [
-                ['선택해주세요', 100],
-            ],
-            colors:{
-                선택해주세요: '#1ab394',
-            },
-            type : 'pie'
-        }
-    });
-
-    // 값 넣을때 이렇게 비스무리하게 하면 될듯 ㅇㅇ
-    // new Morris.Bar({
-    //     element: 'inbody-chart',
-    //     data: [
-    //         <% for(int i=0; i<inbodyList.size(); i++){%>
-    //     { y: '<%=inbodyList.get(i).getRecord().toString()%>',a:<%=inbodyList.get(i).getWeight()%>,
-    //         b: <%=inbodyList.get(i).getFat()%>, c:<%=inbodyList.get(i).getMuscle()%> },<%};%>
-    // ],
-    // xkey: 'y',
-    //     ykeys: ['a', 'b','c'],
-    //     labels: ['몸무게', '체지방','근육량']
+    // c3.generate({
+    //     bindto: '#pie',
+    //     data:{
+    //         columns: [
+    //             ['선택해주세요', 100],
+    //         ],
+    //         colors:{
+    //             선택해주세요: '#1ab394',
+    //         },
+    //         type : 'pie'
+    //     }
     // });
 
-
-
-    function selectCircleGraph() {
-        c3.generate({
-            bindto: '#pie',
-            data:{
-                columns: [ //기본이 따로 있고, 눌렀을 때 나오는 애가 따로 있고
-                    [clientList, 600], //마계커피  " "
-                ],
-                colors:{
-                    clientList: '#1ab394',
-                },
-                type : 'pie'
-            }
-        });
-    }
+    // function selectCircleGraph() {
+    //     c3.generate({
+    //         bindto: '#pie',
+    //         data:{
+    //             columns: [ //기본이 따로 있고, 눌렀을 때 나오는 애가 따로 있고
+    //                 [clientList, 600], //마계커피  " "
+    //             ],
+    //             colors:{
+    //                 clientList: '#1ab394',
+    //             },
+    //             type : 'pie'
+    //         }
+    //     });
+    // }
 
 </script>
 </body>

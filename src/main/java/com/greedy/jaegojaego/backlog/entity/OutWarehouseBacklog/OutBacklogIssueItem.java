@@ -12,11 +12,11 @@ import java.io.Serializable;
 public class OutBacklogIssueItem implements Serializable {
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "FRANCHISE_ISSUE_NO")
     private OutBacklogFranchiseIssue issueNoForBacklog;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
     private OutBacklogItemInfo itemInfoNoForBacklog;
 
