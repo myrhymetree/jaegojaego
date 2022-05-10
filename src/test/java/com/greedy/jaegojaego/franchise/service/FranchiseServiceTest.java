@@ -155,7 +155,7 @@ class FranchiseServiceTest {
     @Transactional
     public void 가맹점_계정_목록_조회() {
 
-        String searchWord = "강남";
+        String searchWord = null;
 
         List<FranchiseInfo> franchiseInfos = franchiseRepository.searchFranchise(searchWord);
 
@@ -216,5 +216,19 @@ class FranchiseServiceTest {
 
     }
 
+    @Test
+    @Transactional
+    public void 삭제된_가맹점_계정_목록_조회() {
 
+        String searchWord = null;
+
+        List<FranchiseInfo> franchiseInfos = franchiseRepository.searchRemovedFranchise(searchWord);
+
+        List<FranchiseInfoDTO> franchiseInfoDTOS =
+                franchiseInfos.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+
+        franchiseInfoDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(franchiseInfos);
+    }
 }

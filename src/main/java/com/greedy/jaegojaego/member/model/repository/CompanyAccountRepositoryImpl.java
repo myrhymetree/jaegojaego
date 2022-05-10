@@ -44,11 +44,15 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .select(new QCompanyAccount(
                             companyAccount))
                     .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
                     .where(
-                            memberIdContains(searchWord)
+                            companyAccount.memberRemoveStatus.eq("Y")
+                            .or(memberIdContains(searchWord))
                             .or(memberNameContains(searchWord))
                             .or( departmentNameContains(searchWord))
+
                     )
+                    .orderBy(companyAccount.memberNo.asc())
                     .fetch();
         }
         else {
@@ -56,11 +60,14 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .select(new QCompanyAccount(
                             companyAccount))
                     .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
                     .where(
                             memberIdContains(searchWord),
                             memberNameContains(searchWord),
-                            departmentNameContains(searchWord)
+                            departmentNameContains(searchWord),
+                            companyAccount.memberRemoveStatus.eq("Y")
                     )
+                    .orderBy(companyAccount.memberNo.asc())
                     .fetch();
         }
 

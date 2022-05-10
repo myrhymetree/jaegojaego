@@ -58,11 +58,13 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
                             franchiseAccount))
                     .from(franchiseAccount)
                     .where(
-                        managerIdContains(searchWord)
-                        .or(managerNameContains(searchWord))
-                        .or(franchiseNameContains(searchWord))
-                        .or(franchisePhoneNumberContains(searchWord))
+                            franchiseAccount.memberRemoveStatus.eq("y")
+                            .or(managerIdContains(searchWord))
+                            .or(managerNameContains(searchWord))
+                            .or(franchiseNameContains(searchWord))
+                            .or(franchisePhoneNumberContains(searchWord))
                     )
+                    .orderBy(franchiseAccount.franchiseInfo.branchName.asc())
                     .fetch();
         }
         else {
@@ -71,11 +73,13 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
                             franchiseAccount))
                     .from(franchiseAccount)
                     .where(
+                        franchiseAccount.memberRemoveStatus.eq("Y"),
                         managerIdContains(searchWord),
                         managerNameContains(searchWord),
                         franchiseNameContains(searchWord),
                         franchisePhoneNumberContains(searchWord)
                     )
+                    .orderBy(franchiseAccount.franchiseInfo.branchName.asc())
                     .fetch();
         }
 

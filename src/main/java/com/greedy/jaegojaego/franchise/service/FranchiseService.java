@@ -180,23 +180,27 @@ public class FranchiseService {
         franchiseRepository.updateFranchise(franchise);
     }
 
-    public List<FranchiseInfoDTO> findFranchiseList(String searchWord) {
+    public FranchiseListDTO findFranchiseList(String searchWord) {
 
+        /* 프랜차이즈 대표자 계정 목록 조회 */
         List<FranchiseInfo> franchiseList = franchiseRepository.searchFranchise(searchWord);
-
         List<FranchiseInfoDTO> franchises = franchiseList.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
-        return franchises;
-    }
+        /* 삭제된 프렌차이즈 대표자 계정 목록 조회 */
+        List<FranchiseInfo> removedFranchiseList = franchiseRepository.searchRemovedFranchise(searchWord);
+        List<FranchiseInfoDTO> removedFranchises = removedFranchiseList.stream().map(removedFrachise -> modelMapper.map(removedFrachise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
-    public List<FranchiseAccountDTO> findManagerList(String searchWord) {
-
+        /* 프랜차이즈 매니저 계정 목록 조회 */
         List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
+        List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
 
-        List<FranchiseAccountDTO> members =
-                managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+        /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
+        FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
+        franchiseListDTO.setFranchiseList(franchises);
+        franchiseListDTO.setRemovedFranchiseList(removedFranchises);
+        franchiseListDTO.setManagerList(managers);
 
-        return members;
+        return franchiseListDTO;
     }
 
     public FranchiseDetailViewDTO findFranchiseDetailInfo(Integer franchiseNo) {

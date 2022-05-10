@@ -15,7 +15,7 @@
     </div>
 
     <div class="wrapper wrapper-content  animated fadeInRight">
-        <div class="row">
+        <div class="row" id="veryGood">
             <div class="col-sm-8" id="good">
                 <div class="ibox">
                     <div class="ibox-content">
@@ -98,17 +98,20 @@
                                                 <tbody>
                                                 <tr>
                                                     <th>번호</th>
-                                                    <th>직원 아이디</th>
-                                                    <th>직원 이름</th>
+                                                    <th>대표자 아이디</th>
                                                     <th>가맹점 명</th>
-                                                    <th>직원 전화번호</th>
+                                                    <th>가맹점 전화번호</th>
+                                                    <th>가맹점 주소</th>
+                                                    <th>담당직원</th>
                                                 </tr>
-                                                <tr>
-                                                    <td>ㅇ</td>
-                                                    <td>ㅇ</td>
-                                                    <td>ㅇ</td>
-                                                    <td>ㅇ</td>
-                                                    <td>ㅇ</td>
+                                                <tr th:each="List, index : ${ removedFranchiseList }">
+                                                    <td class="memberNo" th:text="${ List.memberNo }"></td>
+                                                    <td>[[${index.count}]]</td>
+                                                    <td th:text="${ List.memberId }"></td>
+                                                    <td th:text="${ List.branchName }"></td>
+                                                    <td th:text="${ List.phone }"></td>
+                                                    <td th:text="${ List.address }"></td>
+                                                    <td th:text="${ List.supervisor.memberName }"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -121,9 +124,16 @@
                     </div>
                 </div>
             </div>
-        <th:block  th:id="aaaaa" th:replace="/franchise/franchiseDetailView.html" th:class="ababa"></th:block>
-        <th:block th:replace="/common/footer.html"></th:block>
+
+        <th:block th:replace="/franchise/franchiseDetailInfoModifyModal.html"></th:block>
+
+
+<!--            #httpSession.getAttribute("success")-->
+        <th:block th:if="${ true }">
+            <th:block th:replace="/franchise/franchiseDetailView.html"></th:block>
+        </th:block>
         </div>
+        <th:block th:replace="/common/footer.html"></th:block>
     </div>
 
     <script th:inline="javascript">
@@ -134,8 +144,20 @@
 
             $("#franchiseTable tbody").on("click", "tr", function () {
 
-                /* td에 숫자가 안나오게 표시함 */
+                 // let $th_block = document.createElement("th:block");
+                 // $th_block.setAttribute("th:replace", "/franchise/franchiseDetailView.html");
+                 // let verygood = document.getElementById("veryGood");
+                 //
+                 // verygood.appendChild($th_block);
+
+                // $("#veryGood").load("/franchise/franchiseDetailView.html");
+
                 let memberNo = this.children[0].innerText;
+
+                let signal = 1;
+
+                // sessionStorage.removeItem("success");
+                sessionStorage.setItem("success", memberNo);
 
                 axios({
                     method: 'get',
@@ -146,6 +168,7 @@
 
                     console.log(response.data.branchName);
 
+                    $("#detail-memberNo").val(response.data.memberNo);
                     $("#franchise-name").text(response.data.branchName);
                     $("#representative-id").text(response.data.memberId).val();
                     $("#representative-name").text(response.data.representativeName).val();
@@ -164,8 +187,6 @@
                         response.data.franchiseContractUpdatedRecord.franchiseContractExpiredDate.date.day + "일").val();
                     $("#franchise-contract-status").text(response.data.franchiseContractUpdatedRecord.franchiseContractStatus).val();
 
-
-
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -175,6 +196,11 @@
                 });
 
             });
+
+            $("#tab-2").click( function () {
+
+            });
+
         });
     </script>
 

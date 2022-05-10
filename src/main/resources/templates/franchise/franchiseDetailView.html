@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
-    <div class="col-sm-4">
+    <div class="col-sm-4" style="width: 100%; max-width: 100%">
         <div class="ibox selected">
 
             <div class="ibox-content">
@@ -17,12 +18,13 @@
                             </div>
                             <div class="col-lg-8">
 
-                                <button type="button" class="btn btn-primary btn-sm btn-block"><i
-                                        class="fa fa-envelope"></i> 수정
+                                <button type="button" class="btn btn-primary btn-sm btn-block"
+                                        data-toggle="modal" data-target="#franchiseModifyModal">
+                                    <i class="fa fa-envelope"></i> 수정
                                 </button>
 
-                                <button type="button" class="btn btn-primary btn-sm btn-block"><i
-                                        class="fa fa-envelope"></i> 삭제
+                                <button type="button" id="removeFranchise" class="btn btn-primary btn-sm btn-block">
+                                    <i class="fa fa-envelope"></i> 삭제
                                 </button>
 
                             </div>
@@ -93,6 +95,17 @@
             </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        $(function () {
+            $("#removeFranchise").click(function () {
+
+                const memberNo = $("#detail-memberNo").val();
+
+                location.href="/franchise/delete/" + memberNo;
+
+            });
+        });
+    </script>
 
 </body>
 </html>

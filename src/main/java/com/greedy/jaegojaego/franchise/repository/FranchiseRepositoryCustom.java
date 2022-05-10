@@ -9,4 +9,6 @@ public interface FranchiseRepositoryCustom {
     void updateFranchise(FranchiseInfo franchise);
 
     List<FranchiseInfo> searchFranchise(String searchWord);
+
+    List<FranchiseInfo> searchRemovedFranchise(String searchWord);
 }

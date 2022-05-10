@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
+import static com.greedy.jaegojaego.franchise.entity.QFranchiseAccount.franchiseAccount;
 import static com.greedy.jaegojaego.franchise.entity.QFranchiseInfo.franchiseInfo;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -62,12 +63,14 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                             franchiseInfo))
                     .from(franchiseInfo)
                     .where(
-                        memberIdContatins(searchWord)
+                        franchiseInfo.memberRemoveStatus.eq("Y")
+                        .or(memberIdContatins(searchWord))
                         .or(franchiseNameContatains(searchWord))
                         .or(franchisePhoneNumberContains(searchWord))
                         .or(franchiseAddressContains(searchWord))
                         .or(franchiseSupervisorContains(searchWord))
                     )
+                    .orderBy(franchiseInfo.branchName.asc())
                     .fetch();
         }
         else {
@@ -76,12 +79,14 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                             franchiseInfo))
                     .from(franchiseInfo)
                     .where(
+                        franchiseInfo.memberRemoveStatus.eq("Y"),
                         memberIdContatins(searchWord),
                         franchiseNameContatains(searchWord),
                         franchisePhoneNumberContains(searchWord),
                         franchiseAddressContains(searchWord),
                         franchiseSupervisorContains(searchWord)
                     )
+                    .orderBy(franchiseInfo.branchName.asc())
                     .fetch();
         }
 
@@ -107,4 +112,40 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
         return hasText(supervisor) ? franchiseInfo.supervisor.memberName.contains(supervisor) : null;
     }
 
+    @Override
+    public List<FranchiseInfo> searchRemovedFranchise(String searchWord) {
+
+        if(searchWord != null && searchWord != "") {
+            return queryFactory
+                    .select(new QFranchiseInfo(
+                            franchiseInfo))
+                    .from(franchiseInfo)
+                    .where(
+                            franchiseInfo.memberRemoveStatus.eq("N")
+                            .or(memberIdContatins(searchWord))
+                            .or(franchiseNameContatains(searchWord))
+                            .or(franchisePhoneNumberContains(searchWord))
+                            .or(franchiseAddressContains(searchWord))
+                            .or(franchiseSupervisorContains(searchWord))
+                    )
+                    .orderBy(franchiseInfo.branchName.asc())
+                    .fetch();
+        }
+        else {
+            return queryFactory
+                    .select(new QFranchiseInfo(
+                            franchiseInfo))
+                    .from(franchiseInfo)
+                    .where(
+                            franchiseInfo.memberRemoveStatus.eq("N"),
+                            memberIdContatins(searchWord),
+                            franchiseNameContatains(searchWord),
+                            franchisePhoneNumberContains(searchWord),
+                            franchiseAddressContains(searchWord),
+                            franchiseSupervisorContains(searchWord)
+                    )
+                    .orderBy(franchiseInfo.branchName.asc())
+                    .fetch();
+        }
+    }
 }

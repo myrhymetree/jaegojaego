@@ -232,12 +232,13 @@ public class FranchiseController {
     @GetMapping("/list")
     public ModelAndView findFranchiseList(ModelAndView mv,  String searchWord) {
 
-        List<FranchiseInfoDTO> franchiseList = franchiseService.findFranchiseList(searchWord);
+        FranchiseListDTO franchiseList = franchiseService.findFranchiseList(searchWord);
 
-        List<FranchiseAccountDTO> managerList = franchiseService.findManagerList(searchWord);
+        System.out.println("삭제된 프랜차이즈 목록은 : " + franchiseList.getRemovedFranchiseList());
 
-        mv.addObject("franchiseList", franchiseList);
-        mv.addObject("managerList", managerList);
+        mv.addObject("franchiseList", franchiseList.getFranchiseList());
+        mv.addObject("removedFranchiseList", franchiseList.getRemovedFranchiseList());
+        mv.addObject("managerList", franchiseList.getManagerList());
 
         mv.setViewName("franchise/list");
 
@@ -360,7 +361,13 @@ public class FranchiseController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
 
+    @GetMapping("/delete/{memberNo}")
+    public String removeMember(@PathVariable Integer memberNo) {
 
+        memberService.removeMember(memberNo);
+
+        return "redirect:/franchise/list";
     }
 }
