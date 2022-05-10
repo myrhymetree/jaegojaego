@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package com.greedy.jaegojaego.client.model.service;
 
 import com.greedy.jaegojaego.client.model.dto.*;
@@ -33,7 +31,6 @@ public class ClientService {
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ClientContractInfoRepository clientContractInfoRepository;
     private final ClientContractItemRepository clientContractItemRepository;
-
     private final ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository;
     private final ModelMapper modelMapper;
 
@@ -327,5 +324,22 @@ public class ClientService {
     }*/
 
     }
+
+    public ClientContractItemDTO findClientContractNoByClientNo(int clientNo) {
+
+        ClientContractItemDTO clientContractItemDTO = clientContractItemRepository.findClientContractInfoNoByClientNo(clientNo);
+
+        return clientContractItemDTO;
+    }
+
+    public void registClientContractItemAttachmentFile(ClientContractItemDTO clientContractItemList, ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList) {
+
+        ClientContractItem clientContractItem = new ClientContractItem();
+        clientContractItem.setClientContractItemName(clientContractItemList.getClientContractItemName());
+
+
+
+       
+
+    }
 }
->>>>>>> origin/feature/client-2

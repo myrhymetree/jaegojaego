@@ -16,4 +16,5 @@ public class ClientContractItemAttachmentFileDTO {
     private String attachmentFileDivision;
     private ClientContractItem clientContractItem;
     private String attachmentFileThumbnailUrl;
+    private int attachmentFileCategoryNo;
 }

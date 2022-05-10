@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package com.greedy.jaegojaego.client.model.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -348,6 +346,30 @@ public class ClientController {
         System.out.println("clientDTO = " + clientDTO);
         System.out.println("clientItemImage = " + clientItemImage);
 
+        String fileUploadDirectory = rootLocation;
+        File conversionFileDirectory = new File(fileUploadDirectory);
+        String thumbnailPath = "/upload/client/conversion/" + clientItemImage.getName();
+
+        ClientContractItemDTO clientContractInfoNo = clientService.findClientContractNoByClientNo(clientDTO.getClientNo());
+        ClientContractInfoDTO registClientContractInfoNo = clientContractInfoNo.getClientContractInfoNo();
+
+        ClientContractItemDTO clientContractItemList = new ClientContractItemDTO();
+        clientContractItemList.setClientContractItemName(clientContractItemDTO.getClientContractItemName());
+        clientContractItemList.setClientContractItemSupplyPrice(clientContractItemDTO.getClientContractItemSupplyPrice());
+        clientContractItemList.setClientContractInfoNo(registClientContractInfoNo);
+
+        ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList = new ClientContractItemAttachmentFileDTO();
+        clientContractItemAttachmentFileList.setAttachmentFileDeleteYn("N");
+        clientContractItemAttachmentFileList.setAttachmentFileUrl(fileUploadDirectory);
+        clientContractItemAttachmentFileList.setAttachmentFileChangedName(clientItemImage.getName());
+        clientContractItemAttachmentFileList.setAttachmentFileOriginalName(clientItemImage.getOriginalFilename());
+        clientContractItemAttachmentFileList.setAttachmentFileThumbnailUrl(thumbnailPath);
+        clientContractItemAttachmentFileList.setAttachmentFileDivision("거래처상품");
+        clientContractItemAttachmentFileList.setAttachmentFileCategoryNo(5);
+
+        clientService.registClientContractItemAttachmentFile(clientContractItemList, clientContractItemAttachmentFileList);
+
+
 
 
 
@@ -471,4 +493,3 @@ public class ClientController {
 //        }
     }
 }
->>>>>>> origin/feature/client-2
