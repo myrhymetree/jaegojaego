@@ -31,10 +31,12 @@ public class ClientService {
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ClientContractInfoRepository clientContractInfoRepository;
     private final ClientContractItemRepository clientContractItemRepository;
+
+    private final ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
         this.clientBusinessTypeRepository = clientBusinessTypeRepository;
@@ -44,6 +46,7 @@ public class ClientService {
         this.clientBusinessTypeDivisionRepository = clientBusinessTypeDivisionRepository;
         this.clientContractInfoRepository = clientContractInfoRepository;
         this.clientContractItemRepository = clientContractItemRepository;
+        this.clientContractItemAttachmentFileRepository = clientContractItemAttachmentFileRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -267,6 +270,59 @@ public class ClientService {
         newClientContractInfo.setClient(clientNo);
 
         clientContractInfoRepository.save(newClientContractInfo);
+
+    }
+
+    public List<ClientDTO> findClient() {
+
+        List<Client> clientList = new ArrayList<>();
+
+        clientList = clientRepository.findAll();
+
+        System.out.println("왜안돼? : " + clientList);
+
+        return clientList.stream().map(Client -> modelMapper.map(Client, ClientDTO.class)).collect(Collectors.toList());
+    }
+
+
+    public ClientContractInfo findClientContractInfoNoByClientNo(int clientNo) {
+
+        ClientContractInfo clientContractInfo = clientContractItemRepository.findByClient(clientNo);
+
+        return clientContractInfo;
+    }
+
+    @Transactional
+    public void registClientContractItem(ClientContractItemDTO clientContractItem, List<ClientContractItemAttachmentFileDTO> clientContractItemAttachmentFile) {
+/*
+    ClientContractItem registClientContractItem = modelMapper.map(clientContractItem, ClientContractItem.class);
+
+    List<ClientContractItemAttachmentFile> registClientContractItemAttachmentFileList = null;
+
+    if(clientContractItemAttachmentFile != null){
+        registClientContractItemAttachmentFileList = clientContractItemAttachmentFile.stream().map(clientContractItemAttachmentFileDTO -> modelMapper.map(clientContractItemAttachmentFile,ClientContractItemAttachmentFile.class)).collect(Collectors.toList());
+    }
+
+        ClientContractItem newClientContractItem = new ClientContractItem();
+
+        newClientContractItem.setClientContractItemName(clientContractItem.getClientContractItemName());
+        newClientContractItem.setClientContractItemSupplyPrice(clientContractItem.getClientContractItemSupplyPrice());
+*//*
+        newClientContractItem.setClientContractInfoNo(clientContractItem.getClientContractInfoNo());
+*//*
+        newClientContractItem.setClientContractItemCreatedDate(new Date(System.currentTimeMillis()));
+
+        clientContractItemRepository.save(newClientContractItem);
+
+    if(registClientContractItemAttachmentFileList != null){
+
+        for(int i = 0; i < registClientContractItemAttachmentFileList.size(); i++){
+
+            registClientContractItemAttachmentFileList.get(i).setClientContractItem(registClientContractItem);
+
+            clientContractItemAttachmentFileRepository.save(registClientContractItemAttachmentFileList.get(i));
+        }
+    }*/
 
     }
 }

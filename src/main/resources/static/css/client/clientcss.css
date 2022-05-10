@@ -87,3 +87,16 @@ details summary::-webkit-details-marker{
 .memoRegistButton{
     margin-left: 75%;
 }
+
+.image-freeview{
+    width:650px;
+    height:300px;
+    margin:0 auto;
+}
+
+.image-freeview > img{
+
+    width: 600px;
+    height: 300px;
+    object-fit: cover;
+}

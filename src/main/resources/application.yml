@@ -66,3 +66,6 @@ jaegojaego:
   issue:
     upload:
         path: D:\jaegojaego\src\main\resources\static\upload\issue\conversion
+  client:
+    upload:
+      path: D:\jaegojaego\src\main\resources\static\upload\client\conversion

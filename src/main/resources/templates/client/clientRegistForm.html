@@ -26,7 +26,6 @@
             <label class="client-regist-label">업종 : </label>
                 <select id="clientBusinessType" class="client-regist-select" style="margin-right: 5%;">
                     <option></option>
-                    <option th:each= "clientType : ${ clientBusinessType }" th:value="${ clientType.getClientBusinessTypeNo() }" th:text="${ clientType.getClientBusinessTypeName()}"/>
                 </select>
             <label class="client-regist-label" style="margin-left: 10%;">업태 : </label>
                 <select id="clientBusinessItem" class="client-regist-select">

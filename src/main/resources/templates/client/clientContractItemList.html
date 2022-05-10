@@ -16,8 +16,10 @@
     <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처 판매계약상품</div>
 </div>
     <div id="page-wrapper" class="gray-bg">
-
         <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="button-area" style="text-align: right">
+                <button type="button" id="registNewClient" class="btn btn btn-primary" onclick="location.href='/client/itemregist';">신규등록</button><br><br>
+            </div>
             <div class="row">
                 <div class="col-md-3" th:each="clientContractItemList : ${ clientContractItemList }">
                     <div class="ibox">

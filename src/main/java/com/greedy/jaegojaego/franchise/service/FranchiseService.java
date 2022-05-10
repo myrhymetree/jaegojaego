@@ -78,7 +78,7 @@ public class FranchiseService {
     public void registManager(FranchiseAccountDTO manager) {
 
         System.out.println("manager = " + manager);
-        
+
         manager.setMemberPwd(passwordEncoder.encode(manager.getMemberPwd()));
         manager.setMemberCreatedDate(LocalDateTime.now());
         manager.setMemberPwdInitStatus("Y");
