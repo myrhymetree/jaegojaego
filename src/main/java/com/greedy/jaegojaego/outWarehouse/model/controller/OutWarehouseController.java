@@ -80,6 +80,10 @@ public class OutWarehouseController {
 //        return mv;
 //    }
 
+    /**
+     * @param model
+     * @return
+     */
     @GetMapping("/orderlist")
     @ResponseBody
     public Model selectOrderList(Model model) {
@@ -92,13 +96,13 @@ public class OutWarehouseController {
         return model;
     }
 
-    @GetMapping("/getorderlist")
-    public ModelAndView getOrderList(ModelAndView mv) {
-
-        mv.setViewName("/outWarehouse/list");
-
-        return mv;
-    }
+//    @GetMapping("/getorderlist")
+//    public ModelAndView getOrderList(ModelAndView mv) {
+//
+//        mv.setViewName("/outWarehouse/list");
+//
+//        return mv;
+//    }
 
     /**
      * @param mv
