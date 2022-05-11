@@ -234,12 +234,8 @@ public class FranchiseController {
 
         FranchiseListDTO franchiseList = franchiseService.findFranchiseList(searchWord);
 
-        System.out.println("삭제된 프랜차이즈 목록은 : " + franchiseList.getRemovedFranchiseList());
-
         mv.addObject("franchiseList", franchiseList.getFranchiseList());
         mv.addObject("removedFranchiseList", franchiseList.getRemovedFranchiseList());
-        mv.addObject("managerList", franchiseList.getManagerList());
-
         mv.setViewName("franchise/list");
 
         return mv;
@@ -300,12 +296,9 @@ public class FranchiseController {
     @PostMapping(value = "/modifymanager")
     public String updateManager(FranchiseAccountDTO manager) {
 
-        System.out.println("manager = " + manager);
-        System.out.println("매니저 비밀번호는 = " + manager.getMemberPwd());
-
         franchiseService.updateManagerInfo(manager);
 
-        return "redirect:/";
+        return "redirect:/franchise/managerList";
     }
 
     @PostMapping(value = "/modifyfranchise")
@@ -386,5 +379,16 @@ public class FranchiseController {
         memberService.removeMember(memberNo);
 
         return "redirect:/franchise/list";
+    }
+
+    @GetMapping("/managerList")
+    public ModelAndView findManagerList(ModelAndView mv, String searchWord) {
+
+        FranchiseListDTO list = franchiseService.findManagerList(searchWord);
+
+        mv.addObject("managerList", list.getManagerList());
+        mv.setViewName("/franchise/managerList");
+
+        return mv;
     }
 }

@@ -139,9 +139,6 @@ public class FranchiseService {
         franchiseAccount.setManagerEmail(manager.getManagerEmail());
         franchiseAccount.setManagerPhone(manager.getManagerPhone());
 
-        System.out.println("매니저 번호는 = " + franchiseAccount.getMemberNo());
-        System.out.println("franchiseAccount.getMemberPwd() = " + franchiseAccount.getMemberPwd());
-
         franchiseAccountRepository.updateManager(franchiseAccount);
 
     }
@@ -190,15 +187,10 @@ public class FranchiseService {
         List<FranchiseInfo> removedFranchiseList = franchiseRepository.searchRemovedFranchise(searchWord);
         List<FranchiseInfoDTO> removedFranchises = removedFranchiseList.stream().map(removedFrachise -> modelMapper.map(removedFrachise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
-        /* 프랜차이즈 매니저 계정 목록 조회 */
-        List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
-        List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
-
         /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
         FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
         franchiseListDTO.setFranchiseList(franchises);
         franchiseListDTO.setRemovedFranchiseList(removedFranchises);
-        franchiseListDTO.setManagerList(managers);
 
         return franchiseListDTO;
     }
@@ -242,5 +234,18 @@ public class FranchiseService {
         FranchiseAttachmentFile bankAccoutFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
 
         return modelMapper.map(bankAccoutFile, FranchiseAttachmentFileDTO.class);
+    }
+
+    public FranchiseListDTO findManagerList(String searchWord) {
+
+        /* 프렌차이즈 매니저 계정 목록 조회 */
+        List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
+        List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
+        FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
+        franchiseListDTO.setManagerList(managers);
+
+        return franchiseListDTO;
     }
 }
