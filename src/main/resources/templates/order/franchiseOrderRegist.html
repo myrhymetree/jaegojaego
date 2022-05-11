@@ -16,8 +16,8 @@
             background-color: white;
             box-shadow: 1px 1px 1px 1px gray;
             position: fixed;
-            margin-left: 1120px;
-            bottom: 720px;
+            margin-left: 1135px;
+            bottom: 680px;
         }
 
         .select-menu-btn {
@@ -110,7 +110,7 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr th:each="itemList : ${ itemList }">
+                                    <tr th:each="itemList : ${ itemList }" id="item-list-tr">
                                         <td>
                                             <div class="row" style="width: 800px;">
                                                 <div class="col-md-5">
@@ -163,30 +163,31 @@
                         </div>
 
                     </div>
-                    <div class="franchise-order-cart" id="franchise-order-cart">
-                        <button class="select-menu-btn" id="select-menu-btn" onclick="window.open('/menu/list')">메뉴보기</button>
-                        <button class="regist-franchise-order-btn" id="regist-franchise-order-btn">발주</button>
-
-                        <div class="cart-title">발주 물품 목록</div>
-                        <div class="cart-body">
-                            <form action="/order/franchiseorderregist" method="post" id="franchise-order-regist-form">
-                                <table style="text-align: center; border: none;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 300px">이름</th>
-                                            <th style="width: 100px">수량</th>
-                                            <th style="width: 40px">취소</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="order-cart-tbody">
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                        <div class="cart-total-price-area">총 금액 : <span id="total-price"></span> 원</div>
-                    </div>
                 </div>
             </div>
+            <div class="franchise-order-cart" id="franchise-order-cart">
+                <button class="select-menu-btn" id="select-menu-btn" onclick="window.open('/menu/list')">메뉴보기</button>
+                <button class="regist-franchise-order-btn" id="regist-franchise-order-btn">발주</button>
+
+                <div class="cart-title">발주 물품 목록</div>
+                <div class="cart-body">
+                    <form action="/order/franchiseorderregist" method="post" id="franchise-order-regist-form">
+                        <table style="text-align: center; border: none;">
+                            <thead>
+                            <tr>
+                                <th style="width: 300px">이름</th>
+                                <th style="width: 100px">수량</th>
+                                <th style="width: 40px">취소</th>
+                            </tr>
+                            </thead>
+                            <tbody id="order-cart-tbody">
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="cart-total-price-area">총 금액 : <span id="total-price"></span> 원</div>
+            </div>
+
         </div>
     </div>
 

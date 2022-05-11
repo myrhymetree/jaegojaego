@@ -29,13 +29,11 @@ public class OrderController {
 
     private final OrderService orderService;
     private final AuthenticationService authenticationService;
-    private final MessageSource messageSource;
 
     @Autowired
-    public OrderController(OrderService orderService, AuthenticationService authenticationService, MessageSource messageSource) {
+    public OrderController(OrderService orderService, AuthenticationService authenticationService) {
         this.orderService = orderService;
         this.authenticationService = authenticationService;
-        this.messageSource= messageSource;
     }
 
     @GetMapping("/companyorderlist")
@@ -333,7 +331,7 @@ public class OrderController {
         String[] clientNo = request.getParameterValues("clientNo");
         int companyOrderHistoryNo = Integer.parseInt(request.getParameter("companyOrderHistoryNo"));
 
-        orderService.updateCompanyOrderHistory(itemAmount, clientItemNo, itemInfoNo, clientNo, customUser.getMemberNo(), companyOrderHistoryNo);
+        orderService.updateCompanyOrderHistory(itemAmount, clientItemNo, itemInfoNo, clientNo, companyOrderHistoryNo);
 
         return "redirect:/order/companyorderlist";
     }
@@ -439,14 +437,6 @@ public class OrderController {
         Gson gson = new Gson();
 
         return gson.toJson(rejectContent);
-    }
-
-    @GetMapping("/orderapplicationdownload")
-    public ModelAndView downloadOrderApplication(ModelAndView mv) {
-
-        mv.setViewName("/order/test");
-
-        return mv;
     }
 
 }

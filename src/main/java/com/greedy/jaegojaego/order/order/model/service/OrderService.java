@@ -131,7 +131,7 @@ public class OrderService {
 
     public List<OrderItemInfoDTO> selectOrderItemInfoList(String searchItem) {
 
-        List<OrderItemInfo> orderItemInfoList = orderItemInfoRepository.selectByItemInfoNameContaining(searchItem);
+        List<OrderItemInfo> orderItemInfoList = orderItemInfoRepository.selectByItemInfoNameContainingAndItemInfoStatusYn(searchItem, "N");
 
         return orderItemInfoList.stream().map(orderItemInfo -> modelMapper.map(orderItemInfo, OrderItemInfoDTO.class)).collect(Collectors.toList());
     }
@@ -280,7 +280,6 @@ public class OrderService {
 
         List<OrderApplication> orderApplicationList = orderApplicationRepository.selectRecentOrderApplicationList(clientList.size() + 1);
 
-
         for(int i = 0; i < clientItemNo.length; i++) {
 
             for(int j = 0; j < orderApplicationList.size(); j++) {
@@ -327,7 +326,6 @@ public class OrderService {
     public List<FranchiseOrderListDTO> selectFranchiseOrderList(int memberNo, String memberDivision, String officeDivision) {
 
         List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
-        List<FranchiseOrder> franchiseOrderListByCompany = new ArrayList<>();
         List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();
         List<OrderFranchiseAccount> franchiseAccountList = new ArrayList<>();
 
@@ -477,7 +475,7 @@ public class OrderService {
         return rejectContent;
     }
 
-    public void updateCompanyOrderHistory(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, String[] clientNo, int memberNo, int companyOrderHistoryNo) {
+    public void updateCompanyOrderHistory(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, String[] clientNo, int companyOrderHistoryNo) {
 
         List<CompanyOrderItem> deleteCompanyOrderItemList = companyOrderItemRepository.findByCompanyOrderHistoryNo(companyOrderHistoryNo);
 
@@ -551,7 +549,7 @@ public class OrderService {
 
     public List<FranchiseOrderableItemDTO> selectFranchiseOrderableItemList() {
 
-        List<FranchiseOrderableItem> franchiseOrderableItemList = franchiseOrderableItemRepository.findAll();
+        List<FranchiseOrderableItem> franchiseOrderableItemList = franchiseOrderableItemRepository.findByFranchiseOrderableItem_OrderItemInfo_ItemInfoStatusYn("N");
 
         return franchiseOrderableItemList.stream().map(franchiseOrderableItem -> modelMapper.map(franchiseOrderableItem, FranchiseOrderableItemDTO.class)).collect(Collectors.toList());
     }
@@ -750,38 +748,6 @@ public class OrderService {
 
         return franchiseOrderListDTOList;
     }
-
-//    private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo) {
-//
-//        List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();
-//
-//        List<FranchiseOrderDTO> orderList = franchiseOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
-//        OrderFranchiseInfoDTO orderFranchiseInfoDTO = modelMapper.map(orderFranchiseInfo, OrderFranchiseInfoDTO.class);
-//
-//        for(int i = 0; i < orderList.size(); i++) {
-//
-//            FranchiseOrderListDTO franchiseOrderListDTO = new FranchiseOrderListDTO();
-//            franchiseOrderListDTO.setFranchiseOrderItemList(orderList.get(i).getFranchiseOrderItemList());
-//            franchiseOrderListDTO.setOrderFranchiseInfo(orderFranchiseInfoDTO);
-//            franchiseOrderListDTO.setFranchiseOrderNo(orderList.get(i).getFranchiseOrderNo());
-//            franchiseOrderListDTO.setFranchiseOrderOrderNumber(orderList.get(i).getFranchiseOrderOrderNumber());
-//            franchiseOrderListDTO.setFranchiseOrderStatusHistoryList(orderList.get(i).getFranchiseOrderStatusHistoryList());
-//            franchiseOrderListDTO.setFranchiseOrderStatus(orderList.get(i).getFranchiseOrderStatus());
-//            franchiseOrderListDTO.setFranchiseOrderApplicationDate(orderList.get(i).getFranchiseOrderApplicationDate());
-//            franchiseOrderListDTO.setMember(orderList.get(i).getMember());
-//
-//            if(franchiseOrderList.get(i).getFranchiseOrderStatusDate() != null) {
-//
-//                franchiseOrderListDTO.setFranchiseOrderStatusDate(orderList.get(i).getFranchiseOrderStatusDate());
-//                franchiseOrderListDTO.setFranchiseOrderStatusRejectionContent(orderList.get(i).getFranchiseOrderStatusRejectionContent());
-//            }
-//
-//            franchiseOrderListDTOList.add(franchiseOrderListDTO);
-//
-//        }
-//
-//        return franchiseOrderListDTOList;
-//    }
 
     private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo, List<OrderFranchiseAccount> orderFranchiseAccountList) {
 

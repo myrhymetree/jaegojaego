@@ -47,7 +47,7 @@ public class OrderControllerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/order/selectcompanyorderdetail")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("companyOrderHistoryNo", "1"))
+                .param("companyOrderHistoryNo", "2"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
@@ -59,7 +59,7 @@ public class OrderControllerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/order/selectonecompanyorderapplicationlist")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .param("companyOrderHistoryNo", "1"))
+                        .param("companyOrderHistoryNo", "2"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -78,7 +78,7 @@ public class OrderControllerTests {
     public void companyOrderApplicationDetail() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/order/companyorderapplicationdetail")
-                        .param("companyOrderHistoryNo", "1").param("clientNo", "1"))
+                        .param("companyOrderHistoryNo", "2").param("clientNo", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
