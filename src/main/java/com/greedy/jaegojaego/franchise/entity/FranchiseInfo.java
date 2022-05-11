@@ -67,9 +67,10 @@ public class FranchiseInfo extends Member {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseAttachmentFile> franchiseAttachmentFiles;
 
-//    @OneToMany(mappedBy = "franchiseInfo")
-//    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
-//
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
+
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
 //    private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;

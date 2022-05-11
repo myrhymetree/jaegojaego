@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.config;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,10 +16,15 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @ComponentScan(basePackages = "com.greedy.jaegojaego")
 public class BeanConfiguration {
 
+    private static ModelMapper MAPPER;
+
     @Bean
     public ModelMapper modelMapper() {
-
-        return new ModelMapper();
+        if (MAPPER == null) {
+            MAPPER = new ModelMapper();
+            MAPPER.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        }
+        return MAPPER;
     }
 
     @Bean
