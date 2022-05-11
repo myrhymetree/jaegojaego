@@ -104,5 +104,22 @@ public class MaterialsService {
         Material material = materialRepository.findById(itemInfoNo).get();
         material.setItemStatus("Y");
     }
+
+    public List<MaterialsCategoryDTO> findCategory() {
+
+        List<MaterialsCategory> categoryList = materialsCategoryRepository.findAll();
+
+        return categoryList.stream().map(materialsCategory -> modelMapper.map(materialsCategory, MaterialsCategoryDTO.class)).collect(Collectors.toList());
+    }
+
+    public Integer findMaterialCount() {
+
+        Integer materialConut = materialRepository.findByIdCount() + 1;
+
+        System.out.println("테스트 " + materialConut);
+        System.out.println("테스트 " + materialConut);
+        System.out.println("테스트 " + materialConut);
+        return materialConut;
+    }
 }
 

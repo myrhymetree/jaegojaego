@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
 
-
+    @Query(value = "SELECT COUNT(*) FROM ITEM_INFO", nativeQuery = true)
+    Integer findByIdCount();
 }
 

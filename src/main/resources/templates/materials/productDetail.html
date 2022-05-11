@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn-primary" type="submit" onclick="location.href='/materials/modify'" style="float: right;">
+                                <button class="btn btn-primary" type="submit" id="save" onclick="location.href='/materials/modify'" style="float: right; display : none;">
                                     <i class="fa fa-check"></i>&nbsp;저장
                                 </button>
                             </div>
@@ -192,6 +192,8 @@
             document.getElementById('itemPrice').readOnly = false;
             document.getElementById('subdivisionUnit').readOnly = false;
 
+            document.getElementById('save').style.display = "block";
+
         } else if(document.getElementById("itemSerialNo").readOnly == false) {
 
             document.getElementById('itemSerialNo').readOnly = true;
@@ -200,6 +202,8 @@
             document.getElementById('subdivisionYN').readOnly = true;
             document.getElementById('itemPrice').readOnly = true;
             document.getElementById('subdivisionUnit').readOnly = true;
+
+            document.getElementById('save').style.display = "none";
         }
     });
 </script>
@@ -210,6 +214,10 @@
             location.href = "/materials/delete/" + itemInfoNo;
         };
     };
+</script>
+
+<script>
+
 </script>
 </body>
 </html>

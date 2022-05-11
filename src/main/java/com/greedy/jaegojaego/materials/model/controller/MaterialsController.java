@@ -96,6 +96,19 @@ public class MaterialsController {
         return mv;
     }
 
+    @GetMapping("/item/regist")
+    public ModelAndView itemRegist(ModelAndView mv) {
+
+        Integer materialCount =  materialsService.findMaterialCount();
+        List<MaterialsCategoryDTO> categoryList = materialsService.findCategory();
+
+        mv.addObject("materialCount", materialCount);
+        mv.addObject("categoryList", categoryList);
+        mv.setViewName("/materials/itemRegist");
+
+        return mv;
+    }
+
     @PostMapping("/update")
     public ModelAndView itemMapping(ModelAndView mv, @RequestParam Map<String, String> parameter, RedirectAttributes rttr) {
         
