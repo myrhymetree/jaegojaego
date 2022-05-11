@@ -95,14 +95,14 @@ public class MenuControllerTests {
 
         //given
         MenuDTO menu = new MenuDTO();
-        menu.setMenuNo(141);
-        menu.setMenuName("메뉴수정수정");
+        menu.setMenuNo(226);
+        menu.setMenuName("테스트용 메뉴6");
         menu.setMenuPrice(35000);
         menu.setMenuOrderableStatus("Y");
 
         MenuMaterialsDTO menuMaterials = new MenuMaterialsDTO();
-        menuMaterials.setItemInfoName("인도 바르마르 원두 1kg");
-        String[] materialNameAndCapacityList = {"인도 바르마르 원두 1kg/20g"};
+        menuMaterials.setItemInfoName("지로스팅 로스팅 원두 1kg");
+        String[] materialNameAndCapacityList = {"지로스팅 로스팅 원두 1kg/80g", "지로스팅 로스팅 원두 1kg/60g"};
 
         //when
         menuService.modifyMenu(menu, menuMaterials, materialNameAndCapacityList);
@@ -116,13 +116,12 @@ public class MenuControllerTests {
     public void deleteMenu() {
 
         //given
-        int menuNo = 182;
+        int menuNo = 226;
 
         //when
         menuService.deleteMenu(menuNo);
 
         //then
-
     }
 
 }

@@ -82,7 +82,7 @@ public class MenuServiceTests {
         //given
         MenuDTO menu = new MenuDTO();
         menu.setMenuNo(51);
-        menu.setMenuName("테스트용 메뉴3"); //이름 계속 바꿔줘야 성공합니다.
+        menu.setMenuName("테스트용 메뉴4"); //이름 계속 바꿔줘야 성공합니다.
         menu.setMenuPrice(3000);
         menu.setMenuOrderableStatus("Y");
 
@@ -116,14 +116,14 @@ public class MenuServiceTests {
 
         //given
         MenuDTO menu = new MenuDTO();
-        menu.setMenuNo(161);
-        menu.setMenuName("죽빵수정수정수정");
+        menu.setMenuNo(229);
+        menu.setMenuName("테스트용 메뉴4");
         menu.setMenuPrice(2000);
         menu.setMenuOrderableStatus("N");
 
 
         MenuMaterialsDTO menuMaterials = new MenuMaterialsDTO();
-        String menuRawMaterialName = "인도 바르마르 원두 1kg";
+        String menuRawMaterialName = "지로스팅 로스팅 원두 1kg";
         String menuCapacity = "20g";
 
         //when
@@ -163,7 +163,7 @@ public class MenuServiceTests {
     public void deleteMenu() {
 
         //given
-        int menuNo = 182;
+        int menuNo = 229;
 
         //when
         menuRepository.deleteById(menuNo);
