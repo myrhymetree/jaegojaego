@@ -61,9 +61,12 @@
             <br>
         </h3>
     </h2>
+
+    <form id="registForm" action="/warehouse/complete/regist" method="get" >
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
+            <th>No</th>
             <th>입고 번호</th>
             <th>발주 번호</th>
             <th>품번</th>
@@ -77,37 +80,39 @@
             <th>입고 처리</th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="warehouse : ${ warehouseList }">
-            <td id="warehouseNo" th:text="${ warehouse.warehouseNo }"></td>                                                              <!-- 받아온 정보에 sequence로 입고 번호 부여 -->
-            <td th:text="${ warehouse.warehouseNo }"></td>
-            <td th:text="${ warehouse.itemInfoNo.getItemInfoItemSerialNo() }"></td>
-            <td th:text="${ warehouse.itemInfoNo.getMaterialCategory().getMaterialCategoryName() }"></td>
-            <td th:text="${ warehouse.itemInfoNo.getItemInfoName() }"></td>
-            <td th:text="${ warehouse.clientNo.clientName }"></td>
-            <td th:text="${ warehouse.warehouseAmount }"></td>
-            <td th:text="${ warehouse.warehouseDate }"></td>
-            <td th:text="${ warehouse.warehouseCompleteDate }"></td>
-            <td th:text="${ warehouse.warehouseStatus }"></td>
-            <td>
-<!--                <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>-->
-<!--                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouse.warehouseNo}')|">상세 조회</button>-->
-<!--                <select id="warehouseStatus" th:style="${' height:1.7rem; font-size:.8rem; '}">-->
-<!--                    <option value="입하 대기">입하 대기</option>-->
-<!--                    <option value="입고 완료">입고 완료</option>-->
-<!--                </select>-->
-                <th:block th:if="${ warehouse.warehouseStatus eq '입고 대기' }">
-                <button id="warehouseStatus" value="입고 완료" onclick="asyncModifyStatus()" class="modifyStatusBtn btn btn-w-m btn-primary" >입고 완료 처리</button>
-                </th:block>
 
-                <th:block th:if="${ warehouse.warehouseStatus eq '입고 완료' }">
-                    <a>-</a>
-                </th:block>
+            <tbody>
+            <tr th:each="warehouse,num : ${ warehouseList }">
+                <td th:text="${ num.size - num.index }"></td>
+                <td id="warehouseNo" th:text="${ warehouse.warehouseNo }"></td>                                                              <!-- 받아온 정보에 sequence로 입고 번호 부여 -->
+                <td th:text="${ warehouse.warehouseNo }"></td>
+                <td th:text="${ warehouse.itemInfoNo.getItemInfoItemSerialNo() }"></td>
+                <td th:text="${ warehouse.itemInfoNo.getMaterialCategory().getMaterialCategoryName() }"></td>
+                <td th:text="${ warehouse.itemInfoNo.getItemInfoName() }"></td>
+                <td th:text="${ warehouse.clientNo.clientName }"></td>
+                <td th:text="${ warehouse.warehouseAmount }"></td>
+                <td th:text="${ warehouse.warehouseDate }"></td>
+                <td th:text="${ warehouse.warehouseCompleteDate }"></td>
+                <td th:text="${ warehouse.warehouseStatus }"></td>
+                <td>
+                    <!--                <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/detail'">상세 조회</button>-->
+                    <!--                <button class="btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${warehouse.warehouseNo}')|">상세 조회</button>-->
+                    <!--                <select id="warehouseStatus" th:style="${' height:1.7rem; font-size:.8rem; '}">-->
+                    <!--                    <option value="입하 대기">입하 대기</option>-->
+                    <!--                    <option value="입고 완료">입고 완료</option>-->
+                    <!--                </select>-->
+                    <th:block th:if="${ warehouse.warehouseStatus eq '입고 대기' }">
+                        <button id="warehouseStatus" value="입고 완료" onclick="asyncModifyStatus()" class="modifyStatusBtn btn btn-w-m btn-primary" >입고 완료 처리</button>
+                    </th:block>
 
-            </td>
-        </tr>
-        </tfoot>
+                    <th:block th:if="${ warehouse.warehouseStatus eq '입고 완료' }">
+                        <a>-</a>
+                    </th:block>
+                </td>
+            </tr>
+            </tfoot>
     </table>
+    </form>
 </div>
 <!-- 테이블 끝 -->
 <script>

@@ -13,6 +13,10 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Integer> {
 
     Warehouse findByWarehouseNo(int warehouseNo);
 
+    @Query(value = "SELECT * " +
+            "         FROM IN_WAREHOUSE A ", nativeQuery = true)
+    List<Warehouse> selectAllList();
+
 //    @Query(value = "SELECT a FROM warehouse a ORDER BY a.warehouseNo DESC")
 //    List<Warehouse> findAll();
 //

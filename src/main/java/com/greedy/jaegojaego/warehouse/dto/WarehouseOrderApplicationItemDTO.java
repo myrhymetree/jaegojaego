@@ -4,11 +4,11 @@ public class WarehouseOrderApplicationItemDTO {
 
     private WarehouseOrderApplicationDTO orderApplication;
     private int orderApplicationItemAmount;
-    private int clientContractItem;
+    private WarehouseClientContractItemDTO clientContractItem;
 
     public WarehouseOrderApplicationItemDTO() {}
 
-    public WarehouseOrderApplicationItemDTO(WarehouseOrderApplicationDTO orderApplication, int orderApplicationItemAmount, int clientContractItem) {
+    public WarehouseOrderApplicationItemDTO(WarehouseOrderApplicationDTO orderApplication, int orderApplicationItemAmount, WarehouseClientContractItemDTO clientContractItem) {
         this.orderApplication = orderApplication;
         this.orderApplicationItemAmount = orderApplicationItemAmount;
         this.clientContractItem = clientContractItem;
@@ -30,19 +30,18 @@ public class WarehouseOrderApplicationItemDTO {
         this.orderApplicationItemAmount = orderApplicationItemAmount;
     }
 
-    public int getClientContractItem() {
+    public WarehouseClientContractItemDTO getClientContractItem() {
         return clientContractItem;
     }
 
-    public void setClientContractItem(int clientContractItem) {
+    public void setClientContractItem(WarehouseClientContractItemDTO clientContractItem) {
         this.clientContractItem = clientContractItem;
     }
 
     @Override
     public String toString() {
         return "WarehouseOrderApplicationItemDTO{" +
-//                "orderApplication=" + orderApplication +
-                ", orderApplicationItemAmount=" + orderApplicationItemAmount +
+                "orderApplicationItemAmount=" + orderApplicationItemAmount +
                 ", clientContractItem=" + clientContractItem +
                 '}';
     }

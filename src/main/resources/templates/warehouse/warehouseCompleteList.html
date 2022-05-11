@@ -26,7 +26,7 @@
                 <h5>승인 완료 내역</h5>
             </div>
             <div class="ibox-content">
-                                <h1 class="no-margins" th:text="${ itemCnt - 3 } + 건"></h1>
+                                <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
                 <br>
             </div>
         </div>
@@ -42,6 +42,7 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
+            <th>No</th>
             <th>발주 번호</th>
             <th>발주 일시</th>
             <th>승인 처리 상태</th>
@@ -49,11 +50,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="warehouse : ${ warehouseCompanyOrderList }">
+        <tr th:each="warehouse,num : ${ warehouseCompanyOrderList }">
             <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
+                <td th:text="${ num.size - num.index }"></td>
                 <td th:text="${ warehouse.companyOrderHistoryNo }"></td>
                 <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>
-                <td th:text="${ warehouse.companyOrderItemList.get(0).getItemInfo().getItemInfoName() }"></td>
                 <td>
                     <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
                         <a>승인 완료</a>
@@ -77,10 +78,10 @@
 
 
 
-    document.getElementById("warehouseRegistButton").onclick = function (){
-        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
-
-    }
+    // document.getElementById("warehouseRegistButton").onclick = function (){
+    //     location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
+    //
+    // }
 
 
 </script>

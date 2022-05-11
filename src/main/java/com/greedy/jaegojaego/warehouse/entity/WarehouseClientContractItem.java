@@ -1,5 +1,9 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
+import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractInfo;
+import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
+import com.greedy.jaegojaego.warehouse.dto.WarehouseClientContractItemDTO;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -33,15 +37,17 @@ public class WarehouseClientContractItem {
     @Column(name = "CLIENT_CONTRACT_ITEM_CREATED_DATE")
     private java.sql.Date clientContractItemCreatedDate;
 
+    @ManyToOne
     @JoinColumn(name = "CLIENT_CONTRACT_INFO_NO")
-    private int orderClientContractInfo;
+    private OrderClientContractInfo orderClientContractInfo;
 
+    @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
-    private int orderItemInfo;
+    private WarehouseItemInfo orderItemInfo;
 
     public WarehouseClientContractItem() {}
 
-    public WarehouseClientContractItem(int clientContractItemNo, String clientContractItemName, int clientContractItemSupplyPrice, int orderCompanyAccount, Date clientContractItemCreatedDate, int orderClientContractInfo, int orderItemInfo) {
+    public WarehouseClientContractItem(int clientContractItemNo, String clientContractItemName, int clientContractItemSupplyPrice, int orderCompanyAccount, Date clientContractItemCreatedDate, OrderClientContractInfo orderClientContractInfo, WarehouseItemInfo orderItemInfo) {
         this.clientContractItemNo = clientContractItemNo;
         this.clientContractItemName = clientContractItemName;
         this.clientContractItemSupplyPrice = clientContractItemSupplyPrice;
@@ -91,19 +97,19 @@ public class WarehouseClientContractItem {
         this.clientContractItemCreatedDate = clientContractItemCreatedDate;
     }
 
-    public int getOrderClientContractInfo() {
+    public OrderClientContractInfo getOrderClientContractInfo() {
         return orderClientContractInfo;
     }
 
-    public void setOrderClientContractInfo(int orderClientContractInfo) {
+    public void setOrderClientContractInfo(OrderClientContractInfo orderClientContractInfo) {
         this.orderClientContractInfo = orderClientContractInfo;
     }
 
-    public int getOrderItemInfo() {
+    public WarehouseItemInfo getOrderItemInfo() {
         return orderItemInfo;
     }
 
-    public void setOrderItemInfo(int orderItemInfo) {
+    public void setOrderItemInfo(WarehouseItemInfo orderItemInfo) {
         this.orderItemInfo = orderItemInfo;
     }
 
@@ -115,7 +121,7 @@ public class WarehouseClientContractItem {
                 ", clientContractItemSupplyPrice=" + clientContractItemSupplyPrice +
                 ", orderCompanyAccount=" + orderCompanyAccount +
                 ", clientContractItemCreatedDate=" + clientContractItemCreatedDate +
-                ", orderClientContractInfo=" + orderClientContractInfo +
+//                ", orderClientContractInfo=" + orderClientContractInfo +
                 ", orderItemInfo=" + orderItemInfo +
                 '}';
     }

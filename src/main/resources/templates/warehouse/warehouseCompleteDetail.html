@@ -6,6 +6,17 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+<style>
+
+    .hidden {
+
+        display:none;
+
+    }
+
+</style>
+
+
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
@@ -26,8 +37,18 @@
                 <h5>발주 번호</h5>
             </div>
             <div class="ibox-content">
-<!--                                <h1 class="no-margins" th:text="${ itemCnt - 3 } + 건"></h1>-->
-                <h1 class="no-margins" th:text="${ orderHistory.getCompanyOrderHistoryNo() }"></h1>
+                    <h1 class="no-margins" th:text="${ orderHistory.getCompanyOrderHistoryNo() }"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>발주 물품 정보</h5>
+            </div>
+            <div class="ibox-content">
+                    <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
                 <br>
             </div>
         </div>
@@ -40,6 +61,8 @@
 
     <h2>본사 발주 상세 정보</h2>
     <br>
+
+    <form id="registForm" action="/warehouse/complete/regist" method="get" >
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
@@ -47,36 +70,46 @@
             <th>품목</th>
             <th>품번</th>
             <th>품명</th>
+            <th>거래처</th>
             <th>발주 수량</th>
             <th>입고 목록 추가</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="warehouse,num : ${ orderHistory.getCompanyOrderItemList() }">
+        <tr th:each="warehouse,num : ${ completeDetail }">
             <td th:text="${ num.size - num.index }"></td>
-            <td th:text="${ warehouse.getItemInfo().getMaterialCategory().getMaterialCategoryName() }"></td>
-            <td th:text="${ warehouse.getItemInfo().getItemInfoItemSerialNo() }"></td>
-            <td th:text="${ warehouse.getItemInfo().getItemInfoName() }"></td>
-            <td th:text="${ warehouse.companyOrderItemAmount } + 개"></td>
+            <td th:text="${ warehouse.completeItemCategoryName }"></td>
+            <td th:text="${ warehouse.completeItemSerialNo }"></td>
+            <td th:text="${ warehouse.completeItemName }"></td>
+            <td th:text="${ warehouse.clientName }"></td>
+            <td th:text="${ warehouse.companyAmount }"></td>
             <td>
-                    <button class="btn btn-w-m btn-primary" type="submit" value="${ warehouse.companyOrderHistoryNo }" id="warehouseRegistButton" >입하 목록 추가</button>
+                <button class="btn btn-w-m btn-primary" type="submit" id="warehouseRegistButton" >입하 목록 추가</button>
             </td>
-            </th:block>
+
+            <!-- 제품 번호 -->
+            <input type="hidden" name="completeItemInfoNo" value="${ warehouse.companyAmount }" >
+            <!-- 본사 발주 신청서 번호 -->
+            <input type="hidden" name="orderApplicationNo" value="${ warehouse.orderApplicationNo }" >
+            <!-- 거래처 번호 -->
+            <input type="hidden" name="clientNo" value="${ warehouse.clientNo }" >
+            <!-- 거래처 판매 계약 상품 번호 -->
+            <input type="hidden" name="clientContractItemNo" value="${ warehouse.clientContractItemNo }" >
+
+            </td>
         </tr>
         </tfoot>
     </table>
+    </form>
 </div>
 <!-- 테이블 끝 -->
 
-<script>
+<!--<script>-->
+<!--    document.getElementById("warehouseRegistButton").onclick = function (){-->
+<!--        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/-->
 
-    document.getElementById("warehouseRegistButton").onclick = function (){
-        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/
-
-    }
-
-
-</script>
+<!--    }-->
+<!--</script>-->
 
 
 

@@ -5,7 +5,7 @@ import java.util.List;
 public class WarehouseOrderApplicationDTO {
 
     private WarehouseCompanyOrderHistoryDTO companyOrderHistory;
-    private int orderApplicationNo;
+    private Integer orderApplicationNo;
     private WarehouseClientDTO client;
     private List<WarehouseOrderApplicationItemDTO> orderApplicationItemList;
 
@@ -46,9 +46,9 @@ public class WarehouseOrderApplicationDTO {
     @Override
     public String toString() {
         return "WarehouseOrderApplicationDTO{" +
-//                "companyOrderHistory=" + companyOrderHistory +
+                "companyOrderHistory=" + companyOrderHistory +
                 ", orderApplicationNo=" + orderApplicationNo +
-//                ", client=" + client +
+                ", client=" + client +
                 ", orderApplicationItemList=" + orderApplicationItemList +
                 '}';
     }

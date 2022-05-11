@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,21 +85,55 @@ public class WarehouseController {
     public ModelAndView warehouseCompleteDetail(ModelAndView mv, @PathVariable int companyOrderHistoryNo) {
 
         WarehouseCompanyOrderHistoryDTO orderHistory = warehouseService.findOrderHistoryByCompanyOrderHistoryNo(companyOrderHistoryNo);
+//        WarehouseOrderApplicationDTO orderHistory = warehouseService.findOrderHistoryByCompanyOrderHistoryNo(companyOrderHistoryNo);
+
+        /* 상세보기를 위한 발주 정보담은 DTO 확인용 */
+        List<WarehouseCompleteDetailDTO> completeDetail = new ArrayList<>(companyOrderHistoryNo);
+//
+        for(int i = 0; i < orderHistory.getOrderApplicationList().size(); i++) {
+
+            for(int j = 0; j < orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().size(); j++) {
+
+                WarehouseCompleteDetailDTO completeItem = new WarehouseCompleteDetailDTO();
+
+                completeItem.setCompleteItemCategoryNo(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getOrderItemInfo().getMaterialCategory().getMaterialCategoryNo());
+                completeItem.setCompleteItemCategoryName(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getOrderItemInfo().getMaterialCategory().getMaterialCategoryName());
+                completeItem.setCompleteItemSerialNo(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getOrderItemInfo().getItemInfoItemSerialNo());
+                completeItem.setCompleteItemName(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getOrderItemInfo().getItemInfoName());
+                completeItem.setCompleteItemInfoNo(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getOrderItemInfo().getItemInfoNo());
+                completeItem.setCompanyAmount(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getOrderApplicationItemAmount());
+
+                completeItem.setClientName(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getClientContractInfo().getOrderClient().getClientName());
+                completeItem.setClientNo(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getClientContractInfo().getOrderClient().getClientNo());
+
+                completeItem.setOrderApplicationNo(orderHistory.getOrderApplicationList().get(i).getOrderApplicationNo());
+
+                completeItem.setCompanyOrderHistoryCreatedDate(orderHistory.getCompanyOrderHistoryCreatedDate());
+
+                completeItem.setCompanyOrderHistoryNo(orderHistory.getCompanyOrderHistoryNo());
+
+                completeItem.setClientContractItemNo(orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().get(j).getClientContractItem().getClientContractItemNo());
+
+                completeDetail.add(completeItem);
+            }
+        }
+
+        System.out.println("===================================================================================================================");
+        completeDetail.forEach(System.out::println);
+        System.out.println("===================================================================================================================");
+
 
         System.out.println("controller orderHistory = " + orderHistory);
 
-        System.out.println("===========================================================================================================");
-        System.out.println("Controller companyOrderHistoryNo" + companyOrderHistoryNo);
-        System.out.println("===========================================================================================================");
-
         /* view상단 박스에 갯수를 기입 */
         int itemCnt = 0;
-        itemCnt = orderHistory.getCompanyOrderItemList().size();
+        itemCnt = completeDetail.size();
         /* No를 카운트 하주기 위한 것 */
         int No = 0;
 
         mv.addObject("No", No);
         mv.addObject("itemCnt", itemCnt);
+        mv.addObject("completeDetail", completeDetail);
         mv.addObject("orderHistory", orderHistory);
         mv.setViewName("/warehouse/warehouseCompleteDetail");
 
@@ -106,12 +141,22 @@ public class WarehouseController {
     }
 
     /** 발주 상세 목록에서 제품을 입고 목록에 등록용 */
-    @GetMapping("/regist")
+    @GetMapping("/complete/regist")
     public ModelAndView warehouseRegist(ModelAndView mv, HttpServletRequest request) {
-
+//      html쪽에서 정보를 받아오기..
         int orderNo = Integer.parseInt(request.getParameter("warehouseOrderHistoryNo"));
+        int completeItemInfoNo = Integer.parseInt(request.getParameter("completeItemNo"));
+        int orderApplicationNo = Integer.parseInt(request.getParameter("orderApplicationNo"));
+        int clientNo = Integer.parseInt(request.getParameter("clientNo"));
 
-        warehouseService.registNewOrder(orderNo);
+
+//        WarehouseDTO completeItem = new WarehouseDTO();
+
+//        completeItem.setItemInfoNo();
+//        completeItem.setClientNo(clientNo);
+//        completeItem.setWarehouseAmount();
+
+        warehouseService.registCompleteItem(orderNo, completeItemInfoNo, orderApplicationNo, clientNo);
 
         mv.setViewName("redirect:/warehouse/list");
 
@@ -126,6 +171,14 @@ public class WarehouseController {
 
         System.out.println("controller warehouseItemAmount = " + warehouseItemAmount);
 
+        /* view상단 박스에 갯수를 기입 */
+        int itemCnt = 0;
+        itemCnt = warehouseItemAmount.size();
+        /* No를 카운트 하주기 위한 것 */
+        int No = 0;
+
+        mv.addObject("No", No);
+        mv.addObject("itemCnt", itemCnt);
         mv.addObject("warehouseItemAmount", warehouseItemAmount);
         mv.setViewName("/warehouse/warehouseItemList");
 
@@ -288,77 +341,5 @@ public class WarehouseController {
 //
 //        return mv;
 //    }
-//
-//    /** 가공 대기 창고 목록 조회용 */
-//    @GetMapping("/raw")
-//    public ModelAndView warehouseRawList(ModelAndView mv) {
-//
-////        WarehouseDTO itemRawList = warehouseService.findAllRawList();
-//        List<WarehouseDTO> itemRawList = warehouseService.findAllRawList();
-//
-//        System.out.println("controller itemRawList = " + itemRawList);
-//
-////        for (WarehouseDTO list : itemRawList) {
-////            System.out.println("list : " + list);
-////        }
-//
-////        List<RawWarehouseDTO> rawList = new ArrayList<>();
-////
-////        for (int i = 0; i < itemRawList.getOrderHistoryNo().getCompanyOrderItemList().size(); i++) {
-////            RawWarehouseDTO warehouseInItem = new RawWarehouseDTO();
-////            warehouseInItem.setWarehouseMaterialCategoryName(itemRawList.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getWarehouseMaterialCategory().getMaterialCategoryName());
-////            warehouseInItem.setWarehouseItemInfoItemSerialNo(itemRawList.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoItemSerialNo());
-////            warehouseInItem.setWarehouseItemInfoName(itemRawList.getOrderHistoryNo().getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoName());
-////
-////            rawList.add(warehouseInItem);
-////        }
-////
-////        rawList.forEach(System.out::println);
-////
-////        mv.addObject("rawList", rawList);
-//        mv.addObject("itemRawList", itemRawList);
-//        mv.setViewName("/warehouse/warehouseRawList");
-//
-//        return mv;
-//    }
-//
-//    /** 가공 완성 창고 목록 조회용 */
-//    @GetMapping("/manufacture")
-//    public ModelAndView warehouseManufactureList(ModelAndView mv) {
-//
-//        List<ItemWarehouseDTO> itemManuList = warehouseService.findAllManuList();
-//
-//        System.out.println("controller itemManuList = " + itemManuList);
-//
-//        for (ItemWarehouseDTO list : itemManuList) {
-//            System.out.println("Controller list : " + list);
-//        }
-//
-//        int itemCnt = 0;
-//        itemCnt = itemManuList.size();
-//
-//        mv.addObject("itemCnt", itemCnt);
-//        mv.addObject("itemManuList", itemManuList);
-//        mv.setViewName("/warehouse/warehouseManufactureList");
-//
-//        return mv;
-//    }
-//
-//    /** 가공 완성 창고 상세 조회용 */
-//    @GetMapping("/manufacture/{ManuNo}")
-//    public ModelAndView findWarehouseByManuNo(ModelAndView mv, @PathVariable int ManuNo) {
-//
-//        mv.setViewName("/warehouse/warehouseManufactureDetail");
-//
-//        return mv;
-//    }
-//
-//    /** 불량 물품 창고 목록 조회용 */
-//    @GetMapping("/quality")
-//    public ModelAndView warehouseQualityList(ModelAndView mv) {
-//
-//        mv.setViewName("/warehouse/warehouseQualityList");
-//
-//        return mv;
-//    }
+
 }

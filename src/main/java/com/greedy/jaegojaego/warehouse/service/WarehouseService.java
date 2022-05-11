@@ -1,17 +1,8 @@
 package com.greedy.jaegojaego.warehouse.service;
 
-import com.greedy.jaegojaego.warehouse.dto.WarehouseCompanyOrderHistoryDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseItemAmountDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseItemChangeHistoryDTO;
-import com.greedy.jaegojaego.warehouse.entity.Warehouse;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseItemAmount;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseItemChangeHistory;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseCompanyOrderRepository;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseItemAmountRepository;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseItemChangeHistoryRepository;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseRepository;
+import com.greedy.jaegojaego.warehouse.dto.*;
+import com.greedy.jaegojaego.warehouse.entity.*;
+import com.greedy.jaegojaego.warehouse.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -29,22 +20,24 @@ public class WarehouseService {
     private final WarehouseCompanyOrderRepository warehouseCompanyOrderRepository;
     private final WarehouseItemAmountRepository warehouseItemAmountRepository;
     private final WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository;
+    private final WarehouseOrderApplicationRepository warehouseOrderApplicationRepository;
     private final ModelMapper modelMapper;
 
     /* Repository 의존성 주입 */
     @Autowired
-    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseCompanyOrderRepository warehouseCompanyOrderRepository, WarehouseItemAmountRepository warehouseItemAmountRepository, WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository, ModelMapper modelMapper) {
+    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseCompanyOrderRepository warehouseCompanyOrderRepository, WarehouseItemAmountRepository warehouseItemAmountRepository, WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository, WarehouseOrderApplicationRepository warehouseOrderApplicationRepository, ModelMapper modelMapper) {
         this.warehouseRepository = warehouseRepository;
         this.warehouseCompanyOrderRepository = warehouseCompanyOrderRepository;
         this.warehouseItemAmountRepository = warehouseItemAmountRepository;
         this.warehouseItemChangeHistoryRepository = warehouseItemChangeHistoryRepository;
+        this.warehouseOrderApplicationRepository = warehouseOrderApplicationRepository;
         this.modelMapper = modelMapper;
     }
 
     /** 입고 목록 조회용  */
     public List<WarehouseDTO> findAllWarehouseList() {
 
-        List<Warehouse> warehouseList = warehouseRepository.findAll(Sort.by(Sort.Direction.DESC, "warehouseNo"));
+        List<Warehouse> warehouseList = warehouseRepository.findAll();
 
         return warehouseList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
     }
@@ -78,8 +71,6 @@ public class WarehouseService {
 
     /** 발주 승인 "완료" 목록 조회용 */
     public List<WarehouseCompanyOrderHistoryDTO> selectCompanyOrderList() {
-
-//        modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
         List<WarehouseCompanyOrderHistory> warehouseCompanyOrderList = warehouseCompanyOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "companyOrderHistoryNo"));
 
@@ -121,6 +112,17 @@ public class WarehouseService {
         return warehouseRepository.save(warehouse);
     }
 
+    /** 발주 상세 목록에서 제품을 입고 목록에 등록용 */
+    @Transactional
+    public void registCompleteItem(int orderNo, int completeItemInfoNo, int orderApplicationNo, int clientNo) {
+
+        Warehouse warehouse = new Warehouse();
+
+
+
+    }
+
+
     /** 재고 관리 목록 조회용 */
     public List<WarehouseItemAmountDTO> findAllItemAmount() {
 
@@ -141,19 +143,6 @@ public class WarehouseService {
 
         return changeHistory.stream().map(changeHistoryList -> modelMapper.map(changeHistoryList, WarehouseItemChangeHistoryDTO.class)).collect(Collectors.toList());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //    /** 발주 승인 완료 목록 불러오기 */
