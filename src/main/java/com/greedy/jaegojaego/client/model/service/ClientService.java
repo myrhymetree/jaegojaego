@@ -217,17 +217,17 @@ public class ClientService {
     }
 
 
-    public Page<ClientContractItemDTO> findClientItemList(Pageable pageable) {
-
-        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
-                pageable.getPageSize(),
-                Sort.by("CLIENT_CONTRACT_ITEM_NO").descending());
-
-        Page<ClientContractItemDTO> clientContractItemList = clientContractItemRepository.findAll(pageable).map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
-
-        System.out.println("컨트롤러" + clientContractItemList);
-        return clientContractItemList;
-    }
+//    public Page<ClientContractItemDTO> findClientItemList(Pageable pageable) {
+//
+//        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
+//                pageable.getPageSize(),
+//                Sort.by("CLIENT_CONTRACT_ITEM_NO").descending());
+//
+//        Page<ClientContractItemDTO> clientContractItemList = clientContractItemRepository.findAll(pageable).map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
+//
+//        System.out.println("컨트롤러" + clientContractItemList);
+//        return clientContractItemList;
+//    }
 
     public ClientBusinessItem findClientBusinessItemNo(int clientBusinessItemNo) {
 
@@ -338,8 +338,14 @@ public class ClientService {
     @Transactional
     public void registClientContractItemAttachmentFile(ClientContractItemDTO clientContractItemList, ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList) {
 
+        System.out.println("테스트 1 : " + clientContractItemList);
+        System.out.println("테스트 2 : " + clientContractItemList.getMemberNo());
+        System.out.println("테스트 3 : " + clientContractItemList.getMemberNo().getMemberNo());
+
         ClientMember clientMember = new ClientMember();
         clientMember.setClientMemberNo(clientContractItemList.getMemberNo().getMemberNo());
+
+
 
         ClientContractItem clientContractItem = new ClientContractItem();
         clientContractItem.setClientContractItemName(clientContractItemList.getClientContractItemName());
@@ -371,6 +377,30 @@ public class ClientService {
 
         clientContractItemAttachmentFileRepository.save(clientContractItemAttachmentFile);
        
+
+    }
+
+    public List<ClientContractItemDTO> findClientItemList() {
+
+        List<ClientContractItemDTO> clientContractItemList = clientContractItemRepository.findAll().stream().map(clientContractItem -> modelMapper.map(clientContractItem,ClientContractItemDTO.class)).collect(Collectors.toList());
+
+        for(int i = 0; i < clientContractItemList.size(); i++){
+            ClientContractItemAttachmentFile clientContractItemAttachmentFile = clientContractItemAttachmentFileRepository.findByClientContractItem_ClientContractItemNoAndAttachmentFileDeleteYn(clientContractItemList.get(i).getClientContractItemNo(), "N");
+
+            if(clientContractItemAttachmentFile != null ) {
+                clientContractItemList.get(i).setFilePath(clientContractItemAttachmentFile.getAttachmentFileThumbnailUrl());
+            }
+        }
+        return clientContractItemList;
+    }
+
+    public Page<ClientCbrDTO> findClientCbrList(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("clientCbrNo").descending());
+
+        return clientRepository.findAll(pageable).map(clientCbr -> modelMapper.map(clientCbr, ClientCbrDTO.class));
 
     }
 }

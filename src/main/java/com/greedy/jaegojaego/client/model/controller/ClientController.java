@@ -8,35 +8,25 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.client.model.dto.*;
 import com.greedy.jaegojaego.client.model.entity.*;
 import com.greedy.jaegojaego.client.model.service.ClientService;
-import com.greedy.jaegojaego.common.paging.ClientPagenation;
 import com.greedy.jaegojaego.common.paging.Pagenation;
 import com.greedy.jaegojaego.common.paging.PagingButtonInfo;
-import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileCategoryDTO;
-import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Parameter;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.Date;
 
@@ -71,6 +61,26 @@ public class ClientController {
         mv.addObject("clientList", clientList);
 
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(clientList);
+        mv.addObject("paging", paging);
+
+/*        mv.addObject("searchCondition", searchCondition);
+        mv.addObject("searchValue", searchValue);*/
+
+        mv.setViewName("/client/clientList");
+
+        return mv;
+    }
+
+    @GetMapping("/cbrlist")
+    public ModelAndView clientCbrList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
+
+        Page<ClientCbrDTO> clientCbrList = null;
+
+        clientCbrList = clientService.findClientCbrList(pageable);
+
+        mv.addObject("clientCbrList", clientCbrList);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(clientCbrList);
         mv.addObject("paging", paging);
 
 /*        mv.addObject("searchCondition", searchCondition);
@@ -303,31 +313,48 @@ public class ClientController {
     }*/
 
 
+//    @GetMapping("/itemlist")
+//    public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
+//
+//        String searchCondition = request.getParameter("searchCondition");
+//        String searchValue = request.getParameter("searchValue");
+//
+//        Page<ClientContractItemDTO> clientContractItemList = null;
+//
+//        if (searchCondition != null && !"".equals(searchCondition)) {
+//            clientContractItemList = clientService.findClientItemSearchList(searchCondition, searchValue, pageable);
+//        } else {
+//            clientContractItemList = clientService.findClientItemList(pageable);
+//        }
+//
+//        mv.addObject("clientContractItemList", clientContractItemList);
+//
+//        PagingButtonInfo paging = ClientPagenation.getPagingButtonInfo(clientContractItemList);
+//        mv.addObject("paging", paging);
+//
+//        System.out.println("계약상품 : " + clientContractItemList);
+//
+//        mv.setViewName("/client/clientContractItemList");
+//
+//        return mv;
+//    }
+
     @GetMapping("/itemlist")
     public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
-        String searchCondition = request.getParameter("searchCondition");
-        String searchValue = request.getParameter("searchValue");
+        List<ClientContractItemDTO> clientContractItem = null;
 
-        Page<ClientContractItemDTO> clientContractItemList = null;
+        clientContractItem = clientService.findClientItemList();
 
-        if (searchCondition != null && !"".equals(searchCondition)) {
-            clientContractItemList = clientService.findClientItemSearchList(searchCondition, searchValue, pageable);
-        } else {
-            clientContractItemList = clientService.findClientItemList(pageable);
-        }
-
-        mv.addObject("clientContractItemList", clientContractItemList);
-
-        PagingButtonInfo paging = ClientPagenation.getPagingButtonInfo(clientContractItemList);
-        mv.addObject("paging", paging);
-
-        System.out.println("계약상품 : " + clientContractItemList);
-
+        mv.addObject("clientContractItemList", clientContractItem);
         mv.setViewName("/client/clientContractItemList");
 
         return mv;
+
     }
+
+
+
 
     @GetMapping("/itemregist")
     public ModelAndView sendClientItemRegistForm(ModelAndView mv) {
@@ -360,7 +387,7 @@ public class ClientController {
         String fileUploadDirectory = rootLocation;
         File conversionFileDirectory = new File(fileUploadDirectory);
 
-        String thumbnailPath = "/upload/client/conversion/" + clientItemImage.getName();
+        String thumbnailPath = "/upload/client/conversion/";
 
         File uploadDirectory = new File(fileUploadDirectory);
         File thumbnailDirectory = new File(thumbnailPath);
@@ -372,15 +399,17 @@ public class ClientController {
                 System.out.println("업로드 디렉토리 생성 : " + uploadDirectory.mkdirs());
                 System.out.println("썸네일 디렉토리 생성 : " + thumbnailDirectory.mkdirs());
 
-                int memberNo = user.getMemberNo();
-                MemberDTO memberDTO = new MemberDTO();
-                memberDTO.setMemberNo(memberNo);
-
-                clientContractItemList.setClientContractItemName(clientContractItemDTO.getClientContractItemName());
-                clientContractItemList.setClientContractItemSupplyPrice(clientContractItemDTO.getClientContractItemSupplyPrice());
-                clientContractItemList.setClientContractInfoNo(clientContractInfo);
-                clientContractItemList.setMemberNo(memberDTO);
             }
+            int memberNo = user.getMemberNo();
+            MemberDTO memberDTO = new MemberDTO();
+            memberDTO.setMemberNo(memberNo);
+
+            System.out.println("멤버넘버 : " + user.getMemberNo());
+
+            clientContractItemList.setClientContractItemName(clientContractItemDTO.getClientContractItemName());
+            clientContractItemList.setClientContractItemSupplyPrice(clientContractItemDTO.getClientContractItemSupplyPrice());
+            clientContractItemList.setClientContractInfoNo(clientContractInfo);
+            clientContractItemList.setMemberNo(memberDTO);
 
             try {
                 if (clientItemImage.getSize() > 0) {
@@ -389,7 +418,7 @@ public class ClientController {
                     String ext = orgName.substring(orgName.lastIndexOf("."));
                     String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 
-                    clientItemImage.transferTo(new File(uploadDirectory + "/" + savedName));
+                    clientItemImage.transferTo(new File(uploadDirectory + "/thumbnail_" + savedName));
 
                     clientContractItemAttachmentFileList.setAttachmentFileDeleteYn("N");
                     clientContractItemAttachmentFileList.setAttachmentFileUrl(fileUploadDirectory);
@@ -398,13 +427,7 @@ public class ClientController {
                     clientContractItemAttachmentFileList.setAttachmentFileDivision("거래처상품");
                     clientContractItemAttachmentFileList.setAttachmentFileCategoryNo(5);
 
-                    int width = 400;
-                    int height = 400;
-
-                    Thumbnails.of(uploadDirectory + "/" + savedName).forceSize(width, height)
-                            .toFile(thumbnailDirectory + "/thumbnail_" + savedName);
-
-                    clientContractItemAttachmentFileList.setAttachmentFileThumbnailUrl(thumbnailPath);
+                    clientContractItemAttachmentFileList.setAttachmentFileThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
                 }
 
                 clientService.registClientContractItemAttachmentFile(clientContractItemList, clientContractItemAttachmentFileList);

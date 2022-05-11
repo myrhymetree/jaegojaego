@@ -5,4 +5,5 @@ import com.greedy.jaegojaego.client.model.entity.ClientContractItemAttachmentFil
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClientContractItemAttachmentFileRepository extends JpaRepository<ClientContractItemAttachmentFile, Integer> {
+    ClientContractItemAttachmentFile findByClientContractItem_ClientContractItemNoAndAttachmentFileDeleteYn(int clientContractItemNo, String n);
 }
