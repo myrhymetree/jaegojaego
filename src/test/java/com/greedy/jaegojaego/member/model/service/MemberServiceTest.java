@@ -156,7 +156,7 @@ class MemberServiceTest {
 
         Integer memberNo = 1;
 
-        Member member = memberRepository.findMemberPwdByMemberNo(memberNo);
+        Member member = memberRepository.findMemberByMemberNo(memberNo);
         System.out.println("pwd = " + member.getMemberPwd());
         
         assertNotNull(member.getMemberPwd());

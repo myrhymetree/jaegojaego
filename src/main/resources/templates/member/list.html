@@ -106,6 +106,9 @@
             $("#memberTable tbody").on("click", "tr", function () {
 
                 $(".memberDetailView").addClass("active").attr('style', "display:block");
+                $("#modifyModal").addClass("hover").attr('style', "display:block");
+                $("#removeMember").addClass("hover").attr('style', "display:block");
+                $("#restoreMember").addClass("hover").attr('style', "display:none");
 
                 /* td에 숫자가 안나오게 표시함 */
                 let memberNo = this.children[0].innerText;
@@ -163,6 +166,9 @@
             $("#removedMemberTable tbody").on("click", "tr", function () {
 
                 $(".memberDetailView").addClass("active").attr('style', "display:block");
+                $("#modifyModal").addClass("hover").attr('style', "display:none");
+                $("#removeMember").addClass("hover").attr('style', "display:none");
+                $("#restoreMember").addClass("hover").attr('style', "display:block");
 
                 /* td에 숫자가 안나오게 표시함 */
                 let memberNo = this.children[0].innerText;
@@ -217,12 +223,21 @@
 
             });
 
+            /* 본사 직원 계정 삭제 이벤트 */
             $(function () {
                 $("#removeMember").click(function () {
 
                     const memberNo = $("#detail-memberNo").val();
 
                     location.href="/member/delete/" + memberNo;
+                });
+            });
+
+            /* 본사 직원 계정 복구 이벤트 */
+            $(function () {
+                $("#restoreMember").click(function () {
+                    const memberNo = $("#detail-memberNo").val();
+                    location.href="/member/restore/" + memberNo;
                 });
             });
 

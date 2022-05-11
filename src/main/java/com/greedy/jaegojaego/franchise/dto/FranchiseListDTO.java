@@ -15,5 +15,6 @@ public class FranchiseListDTO {
     private List<FranchiseInfoDTO> franchiseList;
     private List<FranchiseInfoDTO> removedFranchiseList;
     private List<FranchiseAccountDTO> managerList;
+    private List<FranchiseAccountDTO> removedManagerList;
 
 }

@@ -163,4 +163,12 @@ public class MemberController {
 
         return "redirect:/member/list";
     }
+
+    @GetMapping("/restore/{memberNo}")
+    public String restoreMember(@PathVariable Integer memberNo) {
+
+        memberService.restoreMember(memberNo);
+
+        return "redirect:/member/list";
+    }
 }

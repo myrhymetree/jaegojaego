@@ -9,4 +9,6 @@ public interface FranchiseAccountRepositoryCustom {
     void updateManager(FranchiseAccount manager);
 
     List<FranchiseAccount> searchManager(String searchWord);
+
+    List<FranchiseAccount> searchRemovedManager(String searchWord);
 }

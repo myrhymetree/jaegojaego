@@ -238,13 +238,18 @@ public class FranchiseService {
 
     public FranchiseListDTO findManagerList(String searchWord) {
 
-        /* 프렌차이즈 매니저 계정 목록 조회 */
+        /* 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
         List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
         List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        /* 삭제된 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
+        List<FranchiseAccount> removedManagerList = franchiseAccountRepository.searchRemovedManager(searchWord);
+        List<FranchiseAccountDTO> removedManagers = removedManagerList.stream().map(removedManager -> modelMapper.map(removedManager, FranchiseAccountDTO.class)).collect(Collectors.toList());
 
         /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
         FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
         franchiseListDTO.setManagerList(managers);
+        franchiseListDTO.setRemovedManagerList(removedManagers);
 
         return franchiseListDTO;
     }

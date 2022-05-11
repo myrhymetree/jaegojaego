@@ -376,9 +376,25 @@ public class FranchiseController {
     @GetMapping("/delete/{memberNo}")
     public String removeMember(@PathVariable Integer memberNo) {
 
-        memberService.removeMember(memberNo);
+        String result = memberService.removeMember(memberNo);
 
-        return "redirect:/franchise/list";
+        if(result.equals("대표자")) {
+            return "redirect:/franchise/list";
+        } else {
+            return "redirect:/franchise/managerList";
+        }
+    }
+
+    @GetMapping("/restore/{memberNo}")
+    public String restoreMember(@PathVariable Integer memberNo) {
+
+        String result = memberService.restoreMember(memberNo);
+
+        if(result.equals("대표자")) {
+            return "redirect:/franchise/list";
+        } else {
+            return "redirect:/franchise/managerList";
+        }
     }
 
     @GetMapping("/managerList")
@@ -387,6 +403,7 @@ public class FranchiseController {
         FranchiseListDTO list = franchiseService.findManagerList(searchWord);
 
         mv.addObject("managerList", list.getManagerList());
+        mv.addObject("removedManagerList", list.getRemovedManagerList());
         mv.setViewName("/franchise/managerList");
 
         return mv;

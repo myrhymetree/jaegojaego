@@ -204,7 +204,7 @@ public class MemberService {
 
         if(!member.getMemberPwd().isEmpty()) {
 
-            Member memberPwd = memberRepository.findMemberPwdByMemberNo(member.getMemberNo());
+            Member memberPwd = memberRepository.findMemberByMemberNo(member.getMemberNo());
 
             PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
             /* 새로 변경할 비밀번호가 아닌 이전 비빌번호를 내역에 저장함 */
@@ -232,13 +232,33 @@ public class MemberService {
 
 
     @Transactional
-    public void removeMember(Integer memberNo) {
+    public String removeMember(Integer memberNo) {
 
-        Member member = memberRepository.findMemberPwdByMemberNo(memberNo);
+        Member member = memberRepository.findMemberByMemberNo(memberNo);
 
         member.setMemberRemoveStatus("N");
         member.setMemberRemovedDate(LocalDateTime.now());
 
         memberRepository.save(member);
+
+        /* result 결과에 따라서 뷰를 결정하기 위해 컨트롤러로 리턴 */
+        String result = member.getOfficeDivision();
+
+        return result;
+    }
+
+    @Transactional
+    public String restoreMember(Integer memberNo) {
+
+        Member member = memberRepository.findMemberByMemberNo(memberNo);
+
+        member.setMemberRemoveStatus("Y");
+        member.setMemberRemovedDate(null);
+
+        memberRepository.save(member);
+
+        String result = member.getOfficeDivision();
+
+        return result;
     }
 }

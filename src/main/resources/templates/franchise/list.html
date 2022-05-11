@@ -11,7 +11,7 @@
     <th:block th:include="/common/header.html"></th:block>
 
     <div class="body-header">
-        <div class="menu-title">계정 생성</div>
+        <div class="menu-title">계정 목록</div>
         <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="">계정 목록</a></div>
     </div>
 
@@ -36,8 +36,7 @@
                             <span class="float-right small text-muted"></span>
                             <ul class="nav nav-tabs">
                                 <li><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>가맹점 목록</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-user"></i>가맹점 직원 목록</a></li>
-                                <li><a class="nav-link" data-toggle="tab" href="#tab-3"><i class="fa fa-remove"></i>삭제된 가맹점 목록</a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-user"></i>삭제된 가맹점 목록</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div id="tab-1" class="tab-pane active">
@@ -113,6 +112,9 @@
             $("#franchiseTable tbody").on("click", "tr", function () {
 
                 $(".franchiseDetailView").addClass("active").attr('style', "display:block");
+                $("#updateFranchise").addClass("hover").attr('style', "display:block");
+                $("#removeFranchise").addClass("hover").attr('style', "display:block");
+                $("#restoreFranchise").addClass("hover").attr('style', "display:none");
 
                 let memberNo = this.children[0].innerText;
 
@@ -156,6 +158,9 @@
             $("#removedFranchiseTable tbody").on("click", "tr", function () {
 
                 $(".franchiseDetailView").addClass("active").attr('style', "display:block");
+                $("#updateFranchise").addClass("hover").attr('style', "display:none");
+                $("#removeFranchise").addClass("hover").attr('style', "display:none");
+                $("#restoreFranchise").addClass("hover").attr('style', "display:block");
 
                 let memberNo = this.children[0].innerText;
 
@@ -196,10 +201,19 @@
                     });
                 });
 
+            /* 가맹점 계정 삭제 이벤트 */
             $(function () {
                 $("#removeFranchise").click(function () {
                     const memberNo = $("#detail-memberNo").val();
                     location.href="/franchise/delete/" + memberNo;
+                });
+            });
+
+            /* 가맹점 계정 복구 이벤트 */
+            $(function () {
+                $("#restoreFranchise").click(function () {
+                    const memberNo = $("#detail-memberNo").val();
+                    location.href="/franchise/restore/" + memberNo;
                 });
             });
         });

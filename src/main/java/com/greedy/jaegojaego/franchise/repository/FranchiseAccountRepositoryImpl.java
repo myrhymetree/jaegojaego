@@ -58,7 +58,7 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
                             franchiseAccount))
                     .from(franchiseAccount)
                     .where(
-                            franchiseAccount.memberRemoveStatus.eq("y")
+                            franchiseAccount.memberRemoveStatus.eq("Y")
                             .or(managerIdContains(searchWord))
                             .or(managerNameContains(searchWord))
                             .or(franchiseNameContains(searchWord))
@@ -66,8 +66,7 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
                     )
                     .orderBy(franchiseAccount.franchiseInfo.branchName.asc())
                     .fetch();
-        }
-        else {
+        } else {
             return queryFactory
                     .select(new QFranchiseAccount(
                             franchiseAccount))
@@ -83,6 +82,40 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
                     .fetch();
         }
 
+    }
+
+    @Override
+    public List<FranchiseAccount> searchRemovedManager(String searchWord) {
+
+        if(searchWord != null && searchWord != "") {
+            return queryFactory
+                    .select(new QFranchiseAccount(
+                            franchiseAccount))
+                    .from(franchiseAccount)
+                    .where(
+                            managerIdContains(searchWord)
+                            .or(managerNameContains(searchWord))
+                            .or(franchiseNameContains(searchWord))
+                            .or(franchisePhoneNumberContains(searchWord))
+                            .and(franchiseAccount.memberRemoveStatus.eq("N"))
+                    )
+                    .orderBy(franchiseAccount.franchiseInfo.branchName.asc())
+                    .fetch();
+        } else {
+            return queryFactory
+                    .select(new QFranchiseAccount(
+                            franchiseAccount))
+                    .from(franchiseAccount)
+                    .where(
+                            franchiseAccount.memberRemoveStatus.eq("N"),
+                            managerIdContains(searchWord),
+                            managerNameContains(searchWord),
+                            franchiseNameContains(searchWord),
+                            franchisePhoneNumberContains(searchWord)
+                    )
+                    .orderBy(franchiseAccount.franchiseInfo.branchName.asc())
+                    .fetch();
+        }
     }
 
     private BooleanExpression managerIdContains(String managerId) {

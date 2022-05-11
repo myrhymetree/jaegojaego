@@ -46,10 +46,10 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .from(companyAccount)
                     .join(companyAccount.department, department).fetchJoin()
                     .where(
-                            companyAccount.memberRemoveStatus.eq("Y")
-                            .or(memberIdContains(searchWord))
+                            memberIdContains(searchWord)
                             .or(memberNameContains(searchWord))
                             .or( departmentNameContains(searchWord))
+                            .and(companyAccount.memberRemoveStatus.eq("Y"))
 
                     )
                     .orderBy(companyAccount.memberNo.asc())
@@ -70,7 +70,6 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .orderBy(companyAccount.memberNo.asc())
                     .fetch();
         }
-
     }
 
     private BooleanExpression memberIdContains(String memberId) {
@@ -126,10 +125,10 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .from(companyAccount)
                     .join(companyAccount.department, department).fetchJoin()
                     .where(
-                            companyAccount.memberRemoveStatus.eq("N")
-                                    .or(memberIdContains(searchWord))
-                                    .or(memberNameContains(searchWord))
-                                    .or( departmentNameContains(searchWord))
+                            memberIdContains(searchWord)
+                            .or(memberNameContains(searchWord))
+                            .or( departmentNameContains(searchWord))
+                            .and(companyAccount.memberRemoveStatus.eq("N"))
 
                     )
                     .orderBy(companyAccount.memberNo.asc())

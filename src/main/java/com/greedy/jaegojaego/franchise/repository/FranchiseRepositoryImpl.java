@@ -14,7 +14,6 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
-import static com.greedy.jaegojaego.franchise.entity.QFranchiseAccount.franchiseAccount;
 import static com.greedy.jaegojaego.franchise.entity.QFranchiseInfo.franchiseInfo;
 import static org.springframework.util.StringUtils.hasText;
 
