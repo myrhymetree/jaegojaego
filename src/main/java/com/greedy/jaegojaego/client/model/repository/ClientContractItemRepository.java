@@ -26,11 +26,17 @@ public interface ClientContractItemRepository extends JpaRepository<ClientContra
     "               WHERE C.CLIENT_NO = ?1", nativeQuery = true
     )
     ClientContractInfo findByClient(int clientNo);
-    @Query(value = "SELECT *" +
+    @Query(value = "SELECT A.*" +
             "               FROM CLIENT_CONTRACT_ITEM A" +
-            "               JOIN CLIENT_CONTRACT_INFO B ON (A.CLIENT_CONTRACT_INFO_NO = B.CLIENCT_CONTRACT_INFO_NO)" +
+            "               JOIN CLIENT_CONTRACT_INFO B ON (A.CLIENT_CONTRACT_INFO_NO = B.CLIENT_CONTRACT_INFO_NO)" +
             "               JOIN CLIENT C ON(B.CLIENT_NO = C.CLIENT_NO)" +
             "               WHERE C.CLIENT_NO = ?1", nativeQuery = true
     )
     ClientContractItemDTO findClientContractInfoNoByClientNo(int clientNo);
+
+
+    @Query(value = "SELECT CLIENT_CONTRACT_ITEM_NO.CURRVAL" +
+    "               FROM DUAL", nativeQuery = true
+    )
+    int findClientContractItemNoByClientContractItemName();
 }

@@ -36,4 +36,6 @@ public class ClientContractInfo {
     @JoinColumn(name = "CLIENT_NO")
     @ManyToOne
     private Client client;
+
+
 }

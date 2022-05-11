@@ -21,7 +21,7 @@ public class ClientContractItemAttachmentFile {
     @Column(name = "ATTACHMENT_FILE_NO")
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "ISSUE_ATTACHMENT_FILE_SEQ_GENERATOR"
+            generator = "CLIENT_CONTRACT_ITEM_ATTACHMENT_FILE_SEQ_GENERATOR"
     )
     private int attachmentFileNo;
 
@@ -46,4 +46,8 @@ public class ClientContractItemAttachmentFile {
 
     @Column(name = "ATTACHMENT_FILE_THUMBNAIL_URL")
     private String attachmentFileThumbnailUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "ATTACHMENT_FILE_CATEGORY_NO")
+    private IssueAttachmentFileCategory issueAttachmentFileCategory;
 }

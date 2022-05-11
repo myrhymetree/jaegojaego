@@ -14,12 +14,14 @@ import com.greedy.jaegojaego.common.paging.PagingButtonInfo;
 import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileCategoryDTO;
 import com.greedy.jaegojaego.issue.attachement.model.dto.IssueAttachmentFileDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -341,65 +343,92 @@ public class ClientController {
     }
 
     @PostMapping("/registclientitem")
-    public void registClientItem(@ModelAttribute ClientContractItemDTO clientContractItemDTO,@ModelAttribute ClientDTO clientDTO, @RequestParam MultipartFile clientItemImage, RedirectAttributes rttr, Locale locale) {
+    public ModelAndView registClientItem(@AuthenticationPrincipal CustomUser user, @ModelAttribute ClientContractItemDTO clientContractItemDTO, @ModelAttribute ClientDTO clientDTO, @RequestParam("clientItemImage") MultipartFile clientItemImage, ModelAndView mv, RedirectAttributes rttr, Locale locale) {
         System.out.println("clientContractItemDTO = " + clientContractItemDTO);
         System.out.println("clientDTO = " + clientDTO);
         System.out.println("clientItemImage = " + clientItemImage);
 
-        String fileUploadDirectory = rootLocation;
-        File conversionFileDirectory = new File(fileUploadDirectory);
-        String thumbnailPath = "/upload/client/conversion/" + clientItemImage.getName();
+        ClientContractInfoDTO clientContractInfo = clientService.findClientContractNoByClientNo(clientDTO.getClientNo());
 
-        ClientContractItemDTO clientContractInfoNo = clientService.findClientContractNoByClientNo(clientDTO.getClientNo());
-        ClientContractInfoDTO registClientContractInfoNo = clientContractInfoNo.getClientContractInfoNo();
+        System.out.println("registClientContractInfoNo : " + clientContractInfo);
+
+
 
         ClientContractItemDTO clientContractItemList = new ClientContractItemDTO();
-        clientContractItemList.setClientContractItemName(clientContractItemDTO.getClientContractItemName());
-        clientContractItemList.setClientContractItemSupplyPrice(clientContractItemDTO.getClientContractItemSupplyPrice());
-        clientContractItemList.setClientContractInfoNo(registClientContractInfoNo);
-
         ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList = new ClientContractItemAttachmentFileDTO();
-        clientContractItemAttachmentFileList.setAttachmentFileDeleteYn("N");
-        clientContractItemAttachmentFileList.setAttachmentFileUrl(fileUploadDirectory);
-        clientContractItemAttachmentFileList.setAttachmentFileChangedName(clientItemImage.getName());
-        clientContractItemAttachmentFileList.setAttachmentFileOriginalName(clientItemImage.getOriginalFilename());
-        clientContractItemAttachmentFileList.setAttachmentFileThumbnailUrl(thumbnailPath);
-        clientContractItemAttachmentFileList.setAttachmentFileDivision("거래처상품");
-        clientContractItemAttachmentFileList.setAttachmentFileCategoryNo(5);
 
-        clientService.registClientContractItemAttachmentFile(clientContractItemList, clientContractItemAttachmentFileList);
+        String fileUploadDirectory = rootLocation;
+        File conversionFileDirectory = new File(fileUploadDirectory);
 
+        String thumbnailPath = "/upload/client/conversion/" + clientItemImage.getName();
 
+        File uploadDirectory = new File(fileUploadDirectory);
+        File thumbnailDirectory = new File(thumbnailPath);
 
+        if (!clientItemImage.isEmpty()) {
 
+            if (!uploadDirectory.exists() || !thumbnailDirectory.exists()) {
 
+                System.out.println("업로드 디렉토리 생성 : " + uploadDirectory.mkdirs());
+                System.out.println("썸네일 디렉토리 생성 : " + thumbnailDirectory.mkdirs());
 
+                int memberNo = user.getMemberNo();
+                MemberDTO memberDTO = new MemberDTO();
+                memberDTO.setMemberNo(memberNo);
 
+                clientContractItemList.setClientContractItemName(clientContractItemDTO.getClientContractItemName());
+                clientContractItemList.setClientContractItemSupplyPrice(clientContractItemDTO.getClientContractItemSupplyPrice());
+                clientContractItemList.setClientContractInfoNo(clientContractInfo);
+                clientContractItemList.setMemberNo(memberDTO);
+            }
 
+            try {
+                if (clientItemImage.getSize() > 0) {
 
+                    String orgName = clientItemImage.getOriginalFilename();
+                    String ext = orgName.substring(orgName.lastIndexOf("."));
+                    String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 
+                    clientItemImage.transferTo(new File(uploadDirectory + "/" + savedName));
 
+                    clientContractItemAttachmentFileList.setAttachmentFileDeleteYn("N");
+                    clientContractItemAttachmentFileList.setAttachmentFileUrl(fileUploadDirectory);
+                    clientContractItemAttachmentFileList.setAttachmentFileChangedName(savedName);
+                    clientContractItemAttachmentFileList.setAttachmentFileOriginalName(orgName);
+                    clientContractItemAttachmentFileList.setAttachmentFileDivision("거래처상품");
+                    clientContractItemAttachmentFileList.setAttachmentFileCategoryNo(5);
 
+                    int width = 400;
+                    int height = 400;
 
+                    Thumbnails.of(uploadDirectory + "/" + savedName).forceSize(width, height)
+                            .toFile(thumbnailDirectory + "/thumbnail_" + savedName);
 
+                    clientContractItemAttachmentFileList.setAttachmentFileThumbnailUrl(thumbnailPath);
+                }
 
+                clientService.registClientContractItemAttachmentFile(clientContractItemList, clientContractItemAttachmentFileList);
 
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
 
+                File deleteFile = new File(uploadDirectory + "/" + clientContractItemAttachmentFileList.getAttachmentFileChangedName());
+                boolean isDeleted1 = deleteFile.delete();
 
+                File deleteThumbnail = new File(thumbnailDirectory + "/thumbnail_" + clientContractItemAttachmentFileList.getAttachmentFileChangedName());
+                boolean isDeleted2 = deleteThumbnail.delete();
 
+                if (isDeleted1 && isDeleted2) {
+                    e.printStackTrace();
+                } else {
+                    e.printStackTrace();
+                }
+            }
 
+        }
+        mv.setViewName("redirect:/client/itemlist");
 
-
-
-
-
-
-
-
-
-
-
-
+        return mv;
 
 
 //        System.out.println("컨트롤러 도착");
@@ -491,5 +520,6 @@ public class ClientController {
 
             }*/
 //        }
+
     }
 }

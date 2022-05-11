@@ -22,6 +22,6 @@ public class ClientDTO {
     private String clientAddress;
     private ClientBusinessType clientBusinessTypeNo;
     private ClientBusinessItem clientBusinessItemNo;
-    private ClientContractInfoDTO clientContractInfo;
+//    private ClientContractInfoDTO clientContractInfo;
 
 }

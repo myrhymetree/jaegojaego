@@ -3,6 +3,7 @@ package com.greedy.jaegojaego.client.model.service;
 import com.greedy.jaegojaego.client.model.dto.*;
 import com.greedy.jaegojaego.client.model.entity.*;
 import com.greedy.jaegojaego.client.model.repository.*;
+import com.greedy.jaegojaego.issue.attachement.model.entity.IssueAttachmentFileCategory;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class ClientService {
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ClientContractInfoRepository clientContractInfoRepository;
     private final ClientContractItemRepository clientContractItemRepository;
+
     private final ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository;
     private final ModelMapper modelMapper;
 
@@ -325,20 +327,49 @@ public class ClientService {
 
     }
 
-    public ClientContractItemDTO findClientContractNoByClientNo(int clientNo) {
+    public ClientContractInfoDTO findClientContractNoByClientNo(int clientNo) {
 
-        ClientContractItemDTO clientContractItemDTO = clientContractItemRepository.findClientContractInfoNoByClientNo(clientNo);
+        ClientContractInfo clientContractInfo = clientContractInfoRepository.findClientContractInfoNoByClient_ClientNo(clientNo);
 
-        return clientContractItemDTO;
+
+        return modelMapper.map(clientContractInfo, ClientContractInfoDTO.class);
     }
 
+    @Transactional
     public void registClientContractItemAttachmentFile(ClientContractItemDTO clientContractItemList, ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList) {
+
+        ClientMember clientMember = new ClientMember();
+        clientMember.setClientMemberNo(clientContractItemList.getMemberNo().getMemberNo());
 
         ClientContractItem clientContractItem = new ClientContractItem();
         clientContractItem.setClientContractItemName(clientContractItemList.getClientContractItemName());
+        clientContractItem.setClientContractItemCreatedDate(new Date(System.currentTimeMillis()));
+        clientContractItem.setClientContractItemSupplyPrice(clientContractItemList.getClientContractItemSupplyPrice());
+        clientContractItem.setClientContractInfoNo(clientContractItemList.getClientContractInfoNo().getClientContractInfoNo());
+        clientContractItem.setMemberNo(clientMember);
 
 
+        clientContractItemRepository.save(clientContractItem);
 
+        int clientContractItemNo = clientContractItemRepository.findClientContractItemNoByClientContractItemName();
+
+        ClientContractItem attachmentClientContractItem = new ClientContractItem();
+        attachmentClientContractItem.setClientContractItemNo(clientContractItemNo);
+
+        IssueAttachmentFileCategory attachmentFileCategory = new IssueAttachmentFileCategory();
+        attachmentFileCategory.setAttachmentFileCategoryNo(clientContractItemAttachmentFileList.getAttachmentFileCategoryNo());
+
+        ClientContractItemAttachmentFile clientContractItemAttachmentFile = new ClientContractItemAttachmentFile();
+        clientContractItemAttachmentFile.setClientContractItem(attachmentClientContractItem);
+        clientContractItemAttachmentFile.setAttachmentFileDeleteYn(clientContractItemAttachmentFileList.getAttachmentFileDeleteYn());
+        clientContractItemAttachmentFile.setAttachmentFileDivision(clientContractItemAttachmentFileList.getAttachmentFileDivision());
+        clientContractItemAttachmentFile.setAttachmentFileUrl(clientContractItemAttachmentFileList.getAttachmentFileUrl());
+        clientContractItemAttachmentFile.setAttachmentFileChangedName(clientContractItemAttachmentFileList.getAttachmentFileChangedName());
+        clientContractItemAttachmentFile.setAttachmentFileOriginalName(clientContractItemAttachmentFileList.getAttachmentFileOriginalName());
+        clientContractItemAttachmentFile.setAttachmentFileThumbnailUrl(clientContractItemAttachmentFileList.getAttachmentFileThumbnailUrl());
+        clientContractItemAttachmentFile.setIssueAttachmentFileCategory(attachmentFileCategory);
+
+        clientContractItemAttachmentFileRepository.save(clientContractItemAttachmentFile);
        
 
     }

@@ -33,7 +33,7 @@ public class ClientContractItem {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_NO")
-    private Member memberNo;
+    private ClientMember memberNo;
 
     @Column(name = "CLIENT_CONTRACT_ITEM_CREATED_DATE")
     private Date clientContractItemCreatedDate;
