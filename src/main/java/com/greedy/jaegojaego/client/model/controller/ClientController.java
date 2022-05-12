@@ -292,10 +292,8 @@ public class ClientController {
     }
 
     /**
-     * clientContractItemSelectList : Client 조회 페이지 이동 및 목록 출력 메소드
-     * @ param searchCondition : 검색 카테고리
-     * @ param searchValue : 검색 내용
-     * @ return : 페이징을 포함한 목록 데이터, 화면 경로
+     * clientContractItemSelectList : Client 계약 상품 조회 페이지 이동 및 목록 출력 메소드
+     * @ return : 목록 데이터, 화면 경로
      * */
     @GetMapping("/itemlist")
     public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
@@ -311,9 +309,11 @@ public class ClientController {
     }
     /**
      * registClientItem : 거래처 계약 상품 등록 및 이미지 등록, 써네일 경로 등록
-     * @ param clientContractItemDTO : 로그인되어있는 id 번호
-     * @ param clientDTO : 검색 내용
-     * @ return : 페이징을 포함한 목록 데이터, 화면 경로
+     * @ param user : 로그인되어있는 id 번호
+     * @ param clientContractItemDTO : 입력받은 clientContractItem 정보
+     * @ param clientDTO : 입력받은 client 정보
+     * @ param clientItemImage : multipartFile로 받은 이미지 파일 정보
+     * @ return : 화면 경로
      * */
     @PostMapping("/registclientitem")
     public ModelAndView registClientItem(@AuthenticationPrincipal CustomUser user, @ModelAttribute ClientContractItemDTO clientContractItemDTO, @ModelAttribute ClientDTO clientDTO, @RequestParam("clientItemImage") MultipartFile clientItemImage, ModelAndView mv, RedirectAttributes rttr, Locale locale) {
@@ -324,8 +324,6 @@ public class ClientController {
         ClientContractInfoDTO clientContractInfo = clientService.findClientContractNoByClientNo(clientDTO.getClientNo());
 
         System.out.println("registClientContractInfoNo : " + clientContractInfo);
-
-
 
         ClientContractItemDTO clientContractItemList = new ClientContractItemDTO();
         ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList = new ClientContractItemAttachmentFileDTO();
@@ -398,97 +396,6 @@ public class ClientController {
         mv.setViewName("redirect:/client/itemlist");
 
         return mv;
-
-
-//        System.out.println("컨트롤러 도착");
-//        String clientItemName = request.getParameter("clientItemName");
-//        int clientItemSupplyPrice = Integer.parseInt(request.getParameter("clientItemSupplyPrice"));
-//        int clientNo = Integer.parseInt(request.getParameter("clientNo"));
-//
-//        System.out.println("1 : " + clientItemName);
-//        System.out.println("1 : " + clientItemSupplyPrice);
-//        System.out.println("1 : " + clientItemImage);
-//        System.out.println("1 : " + clientNo);
-//
-//        ClientContractInfo clientContractInfo = clientService.findClientContractInfoNoByClientNo(clientNo);
-//
-//        clientContractItem.setClientContractItemName(clientItemName);
-//        /*clientContractItem.setClientContractInfoNo();*/
-//        clientContractItem.setClientContractItemSupplyPrice(clientItemSupplyPrice);
-
-/*        String fileUploadDirectory = rootLocation;
-
-        File conversionFileDirectory = new File(fileUploadDirectory);
-
-        if (!conversionFileDirectory.exists()) {
-
-            conversionFileDirectory.mkdirs();
-        }
-
-        List<MultipartFile> fileList = multirequest.getFiles("clientItemImage");
-
-        List<ClientContractItemAttachmentFileDTO> clientContractItemAttachmentFile = new ArrayList<>();
-        List<String> conversionNameList = new ArrayList<>();
-
-        String originalFileName = ""; //원본 파일명
-        String conversionFileName = ""; //변경 파일명
-
-        if(fileList.get(0).getSize() > 0) {
-            for (MultipartFile mf : fileList) {
-
-                originalFileName = mf.getOriginalFilename();
-                String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
-                conversionFileName = "thumbnail_" + UUID.randomUUID().toString().replace("-", "") + ext;
-
-                if (originalFileName != null && originalFileName.length() != 0) {
-
-                    try {
-                        mf.transferTo(new File(fileUploadDirectory + "/" + conversionFileName));
-
-                        conversionNameList.add(fileUploadDirectory + "/" + conversionFileName);
-
-                        String thumbnailPath = "/upload/issue/conversion/" + conversionFileName;
-
-                        ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList = new ClientContractItemAttachmentFileDTO();
-                        clientContractItemAttachmentFileList.setAttachmentFileOriginalName(originalFileName);
-                        clientContractItemAttachmentFileList.setAttachmentFileChangedName(conversionFileName);
-                        clientContractItemAttachmentFileList.setAttachmentFileDeleteYn("N");
-                        clientContractItemAttachmentFileList.setAttachmentFileDivision("이슈");
-                        clientContractItemAttachmentFileList.setAttachmentFileUrl(fileUploadDirectory);
-                        clientContractItemAttachmentFileList.setAttachmentFileThumbnailUrl(thumbnailPath);
-
-                        clientContractItemAttachmentFile.add(clientContractItemAttachmentFileList);
-
-                    } catch (IllegalStateException | IOException e) {
-                        e.printStackTrace();
-
-                        int deleteCnt = 0;
-
-                        for (int i = 0; i < conversionNameList.size(); i++) {
-
-                            File deleteFile = new File(conversionNameList.get(i));
-                            boolean isDeleted = deleteFile.delete();
-
-                            if (isDeleted) {
-                                deleteCnt++;
-                            }
-
-                        }
-
-                        if (fileList.size() == deleteCnt) {
-                            System.out.println("업로드 실패한 모든 사진 삭제 완료");
-                            e.printStackTrace();
-                        } else {
-                            e.printStackTrace();
-                        }
-
-                        clientService.registClientContractItem(clientContractItem, clientContractItemAttachmentFile);
-
-                    }
-                }
-
-            }*/
-//        }
 
     }
 }

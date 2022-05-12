@@ -1,3 +1,35 @@
+/**
+ * <pre>
+ * Class : ClientService
+ * Comment : Client(거래처 관리)관련 메소드를 모아놓은 Service입니다.
+ * History
+ * 2022/04/18 (윤기주) ClientController 기본 설정 작성
+ * 2022/04/19 (윤기주) Client 목록 조회 페이지 이동 및 완성
+ * 2022/04/21 (윤기주) Client 목록 조회 기능 작성
+ * 2022/04/23 (윤기주) Client 상세 조회 기능 작성 및 완성
+ * 2020/04/23 (윤기주) ClientMemo 조회 기능 작성 및 완성
+ * 2022/04/24 (윤기주) Client 등록 기능 작성
+ * 2022/04/25 (윤기주) Client 삭제 기능 작성 및 완성
+ * 2022/04/26 (윤기주) Client 목록 조회 기능 수정(JOIN TABLE 조회 추가) 및 완성
+ * 2022/04/27 (윤기주) Client 등록 기능 1차 수정
+ * 2022/04/29 (윤기주) Client 등록 기능 2차 수정
+ * 2022/04/30 (윤기주) Client 등록 기능 3차 수정 및 완성
+ * 2020/05/01 (윤기주) ClientContractItem 목록 조회 페이지 이동 및 완성
+ * 2022/05/01 (윤기주) ClientContractItem 목록 조회 기능 작성 및 완성
+ * 2020/05/03 (윤기주) ClientContractItem 목록 등록 기능 작성 및 완성
+ * 2020/05/04 (윤기주) ClientContractItem 목록 조회 기능 수정(JOIN TABLE 조회 추가) 및 완성
+ * 2020/05/06 (윤기주) ClientContractItem 목록 등록 기능 1차 수정
+ * 2020/05/07 (윤기주) ClientContractItem 목록 이미지 등록 기능 작성
+ * 2020/05/08 (윤기주) ClientContractItem 목록 등록 기능 1차 수정
+ * 2020/05/09 (윤기주) ClientContractItem 목록 등록 기능 2차 수정 및 완성
+ * 2020/05/10 (윤기주) ClientContractItem 목록 이미지 및 썸네일 경로 기능 작성
+ * 2020/05/11 (윤기주) ClientContractItem 첨부파일 등록 기능 작성
+ * 2020/05/11 (윤기주) ClientContractItem 첨부파일 등록 기능 1차 수정(미완성)
+ * </pre>
+ * @version 11
+ * @author 윤기주
+ */
+
 package com.greedy.jaegojaego.client.model.service;
 
 import com.greedy.jaegojaego.client.model.dto.*;
@@ -52,6 +84,13 @@ public class ClientService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * findClientSearchList : Client 검색 목록 조회용 메소드(페이지 좌측 영역)
+     * @ param searchCondition : 검색 카테고리
+     * @ param searchValue : 검색 내용
+     * @ param pageable : 페이징 정보
+     * return : Client 데이터
+     * */
     public Page<ClientDTO> findClientSearchList(String searchCondition, String searchValue, Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
@@ -60,16 +99,14 @@ public class ClientService {
 
         Page<Client> clientList = null;
 
-/*        if(searchCondition.equals("clientName")){
-            clientList = clientRepository.findByClientNameContainingAnyTypeAndStatus(searchValue, new Integer(1), "Y", pageable);
-        } else if(searchCondition.equals("clientRepresentativeNameTypeAndStatus")){
-            clientList = clientRepository.findByClientRepresentativeNameContainingTypeAndStatus(searchValue, new Integer(1), "Y", pageable);
-        }*/
-
         return clientList.map(client -> modelMapper.map(client, ClientDTO.class));
     }
 
-    /* 거래처 목록 조회용 메소드 (뷰페이지 좌측 영역) */
+    /**
+     * findClientList : Client 목록 조회용 메소드(페이지 좌측 영역)
+     * @ param pageable : 페이징 정보
+     * return : Client 데이터
+     * */
     public Page<ClientDTO> findClientList(Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
@@ -80,7 +117,11 @@ public class ClientService {
 
     }
 
-    /* 거래처 상세 조회용 메소드 (뷰페이지 우측 영역) */
+    /**
+     * findClientDetailByClientNo : Client 상세조회용 메소드(페이지 우측 영역)
+     * @ param clientNo : 상세조회할 ClientNo(PK)
+     * return : ClientContractInfo 데이터
+     * */
     @Transactional
     public List<ClientContractInfoDTO> findClientDetailByClientNo(int clientNo) {
 
@@ -111,8 +152,6 @@ public class ClientService {
 
 
     }
-
-
     public List<ClientBusinessItemDTO> findClientBusinessItem() {
 
         List<ClientBusinessItem> clientBusinessItemList = new ArrayList<>();
@@ -128,73 +167,6 @@ public class ClientService {
 
         return clientMember;
     }
-
-
-/*    public void registClient(ClientDTO clientDTO) {
-
-        Client newClient = new Client();
-
-        newClient.setClientName(clientDTO.getClientName());
-        newClient.setClientCbrNo(clientDTO.getClientCbrNo());
-        newClient.setClientRepresentativeName(clientDTO.getClientRepresentativeName());
-        newClient.setClientRepresentativePhone(clientDTO.getClientRepresentativePhone());
-        newClient.setClientRepresentativeEmail(clientDTO.getClientRepresentativeEmail());
-        newClient.setClientAddress(clientDTO.getClientAddress());
-        newClient.setClientMember(clientDTO.getClientMemberNo());
-        newClient.setClientCreatedDate(new Date(System.currentTimeMillis()));
-        newClient.setClientPaymentMethod("일시불");
-
-        System.out.println("newClient : " + newClient);
-
-        clientRepository.save(newClient);
-    }
-
-
-    public void registClientBusinessItemDevision(ClientBusinessItemDvisionDTO clientBusinessItemDevisionDTO) {
-
-        ClientBusinessItemDivisionPK newClientBusinessItemDivisionPK = new ClientBusinessItemDivisionPK();
-        newClientBusinessItemDivisionPK.setClientNo(clientBusinessItemDevisionDTO.getClientNo());
-        newClientBusinessItemDivisionPK.setClientBusinessItemNo(clientBusinessItemDevisionDTO.getClientBusinessItemNo());
-
-        ClientBusinessItemDivision newClientBusinessItemDivision = new ClientBusinessItemDivision();
-        newClientBusinessItemDivision.setClientBusinessItemDivisionPK(newClientBusinessItemDivisionPK);
-
-        clientBusinessItemDivisionRepository.save(newClientBusinessItemDivision);
-    }
-
-
-    public void registClientBusinessTypeDevision(ClientBusinessTypeDvisionDTO clientBusinessTypeDvisionDTO) {
-
-        ClientBusinessTypeDivisionPK newClientBusinessTypeDivisionPK = new ClientBusinessTypeDivisionPK();
-        newClientBusinessTypeDivisionPK.setClientNo(clientBusinessTypeDvisionDTO.getClientNo());
-        newClientBusinessTypeDivisionPK.setClientBusinessTypeNo(clientBusinessTypeDvisionDTO.getClientBusinessTypeNo());
-
-        ClientBusinessTypeDivision newClientBusinessTypeDivision = new ClientBusinessTypeDivision();
-        newClientBusinessTypeDivision.setClientBusinessTypeDivisionPK(newClientBusinessTypeDivisionPK);
-
-        clientBusinessTypeDivisionRepository.save(newClientBusinessTypeDivision);
-    }
-
-    public void registClientContractInfo(ClientContractInfoDTO clientContractInfoDTO) {
-
-        ClientContractInfo newClientContractInfo = new ClientContractInfo();
-
-        newClientContractInfo.setClientNo(clientContractInfoDTO.getClientNo());
-        newClientContractInfo.setClientContractInfoStartdate(clientContractInfoDTO.getClientContractInfoStartDate());
-        newClientContractInfo.setClientContractInfoEnddate(clientContractInfoDTO.getClientContractInfoEndDate());
-        newClientContractInfo.setClientContractInfoStatus("거래중");
-
-        clientContractInfoRepository.save(newClientContractInfo);
-
-    }
-
-    public int findClientNoByName(String clientName) {
-
-        int clientInsertNo = clientRepository.findClientNoByClientName(clientName);
-
-        return clientInsertNo;
-    }*/
-
     public void deleteClient(int clientNo) {
 
         clientRepository.deleteById(clientNo);
@@ -208,27 +180,8 @@ public class ClientService {
 
         Page<ClientContractItem> clientContractItemList = null;
 
-/*        if(searchCondition.equals("clientName")){
-            clientList = clientRepository.findByClientNameContainingAnyTypeAndStatus(searchValue, new Integer(1), "Y", pageable);
-        } else if(searchCondition.equals("clientRepresentativeNameTypeAndStatus")){
-            clientList = clientRepository.findByClientRepresentativeNameContainingTypeAndStatus(searchValue, new Integer(1), "Y", pageable);
-        }*/
-
         return clientContractItemList.map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
     }
-
-
-//    public Page<ClientContractItemDTO> findClientItemList(Pageable pageable) {
-//
-//        pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
-//                pageable.getPageSize(),
-//                Sort.by("CLIENT_CONTRACT_ITEM_NO").descending());
-//
-//        Page<ClientContractItemDTO> clientContractItemList = clientContractItemRepository.findAll(pageable).map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
-//
-//        System.out.println("컨트롤러" + clientContractItemList);
-//        return clientContractItemList;
-//    }
 
     public ClientBusinessItem findClientBusinessItemNo(int clientBusinessItemNo) {
 
@@ -293,42 +246,7 @@ public class ClientService {
 
         return clientContractInfo;
     }
-
-    @Transactional
-    public void registClientContractItem(ClientContractItemDTO clientContractItem, List<ClientContractItemAttachmentFileDTO> clientContractItemAttachmentFile) {
-/*
-    ClientContractItem registClientContractItem = modelMapper.map(clientContractItem, ClientContractItem.class);
-
-    List<ClientContractItemAttachmentFile> registClientContractItemAttachmentFileList = null;
-
-    if(clientContractItemAttachmentFile != null){
-        registClientContractItemAttachmentFileList = clientContractItemAttachmentFile.stream().map(clientContractItemAttachmentFileDTO -> modelMapper.map(clientContractItemAttachmentFile,ClientContractItemAttachmentFile.class)).collect(Collectors.toList());
-    }
-
-        ClientContractItem newClientContractItem = new ClientContractItem();
-
-        newClientContractItem.setClientContractItemName(clientContractItem.getClientContractItemName());
-        newClientContractItem.setClientContractItemSupplyPrice(clientContractItem.getClientContractItemSupplyPrice());
-*//*
-        newClientContractItem.setClientContractInfoNo(clientContractItem.getClientContractInfoNo());
-*//*
-        newClientContractItem.setClientContractItemCreatedDate(new Date(System.currentTimeMillis()));
-
-        clientContractItemRepository.save(newClientContractItem);
-
-    if(registClientContractItemAttachmentFileList != null){
-
-        for(int i = 0; i < registClientContractItemAttachmentFileList.size(); i++){
-
-            registClientContractItemAttachmentFileList.get(i).setClientContractItem(registClientContractItem);
-
-            clientContractItemAttachmentFileRepository.save(registClientContractItemAttachmentFileList.get(i));
-        }
-    }*/
-
-    }
-
-    public ClientContractInfoDTO findClientContractNoByClientNo(int clientNo) {
+        public ClientContractInfoDTO findClientContractNoByClientNo(int clientNo) {
 
         ClientContractInfo clientContractInfo = clientContractInfoRepository.findClientContractInfoNoByClient_ClientNo(clientNo);
 
