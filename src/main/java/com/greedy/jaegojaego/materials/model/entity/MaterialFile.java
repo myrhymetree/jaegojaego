@@ -35,9 +35,8 @@ public class MaterialFile {
     @Column(name = "ATTACHMENT_FILE_THUMBNAIL_URL")
     private String thumbnailUrl;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ATTACHMENT_FILE_CATEGORY_NO")
-    private MaterialFileCategory materialFileCategory;
+    @Column(name = "ATTACHMENT_FILE_CATEGORY_NO")
+    private int materialFileCategory;
 
     @Column(name = "ATTACHMENT_FILE_DIVISION")
     private String fileDivision;
@@ -48,7 +47,7 @@ public class MaterialFile {
     public MaterialFile() {
     }
 
-    public MaterialFile(int fileNo, String fileOriginalName, String fileChangedName, String fileUrl, String deleteYn, String thumbnailUrl, MaterialFileCategory materialFileCategory, String fileDivision, Integer itemInfoNo) {
+    public MaterialFile(int fileNo, String fileOriginalName, String fileChangedName, String fileUrl, String deleteYn, String thumbnailUrl, int materialFileCategory, String fileDivision, Integer itemInfoNo) {
         this.fileNo = fileNo;
         this.fileOriginalName = fileOriginalName;
         this.fileChangedName = fileChangedName;
@@ -108,11 +107,11 @@ public class MaterialFile {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public MaterialFileCategory getFileCategory() {
+    public int getMaterialFileCategory() {
         return materialFileCategory;
     }
 
-    public void setFileCategory(MaterialFileCategory materialFileCategory) {
+    public void setMaterialFileCategory(int materialFileCategory) {
         this.materialFileCategory = materialFileCategory;
     }
 
@@ -141,7 +140,7 @@ public class MaterialFile {
                 ", fileUrl='" + fileUrl + '\'' +
                 ", deleteYn='" + deleteYn + '\'' +
                 ", thumbnailUrl='" + thumbnailUrl + '\'' +
-                ", fileCategory=" + materialFileCategory +
+                ", materialFileCategory=" + materialFileCategory +
                 ", fileDivision='" + fileDivision + '\'' +
                 ", itemInfoNo=" + itemInfoNo +
                 '}';

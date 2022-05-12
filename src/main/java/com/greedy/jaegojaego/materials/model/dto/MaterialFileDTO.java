@@ -7,7 +7,7 @@ public class MaterialFileDTO {
     private String fileChangedName;
     private String fileUrl;
     private String deleteYn;
-    private MaterialFileCategoryDTO materialFileCategory;
+    private int materialFileCategory;
     private String fileDivision;
     private String thumbnailUrl;
     private Integer itemInfoNo;
@@ -15,7 +15,7 @@ public class MaterialFileDTO {
     public MaterialFileDTO() {
     }
 
-    public MaterialFileDTO(int fileNo, String fileOriginalName, String fileChangedName, String fileUrl, String deleteYn, MaterialFileCategoryDTO materialFileCategory, String fileDivision, String thumbnailUrl, Integer itemInfoNo) {
+    public MaterialFileDTO(int fileNo, String fileOriginalName, String fileChangedName, String fileUrl, String deleteYn, int materialFileCategory, String fileDivision, String thumbnailUrl, Integer itemInfoNo) {
         this.fileNo = fileNo;
         this.fileOriginalName = fileOriginalName;
         this.fileChangedName = fileChangedName;
@@ -67,11 +67,11 @@ public class MaterialFileDTO {
         this.deleteYn = deleteYn;
     }
 
-    public MaterialFileCategoryDTO getMaterialFileCategory() {
+    public int getMaterialFileCategory() {
         return materialFileCategory;
     }
 
-    public void setMaterialFileCategory(MaterialFileCategoryDTO materialFileCategory) {
+    public void setMaterialFileCategory(int materialFileCategory) {
         this.materialFileCategory = materialFileCategory;
     }
 

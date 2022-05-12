@@ -185,7 +185,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                 <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
                     <a th:href="@{/materials}"><i class="fa fa-flask"></i> <span class="nav-label">자재 관리</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <!--                            <li><a href="form_basic.html">Basic form</a></li>-->
+                        <li><a href="/materials/product/list">자재 목록</a></li>
                     </ul>
                 </li>
 

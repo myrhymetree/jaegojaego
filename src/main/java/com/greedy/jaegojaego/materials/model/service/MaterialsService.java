@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,20 @@ public class MaterialsService {
 
         List<Materials> materialsList = materialsRepository.findAllProductList();
 
-        return materialsList.stream().map(materials -> modelMapper.map(materials, MaterialsDTO.class)).collect(Collectors.toList());
+        System.out.println("제발" + materialsList);
+
+        List<MaterialsDTO> ml = new ArrayList<>();
+        materialsList.forEach(materials -> {
+            MaterialsDTO materialsDTO = modelMapper.map(materials, MaterialsDTO.class);
+            materialsDTO.setMaterialsCategory(modelMapper.map(materials.getMaterialCategory(),MaterialsCategoryDTO.class ));
+            
+            ml.add(materialsDTO);
+        });
+
+        ml.forEach(m ->{
+            System.out.println("m.getMaterialsCategory() = " + m.getMaterialsCategory());
+        });
+        return ml;
     }
 
     public Map<String, Object> findMaterialsByCode(int itemInfoNo) {
@@ -157,7 +171,6 @@ public class MaterialsService {
 
         MaterialFile materialFile = new MaterialFile();
         MaterialFileCategory materialFileCategory = new MaterialFileCategory();
-        materialFileCategory.setFileCategoryNo(materialFileDTO.getMaterialFileCategory().getFileCategoryNo());
 
         materialFile.setFileOriginalName(materialFileDTO.getFileOriginalName());
         materialFile.setFileChangedName(materialFileDTO.getFileChangedName());
@@ -166,7 +179,7 @@ public class MaterialsService {
         materialFile.setThumbnailUrl(materialFileDTO.getThumbnailUrl());
         materialFile.setFileDivision(materialFileDTO.getFileDivision());
         materialFile.setItemInfoNo(materialFileDTO.getItemInfoNo());
-        materialFile.setFileCategory(materialFileCategory);
+        materialFile.setMaterialFileCategory(materialFile.getMaterialFileCategory());
 
     }
 }
