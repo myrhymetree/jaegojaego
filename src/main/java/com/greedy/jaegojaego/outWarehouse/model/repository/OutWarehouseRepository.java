@@ -8,17 +8,25 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * <pre>
+ * Class : OutWarehouseDetailRepository
+ * Comment : 출고 목록 조회 관련 로직 처리 메소드를 모아둔 Repository입니다.
+ * History
+ * 2022/04/21 (이태준) 출고 목록 조회 로직
+ * 2022/04/25 (이태준) 출고 목록 조회 로직 재수정
+ * 2022/04/30 (이태준) 출고 목록 조회 로직 마무리
+ * </pre>
+ * @version 1.1
+ * @author 이태준
+ * */
 @Repository
 public interface OutWarehouseRepository extends JpaRepository<OutWarehouse, Integer> {
 
-//    @Query(value = "SELECT a, b FROM outWarehouse a JOIN a.franchiseRepresentativeNo b ORDER BY a.outWarehouseNo DESC")
-////    @Query(value = "SELECT a.outWarehouseNo, a.outWarehouseWorkingFinishedDate, a.outWarehouseWorkingStatusName, " +
-////            "              b.franchiseBranchName, b.franchiseAddress, b.franchiseRepresentativeNo\n" +
-////            "         FROM OutWarehouse a\n" +
-////            "         JOIN a.franchiseRepresentativeNo b")
-//    List<OutWarehouse> findOutWarehouseList();
-
-//    OutWarehouse findByOutWarehouseNo(int outWarehouseNo);
-
+    /**
+     * findByOutWarehouseNo : 출고 목록 조회
+     * @param outWarehouseNo : 출고번호
+     * @return : 출고 목록
+     */
     OutWarehouse findByOutWarehouseNo(int outWarehouseNo);
 }

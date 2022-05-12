@@ -14,18 +14,18 @@ public class OutWarehouseItemInfo {
     private String itemInfoName;
 
     @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
-    private String itemInfoSerialNo;
+    private String itemSerialNo;
 
     @ManyToOne
-    @JoinColumn(name = "MATERIAL_CATEGORY_NO")
+    @JoinColumn(name = "MATERIAL_CATEOGORY_NO")
     private OutWarehouseMaterialCategory materialCategoryNo;
 
     public OutWarehouseItemInfo() {}
 
-    public OutWarehouseItemInfo(int itemInfoNo, String itemInfoName, String itemInfoSerialNo, OutWarehouseMaterialCategory materialCategoryNo) {
+    public OutWarehouseItemInfo(int itemInfoNo, String itemInfoName, String itemSerialNo, OutWarehouseMaterialCategory materialCategoryNo) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
-        this.itemInfoSerialNo = itemInfoSerialNo;
+        this.itemSerialNo = itemSerialNo;
         this.materialCategoryNo = materialCategoryNo;
     }
 
@@ -45,12 +45,12 @@ public class OutWarehouseItemInfo {
         this.itemInfoName = itemInfoName;
     }
 
-    public String getItemInfoSerialNo() {
-        return itemInfoSerialNo;
+    public String getItemSerialNo() {
+        return itemSerialNo;
     }
 
-    public void setItemInfoSerialNo(String itemInfoSerialNo) {
-        this.itemInfoSerialNo = itemInfoSerialNo;
+    public void setItemSerialNo(String itemSerialNo) {
+        this.itemSerialNo = itemSerialNo;
     }
 
     public OutWarehouseMaterialCategory getMaterialCategoryNo() {
@@ -66,7 +66,7 @@ public class OutWarehouseItemInfo {
         return "OutWarehouseItemInfo{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", itemInfoName='" + itemInfoName + '\'' +
-                ", itemInfoSerialNo='" + itemInfoSerialNo + '\'' +
+                ", itemSerialNo='" + itemSerialNo + '\'' +
                 ", materialCategoryNo=" + materialCategoryNo +
                 '}';
     }
