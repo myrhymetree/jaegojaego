@@ -5,7 +5,7 @@ import java.sql.Date;
 public class OutWarehouseListDTO {
 
     private int outWarehouseNo;
-    private String franchiseBranchName;
+    private String franchiseName;
     private String franchiseAddress;
     private String outWarehouseWorkingStatusName;
     private Date outWarehouseWorkingFinishedDate;
@@ -13,9 +13,9 @@ public class OutWarehouseListDTO {
 
     public OutWarehouseListDTO() {}
 
-    public OutWarehouseListDTO(int outWarehouseNo, String franchiseBranchName, String franchiseAddress, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate, int outWarehouseTotalOutItemAmount) {
+    public OutWarehouseListDTO(int outWarehouseNo, String franchiseName, String franchiseAddress, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate, int outWarehouseTotalOutItemAmount) {
         this.outWarehouseNo = outWarehouseNo;
-        this.franchiseBranchName = franchiseBranchName;
+        this.franchiseName = franchiseName;
         this.franchiseAddress = franchiseAddress;
         this.outWarehouseWorkingStatusName = outWarehouseWorkingStatusName;
         this.outWarehouseWorkingFinishedDate = outWarehouseWorkingFinishedDate;
@@ -26,8 +26,8 @@ public class OutWarehouseListDTO {
         return outWarehouseNo;
     }
 
-    public String getFranchiseBranchName() {
-        return franchiseBranchName;
+    public String getFranchiseName() {
+        return franchiseName;
     }
 
     public String getFranchiseAddress() {
@@ -50,8 +50,8 @@ public class OutWarehouseListDTO {
         this.outWarehouseNo = outWarehouseNo;
     }
 
-    public void setFranchiseBranchName(String franchiseBranchName) {
-        this.franchiseBranchName = franchiseBranchName;
+    public void setFranchiseName(String franchiseName) {
+        this.franchiseName = franchiseName;
     }
 
     public void setFranchiseAddress(String franchiseAddress) {
@@ -74,7 +74,7 @@ public class OutWarehouseListDTO {
     public String toString() {
         return "OutWarehouseListDTO{" +
                 "outWarehouseNo=" + outWarehouseNo +
-                ", franchiseBranchName='" + franchiseBranchName + '\'' +
+                ", franchiseName='" + franchiseName + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
                 ", outWarehouseWorkingStatusName='" + outWarehouseWorkingStatusName + '\'' +
                 ", outWarehouseWorkingFinishedDate=" + outWarehouseWorkingFinishedDate +

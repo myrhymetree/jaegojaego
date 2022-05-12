@@ -12,4 +12,6 @@ public interface OutWarehouseMemberRepository extends JpaRepository<OutWarehouse
             "         FROM outWarehouseMember a " +
             "        WHERE a.memberNo = :memberNo")
     OutWarehouseMember getMemberInfo(int memberNo);
+
+    OutWarehouseMember findByMemberNo(int memberNo);
 }

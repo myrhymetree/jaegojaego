@@ -7,24 +7,20 @@ public class OutWarehouseDetailListDTO {
     private int outWarehouseItemNo;
     private int outWarehouseNo;
     private String itemInfoItemSerialNo;
-    private String materialCategoryName;
     private String itemInfoName;
+    private String materialCategoryName;
     private int outWarehouseItemAmount;
-    private String franchiseBranchName;
-    private String franchiseAddress;
     private String outWarehouseWorkingStatusName;
     private Date outWarehouseWorkingFinishedDate;
 
     public OutWarehouseDetailListDTO() {}
 
-    public OutWarehouseDetailListDTO(int outWarehouseItemNo, int outWarehouseNo, String itemInfoItemSerialNo, String materialCategoryName, String itemInfoName, int outWarehouseItemAmount, String franchiseBranchName, String franchiseAddress, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate) {
+    public OutWarehouseDetailListDTO(int outWarehouseItemNo, int outWarehouseNo, String itemInfoItemSerialNo, String materialCategoryName, String itemInfoName, int outWarehouseItemAmount, String outWarehouseWorkingStatusName, Date outWarehouseWorkingFinishedDate) {
         this.outWarehouseItemNo = outWarehouseItemNo;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
         this.materialCategoryName = materialCategoryName;
         this.itemInfoName = itemInfoName;
         this.outWarehouseItemAmount = outWarehouseItemAmount;
-        this.franchiseBranchName = franchiseBranchName;
-        this.franchiseAddress = franchiseAddress;
         this.outWarehouseWorkingStatusName = outWarehouseWorkingStatusName;
         this.outWarehouseWorkingFinishedDate = outWarehouseWorkingFinishedDate;
     }
@@ -51,14 +47,6 @@ public class OutWarehouseDetailListDTO {
 
     public int getOutWarehouseItemAmount() {
         return outWarehouseItemAmount;
-    }
-
-    public String getFranchiseBranchName() {
-        return franchiseBranchName;
-    }
-
-    public String getFranchiseAddress() {
-        return franchiseAddress;
     }
 
     public String getOutWarehouseWorkingStatusName() {
@@ -93,14 +81,6 @@ public class OutWarehouseDetailListDTO {
         this.outWarehouseItemAmount = outWarehouseItemAmount;
     }
 
-    public void setFranchiseBranchName(String franchiseBranchName) {
-        this.franchiseBranchName = franchiseBranchName;
-    }
-
-    public void setFranchiseAddress(String franchiseAddress) {
-        this.franchiseAddress = franchiseAddress;
-    }
-
     public void setOutWarehouseWorkingStatusName(String outWarehouseWorkingStatusName) {
         this.outWarehouseWorkingStatusName = outWarehouseWorkingStatusName;
     }
@@ -118,8 +98,6 @@ public class OutWarehouseDetailListDTO {
                 ", materialCategoryName='" + materialCategoryName + '\'' +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", outWarehouseItemAmount=" + outWarehouseItemAmount +
-                ", franchiseBranchName='" + franchiseBranchName + '\'' +
-                ", franchiseAddress='" + franchiseAddress + '\'' +
                 ", outWarehouseWorkingStatusName='" + outWarehouseWorkingStatusName + '\'' +
                 ", outWarehouseWorkingFinishedDate=" + outWarehouseWorkingFinishedDate +
                 '}';

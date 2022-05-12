@@ -15,15 +15,15 @@ public class OutWarehouseFranchiseOrder {
     @JoinColumn(name = "MEMBER_NO")
     private OutWarehouseMember memberNo;
 
-//    @Column(name = "FRANCHISE_ORDER_STATUS")
-//    private String franchiseOrderStatus;
+    @Column(name = "FRANCHISE_ORDER_OUT_YN")
+    private String franchiseOrderOutYn;
 
     public OutWarehouseFranchiseOrder() {}
 
-    public OutWarehouseFranchiseOrder(int franchiseOrderNo, OutWarehouseMember memberNo, String franchiseOrderStatus) {
+    public OutWarehouseFranchiseOrder(int franchiseOrderNo, OutWarehouseMember memberNo, String franchiseOrderOutYn) {
         this.franchiseOrderNo = franchiseOrderNo;
         this.memberNo = memberNo;
-//        this.franchiseOrderStatus = franchiseOrderStatus;
+        this.franchiseOrderOutYn = franchiseOrderOutYn;
     }
 
     public int getFranchiseOrderNo() {
@@ -42,20 +42,20 @@ public class OutWarehouseFranchiseOrder {
         this.memberNo = memberNo;
     }
 
-//    public String getFranchiseOrderStatus() {
-//        return franchiseOrderStatus;
-//    }
-//
-//    public void setFranchiseOrderStatus(String franchiseOrderStatus) {
-//        this.franchiseOrderStatus = franchiseOrderStatus;
-//    }
+    public String getFranchiseOrderOutYn() {
+        return franchiseOrderOutYn;
+    }
+
+    public void setFranchiseOrderOutYn(String franchiseOrderOutYn) {
+        this.franchiseOrderOutYn = franchiseOrderOutYn;
+    }
 
     @Override
     public String toString() {
         return "OutWarehouseFranchiseOrder{" +
                 "franchiseOrderNo=" + franchiseOrderNo +
                 ", memberNo=" + memberNo +
-//                ", franchiseOrderStatus='" + franchiseOrderStatus + '\'' +
+                ", franchiseOrderOutYn='" + franchiseOrderOutYn + '\'' +
                 '}';
     }
 }

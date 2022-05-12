@@ -1,17 +1,21 @@
 package com.greedy.jaegojaego.outWarehouse.model.controller;
 
+import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseOrderListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.service.OutWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /*
  * <pre>
@@ -44,86 +48,111 @@ public class OutWarehouseController {
 
         List<OutWarehouseListDTO> outWarehouseList = outWarehouseService.findOutWarehouseList();
 
-//        for(OutWarehouseListDTO list : outWarehouseList) {
-//            System.out.println("list : " + list);
-//        }
+        for(OutWarehouseListDTO list : outWarehouseList) {
+            System.out.println("list : " + list);
+        }
+
+        int outWarehouseDataCnt = outWarehouseList.size();
+        int outWarehouseCompletedCnt = 0;
+
+        for(int i = 0; i < outWarehouseDataCnt; i++) {
+            if("출고완료".equals(outWarehouseList.get(i).getOutWarehouseWorkingStatusName())) {
+                outWarehouseCompletedCnt++;
+            }
+        }
+
+//        System.out.println(outWarehouseDataCnt);
+//        System.out.println(outWarehouseCompletedCnt);
 
         mv.addObject("outWarehouseList", outWarehouseList);
+        mv.addObject("outWarehouseDataCnt", outWarehouseDataCnt);
+        mv.addObject("outWarehouseCompletedCnt", outWarehouseCompletedCnt);
         mv.setViewName("/outWarehouse/list");
 
         return mv;
     }
 
-//    /**
-//     * @param mv
-//     * @param outWarehouseNo
-//     * @return
-//     */
-//    @GetMapping("/detail/{outWarehouseNo}")
-//    public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
-//
+    /**
+     * @param mv
+     * @param outWarehouseNo
+     * @return
+     */
+    @GetMapping("/detail/{outWarehouseNo}")
+    public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
+
 //        System.out.println("출고 번호 : " + outWarehouseNo);
-//
-//        int No = 0;
-//        int itemListCnt;
-//        List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findOutItemsList(outWarehouseNo);
-//        itemListCnt = outWarehouseDetailList.size();
-//
-//        for(OutWarehouseDetailListDTO detailList : outWarehouseDetailList) {
-//            System.out.println("detailList = " + detailList);
-//        }
-//
-//        mv.addObject("No", No);
-//        mv.addObject("itemListCnt", itemListCnt);
-//        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
-//        mv.setViewName("/outWarehouse/detail");
-//        return mv;
-//    }
+
+        int No = 0;
+        int itemListCnt;
+        List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findOutItemsList(outWarehouseNo);
+        itemListCnt = outWarehouseDetailList.size();
+
+        for(OutWarehouseDetailListDTO detailList : outWarehouseDetailList) {
+            System.out.println("detailList = " + detailList);
+        }
+
+        mv.addObject("No", No);
+        mv.addObject("itemListCnt", itemListCnt);
+        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
+        mv.setViewName("/outWarehouse/detail");
+        return mv;
+    }
 
     /**
-     * @param model
      * @return
      */
     @GetMapping("/orderlist")
     @ResponseBody
-    public Model selectOrderList(Model model) {
+    public List<OutWarehouseFranchiseOrderListDTO> selectOrderList() {
 
         List<OutWarehouseFranchiseOrderListDTO> outWarehouseOrderList = outWarehouseService.findAllOrderList();
-        outWarehouseOrderList.forEach(System.out::println);
+//        outWarehouseOrderList.forEach(System.out::println);
 
-        model.addAttribute("outWarehouseOrderList", outWarehouseOrderList);
-
-        return model;
+        return outWarehouseOrderList;
     }
-
-//    @GetMapping("/getorderlist")
-//    public ModelAndView getOrderList(ModelAndView mv) {
-//
-//        mv.setViewName("/outWarehouse/list");
-//
-//        return mv;
-//    }
 
     /**
      * @param mv
-     * @param outWarehouseStatus
-     * @return
+     * @param data
      */
-//    @PostMapping("/modify")
-//    public ModelAndView modifyOutWarehouseStatus(ModelAndView mv, @RequestBody Map<String, Object> outWarehouseStatus) {
-//
-////        System.out.println("this is outWarehouseStatus : " + outWarehouseStatus.get("outWarehouseStatus"));
-////        System.out.println(outWarehouseStatus.get("outWarehouseNo"));
-//
-//        int outWarehouseNo = (int) outWarehouseStatus.get("outWarehouseNo");
-//        String status = (String) outWarehouseStatus.get("outWarehouseStatus");
-//
-//        outWarehouseService.modifyStatus(status, outWarehouseNo);
-//
-//        mv.setViewName("redirect:/outwarehouse/detail/" + outWarehouseNo);
-//
-//        return mv;
-//    }
+    @PostMapping(value = "/insertorderdata")
+    @ResponseBody
+    public void insertOutWarehouseData(ModelAndView mv, @RequestBody Map<String, Object> data) {
+
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+//        System.out.println(data);
+//        System.out.println(data.get("orderNums"));
+//        System.out.println(data.get("representativeNums"));
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
+        List<Integer> orderNums = (List<Integer>) data.get("orderNums");
+        List<Integer> representativeNums = (List<Integer>) data.get("representativeNums");
+        String sDate = (String) data.get("today");
+
+        Date today = Date.valueOf(sDate);
+
+//        System.out.println(orderNums);
+//        System.out.println(representativeNums);
+//        System.out.println(today);
+
+        outWarehouseService.insertOrderData(orderNums, representativeNums, today);
+    }
+
+
+    /**
+     * @param outWarehouseStatus
+     */
+    @PostMapping("/modify")
+    @ResponseBody
+    public void modifyOutWarehouseStatus(@RequestBody Map<String, Object> outWarehouseStatus) {
+
+        System.out.println("this is outWarehouseStatus : " + outWarehouseStatus.get("outWarehouseStatus"));
+        System.out.println(outWarehouseStatus.get("outWarehouseNo"));
+
+        int outWarehouseNo = (int) outWarehouseStatus.get("outWarehouseNo");
+        String status = (String) outWarehouseStatus.get("outWarehouseStatus");
+
+        outWarehouseService.modifyStatus(status, outWarehouseNo);
+    }
 
 //    @GetMapping("/history")
 //    public ModelAndView selectOutWarehouseHistory(ModelAndView mv) {
