@@ -31,7 +31,6 @@
             width: 80px;
             height: 25px;
             color: white;
-            margin-left: 31px;
         }
 
         .issue-complete-btn {
@@ -44,11 +43,31 @@
 
         }
 
+        .issue-change-btn {
+
+            border: none;
+            cursor: pointer;
+            background-color: #c69500;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .issue-outcomplete-btn {
+
+            border: none;
+            cursor: pointer;
+            background-color: #f1b0b7;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
         .status-change-div {
             width: 80px;
             display: none;
             position: absolute;
-            margin-left: 47px;
+            margin-left: 70px;
             z-index: 1000;
         }
 
@@ -77,16 +96,6 @@
             overflow-y: scroll;
             background-color: white;
             box-shadow: 1px 1px 1px 1px gray;
-
-        }
-
-        .select-order-box {
-
-            width: 400px;
-            height: 30px;
-            text-align: center;
-            margin-left: 50px;
-            font-size: 13px;
 
         }
 
@@ -228,34 +237,47 @@
                                     <td>
                                         <th:block th:if="${ issue.franchiseIssueStatus eq 'BEFORE' }">
                                             <button class="issue-before-btn" id="issue-before-btn">처리전</button>
-                                            <div class="status-change-div" id="status-change-div">
-                                                <th:block th:if="${ member.memberDivision eq '본사' }">
-                                                    <button class="issue-change-btn" id="issue-before-to-change-btn">교환처리</button>
-                                                </th:block>
-                                                <th:block th:if="${ member.memberDivision eq '가맹점' }">
-                                                    <button class="issue-delete-btn" id="issue-delete-btn">삭제</button>
-                                                </th:block>
-                                            </div>
                                         </th:block>
                                         <th:block th:if="${ issue.franchiseIssueStatus eq 'CHANGE' }">
                                             <button class="issue-change-btn" id="issue-change-btn">교환처리</button>
-                                            <th:block th:if="${ member.memberDivision eq '본사' }">
-                                                <div class="status-change-div" id="status-change-to-outcomplete-company-div">
-                                                    <button class="issue-outcomplete-btn" id="issue-change-to-outcomplete-btn">출고완료</button>
-                                                </div>
-                                            </th:block>
                                         </th:block>
                                         <th:block th:if="${ issue.franchiseIssueStatus eq 'OUTCOMPLETE' }">
                                             <button class="issue-outcomplete-btn" id="issue-outcomplete-btn">출고완료</button>
-                                            <th:block th:if="${ member.memberDivision eq '본사' }">
-                                                <div class="status-change-div" id="status-outcomplete-to-complete-company-div">
-                                                    <button class="issue-complete-btn" id="issue-outcomplete-to-complete-btn">처리완료</button>
-                                                </div>
-                                            </th:block>
                                         </th:block>
                                         <th:block th:if="${ issue.franchiseIssueStatus eq 'COMPLETE' }">
                                             <button class="issue-complete-btn">처리완료</button>
                                         </th:block>
+                                        <div class="status-change-div" id="status-change-div">
+                                            <th:block th:if="${ member.memberDivision eq '본사' }">
+<!--                                                    <button class="issue-change-btn" id="issue-before-to-change-btn">교환처리</button>-->
+                                                <button class="issue-change-btn" id="issue-before-to-change-btn" style="display: none">교환처리</button>
+                                                <button class="issue-outcomplete-btn" id="issue-change-to-outcomplete-btn" style="display: none">출고완료</button>
+                                                <button class="issue-complete-btn" id="issue-outcomplete-to-complete-btn" style="display: none">처리완료</button>
+                                            </th:block>
+                                            <th:block th:if="${ member.memberDivision eq '가맹점' }">
+                                                <button class="issue-delete-btn" id="issue-delete-btn">삭제</button>
+                                            </th:block>
+                                        </div>
+
+<!--                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'CHANGE' }">-->
+<!--                                            <button class="issue-change-btn" id="issue-change-btn">교환처리</button>-->
+<!--                                            <th:block th:if="${ member.memberDivision eq '본사' }">-->
+<!--                                                <div class="status-change-div" id="status-change-to-outcomplete-company-div">-->
+<!--                                                    <button class="issue-outcomplete-btn" id="issue-change-to-outcomplete-btn">출고완료</button>-->
+<!--                                                </div>-->
+<!--                                            </th:block>-->
+<!--                                        </th:block>-->
+<!--                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'OUTCOMPLETE' }">-->
+<!--                                            <button class="issue-outcomplete-btn" id="issue-outcomplete-btn">출고완료</button>-->
+<!--                                            <th:block th:if="${ member.memberDivision eq '본사' }">-->
+<!--                                                <div class="status-change-div" id="status-outcomplete-to-complete-company-div">-->
+<!--                                                    <button class="issue-complete-btn" id="issue-outcomplete-to-complete-btn">처리완료</button>-->
+<!--                                                </div>-->
+<!--                                            </th:block>-->
+<!--                                        </th:block>-->
+<!--                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'COMPLETE' }">-->
+<!--                                            <button class="issue-complete-btn">처리완료</button>-->
+<!--                                        </th:block>-->
                                     </td>
                                 </tr>
                             </tbody>
@@ -473,6 +495,39 @@
     <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 
     <script>
+        //flag 변수 모음
+        let statusChangeIssueInfo;
+        let removeIssueNo;
+
+        let checkIssueSuccess = 0;
+        let checkIssueModifySuccess = 0;
+        let checkIssueDeleteSuccess = 0;
+
+        let checkIssueDelete = 0;
+
+        let checkIssueBeforeToChange = 0;
+        let checkIssueChangeComplete = 0;
+
+        let checkIssueChangeToOutComplete = 0;
+        let checkIssueOutComplete = 0;
+
+        let checkIssueOutCompleteToComplete = 0;
+        let checkIssueComplete = 0;
+
+        // 처리 상태 변경 변수 모음
+        const $issueBeforeBtn = document.querySelectorAll('#issue-before-btn');
+        const $beforeToChangeBtn = document.querySelectorAll('#issue-before-to-change-btn');
+
+        const $deleteBtn = document.querySelectorAll('#issue-delete-btn');
+
+        const $changeToOutComplete = document.querySelectorAll('#issue-change-btn');
+        const $changeToOutCompleteBtn = document.querySelectorAll('#issue-change-to-outcomplete-btn');
+
+        const $outCompleteToComplete = document.querySelectorAll('#issue-outcomplete-btn');
+        const $outCompleteToCompleteBtn = document.querySelectorAll('#issue-outcomplete-to-complete-btn');
+
+        const $statusChangeDiv = document.querySelectorAll('#status-change-div');
+
         $(document).ready(function() {
 
             $('.footable').footable();
@@ -597,73 +652,77 @@
             });
 
             //등록 버튼 클릭
-            document.getElementById('franchise-issue-regist-modal-ok-btn').onclick = function() {
+            if("[[${ member.memberDivision }]]" === '가맹점') {
 
-                const $issueRegistItemAmount = document.querySelectorAll('#issue-regist-item-amount');
+                document.getElementById('franchise-issue-regist-modal-ok-btn').onclick = function() {
 
-                let checkItemAmount = 0;
-                let checkItemAmountNull = 0;
-                let checkItemNull = 0;
-                let checkTitleText = 0;
-                let checkBodyText = 0;
+                    const $issueRegistItemAmount = document.querySelectorAll('#issue-regist-item-amount');
 
-                if($issueRegistItemAmount.length == 0) {
-                    checkItemNull = 1;
-                } else if(checkTitleValue == '') {
-                    checkTitleText = 1;
-                } else if(checkBodyValue == '') {
-                    checkBodyText = 1;
-                }
+                    let checkItemAmount = 0;
+                    let checkItemAmountNull = 0;
+                    let checkItemNull = 0;
+                    let checkTitleText = 0;
+                    let checkBodyText = 0;
 
-                for(let i = 0; i < $issueRegistItemAmount.length; i++) {
-
-                    let itemValue = $issueRegistItemAmount[i].value * 1;
-                    let itemAmount = $issueRegistItemAmount[i].max * 1;
-
-                    if(itemValue > itemAmount) {
-                        checkItemAmount++;
-                    } else if(itemValue <= 0) {
-                        checkItemAmountNull++;
+                    if($issueRegistItemAmount.length == 0) {
+                        checkItemNull = 1;
+                    } else if(checkTitleValue == '') {
+                        checkTitleText = 1;
+                    } else if(checkBodyValue == '') {
+                        checkBodyText = 1;
                     }
-                }
 
-                if(checkItemAmount > 0) {
-                    swal({
-                        title: "수량 확인!",
-                        text: "이슈 발생 물품 개수는 \n발주 신청 물품 개수를 초과할 수 없습니다."
-                    });
-                } else if(checkItemAmountNull > 0) {
-                    swal({
-                        title: "수량 확인!",
-                        text: "이슈 발생 물품 개수는 \n1개 이상이여야 합니다."
-                    });
-                } else if(checkItemNull > 0) {
-                    swal({
-                        title: "물품 확인!",
-                        text: "이슈 발생 물품이 선택되지 않았습니다."
-                    });
-                } else if(checkTitleText > 0) {
-                    swal({
-                        title: "제목 확인!",
-                        text: "이슈 제목이 작성되지 않았습니다."
-                    });
-                } else if(checkBodyText > 0) {
-                    swal({
-                        title: "물품 확인!",
-                        text: "이슈 내용이 작성되지 않았습니다."
-                    });
-                } else {
-                    swal({
-                        title: "이슈 제기하시겠습니까?",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Ok",
-                        cancelButtonText: "Cancel",
-                        closeOnConfirm: false
-                    }, function () {
-                        checkIssueRegist = 1;
-                    });
+                    for(let i = 0; i < $issueRegistItemAmount.length; i++) {
+
+                        let itemValue = $issueRegistItemAmount[i].value * 1;
+                        let itemAmount = $issueRegistItemAmount[i].max * 1;
+
+                        if(itemValue > itemAmount) {
+                            checkItemAmount++;
+                        } else if(itemValue <= 0) {
+                            checkItemAmountNull++;
+                        }
+                    }
+
+                    if(checkItemAmount > 0) {
+                        swal({
+                            title: "수량 확인!",
+                            text: "이슈 발생 물품 개수는 \n발주 신청 물품 개수를 초과할 수 없습니다."
+                        });
+                    } else if(checkItemAmountNull > 0) {
+                        swal({
+                            title: "수량 확인!",
+                            text: "이슈 발생 물품 개수는 \n1개 이상이여야 합니다."
+                        });
+                    } else if(checkItemNull > 0) {
+                        swal({
+                            title: "물품 확인!",
+                            text: "이슈 발생 물품이 선택되지 않았습니다."
+                        });
+                    } else if(checkTitleText > 0) {
+                        swal({
+                            title: "제목 확인!",
+                            text: "이슈 제목이 작성되지 않았습니다."
+                        });
+                    } else if(checkBodyText > 0) {
+                        swal({
+                            title: "물품 확인!",
+                            text: "이슈 내용이 작성되지 않았습니다."
+                        });
+                    } else {
+                        swal({
+                            title: "이슈 제기하시겠습니까?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Ok",
+                            cancelButtonText: "Cancel",
+                            closeOnConfirm: false
+                        }, function () {
+                            checkIssueRegist = 1;
+                        });
+
+                    }
 
                 }
 
@@ -742,11 +801,6 @@
 
             }
 
-
-            let checkIssueSuccess = 0;
-            let checkIssueModifySuccess = 0;
-            let checkIssueDeleteSuccess = 0;
-
             //sweet alert 확인 버튼 클릭
             $(document).on('click', '.sa-button-container .confirm', function() {
 
@@ -782,75 +836,21 @@
                     history.go(0);
 
                 } else if(checkIssueDelete == 1) {
-                    swal({
-                        title: "이슈 수정 성공!",
-                        text: "이슈를 수정하셨습니다."
-                    });
 
-                    checkIssueDeleteSuccess = 1;
-                }
-
-            });
-
-        });
-
-        //처리 상태 변경(처리전)
-        const $issueBeforeBtn = document.querySelectorAll('#issue-before-btn');
-        const $statusChangeDivToBefore = document.querySelectorAll('#status-change-div');
-        const $deleteBtn = document.querySelectorAll('#issue-delete-btn');
-
-        for(let i = 0; i < $issueBeforeBtn.length; i++) {
-
-            $issueBeforeBtn[i].onclick = function(e) {
-
-                e.stopPropagation();
-
-                for(let j = 0; i < $statusChangeDivToBefore.length; j++) {
-
-                    if(i == j) {
-
-                        if($statusChangeDivToBefore[j].style.display == 'block') {
-                            $statusChangeDivToBefore[j].style.display = 'none';
-                        } else {
-                            $statusChangeDivToBefore[j].style.display = 'block';
-                        }
-                    } else{
-
-                        $statusChangeDivToBefore[j].style.display = 'none';
-                    }
-                }
-            }
-        }
-
-        let checkIssueDelete = 0;
-
-        //이슈 삭제 버튼 클릭
-        for(let i = 0; i < $deleteBtn.length; i++) {
-
-            $deleteBtn[i].onclick = function(e) {
-
-                e.stopPropagation();
-
-                $statusChangeDivToBefore[i].style.display = 'none';
-
-                let issueNo = this.parentNode.parentNode.parentNode.children[0].value;
-
-                swal({
-                    title: "이슈 삭제하시겠습니까?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Ok",
-                    cancelButtonText: "Cancel",
-                    closeOnConfirm: false
-                }, function () {
-
-                    fetch("/issue/remove?issueNo=" + issueNo)
+                    fetch("/issue/remove", removeIssueNo)
                         .then(response => response.json())
                         .then(response => {
 
-                            console.log(this);
-                            checkIssueDelete = 1;
+                            swal({
+                                title: "이슈 삭제 성공!",
+                                text: "이슈를 삭제하셨습니다."
+                            });
+
+
+                            if(response == 'success') {
+
+                                checkIssueDeleteSuccess = 1;
+                            }
 
                         })
                         .catch(err => {
@@ -860,64 +860,431 @@
                             });
                         });
 
-                });
+                }
+
+                if(checkIssueChangeComplete == 1) {
+
+                    history.go(0);
+
+                } else if(checkIssueBeforeToChange == 1) {
+
+                    fetch("/issue/modifystatus", statusChangeIssueInfo)
+                        .then(response => response.json())
+                        .then(response => {
+
+                            swal({
+                                title: "이슈 상태 변경 성공!",
+                                text: "이슈를 교환처리하셨습니다."
+                            });
+
+
+                            if(response == 'success') {
+
+                                checkIssueChangeComplete = 1;
+                            }
+
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "오류 발생!",
+                                text: "알수 없는 오류가 발생하였습니다."
+                            });
+                        });
+
+                }
+
+                if(checkIssueOutComplete == 1) {
+
+                    history.go(0);
+                } else if(checkIssueChangeToOutComplete == 1) {
+
+                    fetch("/issue/modifystatus", statusChangeIssueInfo)
+                        .then(response => response.json())
+                        .then(response => {
+
+                            swal({
+                                title: "이슈 상태 변경 성공!",
+                                text: "이슈를 출고완료처리하셨습니다."
+                            });
+
+
+                            if(response == 'success') {
+
+                                checkIssueOutComplete = 1;
+                            }
+
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "오류 발생!",
+                                text: "알수 없는 오류가 발생하였습니다."
+                            });
+                        });
+
+                }
+
+                if(checkIssueComplete == 1) {
+
+                    history.go(0);
+                } else if(checkIssueOutCompleteToComplete == 1) {
+
+                    fetch("/issue/modifystatus", statusChangeIssueInfo)
+                        .then(response => response.json())
+                        .then(response => {
+
+                            swal({
+                                title: "이슈 상태 변경 성공!",
+                                text: "이슈를 처리완료하셨습니다."
+                            });
+
+
+                            if(response == 'success') {
+
+                                checkIssueComplete = 1;
+                            }
+
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "오류 발생!",
+                                text: "알수 없는 오류가 발생하였습니다."
+                            });
+                        });
+                }
+
+            });
+
+        });
+
+        //처리 상태 변경(처리전)
+        for(let i = 0; i < $issueBeforeBtn.length; i++) {
+
+            $issueBeforeBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+
+                for(let j = 0; j < $statusChangeDiv.length; j++) {
+
+                    if(this.parentNode.parentNode.children[0].value == $statusChangeDiv[j].parentNode.parentNode.children[0].value) {
+
+                        if($statusChangeDiv[j].style.display == 'block') {
+                            $statusChangeDiv[j].style.display = 'none';
+
+                            if("[[${ member.memberDivision }]]" === '본사') {
+                                $beforeToChangeBtn[j].style.display = 'none';
+                            }
+
+                        } else {
+                            $statusChangeDiv[j].style.display = 'block';
+
+                            if("[[${ member.memberDivision }]]" === '본사') {
+                                $beforeToChangeBtn[j].style.display = 'block';
+                            }
+                        }
+                    } else{
+
+                        $statusChangeDiv[j].style.display = 'none';
+
+                        if("[[${ member.memberDivision }]]" === '본사') {
+                            $beforeToChangeBtn[j].style.display = 'none';
+                        }
+                    }
+                }
+            }
+        }
+
+        if("[[${ member.memberDivision }]]" === '본사') {
+
+            //처리 상태 변경시(처리전 -> 교환처리)
+            for(let i = 0; i < $beforeToChangeBtn.length; i++) {
+
+                $beforeToChangeBtn[i].onclick = function(e) {
+
+                    e.stopPropagation();
+
+                    $statusChangeDiv[i].style.display = 'none';
+
+                    const statusIssueNo = this.parentNode.parentNode.parentNode.children[0].value;
+                    const statusName = 'CHANGE';
+
+                    statusChangeIssueInfo = {
+                        method : 'POST',
+                        body : JSON.stringify({
+                            statusIssueNo, statusName
+                        }),
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        }
+                    }
+
+                    swal({
+                        title: "교환 처리하시겠습니까?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false
+                    }, function () {
+
+                        checkIssueBeforeToChange = 1;
+
+                    });
+
+                }
 
             }
 
+            //처리 상태 변경(교환 -> 출고)
+            for(let i = 0; i < $changeToOutComplete.length; i++) {
+
+                $changeToOutComplete[i].onclick = function(e) {
+
+                    e.stopPropagation();
+
+                    for(let j = 0; j < $statusChangeDiv.length; j++) {
+
+                        if(this.parentNode.parentNode.children[0].value == $statusChangeDiv[j].parentNode.parentNode.children[0].value) {
+
+                            if($statusChangeDiv[j].style.display == 'block') {
+                                $statusChangeDiv[j].style.display = 'none';
+                                $changeToOutCompleteBtn[j].style.display = 'none';
+                            } else {
+                                $statusChangeDiv[j].style.display = 'block';
+                                $changeToOutCompleteBtn[j].style.display = 'block';
+                            }
+                        } else{
+
+                            $statusChangeDiv[j].style.display = 'none';
+                            $changeToOutCompleteBtn[j].style.display = 'none';
+
+                        }
+                    }
+
+                }
+
+            }
+
+            //처리 상태 변경(교환 -> 출고)
+            for(let i = 0; i < $changeToOutCompleteBtn.length; i++) {
+
+                $changeToOutCompleteBtn[i].onclick = function(e) {
+
+                    e.stopPropagation();
+
+                    $statusChangeDiv[i].style.display = 'none';
+
+                    const statusIssueNo = this.parentNode.parentNode.parentNode.children[0].value;
+                    const statusName = 'OUTCOMPLETE';
+
+                    statusChangeIssueInfo = {
+                        method : 'POST',
+                        body : JSON.stringify({
+                            statusIssueNo, statusName
+                        }),
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        }
+                    }
+
+                    swal({
+                        title: "출고완료 처리하시겠습니까?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false
+                    }, function () {
+
+                        checkIssueChangeToOutComplete = 1;
+
+                    });
+
+                }
+
+            }
+
+            // 처리 상태 변경 (출고 -> 처리완료)
+            for(let i = 0; i < $outCompleteToComplete.length; i++) {
+
+                $outCompleteToComplete[i].onclick = function(e) {
+
+                    e.stopPropagation();
+
+                    for(let j = 0; j < $statusChangeDiv.length; j++) {
+
+                        if(this.parentNode.parentNode.children[0].value == $statusChangeDiv[j].parentNode.parentNode.children[0].value) {
+
+                            if($statusChangeDiv[j].style.display == 'block') {
+                                $statusChangeDiv[j].style.display = 'none';
+                                $outCompleteToCompleteBtn[j].style.display = 'none';
+                            } else {
+                                $statusChangeDiv[j].style.display = 'block';
+                                $outCompleteToCompleteBtn[j].style.display = 'block';
+                            }
+                        } else{
+
+                            $statusChangeDiv[j].style.display = 'none';
+                            $outCompleteToCompleteBtn[j].style.Xdisplay = 'none';
+                        }
+                    }
+
+                }
+
+            }
+
+            for(let i = 0; i < $outCompleteToCompleteBtn.length; i++) {
+
+                $outCompleteToCompleteBtn[i].onclick = function(e) {
+
+                    e.stopPropagation();
+
+                    $statusChangeDiv[i].style.display = 'none';
+
+                    const statusIssueNo = this.parentNode.parentNode.parentNode.children[0].value;
+                    const statusName = 'COMPLETE';
+
+                    statusChangeIssueInfo = {
+                        method : 'POST',
+                        body : JSON.stringify({
+                            statusIssueNo, statusName
+                        }),
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        }
+                    }
+
+                    swal({
+                        title: "처리 완료하시겠습니까?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false
+                    }, function () {
+
+                        checkIssueOutCompleteToComplete = 1;
+
+                    });
+
+                }
+
+            }
         }
 
-        //수정 시작 버튼 클릭
-        document.getElementById('issue-modify-start-btn').onclick = function() {
+        if("[[${ member.memberDivision }]]" === '가맹점') {
+            //이슈 삭제 버튼 클릭
+            for(let i = 0; i < $deleteBtn.length; i++) {
 
-            $('#franchise-order-detail-modal-ok-btn').trigger('click');
+                $deleteBtn[i].onclick = function(e) {
 
-            document.getElementById('modify-img-reset-check').value = 0;
+                    e.stopPropagation();
 
-            const issueNo = document.getElementById('issue-detail-no').value;
+                    $statusChangeDiv[i].style.display = 'none';
 
-            const issueTitle = document.getElementById('issue-modify-title');
-            const issueBody = document.getElementById('issue-modify-body');
-            const modifyIssueNo = document.getElementById('modify-issue-no');
+                    removeIssueNo = {
+                        method : 'POST',
+                        body : this.parentNode.parentNode.parentNode.children[0].value,
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        }
+                    }
 
-            issueTitle.value = '';
-            issueBody.value = '';
-            modifyIssueNo.value = 0;
+                    swal({
+                        title: "이슈 삭제하시겠습니까?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ok",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false
+                    }, function () {
 
-            $('#modify-modal-item-area-tbody').html("");
-            $('#issue-modify-modal-img-area').html("");
+                        checkIssueDelete = 1;
 
-            $.ajax({
-                url: "/issue/detail",
-                type: "get",
-                data: {
-                    "issueNo" : issueNo
-                },
-                dataType: "json",
-                success : function(data) {
+                    });
+
+                }
+
+            }
+
+            //수정 시작 버튼 클릭
+            if("[[${ member.memberDivision }]]" === '가맹점') {
+
+                document.getElementById('issue-modify-start-btn').onclick = function() {
+
+                    $('#franchise-order-detail-modal-ok-btn').trigger('click');
+
+                    document.getElementById('modify-img-reset-check').value = 0;
+
+                    const issueNo = document.getElementById('issue-detail-no').value;
 
                     const issueTitle = document.getElementById('issue-modify-title');
                     const issueBody = document.getElementById('issue-modify-body');
                     const modifyIssueNo = document.getElementById('modify-issue-no');
 
-                    issueTitle.value = data.franchiseIssueTitle;
-                    issueBody.value = data.franchiseIssueBody;
-                    modifyIssueNo.value = data.franchiseIssueNo;
+                    issueTitle.value = '';
+                    issueBody.value = '';
+                    modifyIssueNo.value = 0;
+
+                    $('#modify-modal-item-area-tbody').html("");
+                    $('#issue-modify-modal-img-area').html("");
 
                     $.ajax({
-                        url: '/issue/selectissueorder',
-                        type: 'get',
+                        url: "/issue/detail",
+                        type: "get",
+                        data: {
+                            "issueNo" : issueNo
+                        },
+                        dataType: "json",
                         success : function(data) {
 
-                            let franchiseIssueOrder = '';
+                            const issueTitle = document.getElementById('issue-modify-title');
+                            const issueBody = document.getElementById('issue-modify-body');
+                            const modifyIssueNo = document.getElementById('modify-issue-no');
 
-                            for(list in data) {
+                            issueTitle.value = data.franchiseIssueTitle;
+                            issueBody.value = data.franchiseIssueBody;
+                            modifyIssueNo.value = data.franchiseIssueNo;
 
-                                franchiseIssueOrder = '<option value="' + data[list].franchiseOrderNo + '">' + data[list].franchiseOrderOrderNumber + '</option>';
+                            $.ajax({
+                                url: '/issue/selectissueorder',
+                                type: 'get',
+                                success : function(data) {
 
-                                $('#modify-franchise-order-select-list').append(franchiseIssueOrder);
+                                    let franchiseIssueOrder = '';
 
+                                    for(list in data) {
+
+                                        franchiseIssueOrder = '<option value="' + data[list].franchiseOrderNo + '">' + data[list].franchiseOrderOrderNumber + '</option>';
+
+                                        $('#modify-franchise-order-select-list').append(franchiseIssueOrder);
+
+
+                                    }
+
+                                },
+                                error : function(xhr) {
+                                    swal({
+                                        title: "오류 발생!",
+                                        text: "알수 없는 오류가 발생하였습니다."
+                                    });
+                                }
+                            });
+
+                            let modalModifyImgDiv = '';
+
+                            for(let i = 0; i < data.issueFileList.length; i++) {
+
+                                modalModifyImgDiv += '<div class="issue-image">';
+                                modalModifyImgDiv += '<img id="issue-file-image" src="' + data.issueFileList[i] + '" width="100%" height="100%" alt="이미지 영역"/>';
+                                modalModifyImgDiv += '</div>';
 
                             }
+
+                            $('#issue-modify-modal-img-area').append(modalModifyImgDiv);
 
                         },
                         error : function(xhr) {
@@ -928,27 +1295,9 @@
                         }
                     });
 
-                    let modalModifyImgDiv = '';
-
-                    for(let i = 0; i < data.issueFileList.length; i++) {
-
-                        modalModifyImgDiv += '<div class="issue-image">';
-                        modalModifyImgDiv += '<img id="issue-file-image" src="' + data.issueFileList[i] + '" width="100%" height="100%" alt="이미지 영역"/>';
-                        modalModifyImgDiv += '</div>';
-
-                    }
-
-                    $('#issue-modify-modal-img-area').append(modalModifyImgDiv);
-
-                },
-                error : function(xhr) {
-                    swal({
-                        title: "오류 발생!",
-                        text: "알수 없는 오류가 발생하였습니다."
-                    });
                 }
-            });
 
+            }
         }
 
         //등록 이미지 초기화 버튼
@@ -1173,52 +1522,54 @@
         }
 
         //등록 버튼 클릭 시
-        document.getElementById('issue-regist-btn').onclick = function() {
+        if("[[${ member.memberDivision }]]" === '가맹점') {
+            document.getElementById('issue-regist-btn').onclick = function() {
 
-            document.getElementById('issue-regist-title').value = '';
-            document.getElementById('issue-regist-body').value = '';
+                document.getElementById('issue-regist-title').value = '';
+                document.getElementById('issue-regist-body').value = '';
 
-            $('#regist-modal-item-area-tbody').html("");
+                $('#regist-modal-item-area-tbody').html("");
 
-            $('#regist-franchise-order-select-list').html("");
+                $('#regist-franchise-order-select-list').html("");
 
-            let firstSelectIdx = '<option disabled selected>발주 내역을 선택해주세요.(주문번호)</option>';
+                let firstSelectIdx = '<option disabled selected>발주 내역을 선택해주세요.(주문번호)</option>';
 
-            $('#regist-franchise-order-select-list').append(firstSelectIdx);
+                $('#regist-franchise-order-select-list').append(firstSelectIdx);
 
-            $('#regist-franchise-order-item-select-list').html("");
+                $('#regist-franchise-order-item-select-list').html("");
 
-            firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>';
+                firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>';
 
-            $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
+                $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
 
-            $('#issue-regist-modal-img-area').html("");
+                $('#issue-regist-modal-img-area').html("");
 
-            $.ajax({
-                url: '/issue/selectissueorder',
-                type: 'get',
-                success : function(data) {
+                $.ajax({
+                    url: '/issue/selectissueorder',
+                    type: 'get',
+                    success : function(data) {
 
-                    let franchiseIssueOrder = '';
+                        let franchiseIssueOrder = '';
 
-                    for(list in data) {
+                        for(list in data) {
 
-                        franchiseIssueOrder = '<option value="' + data[list].franchiseOrderNo + '">' + data[list].franchiseOrderOrderNumber + '</option>';
+                            franchiseIssueOrder = '<option value="' + data[list].franchiseOrderNo + '">' + data[list].franchiseOrderOrderNumber + '</option>';
 
-                        $('#regist-franchise-order-select-list').append(franchiseIssueOrder);
+                            $('#regist-franchise-order-select-list').append(franchiseIssueOrder);
 
 
+                        }
+
+                    },
+                    error : function(xhr) {
+                        swal({
+                            title: "오류 발생!",
+                            text: "알수 없는 오류가 발생하였습니다."
+                        });
                     }
+                });
 
-                },
-                error : function(xhr) {
-                    swal({
-                        title: "오류 발생!",
-                        text: "알수 없는 오류가 발생하였습니다."
-                    });
-                }
-            });
-
+            }
         }
 
 

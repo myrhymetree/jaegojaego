@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.issue.issue.model.entity;
 
+import com.greedy.jaegojaego.issue.company.model.entity.IssueCompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Member;
 
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class IssueHistory {
 
     @ManyToOne
     @JoinColumn(name = "FRANCHISE_ISSUE_HISTORY_COMPLETER")
-    private Member franchiseIssueHistoryCompleter;
+    private IssueCompanyAccount franchiseIssueHistoryCompleter;
 
     @Column(name = "FRANCHISE_ISSUE_HISTORY_DATE")
     private java.sql.Date franchiseIssueHistoryDate;
@@ -44,7 +45,7 @@ public class IssueHistory {
     public IssueHistory() {
     }
 
-    public IssueHistory(int franchiseIssueHistoryNo, Issue issue, String franchiseIssueHistoryStatus, Member franchiseIssueHistoryCompleter, Date franchiseIssueHistoryDate, Member franchiseIssueHistoryUpdateMember) {
+    public IssueHistory(int franchiseIssueHistoryNo, Issue issue, String franchiseIssueHistoryStatus, IssueCompanyAccount franchiseIssueHistoryCompleter, Date franchiseIssueHistoryDate, Member franchiseIssueHistoryUpdateMember) {
         this.franchiseIssueHistoryNo = franchiseIssueHistoryNo;
         this.issue = issue;
         this.franchiseIssueHistoryStatus = franchiseIssueHistoryStatus;
@@ -77,11 +78,11 @@ public class IssueHistory {
         this.franchiseIssueHistoryStatus = franchiseIssueHistoryStatus;
     }
 
-    public Member getFranchiseIssueHistoryCompleter() {
+    public IssueCompanyAccount getFranchiseIssueHistoryCompleter() {
         return franchiseIssueHistoryCompleter;
     }
 
-    public void setFranchiseIssueHistoryCompleter(Member franchiseIssueHistoryCompleter) {
+    public void setFranchiseIssueHistoryCompleter(IssueCompanyAccount franchiseIssueHistoryCompleter) {
         this.franchiseIssueHistoryCompleter = franchiseIssueHistoryCompleter;
     }
 
