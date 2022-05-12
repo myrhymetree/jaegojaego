@@ -1,7 +1,5 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import lombok.*;
-
 import javax.persistence.*;
 
 @Entity(name = "warehouseMaterialCategory")
@@ -12,11 +10,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class WarehouseMaterialCategory {
 
     @Id
@@ -29,6 +22,29 @@ public class WarehouseMaterialCategory {
 
     @Column(name = "MATERIAL_CATEGORY_NAME")
     private String materialCategoryName;
+
+    public WarehouseMaterialCategory() {}
+
+    public WarehouseMaterialCategory(int materialCategoryNo, String materialCategoryName) {
+        this.materialCategoryNo = materialCategoryNo;
+        this.materialCategoryName = materialCategoryName;
+    }
+
+    public int getMaterialCategoryNo() {
+        return materialCategoryNo;
+    }
+
+    public void setMaterialCategoryNo(int materialCategoryNo) {
+        this.materialCategoryNo = materialCategoryNo;
+    }
+
+    public String getMaterialCategoryName() {
+        return materialCategoryName;
+    }
+
+    public void setMaterialCategoryName(String materialCategoryName) {
+        this.materialCategoryName = materialCategoryName;
+    }
 
     @Override
     public String toString() {

@@ -49,7 +49,7 @@ public class WarehouseOrderApplicationDTO {
                 "companyOrderHistory=" + companyOrderHistory +
                 ", orderApplicationNo=" + orderApplicationNo +
                 ", client=" + client +
-                ", orderApplicationItemList=" + orderApplicationItemList +
+//                ", orderApplicationItemList=" + orderApplicationItemList +
                 '}';
     }
 }

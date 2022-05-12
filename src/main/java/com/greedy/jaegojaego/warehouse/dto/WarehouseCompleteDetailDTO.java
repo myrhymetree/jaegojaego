@@ -5,23 +5,17 @@ import java.sql.Date;
 public class WarehouseCompleteDetailDTO {
 
     private int companyOrderHistoryNo;                      //발주 번호
-
     private int clientNo;                                   //거래처 번호
     private String clientName;                              //거래처 명
-
     private java.sql.Date companyOrderHistoryCreatedDate;   //발주 일시
-
     private int completeItemInfoNo;                         //아이템 번호
     private int companyAmount;                              //발주 수량
     private int completeItemCategoryNo;                     //카테고리 번호
     private String completeItemCategoryName;                //카테고리 이름
     private String completeItemSerialNo;                    //품번
     private String completeItemName;                        //품명
-
     private int orderApplicationNo;                         //발주 신청서 번호
-
     private int clientContractItemNo;                       //거래처 판매 계약 상품 번호
-
     private String orderApplicationItemYN;                    //입고 목록 추가 여부
 
     public WarehouseCompleteDetailDTO(){}

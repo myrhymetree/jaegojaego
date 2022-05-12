@@ -1,16 +1,10 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import com.greedy.jaegojaego.member.model.entity.Member;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseItemInfoDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 @DynamicUpdate
 @Entity(name = "warehouseItemAmount")
@@ -26,6 +20,38 @@ public class WarehouseItemAmount {
 
     @Column(name = "ITEM_INFO_TOTAL_AMOUNT")
     private int warehouseItemAmount;
+
+    public WarehouseItemAmount() {}
+
+    public WarehouseItemAmount(Integer warehouseItemInfoNo, WarehouseItemInfo warehouseItemInfo, int warehouseItemAmount) {
+        this.warehouseItemInfoNo = warehouseItemInfoNo;
+        this.warehouseItemInfo = warehouseItemInfo;
+        this.warehouseItemAmount = warehouseItemAmount;
+    }
+
+    public Integer getWarehouseItemInfoNo() {
+        return warehouseItemInfoNo;
+    }
+
+    public void setWarehouseItemInfoNo(Integer warehouseItemInfoNo) {
+        this.warehouseItemInfoNo = warehouseItemInfoNo;
+    }
+
+    public WarehouseItemInfo getWarehouseItemInfo() {
+        return warehouseItemInfo;
+    }
+
+    public void setWarehouseItemInfo(WarehouseItemInfo warehouseItemInfo) {
+        this.warehouseItemInfo = warehouseItemInfo;
+    }
+
+    public int getWarehouseItemAmount() {
+        return warehouseItemAmount;
+    }
+
+    public void setWarehouseItemAmount(int warehouseItemAmount) {
+        this.warehouseItemAmount = warehouseItemAmount;
+    }
 
     @Override
     public String toString() {

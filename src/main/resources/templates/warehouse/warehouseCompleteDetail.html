@@ -76,6 +76,7 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
+            <th>No</th>
             <th>품목</th>
             <th>품번</th>
             <th>품명</th>
@@ -86,7 +87,7 @@
         </thead>
         <tbody>
         <tr th:each="warehouse,num : ${ completeDetail }">
-            <th:block th:if="${ warehouse.orderApplicationItemYN eq 'N'}">
+            <td th:text="${ num.size - num.index }"></td>
             <td th:text="${ warehouse.completeItemCategoryName }"></td>
             <td th:text="${ warehouse.completeItemSerialNo }"></td>
             <td th:text="${ warehouse.completeItemName }"></td>
@@ -102,10 +103,18 @@
             <input type="hidden" name="clientContractItemNo" id="clientContractItemNo" th:value="${ warehouse.clientContractItemNo }" >
             <!-- 발주 수량 -->
             <input type="hidden" name="companyAmount" id="companyAmount" th:value="${ warehouse.companyAmount }" >
+            <th:block th:if="${ warehouse.orderApplicationItemYN eq 'N'}">
             <td>
                 <button class="btn btn-w-m btn-primary" id="warehouseRegistBtn">입하 목록 추가</button>
             </td>
             </th:block>
+
+            <th:block th:if="${ warehouse.orderApplicationItemYN eq 'Y'}">
+                <td>
+                    <a>입고 목록 추가 완료</a>
+                </td>
+            </th:block>
+
         </tr>
         </tfoot>
     </table>
@@ -127,7 +136,7 @@
 
             for (let j = 0; j < $completeItemInfoNo.length; j++) {
 
-                if ($clientContractItemNo[j].value == this.parentNode.parentNode.children[8].value) {
+                if ($clientContractItemNo[j].value == this.parentNode.parentNode.children[9].value) {
 
                     $.ajax({
                         url: "/warehouse/complete/regist",
@@ -161,15 +170,6 @@
     }
 
 </script>
-
-<!--<script>-->
-<!--    document.getElementById("warehouseRegistButton").onclick = function (){-->
-<!--        location.href = "/warehouse/regist?warehouseOrderHistoryNo=" + this.parentNode.parentNode.children[0].innerText;/* + "&warehouseClientNo=" + this.parentNode.parentNode.children[]*/-->
-
-<!--    }-->
-<!--</script>-->
-
-
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
 </html>

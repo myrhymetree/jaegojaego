@@ -52,6 +52,7 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
+            <th>No</th>
             <th>입고 번호</th>
             <th>품번</th>
             <th>품목</th>
@@ -67,7 +68,8 @@
 
         <tbody>
         <tr th:each="warehouse,num : ${ warehouseList }">
-            <td id="warehouseNo" th:text="${ warehouse.warehouseNo }"></td><!-- 받아온 정보에 sequence로 입고 번호 부여 -->
+            <td th:text="${ num.size - num.index }"></td>
+            <td id="warehouseNo" th:text="${ warehouse.warehouseNo }"></td>
             <td th:text="${ warehouse.itemInfoNo.getItemInfoItemSerialNo() }"></td>
             <td th:text="${ warehouse.itemInfoNo.getMaterialCategory().getMaterialCategoryName() }"></td>
             <td th:text="${ warehouse.itemInfoNo.getItemInfoName() }"></td>
@@ -104,7 +106,7 @@
 
             for (let j = 0; j < $warehouseNo.length; j++) {
 
-                if ($warehouseNo[j].innerText == this.parentNode.parentNode.children[0].innerText) {
+                if ($warehouseNo[j].innerText == this.parentNode.parentNode.children[1].innerText) {
 
                     $.ajax({
                         url: "/warehouse/modify",

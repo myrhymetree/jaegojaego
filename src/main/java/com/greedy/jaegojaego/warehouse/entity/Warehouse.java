@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
-/** 새로 고쳐줌 */
 @Entity(name = "warehouse")
 @Table(name = "IN_WAREHOUSE")
 @SequenceGenerator(
@@ -45,25 +44,6 @@ public class Warehouse {
     @Column(name = "CLIENT_CONTRACT_ITEM_NO")
     private int clientContractItem;
 
-//    @ManyToOne
-//    @JoinColumns({
-//            @JoinColumn(name = "ORDER_APPLICATION_NO"),
-//            @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-//    })
-//    private WarehouseOrderApplicationItem orderApplicationItemPK;
-
-//    @ManyToOne
-//    @JoinColumn(name = "ORDER_APPLICATION_NO")
-//    private WarehouseOrderApplicationItem orderapplication;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-//    private WarehouseOrderApplicationItem clientContractItem;
-
-//    @ManyToOne
-//    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-//    private WarehouseOrderApplicationItem clientContractItemNo;
-
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
     private WarehouseItemInfo itemInfoNo;
@@ -76,96 +56,6 @@ public class Warehouse {
     private java.sql.Date warehouseCompleteDate;
 
     public Warehouse() {}
-
-//    public Warehouse(int warehouseNo, int warehouseAmount, String warehouseStatus, Date warehouseDate, WarehouseOrderApplicationItem orderApplicationItemPK, WarehouseItemInfo itemInfoNo, WarehouseClient clientNo, Date warehouseCompleteDate) {
-//        this.warehouseNo = warehouseNo;
-//        this.warehouseAmount = warehouseAmount;
-//        this.warehouseStatus = warehouseStatus;
-//        this.warehouseDate = warehouseDate;
-//        this.orderApplicationItemPK = orderApplicationItemPK;
-//        this.itemInfoNo = itemInfoNo;
-//        this.clientNo = clientNo;
-//        this.warehouseCompleteDate = warehouseCompleteDate;
-//    }
-//
-//    public int getWarehouseNo() {
-//        return warehouseNo;
-//    }
-//
-//    public void setWarehouseNo(int warehouseNo) {
-//        this.warehouseNo = warehouseNo;
-//    }
-//
-//    public int getWarehouseAmount() {
-//        return warehouseAmount;
-//    }
-//
-//    public void setWarehouseAmount(int warehouseAmount) {
-//        this.warehouseAmount = warehouseAmount;
-//    }
-//
-//    public String getWarehouseStatus() {
-//        return warehouseStatus;
-//    }
-//
-//    public void setWarehouseStatus(String warehouseStatus) {
-//        this.warehouseStatus = warehouseStatus;
-//    }
-//
-//    public Date getWarehouseDate() {
-//        return warehouseDate;
-//    }
-//
-//    public void setWarehouseDate(Date warehouseDate) {
-//        this.warehouseDate = warehouseDate;
-//    }
-//
-//    public WarehouseOrderApplicationItem getOrderApplicationItemPK() {
-//        return orderApplicationItemPK;
-//    }
-//
-//    public void setOrderApplicationItemPK(WarehouseOrderApplicationItem orderApplicationItemPK) {
-//        this.orderApplicationItemPK = orderApplicationItemPK;
-//    }
-//
-//    public WarehouseItemInfo getItemInfoNo() {
-//        return itemInfoNo;
-//    }
-//
-//    public void setItemInfoNo(WarehouseItemInfo itemInfoNo) {
-//        this.itemInfoNo = itemInfoNo;
-//    }
-//
-//    public WarehouseClient getClientNo() {
-//        return clientNo;
-//    }
-//
-//    public void setClientNo(WarehouseClient clientNo) {
-//        this.clientNo = clientNo;
-//    }
-//
-//    public Date getWarehouseCompleteDate() {
-//        return warehouseCompleteDate;
-//    }
-//
-//    public void setWarehouseCompleteDate(Date warehouseCompleteDate) {
-//        this.warehouseCompleteDate = warehouseCompleteDate;
-//    }
-
-//    @Override
-//    public String toString() {
-//        return "Warehouse{" +
-//                "warehouseNo=" + warehouseNo +
-//                ", warehouseAmount=" + warehouseAmount +
-//                ", warehouseStatus='" + warehouseStatus + '\'' +
-//                ", warehouseDate=" + warehouseDate +
-////                ", orderApplicationItemPK=" + orderApplicationItemPK +
-//                ", itemInfoNo=" + itemInfoNo +
-//                ", clientNo=" + clientNo +
-//                ", warehouseCompleteDate=" + warehouseCompleteDate +
-//                '}';
-//    }
-
 
     @Override
     public String toString() {

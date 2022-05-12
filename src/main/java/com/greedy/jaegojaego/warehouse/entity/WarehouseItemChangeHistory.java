@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
+import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouse;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseItemChangeHistoryDTO;
 import com.greedy.jaegojaego.warehouse.dto.WarehouseItemInfoDTO;
@@ -37,8 +38,9 @@ public class WarehouseItemChangeHistory {
     @Column(name = "ITEM_DECREMENT_REASON_NO")
     private Integer itemDecrementReasonNo;
 
-    @Column(name = "OUT_WAREHOUSE_DIVISION_NO")
-    private String outWarehouseDivisionNo;
+    @ManyToOne
+    @JoinColumn(name = "OUT_WAREHOUSE_NO")
+    private OutWarehouse outWarehouseNo;
 
     @ManyToOne
     @JoinColumn(name = "IN_WAREHOUSE_NO")
@@ -47,17 +49,21 @@ public class WarehouseItemChangeHistory {
     @Column(name = "IN_WAREHOUSE_STATUS")
     private String warehouseStatus;
 
+    @Column(name = "OUT_WAREHOUSE_STATUS")
+    private String outWarehouseStatus;
+
     public WarehouseItemChangeHistory() {}
 
-    public WarehouseItemChangeHistory(int itemChangeHistoryNo, WarehouseItemInfo itemInfoNo, int itemChangeDivision, int itemChangeAmount, Integer itemDecrementReasonNo, String outWarehouseDivisionNo, Warehouse warehouseNo, String warehouseStatus) {
+    public WarehouseItemChangeHistory(int itemChangeHistoryNo, WarehouseItemInfo itemInfoNo, int itemChangeDivision, int itemChangeAmount, Integer itemDecrementReasonNo, OutWarehouse outWarehouseNo, Warehouse warehouseNo, String warehouseStatus, String outWarehouseStatus) {
         this.itemChangeHistoryNo = itemChangeHistoryNo;
         this.itemInfoNo = itemInfoNo;
         this.itemChangeDivision = itemChangeDivision;
         this.itemChangeAmount = itemChangeAmount;
         this.itemDecrementReasonNo = itemDecrementReasonNo;
-        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+        this.outWarehouseNo = outWarehouseNo;
         this.warehouseNo = warehouseNo;
         this.warehouseStatus = warehouseStatus;
+        this.outWarehouseStatus = outWarehouseStatus;
     }
 
     public int getItemChangeHistoryNo() {
@@ -100,12 +106,12 @@ public class WarehouseItemChangeHistory {
         this.itemDecrementReasonNo = itemDecrementReasonNo;
     }
 
-    public String getOutWarehouseDivisionNo() {
-        return outWarehouseDivisionNo;
+    public OutWarehouse getOutWarehouseNo() {
+        return outWarehouseNo;
     }
 
-    public void setOutWarehouseDivisionNo(String outWarehouseDivisionNo) {
-        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+    public void setOutWarehouseNo(OutWarehouse outWarehouseNo) {
+        this.outWarehouseNo = outWarehouseNo;
     }
 
     public Warehouse getWarehouseNo() {
@@ -124,6 +130,14 @@ public class WarehouseItemChangeHistory {
         this.warehouseStatus = warehouseStatus;
     }
 
+    public String getOutWarehouseStatus() {
+        return outWarehouseStatus;
+    }
+
+    public void setOutWarehouseStatus(String outWarehouseStatus) {
+        this.outWarehouseStatus = outWarehouseStatus;
+    }
+
     @Override
     public String toString() {
         return "WarehouseItemChangeHistory{" +
@@ -132,9 +146,10 @@ public class WarehouseItemChangeHistory {
                 ", itemChangeDivision=" + itemChangeDivision +
                 ", itemChangeAmount=" + itemChangeAmount +
                 ", itemDecrementReasonNo=" + itemDecrementReasonNo +
-                ", outWarehouseDivisionNo='" + outWarehouseDivisionNo + '\'' +
+                ", outWarehouseNo=" + outWarehouseNo +
                 ", warehouseNo=" + warehouseNo +
                 ", warehouseStatus='" + warehouseStatus + '\'' +
+                ", outWarehouseStatus='" + outWarehouseStatus + '\'' +
                 '}';
     }
 }
