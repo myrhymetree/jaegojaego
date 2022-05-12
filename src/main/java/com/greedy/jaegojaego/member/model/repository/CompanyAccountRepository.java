@@ -18,4 +18,7 @@ public interface CompanyAccountRepository extends JpaRepository<CompanyAccount, 
     CompanyAccount findAllByMemberNoAndMemberDivision(Integer memberNo, String memberDivision);
 
     CompanyAccount findByMemberNo(Integer memberNo);
+
+    @EntityGraph(attributePaths = {"department"}, type = EntityGraph.EntityGraphType.FETCH)
+    List<CompanyAccount> findSupervisorByDepartment_DepartmentNo(Integer departmentNo);
 }

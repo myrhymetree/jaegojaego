@@ -24,11 +24,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">가맹점 계정 정보 수정</h4>
+                    <h4 class="modal-title">가맹점 대표자 계정 정보 수정</h4>
                 </div>
 
                 <div class="modal-body">
-                    <form role="form" id="modifyForm" method="post" action="/member/modifyMember">
+                    <form role="form" id="modifyForm" method="post" action="/franchise/updateFranchise">
                         <div class="form-group row">
                             <input type="hidden" id="detail-memberNo"  class="form-control" name="memberNo">
                             <label class="col-lg-2 col-form-label">비밀번호</label>
@@ -48,10 +48,18 @@
                                     </div>
                             </div>
                         </div>
+
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">휴대전화 번호</label>
+                            <label class="col-lg-2 col-form-label">가맹점 명</label>
                             <div class="col-lg-10">
-                                <input type="text" id="memberCellPhone" name="memberCellPhone" placeholder="변경할 휴대전화 번호를 입력하세요" class="form-control" data-mask="(000) 0000-0000">
+                                <input type="text" id="branchName" name="branchName" placeholder="변경할 가맹점 이름을 입력하세요" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label">대표자 휴대전화 번호</label>
+                            <div class="col-lg-10">
+                                <input type="text" id="representativePhone" name="representativePhone" placeholder="변경할 휴대전화 번호를 입력하세요" class="form-control" data-mask="(000) 0000-0000">
                             </div>
                         </div>
 
@@ -63,15 +71,22 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label" for="memberEmail">이메일</label>
+                            <label class="col-lg-2 col-form-label">가맹점 주소</label>
                             <div class="col-lg-10">
-                                <input type="email" name="memberEmail" id="memberEmail" placeholder="변경할 이메일을 입력하세요" class="form-control">
+                                <input type="text" id="address" name="address" placeholder="변경할 주소를 입력하세요" class="form-control" data-mask="(031) 3456-0000">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label" for="memberEmail">대표자 이메일</label>
+                            <div class="col-lg-10">
+                                <input type="representativeEmail" name="representativeEmail" id="memberEmail" placeholder="변경할 이메일을 입력하세요" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label" for="department">부서</label>
+                            <label class="col-lg-2 col-form-label" for="supervisorNo">담당자</label>
                             <div class="col-lg-10">
-                                <select class="select2_demo_3 form-control m-b" name="department.departmentNo" id="department" required>
+                                <select class="select2_demo_3 form-control m-b" id="supervisorNo" name="supervisorNo">
 
                                 </select>
                             </div>
@@ -123,7 +138,7 @@
 
             $(".select2_demo_3").select2({
                 theme: 'bootstrap4',
-                placeholder: "부서를 선택하세요.",
+                placeholder: "담장자를 선택하세요.",
                 allowClear: true
             });
         });

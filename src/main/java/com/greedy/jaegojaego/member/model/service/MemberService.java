@@ -117,13 +117,6 @@ public class MemberService {
 
     }
 
-    public Integer countAll() {
-
-        Integer count = companyAccountRepository.countAllBy();
-
-        return count;
-    }
-
     public Object findLoginMemberInfo(CustomUser customUser) {
 
         Integer memberNo = customUser.getMemberNo();
@@ -260,5 +253,12 @@ public class MemberService {
         String result = member.getOfficeDivision();
 
         return result;
+    }
+
+    public List<CompanyAccountDTO> findSuperVisor() {
+
+        List<CompanyAccount> supervisors = companyAccountRepository.findSupervisorByDepartment_DepartmentNo(2);
+
+        return supervisors.stream().map(supervisor -> modelMappper.map(supervisor, CompanyAccountDTO.class)).collect(Collectors.toList());
     }
 }

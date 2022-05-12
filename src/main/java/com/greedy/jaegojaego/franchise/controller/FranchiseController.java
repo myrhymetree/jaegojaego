@@ -408,4 +408,13 @@ public class FranchiseController {
 
         return mv;
     }
+
+    @PostMapping("/updateFranchise")
+    public String updateFranchise(ModelAndView mv, FranchiseInfoDTO franchiseInfo) {
+
+        franchiseService.modifyFranchiseByCompany(franchiseInfo);
+
+        return "redirect:/franchise/list";
+    }
+
 }

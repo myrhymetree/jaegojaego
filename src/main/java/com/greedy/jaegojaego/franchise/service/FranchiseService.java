@@ -4,6 +4,7 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.franchise.dto.*;
 import com.greedy.jaegojaego.franchise.entity.*;
 import com.greedy.jaegojaego.franchise.repository.*;
+import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
 import com.greedy.jaegojaego.member.model.entity.PasswordUpdatedRecord;
@@ -177,6 +178,53 @@ public class FranchiseService {
         franchiseRepository.updateFranchise(franchise);
     }
 
+    @Transactional
+    public void modifyFranchiseByCompany(FranchiseInfoDTO franchiseInfo) {
+
+        /* entity타입으로 값 변경 */
+        FranchiseInfo franchise = new FranchiseInfo();
+
+        if(!franchiseInfo.getMemberPwd().isEmpty()) {
+
+            /* 비밀번호 변경할 가맹점 계정의 현재 비밀번호 찾기 */
+            Member selectedMember = memberRepository.findMemberByMemberNo(franchiseInfo.getMemberNo());
+
+            /* 비밀번호 변경이력 추가 */
+            PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+            passwordUpdatedRecord.setPasswordUpdatedRecordPwd(selectedMember.getMemberPwd());
+            passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+            passwordUpdatedRecord.setMemberNo(selectedMember.getMemberNo());
+
+            franchise.setMemberPwd(passwordEncoder.encode(franchiseInfo.getMemberPwd()));
+            franchise.setMemberPwdUpdateDate(LocalDateTime.now());
+            franchise.setMemberPwdInitStatus("N");
+
+            passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
+        }
+
+        /* 빌더에 넣기 위해서 DTO타입을 Entity타입으로 변환 */
+        List<FranchiseContractUpdatedRecord> contracts = franchiseInfo.getFranchiseContractUpdatedRecords().stream().map(rep -> modelMapper.map(rep, FranchiseContractUpdatedRecord.class)).collect(Collectors.toList());
+
+        franchise =
+                FranchiseInfo.builder()
+                        .memberNo(franchiseInfo.getMemberNo())
+                        .memberPwd(passwordEncoder.encode(franchiseInfo.getMemberPwd()))
+                        .branchName(franchiseInfo.getBranchName())
+                        .representativeEmail(franchiseInfo.getRepresentativeEmail())
+                        .phone(franchiseInfo.getPhone())
+                        .representativePhone(franchiseInfo.getRepresentativePhone())
+                        .address(franchiseInfo.getAddress())
+                        .representativeName(franchiseInfo.getRepresentativeName())
+                        .supervisorNo(franchiseInfo.getSupervisorNo())
+                        .writedMemberNo(franchiseInfo.getWritedMemberNo())
+                        .businessRegistrationNo(franchiseInfo.getBusinessRegistrationNo())
+                        .bankAccountNo(franchiseInfo.getBankAccountNo())
+                        .franchiseContractUpdatedRecords(contracts)
+                        .build();
+
+        franchiseRepository.updateFranchise(franchise);
+    }
+
     public FranchiseListDTO findFranchiseList(String searchWord) {
 
         /* 프랜차이즈 대표자 계정 목록 조회 */
@@ -253,4 +301,5 @@ public class FranchiseService {
 
         return franchiseListDTO;
     }
+
 }

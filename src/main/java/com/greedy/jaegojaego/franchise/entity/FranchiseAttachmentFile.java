@@ -45,30 +45,10 @@ public class FranchiseAttachmentFile {
     @Column(name = "ATTACHMENT_FILE_DIVISION")
     private String attachmentFileDivision;
 
-    @Column(name = "COMPANY_NOTICE_NO")
-    private Integer companyNoticeNo;
-
-    @Column(name = "FRANCHISE_NOTICE_NO")
-    private Integer franchiseNoticeNo;
-
-    @Column(name = "CLIENT_CONTRACT_ITEM_NO")
-    private Integer clientContractItemNo;
-
-    @Column(name = "CLIENT_CONTRACT_INFO_NO")
-    private Integer clientContractInfoNo;
-
-    @Column(name = "CLIENT_NO")
-    private Integer clientNo;
-
-    @Column(name = "FRANCHISE_ISSUE_NO")
-    private Integer franchiseIssueNo;
-
     @Column(name = "FRANCHISE_REPRESENTATIVE_NO")
     private Integer franchiseRepresentativeNo;
 
     @Column(name = "FRANCHISE_CONTRACT_UPDATE_NO")
     private Integer franchiseContractUpdateNo;
 
-    @Column(name = "ITEM_INFO_UNIFICATION_NO")
-    private Integer itemInfoUnificationNo;
 }

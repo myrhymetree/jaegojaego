@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.member.model.entity;
 
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -25,6 +26,7 @@ import java.util.Set;
 @Setter
 @Getter
 @AllArgsConstructor
+@SuperBuilder
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate

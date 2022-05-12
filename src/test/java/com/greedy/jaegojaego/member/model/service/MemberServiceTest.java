@@ -161,4 +161,17 @@ class MemberServiceTest {
         
         assertNotNull(member.getMemberPwd());
     }
+
+    @Test
+    public void 가맹사업팀_멤버_조회하기() {
+
+        Integer departmentNo = 2;
+
+        List<CompanyAccount> list = companyAccountRepository.findSupervisorByDepartment_DepartmentNo(departmentNo);
+
+        System.out.println("부서 별 담당 사원 리스트");
+        list.forEach(member -> System.out.println(member));
+
+        assertNotNull(list);
+    }
 }

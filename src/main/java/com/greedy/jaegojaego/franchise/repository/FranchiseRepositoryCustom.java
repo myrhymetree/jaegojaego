@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FranchiseRepositoryCustom {
 
-    void updateFranchise(FranchiseInfo franchise);
+    FranchiseInfo updateFranchise(FranchiseInfo franchise);
 
     List<FranchiseInfo> searchFranchise(String searchWord);
 

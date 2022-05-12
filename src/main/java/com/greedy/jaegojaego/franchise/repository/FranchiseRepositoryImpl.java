@@ -1,41 +1,35 @@
 package com.greedy.jaegojaego.franchise.repository;
 
-import com.greedy.jaegojaego.franchise.entity.FranchiseContractUpdatedRecord;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.franchise.entity.QFranchiseInfo;
-import com.querydsl.core.dml.InsertClause;
 import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAInsertClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.SequenceGenerator;
 
 import java.util.List;
 
-import static com.greedy.jaegojaego.franchise.entity.QFranchiseContractUpdatedRecord.franchiseContractUpdatedRecord;
 import static com.greedy.jaegojaego.franchise.entity.QFranchiseInfo.franchiseInfo;
 import static org.springframework.util.StringUtils.hasText;
 
 public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implements FranchiseRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
-    private final EntityManager em;
+//    private final EntityManager em;
 
     public FranchiseRepositoryImpl(EntityManager em) {
         super(FranchiseInfo.class);
         this.queryFactory = new JPAQueryFactory(em);
-        this.em = em;
+//        this.em = em;
     }
 
     @Override
     @Transactional
-    public void updateFranchise(FranchiseInfo franchise) {
+    public FranchiseInfo updateFranchise(FranchiseInfo franchise) {
 
         UpdateClause<JPAUpdateClause> updateBuilder = update(franchiseInfo);
 
@@ -55,12 +49,12 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
             updateBuilder.set(franchiseInfo.representativePhone, franchise.getRepresentativePhone());
         }
 
-        if(hasText(franchise.getRepresentativeName())) {
-            updateBuilder.set(franchiseInfo.representativeName, franchise.getRepresentativeName());
+        if(hasText(franchise.getAddress())) {
+            updateBuilder.set(franchiseInfo.address, franchise.getAddress());
         }
 
-        if(hasText(franchise.getRepresentativePhone())) {
-            updateBuilder.set(franchiseInfo.representativePhone, franchise.getRepresentativePhone());
+        if(hasText(franchise.getRepresentativeName())) {
+            updateBuilder.set(franchiseInfo.representativeName, franchise.getRepresentativeName());
         }
 
         if(hasText(String.valueOf(franchise.getWritedMemberNo()))) {
@@ -79,6 +73,10 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
             updateBuilder.set(franchiseInfo.bankAccountNo, franchise.getBankAccountNo());
         }
 
+        if(hasText(franchise.getBranchName())) {
+            updateBuilder.set(franchiseInfo.branchName, franchise.getBranchName());
+        }
+
 //        queryFactory
 //                .insert(franchiseContractUpdatedRecord)
 //                        .values(franchise.getFranchiseContractStartedDate(), franchise.getFranchiseContractExpiredDate(), franchise.getFranchiseContractStatus(), franchise.getMemberNo())
@@ -88,27 +86,28 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                 .where(franchiseInfo.memberNo.eq(franchise.getMemberNo()))
                 .execute();
 
-        InsertClause<JPAInsertClause> insertBuilder = new JPAInsertClause(em, franchiseContractUpdatedRecord);
+//        InsertClause<JPAInsertClause> insertBuilder = new JPAInsertClause(em, franchiseContractUpdatedRecord);
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractStartedDate))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractStartedDate, franchise.getFranchiseContractStartedDate());
+//        }
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractExpiredDate))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractExpiredDate, franchise.getFranchiseContractExpiredDate());
+//        }
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractStatus))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractStatus, franchise.getFranchiseContractStatus());
+//        }
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseRepresentativeNo))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseRepresentativeNo, franchise.getMemberNo());
+//        }
+//
+//            insertBuilder
+//                    .execute();
 
-        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractStartedDate))) {
-            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractStartedDate, franchise.getFranchiseContractStartedDate());
-        }
-
-        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractExpiredDate))) {
-            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractExpiredDate, franchise.getFranchiseContractExpiredDate());
-        }
-
-        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractStatus))) {
-            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractStatus, franchise.getFranchiseContractStatus());
-        }
-
-        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseRepresentativeNo))) {
-            insertBuilder.set(franchiseContractUpdatedRecord.franchiseRepresentativeNo, franchise.getMemberNo());
-        }
-
-            insertBuilder
-                    .execute();
-
+        return franchise;
     }
 
     @Override

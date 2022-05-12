@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = "FranchiseContractUpdatedRecord")
 @Table(name = "FRANCHISE_CONTRACT_UPDATE_RECORD")
 public class FranchiseContractUpdatedRecord {

@@ -3,6 +3,7 @@ package com.greedy.jaegojaego.franchise.entity;
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.naming.Name;
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @SequenceGenerator(
         name = "FRANCHISE_INFO_SEQ_GENERATOR",
         sequenceName = "FRANCHISE_REPRESENTATIVE_NO",
@@ -103,8 +105,7 @@ public class FranchiseInfo extends Member {
                 ", supervisor=" + supervisor +
                 ", writedMember=" + writedMember +
                 ", franchiseAttachmentFiles=" + franchiseAttachmentFiles +
-//                ", franchiseContractUpdatedRecords=" + franchiseContractUpdatedRecords +
-//                ", franchiseInfoUpdatedRecords=" + franchiseInfoUpdatedRecords +
+                ", franchiseContractUpdatedRecords=" + franchiseContractUpdatedRecords +
 //                ", franchiseAccounts=" + franchiseAccounts +
                 ", franchiseContractStartedDate=" + franchiseContractStartedDate +
                 ", franchiseContractExpiredDate=" + franchiseContractExpiredDate +

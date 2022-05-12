@@ -78,12 +78,26 @@ public class MemberController {
         return memberService.findDepartmentAll();
     }
 
+    @GetMapping(value = "/supervisroList", produces = "application/json; charset=UTF-8")
+    public String selectSupervisor() {
+
+        List<CompanyAccountDTO> teamMember = memberService.findSuperVisor();
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(teamMember);
+    }
+
     @GetMapping("/list")
     public ModelAndView findMemberList(ModelAndView mv, String searchWord) {
 
         MemberListDTO memberList = memberService.findMemberList(searchWord);
-
-//        Integer count = memberService.countAll();
 
         mv.addObject("memberList", memberList.getMembers());
         mv.addObject("removedMemberList",  memberList.getRemovedMembers());
