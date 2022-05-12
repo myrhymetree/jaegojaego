@@ -181,6 +181,11 @@ public class FranchiseService {
     @Transactional
     public void modifyFranchiseByCompany(FranchiseInfoDTO franchiseInfo) {
 
+        /* 로그인 인증 정보 가져오기 */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUser loginUser = (CustomUser) authentication.getPrincipal();
+
         /* entity타입으로 값 변경 */
         FranchiseInfo franchise = new FranchiseInfo();
 
@@ -203,7 +208,10 @@ public class FranchiseService {
         }
 
         /* 빌더에 넣기 위해서 DTO타입을 Entity타입으로 변환 */
-        List<FranchiseContractUpdatedRecord> contracts = franchiseInfo.getFranchiseContractUpdatedRecords().stream().map(rep -> modelMapper.map(rep, FranchiseContractUpdatedRecord.class)).collect(Collectors.toList());
+//        if(franchiseInfo.getFranchiseInfoUpdatedRecords().size() != 0) {
+//            List<FranchiseContractUpdatedRecord> contracts = franchiseInfo.getFranchiseContractUpdatedRecords().stream().map(rep -> modelMapper.map(rep, FranchiseContractUpdatedRecord.class)).collect(Collectors.toList());
+//            franchise.setFranchiseContractUpdatedRecords(contracts);
+//        }
 
         franchise =
                 FranchiseInfo.builder()
@@ -216,10 +224,9 @@ public class FranchiseService {
                         .address(franchiseInfo.getAddress())
                         .representativeName(franchiseInfo.getRepresentativeName())
                         .supervisorNo(franchiseInfo.getSupervisorNo())
-                        .writedMemberNo(franchiseInfo.getWritedMemberNo())
+                        .writedMemberNo(loginUser.getMemberNo())
                         .businessRegistrationNo(franchiseInfo.getBusinessRegistrationNo())
                         .bankAccountNo(franchiseInfo.getBankAccountNo())
-                        .franchiseContractUpdatedRecords(contracts)
                         .build();
 
         franchiseRepository.updateFranchise(franchise);

@@ -78,7 +78,8 @@ public class MemberController {
         return memberService.findDepartmentAll();
     }
 
-    @GetMapping(value = "/supervisroList", produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "/supervisorList", produces = "application/json; charset=UTF-8")
+    @ResponseBody
     public String selectSupervisor() {
 
         List<CompanyAccountDTO> teamMember = memberService.findSuperVisor();

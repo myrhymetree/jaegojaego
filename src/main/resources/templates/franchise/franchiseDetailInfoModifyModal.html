@@ -14,6 +14,7 @@
 
     <link th:href="@{/css/animate.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
+
 </head>
 <body>
     <!-- 본사직원 정보 수정 js 스크립트 -->
@@ -78,17 +79,31 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label" for="memberEmail">대표자 이메일</label>
+                            <label class="col-lg-2 col-form-label" for="representativeEmail">대표자 이메일</label>
                             <div class="col-lg-10">
-                                <input type="representativeEmail" name="representativeEmail" id="memberEmail" placeholder="변경할 이메일을 입력하세요" class="form-control">
+                                <input type="representativeEmail" name="representativeEmail" id="representativeEmail" placeholder="변경할 이메일을 입력하세요" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label" for="supervisorNo">담당자</label>
+                            <label class="col-lg-2 col-form-label" for="supervisor">담당자</label>
                             <div class="col-lg-10">
-                                <select class="select2_demo_3 form-control m-b" id="supervisorNo" name="supervisorNo">
+                                <select class="select2_demo_3 form-control m-b" id="supervisor" name="supervisorNo">
 
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label" for="businessRegistrationNo">사업자 등록증 번호</label>
+                            <div class="col-lg-10">
+                                <input type="representativeEmail" name="businessRegistrationNo" id="businessRegistrationNo" placeholder="변경할 번호를 입력하세요" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label" for="businessRegistrationNo">계좌 확인서 번호</label>
+                            <div class="col-lg-10">
+                                <input type="representativeEmail" name="bankAccountNo" id="bankAccountNo" placeholder="변경할 번호를 입력하세요" class="form-control">
                             </div>
                         </div>
 

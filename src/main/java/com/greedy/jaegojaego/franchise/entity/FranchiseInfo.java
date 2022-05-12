@@ -4,6 +4,8 @@ import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.naming.Name;
 import javax.persistence.*;
@@ -15,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@DynamicUpdate
+@DynamicInsert
 @SequenceGenerator(
         name = "FRANCHISE_INFO_SEQ_GENERATOR",
         sequenceName = "FRANCHISE_REPRESENTATIVE_NO",

@@ -61,9 +61,13 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
             updateBuilder.set(franchiseInfo.writedMemberNo, franchise.getWritedMemberNo());
         }
 
-        if(hasText(String.valueOf(franchise.getSupervisorNo()))) {
+        if((String.valueOf(franchise.getSupervisorNo())).isEmpty()) {
             updateBuilder.set(franchiseInfo.supervisorNo, franchise.getSupervisorNo());
         }
+
+//        if(hasText(String.valueOf(franchise.getSupervisor().getMemberNo()))) {
+//            updateBuilder.set(franchiseInfo.supervisorNo, franchise.getSupervisor().getMemberNo());
+//        }
 
         if(hasText(franchise.getBusinessRegistrationNo())) {
             updateBuilder.set(franchiseInfo.businessRegistrationNo, franchise.getBusinessRegistrationNo());
