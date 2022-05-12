@@ -686,13 +686,14 @@ public class OrderService {
 
             OrderAttachmentFile orderAttachmentFile = orderAttachmentFileRepository.findByOrderItemInfo_ItemInfoNoAndAttachmentFileDeleteYn(franchiseOrderableItemList.get(i).getFranchiseOrderableItem().getOrderItemInfo().getItemInfoNo(), "N");
 
+
             if(orderAttachmentFile != null) {
                 franchiseOrderableItemDTOList.get(i).getOrderItemInfo().setItemAttachmentPath(orderAttachmentFile.getAttachmentFileThumbnailUrl());
             }
         }
 
 
-        return franchiseOrderableItemList.stream().map(franchiseOrderableItem -> modelMapper.map(franchiseOrderableItem, FranchiseOrderableItemDTO.class)).collect(Collectors.toList());
+        return franchiseOrderableItemDTOList;
     }
 
     /**
