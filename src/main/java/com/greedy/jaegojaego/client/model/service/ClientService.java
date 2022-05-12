@@ -85,11 +85,11 @@ public class ClientService {
     }
 
     /**
-     * findClientSearchList : Client 검색 목록 조회용 메소드(페이지 좌측 영역)
+     * findClientSearchList : Client(거래처) 검색 목록 조회용 메소드(페이지 좌측 영역)
      * @ param searchCondition : 검색 카테고리
      * @ param searchValue : 검색 내용
      * @ param pageable : 페이징 정보
-     * return : Client 데이터
+     * return : 거래처 정보
      * */
     public Page<ClientDTO> findClientSearchList(String searchCondition, String searchValue, Pageable pageable) {
 
@@ -103,9 +103,9 @@ public class ClientService {
     }
 
     /**
-     * findClientList : Client 목록 조회용 메소드(페이지 좌측 영역)
+     * findClientList : Client(거래처) 목록 조회용 메소드(페이지 좌측 영역)
      * @ param pageable : 페이징 정보
-     * return : Client 데이터
+     * return : 거래처 정보
      * */
     public Page<ClientDTO> findClientList(Pageable pageable) {
 
@@ -118,9 +118,9 @@ public class ClientService {
     }
 
     /**
-     * findClientDetailByClientNo : Client 상세조회용 메소드(페이지 우측 영역)
-     * @ param clientNo : 상세조회할 ClientNo(PK)
-     * return : ClientContractInfo 데이터
+     * findClientDetailByClientNo : Client(거래처) 상세조회용 메소드(페이지 우측 영역)
+     * @ param clientNo : ClientContractInfo를 조회하기 위한 ClientNo(FK)
+     * return : 거래처 계약 정보
      * */
     @Transactional
     public List<ClientContractInfoDTO> findClientDetailByClientNo(int clientNo) {
@@ -132,6 +132,11 @@ public class ClientService {
        return clientContractInfoList.stream().map(clientContractInfo -> modelMapper.map(clientContractInfo, ClientContractInfoDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findClientMemoByClientNo : ClientMemo(거래처 메모) 조회용 메소드
+     * @ param clientNo : ClientMemo를 조회하기위한 ClientNo(FK)
+     * return : 거래처 메모 정보
+     * */
     @Transactional
     public List<ClientMemoDTO> findClientMemoByClientNo(int clientNo) {
 
@@ -142,6 +147,10 @@ public class ClientService {
         return clientMemoList.stream().map(clientMemo -> modelMapper.map(clientMemo, ClientMemoDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findClientBusinessType : ClientBusinessType(업종) 목록 조회용 메소드
+     * return : 거래처 업종 정보
+     * */
     public List<ClientBusinessTypeDTO> findClientBusinessType() {
 
         List<ClientBusinessType> clientBusinessTypeList = new ArrayList<>();
@@ -152,6 +161,10 @@ public class ClientService {
 
 
     }
+    /**
+     * findClientBusinessType : ClientBusinessItem(업태) 목록 조회용 메소드
+     * return : 거래처 업태 정보
+     * */
     public List<ClientBusinessItemDTO> findClientBusinessItem() {
 
         List<ClientBusinessItem> clientBusinessItemList = new ArrayList<>();
@@ -161,17 +174,32 @@ public class ClientService {
         return clientBusinessItemList.stream().map(clientBusinessItem -> modelMapper.map(clientBusinessItem, ClientBusinessItemDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findClientLoginNo : 로그인 회원 조회용 메소드
+     * @ param memberNo : 로그인 정보를 조회하기위한 memberNo(PK)
+     * return : 로그인 회원 정보
+     * */
     public ClientMember findClientLoginNo(int memberNo) {
 
         ClientMember clientMember = clientMemberRepository.findByClientMemberNo(memberNo);
 
         return clientMember;
     }
+    /**
+     * deleteClient : 거래처 삭제용 메소드
+     * @ param clientNo : 삭제할 client 데이터의 clientNo(PK)
+     * */
     public void deleteClient(int clientNo) {
 
         clientRepository.deleteById(clientNo);
     }
-
+    /**
+     * findClientItemSearchList : 거래처 삭제용 메소드
+     * @ param searchCondition : 검색 카테고리
+     * @ param searchValue : 검색 내용
+     * @ param pageable : 페이징 정보
+     * return : 검색된 거래처 계약 상품 정보
+     * */
     public Page<ClientContractItemDTO> findClientItemSearchList(String searchCondition, String searchValue, Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
@@ -182,14 +210,21 @@ public class ClientService {
 
         return clientContractItemList.map(clientContractItem -> modelMapper.map(clientContractItem, ClientContractItemDTO.class));
     }
-
+    /**
+     * findClientItemSearchList : 업종 조회용 메소드
+     * @ param clientBusinessItemNo : 업종 조회용 clientBusinessItemNo(Pk)
+     * return : 해당 업종 정보
+     * */
     public ClientBusinessItem findClientBusinessItemNo(int clientBusinessItemNo) {
 
         ClientBusinessItem clientBusinessItem = clientBusinessItemRepository.findByClientBusinessItemNo(clientBusinessItemNo);
 
         return clientBusinessItem;
     }
-
+    /**
+     * findClientBusinessTypeNo : 업태 조회용 메소드
+     * @ param clientBusinessTypeNo : 업태 조회용 clientBusinessTypeNo(PK)
+     * */
     public ClientBusinessType findClientBusinessTypeNo(int clientBusinessTypeNo) {
 
         ClientBusinessType clientBusinessType = clientBusinessTypeRepository.findByClientBusinessTypeNo(clientBusinessTypeNo);
@@ -197,6 +232,12 @@ public class ClientService {
         return clientBusinessType;
     }
 
+    /**
+     * findClientBusinessTypeNo : 거래처 등록용 메소드
+     * @ param client : 입력받은 더래처 정보
+     * @ param clientContractDTO : 입력받은 거래처 계약 정보
+     * return : 해당 업태 정보
+     * */
     public void registClient(ClientDTO client, ClientContractInfoDTO clientContractInfo) {
 
         Client newClient = new Client();
@@ -228,38 +269,49 @@ public class ClientService {
 
     }
 
+    /**
+     * findClient : 거래처 목록 출력용 메소드
+     * return : 거래처 정보
+     * */
     public List<ClientDTO> findClient() {
 
         List<Client> clientList = new ArrayList<>();
 
         clientList = clientRepository.findAll();
 
-        System.out.println("왜안돼? : " + clientList);
-
         return clientList.stream().map(Client -> modelMapper.map(Client, ClientDTO.class)).collect(Collectors.toList());
     }
 
-
+    /**
+     * findClientContractInfoNoByClientNo : 거래처 정보 조회용 메소드(상세정보)
+     * @ param clientNo : 해당 계약정보 조회용 clientNo(FK)
+     * return : 거래처 계약 정보
+     * */
     public ClientContractInfo findClientContractInfoNoByClientNo(int clientNo) {
 
         ClientContractInfo clientContractInfo = clientContractItemRepository.findByClient(clientNo);
 
         return clientContractInfo;
     }
-        public ClientContractInfoDTO findClientContractNoByClientNo(int clientNo) {
+
+    /**
+     * findClientContractNoByClientNo : 거래처 정보 조회용 메소드(상세정보)
+     * @ param clientNo : 해당 계약정보 조회용 clientNo(FK)
+     * return : 거래처 계약 정보
+     * */
+    public ClientContractInfoDTO findClientContractNoByClientNo(int clientNo) {
 
         ClientContractInfo clientContractInfo = clientContractInfoRepository.findClientContractInfoNoByClient_ClientNo(clientNo);
 
-
         return modelMapper.map(clientContractInfo, ClientContractInfoDTO.class);
     }
-
+    /**
+     * registClientContractItemAttachmentFile : 거래처 상품 및 이미지 저장용 메소드
+     * @ param clientContractItemList : 거래처 상품 저장용 DTO
+     * @ param clientContractItemAttachmentFileList : 첨부파일 저장용 DTO
+     * */
     @Transactional
     public void registClientContractItemAttachmentFile(ClientContractItemDTO clientContractItemList, ClientContractItemAttachmentFileDTO clientContractItemAttachmentFileList) {
-
-        System.out.println("테스트 1 : " + clientContractItemList);
-        System.out.println("테스트 2 : " + clientContractItemList.getMemberNo());
-        System.out.println("테스트 3 : " + clientContractItemList.getMemberNo().getMemberNo());
 
         ClientMember clientMember = new ClientMember();
         clientMember.setClientMemberNo(clientContractItemList.getMemberNo().getMemberNo());
@@ -298,7 +350,10 @@ public class ClientService {
        
 
     }
-
+    /**
+     * findClientItemList : 거래처 상품 출력용 메소드
+     * return: 거래처 상품 정보
+     * */
     public List<ClientContractItemDTO> findClientItemList() {
 
         List<ClientContractItemDTO> clientContractItemList = clientContractItemRepository.findAll().stream().map(clientContractItem -> modelMapper.map(clientContractItem,ClientContractItemDTO.class)).collect(Collectors.toList());
@@ -313,7 +368,11 @@ public class ClientService {
         return clientContractItemList;
     }
 
-
+    /**
+     * findClientList2 : 거래처 사업자 등록증 출력용 메소드
+     * @ param pageable : 페이징 정보
+     * return: 거래처 , 첨부파일 정보
+     * */
     public Page<ClientDTO> findClientList2(Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
