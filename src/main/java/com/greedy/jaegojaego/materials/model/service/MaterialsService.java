@@ -26,9 +26,11 @@ public class MaterialsService {
     private final MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository;
     private final MaterialRepository materialRepository;
     private final MaterialProductRepository materialProductRepository;
+    private final MaterialFileRepository materialFileRepository;
+
     @Autowired
     public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, MaterialsClientContractItemRepository clientContractItemRepository, MaterialsClientContractItemMaterialRepository clientContractItemMaterialRepository,
-                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository, MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository, MaterialRepository materialRepository, MaterialProductRepository materialProductRepository){
+                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository, MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository, MaterialRepository materialRepository, MaterialProductRepository materialProductRepository, MaterialFileRepository materialFileRepository){
         this.materialsRepository = materialsRepository;
         this.modelMapper = modelMapper;
         this.clientContractItemRepository = clientContractItemRepository;
@@ -38,6 +40,7 @@ public class MaterialsService {
         this.materialFranchiseOrderableItemRepository = materialFranchiseOrderableItemRepository;
         this.materialRepository = materialRepository;
         this.materialProductRepository = materialProductRepository;
+        this.materialFileRepository = materialFileRepository;
     }
 
     public List<MaterialsDTO> findMaterialsList() {
@@ -170,7 +173,6 @@ public class MaterialsService {
     public void materialFileRegist(MaterialFileDTO materialFileDTO) {
 
         MaterialFile materialFile = new MaterialFile();
-        MaterialFileCategory materialFileCategory = new MaterialFileCategory();
 
         materialFile.setFileOriginalName(materialFileDTO.getFileOriginalName());
         materialFile.setFileChangedName(materialFileDTO.getFileChangedName());
@@ -179,7 +181,11 @@ public class MaterialsService {
         materialFile.setThumbnailUrl(materialFileDTO.getThumbnailUrl());
         materialFile.setFileDivision(materialFileDTO.getFileDivision());
         materialFile.setItemInfoNo(materialFileDTO.getItemInfoNo());
-        materialFile.setMaterialFileCategory(materialFile.getMaterialFileCategory());
+        materialFile.setMaterialFileCategory(materialFileDTO.getMaterialFileCategory());
+
+        System.out.println("materialFile" + "" + materialFile);
+
+        materialFileRepository.save(materialFile);
 
     }
 }

@@ -179,17 +179,18 @@ public class MaterialsController {
 
                     materialItemImage.transferTo(new File(uploadDirectory + "/thumbnail_" + savedName));
 
-                    materialFileDTO.setMaterialFileCategory(6);
-                    materialFileDTO.setDeleteYn("N");
-                    materialFileDTO.setFileUrl(fileUploadDirectory);
-                    materialFileDTO.setFileChangedName(savedName);
                     materialFileDTO.setFileOriginalName(orgName);
+                    materialFileDTO.setFileChangedName(savedName);
+                    materialFileDTO.setFileUrl(fileUploadDirectory);
+                    materialFileDTO.setDeleteYn("N");
+                    materialFileDTO.setMaterialFileCategory(6);
                     materialFileDTO.setFileDivision("자재");
                     materialFileDTO.setItemInfoNo(material.getItemInfoNo());
 
                     materialFileDTO.setThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
                 }
 
+                System.out.println("materialFileDTO" + "" + materialFileDTO);
                 materialsService.materialFileRegist(materialFileDTO);
 
             } catch (IllegalStateException | IOException e) {
