@@ -69,3 +69,6 @@ jaegojaego:
   client:
     upload:
       path: C:\Users\kidol\git\JaeoGoJaeGo\src\main\resources\static\upload\client\conversion
+  materials:
+     upload:
+        path: D:\jaegojaego\src\main\resources\static\upload\materials\conversion

@@ -1,65 +1,39 @@
-package com.greedy.jaegojaego.materials.model.entity;
+package com.greedy.jaegojaego.materials.model.dto;
+
+import com.greedy.jaegojaego.materials.model.entity.FranchiseOrderableItem;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-@Entity(name = "Materials")
-@Table(name = "ITEM_INFO")
-@SequenceGenerator(
-        name = "ITEM_SEQ_GENERATOR",
-        sequenceName = "ITEM_INFO_NO",
-        initialValue = 1,
-        allocationSize = 1
-)
-public class Materials implements Serializable {
+public class MaterialProductDTO {
 
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "ITEM_SEQ_GENERATOR"
-    )
-    @Column(name = "ITEM_INFO_NO")
     private int itemInfoNo;
 
-    /*@OneToMany
-    @JoinColumn(name = "조회올것")
-    private List<FranchiseOrderableItem> franchiseOrderableItem;*/
-    //리팩토링 해야하니 나중에 다시 할 것
+    private FranchiseOrderableItem franchiseOrderableItem;
 
-    @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
 
-    @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
     private String itemSerialNo;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "MATERIAL_CATEGORY_NO")
-    private MaterialsCategory materialCategory;
+    private int materialCategory;
 
-    @Column(name = "SUBDIVISION_UNIT")
     private Integer subdivisionUnit;
 
-    @Column(name = "SUBDIVISION_YN")
     private String subdivisionYN;
 
-    @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemStatus;
 
-    @Column(name = "FRANCHISE_ORDERABLE_ITEM_PRICE")
-    private int itemPrice;
-
-    public Materials() {
+    public MaterialProductDTO() {
     }
 
-    public Materials(int itemInfoNo, String itemInfoName, String itemSerialNo, MaterialsCategory materialCategory, Integer subdivisionUnit, String subdivisionYN, String itemStatus, int itemPrice) {
+    public MaterialProductDTO(int itemInfoNo, FranchiseOrderableItem franchiseOrderableItem, String itemInfoName, String itemSerialNo, int materialCategory, Integer subdivisionUnit, String subdivisionYN, String itemStatus) {
         this.itemInfoNo = itemInfoNo;
+        this.franchiseOrderableItem = franchiseOrderableItem;
         this.itemInfoName = itemInfoName;
         this.itemSerialNo = itemSerialNo;
         this.materialCategory = materialCategory;
         this.subdivisionUnit = subdivisionUnit;
         this.subdivisionYN = subdivisionYN;
         this.itemStatus = itemStatus;
-        this.itemPrice = itemPrice;
     }
 
     public int getItemInfoNo() {
@@ -68,6 +42,14 @@ public class Materials implements Serializable {
 
     public void setItemInfoNo(int itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
+    }
+
+    public FranchiseOrderableItem getFranchiseOrderableItem() {
+        return franchiseOrderableItem;
+    }
+
+    public void setFranchiseOrderableItem(FranchiseOrderableItem franchiseOrderableItem) {
+        this.franchiseOrderableItem = franchiseOrderableItem;
     }
 
     public String getItemInfoName() {
@@ -86,11 +68,11 @@ public class Materials implements Serializable {
         this.itemSerialNo = itemSerialNo;
     }
 
-    public MaterialsCategory getMaterialCategory() {
+    public int getMaterialCategory() {
         return materialCategory;
     }
 
-    public void setMaterialCategory(MaterialsCategory materialCategory) {
+    public void setMaterialCategory(int materialCategory) {
         this.materialCategory = materialCategory;
     }
 
@@ -118,25 +100,17 @@ public class Materials implements Serializable {
         this.itemStatus = itemStatus;
     }
 
-    public int getItemPrice() {
-        return itemPrice;
-    }
-
-    public void setItemPrice(int itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
     @Override
     public String toString() {
-        return "Materials{" +
+        return "MaterialProductDTO{" +
                 "itemInfoNo=" + itemInfoNo +
+                ", franchiseOrderableItem=" + franchiseOrderableItem +
                 ", itemInfoName='" + itemInfoName + '\'' +
                 ", itemSerialNo='" + itemSerialNo + '\'' +
                 ", materialCategory=" + materialCategory +
                 ", subdivisionUnit=" + subdivisionUnit +
                 ", subdivisionYN='" + subdivisionYN + '\'' +
                 ", itemStatus='" + itemStatus + '\'' +
-                ", itemPrice=" + itemPrice +
                 '}';
     }
 }
