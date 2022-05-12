@@ -11,17 +11,19 @@ public class OrderItemInfoDTO {
     private OrderMaterialCategoryDTO materialCategory;
     private String itemInfoStatusYn;
     private String itemInfoDescription;
+    private String itemAttachmentPath;
 
     public OrderItemInfoDTO() {
     }
 
-    public OrderItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategoryDTO materialCategory, String itemInfoStatusYn, String itemInfoDescription) {
+    public OrderItemInfoDTO(int itemInfoNo, String itemInfoName, String itemInfoItemSerialNo, OrderMaterialCategoryDTO materialCategory, String itemInfoStatusYn, String itemInfoDescription, String itemAttachmentPath) {
         this.itemInfoNo = itemInfoNo;
         this.itemInfoName = itemInfoName;
         this.itemInfoItemSerialNo = itemInfoItemSerialNo;
         this.materialCategory = materialCategory;
         this.itemInfoStatusYn = itemInfoStatusYn;
         this.itemInfoDescription = itemInfoDescription;
+        this.itemAttachmentPath = itemAttachmentPath;
     }
 
     public int getItemInfoNo() {
@@ -72,6 +74,14 @@ public class OrderItemInfoDTO {
         this.itemInfoDescription = itemInfoDescription;
     }
 
+    public String getItemAttachmentPath() {
+        return itemAttachmentPath;
+    }
+
+    public void setItemAttachmentPath(String itemAttachmentPath) {
+        this.itemAttachmentPath = itemAttachmentPath;
+    }
+
     @Override
     public String toString() {
         return "OrderItemInfoDTO{" +
@@ -81,6 +91,7 @@ public class OrderItemInfoDTO {
                 ", materialCategory=" + materialCategory +
                 ", itemInfoStatusYn='" + itemInfoStatusYn + '\'' +
                 ", itemInfoDescription='" + itemInfoDescription + '\'' +
+                ", itemAttachmentPath='" + itemAttachmentPath + '\'' +
                 '}';
     }
 }

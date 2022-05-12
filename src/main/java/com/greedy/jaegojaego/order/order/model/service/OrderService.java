@@ -1,6 +1,8 @@
 package com.greedy.jaegojaego.order.order.model.service;
 
 import com.greedy.jaegojaego.member.model.entity.Member;
+import com.greedy.jaegojaego.order.attachmentFile.entity.OrderAttachmentFile;
+import com.greedy.jaegojaego.order.attachmentFile.repository.OrderAttachmentFileRepository;
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
@@ -85,6 +87,7 @@ public class OrderService {
     private final OrderFranchiseInfoRepository orderFranchiseInfoRepository;
     private final FranchiseOrderItemRepository franchiseOrderItemRepository;
     private final OrderFranchiseAccountRepository orderFranchiseAccountRepository;
+    private final OrderAttachmentFileRepository orderAttachmentFileRepository;
 
     @Autowired
     public OrderService(CompanyOrderHistoryRepository companyOrderHistoryRepository, ModelMapper modelMapper
@@ -94,7 +97,7 @@ public class OrderService {
             , OrderClientRepository orderClientRepository, FranchiseOrderRepository franchiseOrderRepository
             , FranchiseOrderStatusHistoryRepository franchiseOrderStatusHistoryRepository, FranchiseOrderableItemRepository franchiseOrderableItemRepository
             , OrderFranchiseInfoRepository orderFranchiseInfoRepository, FranchiseOrderItemRepository franchiseOrderItemRepository
-            , OrderFranchiseAccountRepository orderFranchiseAccountRepository) {
+            , OrderFranchiseAccountRepository orderFranchiseAccountRepository, OrderAttachmentFileRepository orderAttachmentFileRepository) {
 
         this.companyOrderHistoryRepository = companyOrderHistoryRepository;
         this.modelMapper = modelMapper;
@@ -111,6 +114,7 @@ public class OrderService {
         this.orderFranchiseInfoRepository = orderFranchiseInfoRepository;
         this.franchiseOrderItemRepository = franchiseOrderItemRepository;
         this.orderFranchiseAccountRepository = orderFranchiseAccountRepository;
+        this.orderAttachmentFileRepository = orderAttachmentFileRepository;
     }
 
     /**
@@ -675,6 +679,18 @@ public class OrderService {
     public List<FranchiseOrderableItemDTO> selectFranchiseOrderableItemList() {
 
         List<FranchiseOrderableItem> franchiseOrderableItemList = franchiseOrderableItemRepository.findByFranchiseOrderableItem_OrderItemInfo_ItemInfoStatusYn("N");
+
+        List<FranchiseOrderableItemDTO> franchiseOrderableItemDTOList = franchiseOrderableItemList.stream().map(franchiseOrderableItem -> modelMapper.map(franchiseOrderableItem, FranchiseOrderableItemDTO.class)).collect(Collectors.toList());
+
+        for(int i = 0; i < franchiseOrderableItemList.size(); i++) {
+
+            OrderAttachmentFile orderAttachmentFile = orderAttachmentFileRepository.findByOrderItemInfo_ItemInfoNoAndAttachmentFileDeleteYn(franchiseOrderableItemList.get(i).getFranchiseOrderableItem().getOrderItemInfo().getItemInfoNo(), "N");
+
+            if(orderAttachmentFile != null) {
+                franchiseOrderableItemDTOList.get(i).getOrderItemInfo().setItemAttachmentPath(orderAttachmentFile.getAttachmentFileThumbnailUrl());
+            }
+        }
+
 
         return franchiseOrderableItemList.stream().map(franchiseOrderableItem -> modelMapper.map(franchiseOrderableItem, FranchiseOrderableItemDTO.class)).collect(Collectors.toList());
     }
