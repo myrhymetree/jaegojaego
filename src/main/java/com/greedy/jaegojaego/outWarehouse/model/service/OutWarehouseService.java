@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.greedy.jaegojaego.outWarehouse.model.entity.QOutWarehouseFranchiseOrderItem.outWarehouseFranchiseOrderItem;
+
 /**
  * <pre>
  * Class : OutWarehouseService
@@ -268,9 +270,6 @@ public class OutWarehouseService {
     public void modifyStatus(String status, int outWarehouseNo) {
 
         Date finishedDate = new java.sql.Date(System.currentTimeMillis());
-//        System.out.println("^v^v^v^v^v^v^v^v^v^v^v^v^v^v");
-//        System.out.println(finishedDate);
-//        System.out.println("^v^v^v^v^v^v^v^v^v^v^v^v^v^v");
 
         OutWarehouse outWarehouse = outWarehouseRepository.findByOutWarehouseNo(outWarehouseNo);
         outWarehouse.setOutWarehouseWorkingStatusName(status);
@@ -280,9 +279,24 @@ public class OutWarehouseService {
         OutWarehouseFranchiseOrder franchiseOrderInfo = outWarehouseFranchiseOrderRepository.findByFranchiseOrderNo(franchiseOrderNo);
         franchiseOrderInfo.setFranchiseOrderOutYn("Y");
 
-
-
         outWarehouseRepository.save(outWarehouse);
         outWarehouseFranchiseOrderRepository.save(franchiseOrderInfo);
+
+        OutWarehouseFranchiseOrderItemPk outWarehouseFranchiseOrderItemPk = new OutWarehouseFranchiseOrderItemPk();
+        outWarehouseFranchiseOrderItemPk.setFranchiseOrderNo(franchiseOrderInfo);
+
+        List<OutWarehouseFranchiseOrderItem> outWarehouseFranchiseOrderItemList = outWarehouseFranchiseOrderItemRepository.findByFranchiseOrderItemPk(franchiseOrderNo);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        outWarehouseFranchiseOrderItemList.forEach(System.out::println);
+        System.out.println("vvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+        System.out.println("vvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+        System.out.println("vvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+
+        for(int i = 0; i < outWarehouseFranchiseOrderItemList.size(); i++) {
+            int itemInfoNo = outWarehouseFranchiseOrderItemList.get(i).getFranchiseOrderItemPk().getItemInfoNo().getItemInfoNo();
+            int itemOutAmount = outWarehouseFranchiseOrderItemList.get(i).getFranchiseOrderitemAmount();
+        }
     }
 }
