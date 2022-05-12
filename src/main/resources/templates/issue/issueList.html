@@ -963,8 +963,6 @@
 
                 e.stopPropagation();
 
-                console.log(this.parentNode.parentNode.children[0].value);
-
                 for(let j = 0; j < $statusChangeDiv.length; j++) {
 
                     if(this.parentNode.parentNode.children[0].value == $statusChangeDiv[j].parentNode.parentNode.children[0].value) {
@@ -1466,8 +1464,6 @@
 
                     $('#detail-modal-item-area-tbody').html("");
                     $('#issue-detail-modal-img-area').html("");
-
-                    console.log($tds[i].parentNode.children[0].value);
 
                     $.ajax({
                         url: "/issue/detail",
