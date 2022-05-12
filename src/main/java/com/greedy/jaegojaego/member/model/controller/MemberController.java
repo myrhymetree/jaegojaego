@@ -7,6 +7,7 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.dto.MemberDTO;
 import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
+import com.greedy.jaegojaego.member.model.dto.MemberListDTO;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,17 +78,30 @@ public class MemberController {
         return memberService.findDepartmentAll();
     }
 
+    @GetMapping(value = "/supervisorList", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String selectSupervisor() {
+
+        List<CompanyAccountDTO> teamMember = memberService.findSuperVisor();
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(teamMember);
+    }
+
     @GetMapping("/list")
     public ModelAndView findMemberList(ModelAndView mv, String searchWord) {
 
-        List<CompanyAccountDTO> memberList = memberService.findMemberList(searchWord);
+        MemberListDTO memberList = memberService.findMemberList(searchWord);
 
-        Integer count = memberService.countAll();
-
-        mv.addObject("memberList", memberList);
-
-        mv.addObject("count", count);
-
+        mv.addObject("memberList", memberList.getMembers());
+        mv.addObject("removedMemberList",  memberList.getRemovedMembers());
         mv.setViewName("/member/list");
 
         return mv;
@@ -129,9 +143,11 @@ public class MemberController {
     @PostMapping(value = "/modifyMember")
     public String modifyMember(CompanyAccountDTO companyAccount) {
 
+        System.out.println("멥버 번호는 = " + companyAccount);
+
         memberService.modifyMemberInfo(companyAccount);
 
-        return "redirect:/";
+        return "redirect:/member/list";
     }
 
     @GetMapping(value = "/detailInfo/{memberNo}", produces = "application/json; charset=UTF-8")
@@ -151,5 +167,23 @@ public class MemberController {
                 .create();
 
         return gson.toJson(memberInfo);
+    }
+
+    @GetMapping("/delete/{memberNo}")
+    public String removeMember(@PathVariable Integer memberNo) {
+
+        System.out.println("삭제할 멤버번호는 : " + memberNo);
+
+        memberService.removeMember(memberNo);
+
+        return "redirect:/member/list";
+    }
+
+    @GetMapping("/restore/{memberNo}")
+    public String restoreMember(@PathVariable Integer memberNo) {
+
+        memberService.restoreMember(memberNo);
+
+        return "redirect:/member/list";
     }
 }

@@ -2,6 +2,7 @@ package com.greedy.jaegojaego.member.model.entity;
 
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -25,6 +26,7 @@ import java.util.Set;
 @Setter
 @Getter
 @AllArgsConstructor
+@SuperBuilder
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
@@ -77,7 +79,7 @@ public class Member {
     private String memberPwdInitStatus;
 
     //    @Temporal(TemporalType.TIMESTAMP)     //LocalDateTime(java8부터 지원)을 사용하기 때문에 사용할 필요없음, Temporal 사용이유 : DB에 시간, 날짜를 저장하기 위해서
-    @Column(name = "MEMBER_CREATED_DATE")
+    @Column(name = "MEMBER_CREATED_DATE",updatable = false)
     private LocalDateTime memberCreatedDate;
 
     @Column(name = "MEMBER_REMOVED_DATE")
@@ -86,10 +88,10 @@ public class Member {
     @Column(name = "MEMBER_REMOVE_STATUS")
     private String memberRemoveStatus;
 
-    @Column(name = "OFFICE_DIVISION")
+    @Column(name = "OFFICE_DIVISION", updatable = false)
     private String officeDivision;
 
-    @Column(name = "MEMBER_DIVISION")
+    @Column(name = "MEMBER_DIVISION", updatable = false)
     private String memberDivision;
 
     @JoinColumn(name = "MEMBER_NO")

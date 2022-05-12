@@ -16,19 +16,19 @@
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
-    <!-- 본사직원 정보 수정 js 스크립트 -->
-    <script th:src="@{/js/member/memberModify.js}"></script>
-    <!-- 본사직원 계정정보조회 모달 -->
-    <div class="modal inmodal fade" id="employeeModifyModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <!-- 가맹점 직원 정보 수정 js 스크립트 -->
+    <script th:src="@{/js/member/managerModify.js}"></script>
+
+    <div class="modal inmodal fade" id="managerModifyModal" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">본사 직원 계정 정보 수정</h4>
+                    <h4 class="modal-title">가맹점 직원 계정 정보 수정</h4>
                 </div>
 
                 <div class="modal-body">
-                    <form role="form" id="modifyForm" method="post" action="/member/modifyMember">
+                    <form role="form" id="modifyForm" method="post" action="/franchise/modifyManager">
                         <div class="form-group row">
                             <input type="hidden" id="detail-memberNo"  class="form-control" name="memberNo">
                             <label class="col-lg-2 col-form-label">비밀번호</label>
@@ -49,31 +49,23 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">휴대전화 번호</label>
+                            <label class="col-lg-2 col-form-label">가맹점 직원 이름</label>
                             <div class="col-lg-10">
-                                <input type="text" id="memberCellPhone" name="memberCellPhone" placeholder="변경할 휴대전화 번호를 입력하세요" class="form-control" data-mask="(000) 0000-0000">
+                                <input type="text" id="managerName" name="managerName" placeholder="변경할 이름을 입력하세요" class="form-control" data-mask="(000) 0000-0000">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label">사무실 유선전화번호</label>
+                            <label class="col-lg-2 col-form-label">가맹점 직원 휴대전화번호</label>
                             <div class="col-lg-10">
-                                <input type="text" id="officePhoneNumber" name="officePhoneNumber" placeholder="변경할 사무실 유선전화 번호를 입력하세요" class="form-control" data-mask="(031) 3456-0000">
+                                <input type="text" id="managerPhone" name="managerPhone" placeholder="변경할 휴대전화 번호를 입력하세요" class="form-control" data-mask="(031) 3456-0000">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label" for="memberEmail">이메일</label>
+                            <label class="col-lg-2 col-form-label" for="managerEmail">가맹점 직원 이메일</label>
                             <div class="col-lg-10">
-                                <input type="email" name="memberEmail" id="memberEmail" placeholder="변경할 이메일을 입력하세요" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-lg-2 col-form-label" for="department">부서</label>
-                            <div class="col-lg-10">
-                                <select class="select2_demo_3 form-control m-b" name="department.departmentNo" id="department" required>
-
-                                </select>
+                                <input type="email" name="managerEmail" id="managerEmail" placeholder="변경할 이메일을 입력하세요" class="form-control">
                             </div>
                         </div>
 

@@ -30,18 +30,13 @@
 </div>
 <div class="middle-box text-center animated fadeInDown">
 
-    <h3>가맹점 계정등록</h3>
+    <h3>가맹점 직원 계정 등록</h3>
     <form class="m-t4" id="registManagerForm" role="form" action="/franchise/manager" method="post">
         <div>
             <div class="form-group" id="idContainer">
                 <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
                 <label id="duplicationText"></label>
             </div>
-<!--            <div class="col-">-->
-<!--            </div>-->
-<!--            <div class="form-group col-6">-->
-<!--                <input type="text"  id="representativeName" name="representativeName" class="form-control" placeholder="가맹점 대표 이름을 입력하세요." required>-->
-<!--            </div>-->
         </div>
         <div id="pwd-container2">
             <div class="form-group">
@@ -57,7 +52,6 @@
         <div class="form-group">
             <input type="text" class="form-control" id="managerName" name="managerName" placeholder="이름을 입력하세요" required>
         </div>
-
         <div class="form-group">
             <input type="text" class="form-control" id="managerPhone" name="managerPhone" placeholder="휴대전화 번호를 입력하세요" data-mask="(000) 0000-0000">
         </div>
@@ -65,13 +59,10 @@
         <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
         </select>
         <br>
-
         <div class="form-group">
             <input type="email"  name="managerEmail" class="form-control" placeholder="이메일을 입력하세요">
         </div>
-
         <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
-
     </form>
     <button type="button" class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#registMultipleModal">계정 일괄 생성</button>
 </div>

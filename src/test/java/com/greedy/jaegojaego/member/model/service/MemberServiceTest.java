@@ -4,28 +4,27 @@ import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
-import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Department;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.repository.CompanyAccountRepository;
 import com.greedy.jaegojaego.member.model.repository.DepartmentRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRepository;
-import org.hibernate.annotations.DynamicUpdate;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.ui.Model;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
@@ -82,12 +81,16 @@ class MemberServiceTest {
     @Test
     public void 계정목록조회() {
 
+        //지연로딩때문에 메소드를 따로 만들어줘야함
         List<CompanyAccount> memberList = companyAccountRepository.findAll();
 
         memberList.forEach(rows -> System.out.println(rows));
 
         assertNotNull(memberList);
     }
+
+    @PersistenceUnit
+    EntityManagerFactory emf;
     
     @Test
     public void 검색테스트() {
@@ -95,6 +98,12 @@ class MemberServiceTest {
         String searchWord = null;
         
         List<CompanyAccount> companyAccounts = companyAccountRepository.searchMembers(searchWord);
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(companyAccounts.get(0).getDepartment());
+
+        assertTrue(loaded);
+
+        System.out.println("companyAccounts = " + companyAccounts);
 
         List<CompanyAccountDTO> companyAccountDTOS =
                 companyAccounts.stream().map(companyAccount -> modelMapper.map(companyAccount, CompanyAccountDTO.class)).collect(Collectors.toList());
@@ -109,6 +118,7 @@ class MemberServiceTest {
 
         Member member = new Member();
         member.setMemberNo(1);
+        member.setMemberDivision("본사");
 
         CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNoAndMemberDivision(member.getMemberNo(), member.getMemberDivision());
 
@@ -146,9 +156,22 @@ class MemberServiceTest {
 
         Integer memberNo = 1;
 
-        Member member = memberRepository.findMemberPwdByMemberNo(memberNo);
+        Member member = memberRepository.findMemberByMemberNo(memberNo);
         System.out.println("pwd = " + member.getMemberPwd());
         
         assertNotNull(member.getMemberPwd());
+    }
+
+    @Test
+    public void 가맹사업팀_멤버_조회하기() {
+
+        Integer departmentNo = 2;
+
+        List<CompanyAccount> list = companyAccountRepository.findSupervisorByDepartment_DepartmentNo(departmentNo);
+
+        System.out.println("부서 별 담당 사원 리스트");
+        list.forEach(member -> System.out.println(member));
+
+        assertNotNull(list);
     }
 }

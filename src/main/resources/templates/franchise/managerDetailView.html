@@ -1,58 +1,46 @@
- <div class="col-sm-4 memberDetailView" style="display: none">
+<div class="col-sm-4 franchiseDetailView" style="width: 100%; max-width: 100%; display: none">
         <div class="ibox selected">
-
             <div class="ibox-content">
                 <div class="tab-content">
                     <div id="contact-1" class="tab-pane active">
                         <div class="row m-b-lg">
                             <div class="col-lg-4 text-center">
-                                <h2 id="detail-name"></h2>
+                                <h2 id="manager-name"></h2>
                             </div>
                             <div class="col-lg-8">
-
-                                <button type="button"  id="modifyModal" class="btn btn-primary btn-sm btn-block"
-                                        data-toggle="modal" data-target="#employeeModifyModal">
+                                <button type="button" id="updateManager" class="btn btn-primary btn-sm btn-block"
+                                        data-toggle="modal" data-target="#managerModifyModal">
                                     <i class="fa fa-pencil"></i> 수정
                                 </button>
-
-                                <button type="button" id="removeMember" class="btn btn-primary btn-sm btn-block">
+                                <button type="button" id="removeManager" class="btn btn-primary btn-sm btn-block">
                                     <i class="fa fa-trash"></i> 삭제
                                 </button>
-
-                                <button type="button" id="restoreMember" class="btn btn-primary btn-sm btn-block" style="display: none">
+                                <button type="button" id="restoreManager" class="btn btn-primary btn-sm btn-block" style="display: none">
                                     <i class="fa fa-refresh"></i> 복구
                                 </button>
-
                             </div>
                         </div>
                         <div class="client-detail">
                             <div class="full-height-scroll">
-
                                 <strong>회원정보</strong>
-
                                 <ul class="list-group clear-list">
                                     <li class="list-group-item fist-item">
-                                        <span class="float-right" id="detail-id"></span>
-                                        아이디
+                                        <span class="float-right" id="manager-id"></span>
+                                        가맹점 직원 아이디
                                     </li>
                                     <li class="list-group-item">
-                                        <span class="float-right" id="detail-department"></span>
-                                        소속 부서
+                                        <span class="float-right" id="manager-phone"></span>
+                                        가맹점 직원 휴대전화 번호
                                     </li>
                                     <li class="list-group-item">
-                                        <span class="float-right" id="detail-cellPhone"></span>
-                                        휴대전화번호
+                                        <span class="float-right" id="manager-email"></span>
+                                        가맹점 직원 이메일
                                     </li>
                                     <li class="list-group-item">
-                                        <span class="float-right" id="detail-officePhone"></span>
-                                        사무실 유선번호
-                                    </li>
-                                    <li class="list-group-item">
-                                        <span class="float-right" id="detail-email"></span>
-                                        이메일
+                                        <span class="float-right" id="franchise-branchName"></span>
+                                        가맹점 명
                                     </li>
                                 </ul>
-
                             </div>
                         </div>
                     </div>

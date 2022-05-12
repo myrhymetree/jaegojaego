@@ -4,6 +4,7 @@ import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.franchise.dto.*;
 import com.greedy.jaegojaego.franchise.entity.*;
 import com.greedy.jaegojaego.franchise.repository.*;
+import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
 import com.greedy.jaegojaego.member.model.entity.PasswordUpdatedRecord;
@@ -37,7 +38,7 @@ public class FranchiseService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ModelMapper getMapper) {
         this.franchiseRepository = franchiseRepository;
         this.franchiseDetailViewReposirory = franchiseDetailViewReposirory;
         this.franchiseAccountRepository = franchiseAccountRepository;
@@ -139,9 +140,6 @@ public class FranchiseService {
         franchiseAccount.setManagerEmail(manager.getManagerEmail());
         franchiseAccount.setManagerPhone(manager.getManagerPhone());
 
-        System.out.println("매니저 번호는 = " + franchiseAccount.getMemberNo());
-        System.out.println("franchiseAccount.getMemberPwd() = " + franchiseAccount.getMemberPwd());
-
         franchiseAccountRepository.updateManager(franchiseAccount);
 
     }
@@ -180,23 +178,76 @@ public class FranchiseService {
         franchiseRepository.updateFranchise(franchise);
     }
 
-    public List<FranchiseInfoDTO> findFranchiseList(String searchWord) {
+    @Transactional
+    public void modifyFranchiseByCompany(FranchiseInfoDTO franchiseInfo) {
 
-        List<FranchiseInfo> franchiseList = franchiseRepository.searchFranchise(searchWord);
+        /* 로그인 인증 정보 가져오기 */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        List<FranchiseInfoDTO> franchises = franchiseList.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+        CustomUser loginUser = (CustomUser) authentication.getPrincipal();
 
-        return franchises;
+        /* entity타입으로 값 변경 */
+        FranchiseInfo franchise = new FranchiseInfo();
+
+        if(!franchiseInfo.getMemberPwd().isEmpty()) {
+
+            /* 비밀번호 변경할 가맹점 계정의 현재 비밀번호 찾기 */
+            Member selectedMember = memberRepository.findMemberByMemberNo(franchiseInfo.getMemberNo());
+
+            /* 비밀번호 변경이력 추가 */
+            PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
+            passwordUpdatedRecord.setPasswordUpdatedRecordPwd(selectedMember.getMemberPwd());
+            passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
+            passwordUpdatedRecord.setMemberNo(selectedMember.getMemberNo());
+
+            franchise.setMemberPwd(passwordEncoder.encode(franchiseInfo.getMemberPwd()));
+            franchise.setMemberPwdUpdateDate(LocalDateTime.now());
+            franchise.setMemberPwdInitStatus("N");
+
+            passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
+        }
+
+        /* 빌더에 넣기 위해서 DTO타입을 Entity타입으로 변환 */
+//        if(franchiseInfo.getFranchiseInfoUpdatedRecords().size() != 0) {
+//            List<FranchiseContractUpdatedRecord> contracts = franchiseInfo.getFranchiseContractUpdatedRecords().stream().map(rep -> modelMapper.map(rep, FranchiseContractUpdatedRecord.class)).collect(Collectors.toList());
+//            franchise.setFranchiseContractUpdatedRecords(contracts);
+//        }
+
+        franchise =
+                FranchiseInfo.builder()
+                        .memberNo(franchiseInfo.getMemberNo())
+                        .memberPwd(passwordEncoder.encode(franchiseInfo.getMemberPwd()))
+                        .branchName(franchiseInfo.getBranchName())
+                        .representativeEmail(franchiseInfo.getRepresentativeEmail())
+                        .phone(franchiseInfo.getPhone())
+                        .representativePhone(franchiseInfo.getRepresentativePhone())
+                        .address(franchiseInfo.getAddress())
+                        .representativeName(franchiseInfo.getRepresentativeName())
+                        .supervisorNo(franchiseInfo.getSupervisorNo())
+                        .writedMemberNo(loginUser.getMemberNo())
+                        .businessRegistrationNo(franchiseInfo.getBusinessRegistrationNo())
+                        .bankAccountNo(franchiseInfo.getBankAccountNo())
+                        .build();
+
+        franchiseRepository.updateFranchise(franchise);
     }
 
-    public List<FranchiseAccountDTO> findManagerList(String searchWord) {
+    public FranchiseListDTO findFranchiseList(String searchWord) {
 
-        List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
+        /* 프랜차이즈 대표자 계정 목록 조회 */
+        List<FranchiseInfo> franchiseList = franchiseRepository.searchFranchise(searchWord);
+        List<FranchiseInfoDTO> franchises = franchiseList.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
-        List<FranchiseAccountDTO> members =
-                managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+        /* 삭제된 프렌차이즈 대표자 계정 목록 조회 */
+        List<FranchiseInfo> removedFranchiseList = franchiseRepository.searchRemovedFranchise(searchWord);
+        List<FranchiseInfoDTO> removedFranchises = removedFranchiseList.stream().map(removedFrachise -> modelMapper.map(removedFrachise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
-        return members;
+        /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
+        FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
+        franchiseListDTO.setFranchiseList(franchises);
+        franchiseListDTO.setRemovedFranchiseList(removedFranchises);
+
+        return franchiseListDTO;
     }
 
     public FranchiseDetailViewDTO findFranchiseDetailInfo(Integer franchiseNo) {
@@ -239,4 +290,23 @@ public class FranchiseService {
 
         return modelMapper.map(bankAccoutFile, FranchiseAttachmentFileDTO.class);
     }
+
+    public FranchiseListDTO findManagerList(String searchWord) {
+
+        /* 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
+        List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
+        List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        /* 삭제된 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
+        List<FranchiseAccount> removedManagerList = franchiseAccountRepository.searchRemovedManager(searchWord);
+        List<FranchiseAccountDTO> removedManagers = removedManagerList.stream().map(removedManager -> modelMapper.map(removedManager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+
+        /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
+        FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
+        franchiseListDTO.setManagerList(managers);
+        franchiseListDTO.setRemovedManagerList(removedManagers);
+
+        return franchiseListDTO;
+    }
+
 }

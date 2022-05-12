@@ -64,28 +64,36 @@
                                 <div id="tab-2" class="tab-pane">
                                     <div class="full-height-scroll">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-hover">
+                                            <table id="removedMemberTable" class="table table-striped table-hover">
                                                 <tbody>
                                                 <tr>
-                                                    <td><a href="#company-1" class="client-link">Tellus Institute</a></td>
-                                                    <td>Rexton</td>
-                                                    <td><i class="fa fa-flag"></i> Angola</td>
-                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
+                                                    <th>번호</th>
+                                                    <th>아이디</th>
+                                                    <th>이름</th>
+                                                    <th>부서</th>
                                                 </tr>
-
+                                                <tr th:each="removedMember, index : ${ removedMemberList }">
+                                                    <td class="memberNo" th:text="${ removedMember.memberNo }"></td>
+                                                    <td>[[${index.count}]]</td>
+                                                    <td th:text="${ removedMember.memberId }"></td>
+                                                    <td th:text="${ removedMember.memberName }"></td>
+                                                    <td th:text="${ removedMember.department.departmentName }"></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+
         <th:block th:include="/member/employeeInfoModifyModal.html"></th:block>
-        <th:block  th:id="aaaaa" th:replace="/member/detailView.html" th:class="ababa"></th:block>
+        <th:block th:if="${ true }">
+            <th:block th:replace="/member/detailView.html"></th:block>
+        </th:block>
         <th:block th:replace="/common/footer.html"></th:block>
         </div>
     </div>
@@ -93,64 +101,19 @@
     <script th:inline="javascript">
         $(document).ready(function () {
 
-            <!-- password meter -->
-            let options1 = {};
-            options1.ui = {
-                container: "#pwd-container2",
-                showVerdictsInsideProgressBar: true,
-                viewports: {
-                    progress: ".pwstrength_viewport_progress"
-                }
-            };
-            options1.common = {
-                debug: false,
-            };
-
-            $('.example2').pwstrength(options1);
-
-            <!-- input mask, validation(password equality, length, email validation) -->
-            $("#modifyForm").ready().validate({
-
-                errorPlacement: function (error, element) {
-                    element.before(error);
-                },
-                rules: {
-                    confirm: {
-                        equalTo: "#memberPwd",
-                    },
-                    memberPwd: {
-                        minlength: 8,
-                        maxlength: 15
-                    }
-                }
-
-            });
-
-            $(".select2_demo_1").select2({
-                theme: 'bootstrap4',
-            });
-            $(".select2_demo_2").select2({
-                theme: 'bootstrap4',
-            });
-            $(".select2_demo_3").select2({
-                theme: 'bootstrap4',
-                placeholder: "부서를 선택하세요.",
-                allowClear: true
-            });
-
             $('.memberNo').attr('style', "display:none;");
-            $(".ababa").attr('style', "display:none;");
 
             $("#memberTable tbody").on("click", "tr", function () {
+
+                $(".memberDetailView").addClass("active").attr('style', "display:block");
+                $("#modifyModal").addClass("hover").attr('style', "display:block");
+                $("#removeMember").addClass("hover").attr('style', "display:block");
+                $("#restoreMember").addClass("hover").attr('style', "display:none");
 
                 /* td에 숫자가 안나오게 표시함 */
                 let memberNo = this.children[0].innerText;
 
-                $("#modal-memberNo").val(memberNo);
-
-                console.log(memberNo);
-
-                $('#ababa').attr('style', "display;");
+                console.log("번호는 : " + memberNo);
 
                 axios({
                     method: 'get',
@@ -159,6 +122,7 @@
                 .then(function (response1) {
                     console.log(response1);
 
+                    $("#detail-memberNo").val(response1.data.memberNo);
                     $("#detail-name").text(response1.data.memberName);
                     $("#detail-id").text(response1.data.memberId).val();
                     $("#detail-department").text(response1.data.department.departmentName).val();
@@ -178,16 +142,13 @@
                     url: '/member/department'
                 })
                 .then(function (response2) {
+
                     console.log(response2);
 
                     const $department = $("#department");
                     $department.html("");
 
                     $department.append($("<option>"))
-
-                    console.log(response2.data);
-                    console.log(response2.data[0].departmentNo);
-                    console.log(response2.data[0].departmentName);
 
                     for (let i = 0; i < response2.data[7].departmentNo; i++) {
                         $department.append($("<option>").val(response2.data[i].departmentNo).text(response2.data[i].departmentName));
@@ -200,6 +161,84 @@
 
                 });
 
+            });
+
+            $("#removedMemberTable tbody").on("click", "tr", function () {
+
+                $(".memberDetailView").addClass("active").attr('style', "display:block");
+                $("#modifyModal").addClass("hover").attr('style', "display:none");
+                $("#removeMember").addClass("hover").attr('style', "display:none");
+                $("#restoreMember").addClass("hover").attr('style', "display:block");
+
+                /* td에 숫자가 안나오게 표시함 */
+                let memberNo = this.children[0].innerText;
+
+                console.log("번호는 : " + memberNo);
+
+                axios({
+                    method: 'get',
+                    url: '/member/detailInfo/' + memberNo,
+                })
+                    .then(function (response1) {
+                        console.log(response1);
+
+                        $("#detail-memberNo").val(response1.data.memberNo);
+                        $("#detail-name").text(response1.data.memberName);
+                        $("#detail-id").text(response1.data.memberId).val();
+                        $("#detail-department").text(response1.data.department.departmentName).val();
+                        $("#detail-cellPhone").text(response1.data.memberCellPhone).val();
+                        $("#detail-officePhone").text(response1.data.officePhoneNumber).val();
+                        $("#detail-email").text(response1.data.memberEmail).val();
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+                    .then(function () {
+
+                    });
+
+                axios({
+                    method: 'get',
+                    url: '/member/department'
+                })
+                    .then(function (response2) {
+
+                        console.log(response2);
+
+                        const $department = $("#department");
+                        $department.html("");
+
+                        $department.append($("<option>"))
+
+                        for (let i = 0; i < response2.data[7].departmentNo; i++) {
+                            $department.append($("<option>").val(response2.data[i].departmentNo).text(response2.data[i].departmentName));
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+                    .then(function () {
+
+                    });
+
+            });
+
+            /* 본사 직원 계정 삭제 이벤트 */
+            $(function () {
+                $("#removeMember").click(function () {
+
+                    const memberNo = $("#detail-memberNo").val();
+
+                    location.href="/member/delete/" + memberNo;
+                });
+            });
+
+            /* 본사 직원 계정 복구 이벤트 */
+            $(function () {
+                $("#restoreMember").click(function () {
+                    const memberNo = $("#detail-memberNo").val();
+                    location.href="/member/restore/" + memberNo;
+                });
             });
 
         });

@@ -3,6 +3,9 @@ package com.greedy.jaegojaego.franchise.entity;
 import com.greedy.jaegojaego.member.model.entity.CompanyAccount;
 import com.greedy.jaegojaego.member.model.entity.Member;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.naming.Name;
 import javax.persistence.*;
@@ -13,6 +16,9 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
+@DynamicUpdate
+@DynamicInsert
 @SequenceGenerator(
         name = "FRANCHISE_INFO_SEQ_GENERATOR",
         sequenceName = "FRANCHISE_REPRESENTATIVE_NO",
@@ -67,9 +73,10 @@ public class FranchiseInfo extends Member {
     @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
     private List<FranchiseAttachmentFile> franchiseAttachmentFiles;
 
-//    @OneToMany(mappedBy = "franchiseInfo")
-//    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
-//
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO")
+    private List<FranchiseContractUpdatedRecord> franchiseContractUpdatedRecords;
+
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "FRANCHISE_REPRESENTATIVE_NO", insertable = false)
 //    private List<FranchiseInfoUpdatedRecord> franchiseInfoUpdatedRecords;
@@ -102,8 +109,7 @@ public class FranchiseInfo extends Member {
                 ", supervisor=" + supervisor +
                 ", writedMember=" + writedMember +
                 ", franchiseAttachmentFiles=" + franchiseAttachmentFiles +
-//                ", franchiseContractUpdatedRecords=" + franchiseContractUpdatedRecords +
-//                ", franchiseInfoUpdatedRecords=" + franchiseInfoUpdatedRecords +
+                ", franchiseContractUpdatedRecords=" + franchiseContractUpdatedRecords +
 //                ", franchiseAccounts=" + franchiseAccounts +
                 ", franchiseContractStartedDate=" + franchiseContractStartedDate +
                 ", franchiseContractExpiredDate=" + franchiseContractExpiredDate +

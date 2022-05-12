@@ -232,13 +232,10 @@ public class FranchiseController {
     @GetMapping("/list")
     public ModelAndView findFranchiseList(ModelAndView mv,  String searchWord) {
 
-        List<FranchiseInfoDTO> franchiseList = franchiseService.findFranchiseList(searchWord);
+        FranchiseListDTO franchiseList = franchiseService.findFranchiseList(searchWord);
 
-        List<FranchiseAccountDTO> managerList = franchiseService.findManagerList(searchWord);
-
-        mv.addObject("franchiseList", franchiseList);
-        mv.addObject("managerList", managerList);
-
+        mv.addObject("franchiseList", franchiseList.getFranchiseList());
+        mv.addObject("removedFranchiseList", franchiseList.getRemovedFranchiseList());
         mv.setViewName("franchise/list");
 
         return mv;
@@ -299,12 +296,9 @@ public class FranchiseController {
     @PostMapping(value = "/modifymanager")
     public String updateManager(FranchiseAccountDTO manager) {
 
-        System.out.println("manager = " + manager);
-        System.out.println("매니저 비밀번호는 = " + manager.getMemberPwd());
-
         franchiseService.updateManagerInfo(manager);
 
-        return "redirect:/";
+        return "redirect:/franchise/managerList";
     }
 
     @PostMapping(value = "/modifyfranchise")
@@ -331,6 +325,23 @@ public class FranchiseController {
                 .create();
 
         return  gson.toJson(franchiseDetailInfo);
+    }
+
+    @GetMapping(value = "/managerDetail/{memberNo}", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findManagerDetailInfo(@PathVariable Integer memberNo) {
+
+        FranchiseAccountDTO franchiseAccount = franchiseService.findManagerDetailInfo(memberNo);
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .serializeNulls()
+                .disableHtmlEscaping()
+                .create();
+
+        return gson.toJson(franchiseAccount);
     }
 
     @GetMapping("/downloadContractFile/{attachmentFileNo}")
@@ -360,7 +371,50 @@ public class FranchiseController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-
     }
+
+    @GetMapping("/delete/{memberNo}")
+    public String removeMember(@PathVariable Integer memberNo) {
+
+        String result = memberService.removeMember(memberNo);
+
+        if(result.equals("대표자")) {
+            return "redirect:/franchise/list";
+        } else {
+            return "redirect:/franchise/managerList";
+        }
+    }
+
+    @GetMapping("/restore/{memberNo}")
+    public String restoreMember(@PathVariable Integer memberNo) {
+
+        String result = memberService.restoreMember(memberNo);
+
+        if(result.equals("대표자")) {
+            return "redirect:/franchise/list";
+        } else {
+            return "redirect:/franchise/managerList";
+        }
+    }
+
+    @GetMapping("/managerList")
+    public ModelAndView findManagerList(ModelAndView mv, String searchWord) {
+
+        FranchiseListDTO list = franchiseService.findManagerList(searchWord);
+
+        mv.addObject("managerList", list.getManagerList());
+        mv.addObject("removedManagerList", list.getRemovedManagerList());
+        mv.setViewName("/franchise/managerList");
+
+        return mv;
+    }
+
+    @PostMapping("/updateFranchise")
+    public String updateFranchise(ModelAndView mv, FranchiseInfoDTO franchiseInfo) {
+
+        franchiseService.modifyFranchiseByCompany(franchiseInfo);
+
+        return "redirect:/franchise/list";
+    }
+
 }

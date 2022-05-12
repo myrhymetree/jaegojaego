@@ -9,6 +9,7 @@ import com.greedy.jaegojaego.franchise.dto.FranchiseDetailViewDTO;
 import com.greedy.jaegojaego.franchise.dto.FranchiseInfoDTO;
 import com.greedy.jaegojaego.franchise.entity.*;
 import com.greedy.jaegojaego.franchise.repository.*;
+import com.greedy.jaegojaego.member.model.entity.Member;
 import com.greedy.jaegojaego.member.model.entity.MemberRole;
 import com.greedy.jaegojaego.member.model.entity.MemberRolePK;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
@@ -155,7 +156,7 @@ class FranchiseServiceTest {
     @Transactional
     public void 가맹점_계정_목록_조회() {
 
-        String searchWord = "강남";
+        String searchWord = null;
 
         List<FranchiseInfo> franchiseInfos = franchiseRepository.searchFranchise(searchWord);
 
@@ -216,5 +217,62 @@ class FranchiseServiceTest {
 
     }
 
+    @Test
+    @Transactional
+    public void 삭제된_가맹점_계정_목록_조회() {
 
+        String searchWord = null;
+
+        List<FranchiseInfo> franchiseInfos = franchiseRepository.searchRemovedFranchise(searchWord);
+
+        List<FranchiseInfoDTO> franchiseInfoDTOS =
+                franchiseInfos.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+
+        franchiseInfoDTOS.forEach(row -> System.out.println(row));
+
+        assertNotNull(franchiseInfos);
+    }
+
+    @Test
+    @Transactional
+    public void 가맹점_대표자_계정정보_수정() {
+
+        //given
+        FranchiseContractUpdatedRecord record =
+                FranchiseContractUpdatedRecord.builder()
+                        .franchiseContractStartedDate(LocalDateTime.now())
+                        .franchiseContractExpiredDate(LocalDateTime.now())
+                        .franchiseContractStatus("계약중")
+                        .franchiseRepresentativeNo(3)
+                        .build();
+
+        FranchiseContractUpdatedRecord period =  franchiseContractRepository.save(record);
+
+        List<FranchiseContractUpdatedRecord> list = new ArrayList<>();
+        list.add(0, period);
+
+        FranchiseInfo franchise =
+                FranchiseInfo.builder()
+                .memberNo(3)
+                .memberPwd("0000")
+                .representativeEmail("abc@gmail.com")
+                .phone("02-3444-4444")
+                .representativePhone("010-0000-0000")
+                .address("서울 성동구 금호로 111")
+                .representativeName("이석재")
+                .supervisorNo(1)
+                .businessRegistrationNo("110-1111-1111")
+                .bankAccountNo("111-1111-1111")
+                .writedMemberNo(1)
+                .supervisorNo(1)
+                .franchiseContractUpdatedRecords(list)
+                .build();
+
+        //when
+        FranchiseInfo franchiseInfo = franchiseRepository.updateFranchise(franchise);
+        System.out.println("가맹점 계정정보는 : " + franchiseInfo);
+
+        //then
+        assertEquals("이석재", franchiseInfo.getRepresentativeName());
+    }
 }

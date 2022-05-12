@@ -7,10 +7,7 @@ import com.greedy.jaegojaego.franchise.entity.FranchiseAccount;
 import com.greedy.jaegojaego.franchise.entity.FranchiseInfo;
 import com.greedy.jaegojaego.franchise.repository.FranchiseAccountRepository;
 import com.greedy.jaegojaego.franchise.repository.FranchiseRepository;
-import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
-import com.greedy.jaegojaego.member.model.dto.DepartmentDTO;
-import com.greedy.jaegojaego.member.model.dto.MemberDTO;
-import com.greedy.jaegojaego.member.model.dto.MemberSearchCondition;
+import com.greedy.jaegojaego.member.model.dto.*;
 import com.greedy.jaegojaego.member.model.entity.*;
 import com.greedy.jaegojaego.member.model.repository.*;
 import org.modelmapper.ModelMapper;
@@ -102,21 +99,22 @@ public class MemberService {
         return status;
     }
 
-    public List<CompanyAccountDTO> findMemberList(String searchWord) {
+    public MemberListDTO findMemberList(String searchWord) {
 
+        /* 본사 직원 계정 목록 조회 */
         List<CompanyAccount> memberList = companyAccountRepository.searchMembers(searchWord);
+        List<CompanyAccountDTO> memberDTOList =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
 
-        List<CompanyAccountDTO> memberDTOlist =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
+        /* 삭제된 본사 직원 계정 목록 조회 */
+        List<CompanyAccount> removedMemberList = companyAccountRepository.searchRemovedMember(searchWord);
+        List<CompanyAccountDTO> removedMembers = removedMemberList.stream().map(removedMember -> modelMappper.map(removedMember, CompanyAccountDTO.class)).collect(Collectors.toList());
 
-        return memberDTOlist;
+        MemberListDTO memberListDTO = new MemberListDTO();
+        memberListDTO.setMembers(memberDTOList);
+        memberListDTO.setRemovedMembers(removedMembers);
 
-    }
+        return memberListDTO;
 
-    public Integer countAll() {
-
-        Integer count = companyAccountRepository.countAllBy();
-
-        return count;
     }
 
     public Object findLoginMemberInfo(CustomUser customUser) {
@@ -195,9 +193,11 @@ public class MemberService {
 
     public void modifyMemberInfo(CompanyAccountDTO member) {
 
+        CompanyAccount companyAccount = new CompanyAccount();
+
         if(!member.getMemberPwd().isEmpty()) {
 
-            Member memberPwd = memberRepository.findMemberPwdByMemberNo(member.getMemberNo());
+            Member memberPwd = memberRepository.findMemberByMemberNo(member.getMemberNo());
 
             PasswordUpdatedRecord passwordUpdatedRecord = new PasswordUpdatedRecord();
             /* 새로 변경할 비밀번호가 아닌 이전 비빌번호를 내역에 저장함 */
@@ -205,13 +205,60 @@ public class MemberService {
             passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
             passwordUpdatedRecord.setMemberNo(member.getMemberNo());
 
+
+            /*변경된 비밀번호 사항을 저장해준다.*/
+            companyAccount.setMemberPwd(passwordEncoder.encode(member.getMemberPwd()));
+            companyAccount.setMemberPwdUpdateDate(LocalDateTime.now());
             /* 관리자가 임의로 지정한 비밀번호이기 때문에 비밀번호 초기화 여부는 Y로 체크해준다. */
-            member.setMemberPwdInitStatus("Y");
+            companyAccount.setMemberPwdInitStatus("Y");
         }
 
         /* entity 타입으로 값 변경 필요 */
-        CompanyAccount companyAccount = new CompanyAccount();
+        companyAccount.setMemberNo(member.getMemberNo());
+        companyAccount.setMemberEmail(member.getMemberEmail());
+        companyAccount.setOfficePhoneNumber(member.getOfficePhoneNumber());
+        companyAccount.setMemberCellPhone(member.getMemberCellPhone());
+        companyAccount.setDepartmentNo(member.getDepartment().getDepartmentNo());
+
+        companyAccountRepository.updateMember(companyAccount);
+    }
 
 
+    @Transactional
+    public String removeMember(Integer memberNo) {
+
+        Member member = memberRepository.findMemberByMemberNo(memberNo);
+
+        member.setMemberRemoveStatus("N");
+        member.setMemberRemovedDate(LocalDateTime.now());
+
+        memberRepository.save(member);
+
+        /* result 결과에 따라서 뷰를 결정하기 위해 컨트롤러로 리턴 */
+        String result = member.getOfficeDivision();
+
+        return result;
+    }
+
+    @Transactional
+    public String restoreMember(Integer memberNo) {
+
+        Member member = memberRepository.findMemberByMemberNo(memberNo);
+
+        member.setMemberRemoveStatus("Y");
+        member.setMemberRemovedDate(null);
+
+        memberRepository.save(member);
+
+        String result = member.getOfficeDivision();
+
+        return result;
+    }
+
+    public List<CompanyAccountDTO> findSuperVisor() {
+
+        List<CompanyAccount> supervisors = companyAccountRepository.findSupervisorByDepartment_DepartmentNo(2);
+
+        return supervisors.stream().map(supervisor -> modelMappper.map(supervisor, CompanyAccountDTO.class)).collect(Collectors.toList());
     }
 }

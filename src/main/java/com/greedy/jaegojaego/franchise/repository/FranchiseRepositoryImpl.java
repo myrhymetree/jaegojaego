@@ -8,7 +8,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 
@@ -20,15 +19,17 @@ import static org.springframework.util.StringUtils.hasText;
 public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implements FranchiseRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
+//    private final EntityManager em;
 
     public FranchiseRepositoryImpl(EntityManager em) {
         super(FranchiseInfo.class);
         this.queryFactory = new JPAQueryFactory(em);
+//        this.em = em;
     }
 
     @Override
     @Transactional
-    public void updateFranchise(FranchiseInfo franchise) {
+    public FranchiseInfo updateFranchise(FranchiseInfo franchise) {
 
         UpdateClause<JPAUpdateClause> updateBuilder = update(franchiseInfo);
 
@@ -48,9 +49,69 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
             updateBuilder.set(franchiseInfo.representativePhone, franchise.getRepresentativePhone());
         }
 
+        if(hasText(franchise.getAddress())) {
+            updateBuilder.set(franchiseInfo.address, franchise.getAddress());
+        }
+
+        if(hasText(franchise.getRepresentativeName())) {
+            updateBuilder.set(franchiseInfo.representativeName, franchise.getRepresentativeName());
+        }
+
+        if(hasText(String.valueOf(franchise.getWritedMemberNo()))) {
+            updateBuilder.set(franchiseInfo.writedMemberNo, franchise.getWritedMemberNo());
+        }
+
+        if((String.valueOf(franchise.getSupervisorNo())).isEmpty()) {
+            updateBuilder.set(franchiseInfo.supervisorNo, franchise.getSupervisorNo());
+        }
+
+//        if(hasText(String.valueOf(franchise.getSupervisor().getMemberNo()))) {
+//            updateBuilder.set(franchiseInfo.supervisorNo, franchise.getSupervisor().getMemberNo());
+//        }
+
+        if(hasText(franchise.getBusinessRegistrationNo())) {
+            updateBuilder.set(franchiseInfo.businessRegistrationNo, franchise.getBusinessRegistrationNo());
+        }
+
+        if(hasText(franchise.getBankAccountNo())) {
+            updateBuilder.set(franchiseInfo.bankAccountNo, franchise.getBankAccountNo());
+        }
+
+        if(hasText(franchise.getBranchName())) {
+            updateBuilder.set(franchiseInfo.branchName, franchise.getBranchName());
+        }
+
+//        queryFactory
+//                .insert(franchiseContractUpdatedRecord)
+//                        .values(franchise.getFranchiseContractStartedDate(), franchise.getFranchiseContractExpiredDate(), franchise.getFranchiseContractStatus(), franchise.getMemberNo())
+//                                .execute();
+
         updateBuilder
                 .where(franchiseInfo.memberNo.eq(franchise.getMemberNo()))
                 .execute();
+
+//        InsertClause<JPAInsertClause> insertBuilder = new JPAInsertClause(em, franchiseContractUpdatedRecord);
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractStartedDate))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractStartedDate, franchise.getFranchiseContractStartedDate());
+//        }
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractExpiredDate))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractExpiredDate, franchise.getFranchiseContractExpiredDate());
+//        }
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseContractStatus))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseContractStatus, franchise.getFranchiseContractStatus());
+//        }
+//
+//        if(hasText(String.valueOf(franchiseContractUpdatedRecord.franchiseRepresentativeNo))) {
+//            insertBuilder.set(franchiseContractUpdatedRecord.franchiseRepresentativeNo, franchise.getMemberNo());
+//        }
+//
+//            insertBuilder
+//                    .execute();
+
+        return franchise;
     }
 
     @Override
@@ -62,12 +123,14 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                             franchiseInfo))
                     .from(franchiseInfo)
                     .where(
-                        memberIdContatins(searchWord)
+                        franchiseInfo.memberRemoveStatus.eq("Y")
+                        .or(memberIdContatins(searchWord))
                         .or(franchiseNameContatains(searchWord))
                         .or(franchisePhoneNumberContains(searchWord))
                         .or(franchiseAddressContains(searchWord))
                         .or(franchiseSupervisorContains(searchWord))
                     )
+                    .orderBy(franchiseInfo.branchName.asc())
                     .fetch();
         }
         else {
@@ -76,12 +139,14 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                             franchiseInfo))
                     .from(franchiseInfo)
                     .where(
+                        franchiseInfo.memberRemoveStatus.eq("Y"),
                         memberIdContatins(searchWord),
                         franchiseNameContatains(searchWord),
                         franchisePhoneNumberContains(searchWord),
                         franchiseAddressContains(searchWord),
                         franchiseSupervisorContains(searchWord)
                     )
+                    .orderBy(franchiseInfo.branchName.asc())
                     .fetch();
         }
 
@@ -107,4 +172,40 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
         return hasText(supervisor) ? franchiseInfo.supervisor.memberName.contains(supervisor) : null;
     }
 
+    @Override
+    public List<FranchiseInfo> searchRemovedFranchise(String searchWord) {
+
+        if(searchWord != null && searchWord != "") {
+            return queryFactory
+                    .select(new QFranchiseInfo(
+                            franchiseInfo))
+                    .from(franchiseInfo)
+                    .where(
+                            franchiseInfo.memberRemoveStatus.eq("N")
+                            .or(memberIdContatins(searchWord))
+                            .or(franchiseNameContatains(searchWord))
+                            .or(franchisePhoneNumberContains(searchWord))
+                            .or(franchiseAddressContains(searchWord))
+                            .or(franchiseSupervisorContains(searchWord))
+                    )
+                    .orderBy(franchiseInfo.branchName.asc())
+                    .fetch();
+        }
+        else {
+            return queryFactory
+                    .select(new QFranchiseInfo(
+                            franchiseInfo))
+                    .from(franchiseInfo)
+                    .where(
+                            franchiseInfo.memberRemoveStatus.eq("N"),
+                            memberIdContatins(searchWord),
+                            franchiseNameContatains(searchWord),
+                            franchisePhoneNumberContains(searchWord),
+                            franchiseAddressContains(searchWord),
+                            franchiseSupervisorContains(searchWord)
+                    )
+                    .orderBy(franchiseInfo.branchName.asc())
+                    .fetch();
+        }
+    }
 }

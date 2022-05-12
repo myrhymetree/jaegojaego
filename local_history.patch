@@ -1,0 +1,17 @@
+Index: src/main/resources/templates/franchise/list.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/franchise/list.html b/src/main/resources/templates/franchise/list.html
+--- a/src/main/resources/templates/franchise/list.html	
++++ b/src/main/resources/templates/franchise/list.html	(date 1652172654721)
+@@ -19,7 +19,7 @@
+     </div>
+ 
+     <div class="wrapper wrapper-content  animated fadeInRight">
+-        <div class="abca">
++        <div class="row">
+             <div class="col-sm-8" id="good" style="display: flex; flex-direction: row;">
+                 <div class="ibox">
+                     <div class="ibox-content" style="width: 100%;">

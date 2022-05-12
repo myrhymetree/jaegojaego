@@ -20,14 +20,7 @@ public class FranchiseAttachmentFileDTO {
     private String attachmentFileDeleteYn;
     private Integer attachmentFileCategoryNo;
     private String attachmentFileDivision;
-    private Integer companyNoticeNo;
-    private Integer franchiseNoticeNo;
-    private Integer clientContractItemNo;
-    private Integer clientContractInfoNo;
-    private Integer clientNo;
-    private Integer franchiseIssueNo;
     private Integer franchiseRepresentativeNo;
     private Integer franchiseContractUpdateNo;
-    private Integer itemInfoUnificationNo;
 
 }

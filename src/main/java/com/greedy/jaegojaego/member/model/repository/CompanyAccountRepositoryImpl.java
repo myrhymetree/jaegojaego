@@ -44,11 +44,15 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .select(new QCompanyAccount(
                             companyAccount))
                     .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
                     .where(
                             memberIdContains(searchWord)
                             .or(memberNameContains(searchWord))
                             .or( departmentNameContains(searchWord))
+                            .and(companyAccount.memberRemoveStatus.eq("Y"))
+
                     )
+                    .orderBy(companyAccount.memberNo.asc())
                     .fetch();
         }
         else {
@@ -56,14 +60,28 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
                     .select(new QCompanyAccount(
                             companyAccount))
                     .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
                     .where(
                             memberIdContains(searchWord),
                             memberNameContains(searchWord),
-                            departmentNameContains(searchWord)
+                            departmentNameContains(searchWord),
+                            companyAccount.memberRemoveStatus.eq("Y")
                     )
+                    .orderBy(companyAccount.memberNo.asc())
                     .fetch();
         }
+    }
 
+    private BooleanExpression memberIdContains(String memberId) {
+        return hasText(memberId) ? companyAccount.memberId.contains(memberId) : null;
+    }
+
+    private BooleanExpression memberNameContains(String memberName) {
+        return hasText(memberName) ? companyAccount.memberName.contains(memberName) : null;
+    }
+
+    private BooleanExpression departmentNameContains(String departmentName) {
+        return hasText(departmentName) ? department.departmentName.contains(departmentName) : null;
     }
 
     @Override
@@ -88,21 +106,48 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
             updateBuilder.set(companyAccount.officePhoneNumber, member.getOfficePhoneNumber());
         }
 
+        if(StringUtils.hasText(String.valueOf(member.getDepartmentNo()))) {
+            updateBuilder.set(companyAccount.departmentNo, member.getDepartmentNo());
+        }
+
         updateBuilder
                 .where(companyAccount.memberNo.eq(member.getMemberNo()))
                 .execute();
     }
 
-    private BooleanExpression memberIdContains(String memberId) {
-        return hasText(memberId) ? companyAccount.memberId.contains(memberId) : null;
-    }
+    @Override
+    public List<CompanyAccount> searchRemovedMember(String searchWord) {
 
-    private BooleanExpression memberNameContains(String memberName) {
-        return hasText(memberName) ? companyAccount.memberName.contains(memberName) : null;
-    }
+        if(searchWord != null && searchWord != "") {
+            return queryFactory
+                    .select(new QCompanyAccount(
+                            companyAccount))
+                    .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
+                    .where(
+                            memberIdContains(searchWord)
+                            .or(memberNameContains(searchWord))
+                            .or( departmentNameContains(searchWord))
+                            .and(companyAccount.memberRemoveStatus.eq("N"))
 
-    private BooleanExpression departmentNameContains(String departmentName) {
-        return hasText(departmentName) ? department.departmentName.contains(departmentName) : null;
+                    )
+                    .orderBy(companyAccount.memberNo.asc())
+                    .fetch();
+        }
+        else {
+            return queryFactory
+                    .select(new QCompanyAccount(
+                            companyAccount))
+                    .from(companyAccount)
+                    .join(companyAccount.department, department).fetchJoin()
+                    .where(
+                            memberIdContains(searchWord),
+                            memberNameContains(searchWord),
+                            departmentNameContains(searchWord),
+                            companyAccount.memberRemoveStatus.eq("N")
+                    )
+                    .orderBy(companyAccount.memberNo.asc())
+                    .fetch();
+        }
     }
-
 }
