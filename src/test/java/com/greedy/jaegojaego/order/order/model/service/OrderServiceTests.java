@@ -42,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ContextConfiguration(classes = {JpaConfiguration.class, JaegojaegoApplication.class, BeanConfiguration.class, JaegojaegoApplication.class})
-@AutoConfigureMockMvc
 public class OrderServiceTests {
 
     @Autowired
@@ -87,7 +86,6 @@ public class OrderServiceTests {
 
         //when
         List<CompanyOrderHistory> companyOrderHistoryList = companyOrderHistoryRepository.findAll(Sort.by(Sort.Direction.DESC, orderData));
-
 
         //then
         assertNotNull(companyOrderHistoryList);
@@ -404,7 +402,7 @@ public class OrderServiceTests {
     public void updateCompanyOrderHistory() {
 
         //given
-        int itemAmount = 100;
+        int itemAmount = 150;
         int clientItemNo = 1;
         int itemInfoNo = 1;
         int clientNo = 1;
@@ -506,6 +504,7 @@ public class OrderServiceTests {
 
     @Test
     @DisplayName("가맹점 발주 등록 메소드 테스트")
+    @Transactional
     public void insertFranchiseOrder() {
 
         //given
@@ -563,6 +562,5 @@ public class OrderServiceTests {
         assertNotNull(franchiseOrderStatusHistoryRepository.findByFranchiseOrderNo(franchiseOrderNo));
 
     }
-
 
 }

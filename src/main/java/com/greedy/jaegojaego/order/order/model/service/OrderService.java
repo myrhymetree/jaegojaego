@@ -46,6 +46,27 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * <pre>
+ * Class : OrderController
+ * Comment : 본사, 가맹점 발주(Order)관련 메소드를 모아놓은 Service 입니다.
+ * History
+ * 2022/04/19 (박인근) 본사 발주 신청 내역 목록 조회
+ * 2022/04/20 (박인근) 본사 발주 신청 내역 목록 조회
+ * 2022/04/21 (박인근) 본사 상세 조회, 발주 신청서 거래처 목록 조회
+ * 2022/04/23 (박인근) 본사 발주 신청 자재 검색 자동완성, 본사 발주 신청
+ * 2022/04/24 (박인근) 본사 발주 신청, 개러처 발주 목록 조회
+ * 2022/04/25 (박인근) 거래처 발주 목록 조회
+ * 2022/04/26 (박인근) 본사 발주 내역 처리 상태 변경, 거래처 발주 목록 조회, 거래처 발주 상세 조회
+ * 2022/04/27 (박인근) 거래처 발주 처리 상태 변경
+ * 2022/04/28 (박인근) 거래처 발주 신청 자재 목록 조회, 본사 발주 내역 수정
+ * 2022/04/29 (박인근) 거래처 발주 신청 자재 목록 조회
+ * 2022/04/30 (박인근) 거래처 발주 신청 자재 목록 조회, 거래처 발주 신청
+ * 2022/05/01 (박인근) 거래처 발주 신청, 거래처 발주 거부 사유서 조회
+ * </pre>
+ * @version 12
+ * @author 박인근
+ */
 @Service
 public class OrderService {
 
@@ -92,6 +113,10 @@ public class OrderService {
         this.orderFranchiseAccountRepository = orderFranchiseAccountRepository;
     }
 
+    /**
+     * selectCompanyOrderList : 본사 발주 내역 목록 조회
+     * @ return : 본사 발주 내역 목록
+     */
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
 
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
@@ -102,6 +127,11 @@ public class OrderService {
 
     }
 
+    /**
+     * selectCompanyOrderHistoryDetail : 본사 발주 내역 목록 조회
+     * @ param companyOrderHistoryNo : 본사 발주 내역 번호
+     * @ return : 본사 발주 내역 상세 정보
+     */
     public CompanyOrderHistoryDTO selectCompanyOrderHistoryDetail(int companyOrderHistoryNo) {
 
         CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
@@ -110,6 +140,12 @@ public class OrderService {
         return modelMapper.map(companyOrderHistory, CompanyOrderHistoryDTO.class);
     }
 
+    /**
+     * selectOrderApplicationDetail : 발주 신청서 상세 조회
+     * @ param companyOrderHistoryNo : 발주 신청서 해당 본사 발주 내역 번호
+     * @ param clientNo : 발주 신청서 해당 거래처 번호
+     * @ return : 본사 발주 신청서 상세 정보
+     */
     public List<OrderApplicationDTO> selectOrderApplicationDetail(int companyOrderHistoryNo, int clientNo) {
 
         CompanyOrderHistory companyOrderHistory = companyOrderHistoryRepository.findById(companyOrderHistoryNo).get();
@@ -129,6 +165,11 @@ public class OrderService {
         return orderApplicationDTOList;
     }
 
+    /**
+     * selectOrderItemInfoList : 본사 발주 신청 검색한 자재 목록 조회
+     * @ param searchItem : 검색한 내용
+     * @ return : 검색된 자재 목록
+     */
     public List<OrderItemInfoDTO> selectOrderItemInfoList(String searchItem) {
 
         List<OrderItemInfo> orderItemInfoList = orderItemInfoRepository.selectByItemInfoNameContainingAndItemInfoStatusYn(searchItem, "N");
@@ -136,6 +177,11 @@ public class OrderService {
         return orderItemInfoList.stream().map(orderItemInfo -> modelMapper.map(orderItemInfo, OrderItemInfoDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * selectClientContractItemList : 자재별 거래처 목록 조회
+     * @ param itemInfoNo : 자재 번호
+     * @ return : 자재별 거래처 목록
+     */
     public List<OrderClientContractItemDTO> selectClientContractItemList(int itemInfoNo) {
 
         List<OrderClientContractItem> orderClientContractItemList = orderClientContractItemRepository.selectClientContractItemList(itemInfoNo);
@@ -155,6 +201,15 @@ public class OrderService {
         return resultClientContractItemList.stream().map(orderClientContractItem -> modelMapper.map(orderClientContractItem, OrderClientContractItemDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * insertCompanyOrder : 본사 발주 신청
+     * @ param itemAmount : 신청 자재 수량 목록
+     * @ param clientItemNo : 거래처 판매 계약 상품 번호 목록
+     * @ param itemInfoNo : 신청 자재 번호 목록
+     * @ param memberNo : 본사 발주 신청자 번호
+     * @ param clientNo : 신청 물품 거래처 번호
+     * @ return : 발주 신청서 상세 정보
+     */
     @Transactional
     public List<CompanyOrderDetailDTO> insertCompanyOrder(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, int memberNo, String[] clientNo) {
 
@@ -223,6 +278,10 @@ public class OrderService {
         return companyOrderDetailList;
     }
 
+    /**
+     * insertCompanyOrderHistory : 본사 발주 신청 데이터 저장
+     * @ param memberNo : 신청자 번호
+     */
     private void insertCompanyOrderHistory(int memberNo) {
 
         OrderCompanyAccount companyAccount = new OrderCompanyAccount();
@@ -237,6 +296,12 @@ public class OrderService {
 
     }
 
+    /**
+     * insertCompanyOrderItem : 본사 발주 신청 물품 데이터 저장
+     * @ param companyOrderHistoryNo : 본사 발주 내역 번호
+     * @ param itemInfoNo : 발주 신청 자재 물품 번호
+     * @ param itemAmount : 발주 신청 자재 물품 수량
+     */
     private void insertCompanyOrderItem(int companyOrderHistoryNo, int itemInfoNo, int itemAmount) {
 
         CompanyOrderHistory companyOrderHistory = new CompanyOrderHistory();
@@ -257,6 +322,11 @@ public class OrderService {
 
     }
 
+    /**
+     * insertOrderApplication : 본사 발주 신청서 데이터 저장
+     * @ param companyOrderHistoryNo : 본사 발주 내역 번호
+     * @ param clientList : 발주 신청 거래처 번호 목록
+     */
     private void insertOrderApplication(int companyOrderHistoryNo, List<Integer> clientList) {
 
         CompanyOrderHistory companyOrderHistory = new CompanyOrderHistory();
@@ -276,6 +346,13 @@ public class OrderService {
 
     }
 
+    /**
+     * insertOrderApplicationItem : 본사 발주 신청서 물품 데이터 저장
+     * @ param clientList : 발주 신청 거래처 번호 중복 제거 목록
+     * @ param clientItemNo : 발주 신청 거래처 물품 번호 목록
+     * @ param clientNo : 발주 신청 거래처 번호 목록
+     * @ param itemAmount : 발주 신청 거래처 물품 수량 목록
+     */
     private void insertOrderApplicationItem(List<Integer> clientList, String[] clientItemNo, String[] clientNo, String[] itemAmount) {
 
         List<OrderApplication> orderApplicationList = orderApplicationRepository.selectRecentOrderApplicationList(clientList.size() + 1);
@@ -310,6 +387,12 @@ public class OrderService {
 
     }
 
+    /**
+     * updateCompanyOrderHistoryStatus : 본사 발주 내역 처리 상태 변경
+     * @ param memberNo : 변경할 본사 발주 내역 처리 상태 변경자 번호
+     * @ param companyOrderHistoryNo : 변경할 본사 발주 내역 번호
+     * @ param orderStatus : 변경할 처리 상태
+     */
     @Transactional
     public void updateCompanyOrderHistoryStatus(int memberNo, int companyOrderHistoryNo, String orderStatus) {
 
@@ -323,6 +406,13 @@ public class OrderService {
 
     }
 
+    /**
+     * selectFranchiseOrderList : 가맹점 발주 내역 목록 조회
+     * @ param memberNo : 조회할 가맹점 발주 내역 권한 구분 사용자 번호
+     * @ param memberDivision : 본사, 가맹점 구분 정보
+     * @ param officeDivision : 대표자, 직원 구분 정보
+     * @ return : 가맹점 발주 내역 목록
+     */
     public List<FranchiseOrderListDTO> selectFranchiseOrderList(int memberNo, String memberDivision, String officeDivision) {
 
         List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
@@ -404,6 +494,11 @@ public class OrderService {
     }
 
 
+    /**
+     * selectFranchiseOrderDetail : 가맹점 발주 내역 상세 조회
+     * @ param franchiseOrderNo : 조회할 가맹점 발주 내역 번호
+     * @ return : 가맹점 발주 내역 상세 정보
+     */
     public List<FranchiseOrderDetailDTO> selectFranchiseOrderDetail(int franchiseOrderNo) {
 
         FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
@@ -425,6 +520,12 @@ public class OrderService {
         return franchiseOrderDetailList;
     }
 
+    /**
+     * updateFranchiseOrderStatus : 가맹점 발주 내역 처리 상태 승인완료로 변경
+     * @ param memberNo : 가맹점 발주 내역 변경자 번호
+     * @ param franchiseOrderNo : 변경할 가맹점 발주 내역 번호
+     * @ param orderStatus : 변경할 처리 상태
+     */
     @Transactional
     public void updateFranchiseOrderStatus(int memberNo, int franchiseOrderNo, String orderStatus) {
 
@@ -445,6 +546,13 @@ public class OrderService {
 
     }
 
+    /**
+     * updateFranchiseOrderStatus : 가맹점 발주 내역 처리 상태 승인거절로 변경
+     * @ param memberNo : 가맹점 발주 내역 변경자 번호
+     * @ param franchiseOrderNo : 변경할 가맹점 발주 내역 번호
+     * @ param orderStatus : 변경할 처리 상태
+     * @ param rejectMessage : 승인거절 사유서 내용
+     */
     @Transactional
     public void updateFranchiseOrderStatus(int memberNo, int franchiseOrderNo, String orderStatus, String rejectMessage) {
 
@@ -466,6 +574,11 @@ public class OrderService {
 
     }
 
+    /**
+     * selectRejectContent : 가맹점 발주 내역 승인거절 사유서 조회
+     * @ param franchiseOrderNo : 조회할 가맹점 발주 내역 번호
+     * @ return : 승인거절 사유서 내용
+     */
     public String selectRejectContent(int franchiseOrderNo) {
 
         FranchiseOrder franchiseOrder = franchiseOrderRepository.findById(franchiseOrderNo).get();
@@ -475,6 +588,14 @@ public class OrderService {
         return rejectContent;
     }
 
+    /**
+     * updateCompanyOrderHistory : 본사 발주 내역 수정
+     * @ param itemAmount : 발주 수정 물품 수량 목록
+     * @ param clientItemNo : 발주 수정 물품 해당 거래처 계약 판매 상품 번호 목록
+     * @ param itemInfoNo : 발주 수정 물품 번호 목록
+     * @ param clientNo : 발주 수정 물품 해당 거래처 번호 목록
+     * @ param companyOrderHistoryNo :수정할 발주 내역 번호
+     */
     public void updateCompanyOrderHistory(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, String[] clientNo, int companyOrderHistoryNo) {
 
         List<CompanyOrderItem> deleteCompanyOrderItemList = companyOrderItemRepository.findByCompanyOrderHistoryNo(companyOrderHistoryNo);
@@ -547,6 +668,10 @@ public class OrderService {
 
     }
 
+    /**
+     * selectFranchiseOrderableItemList : 가맹점 발주 신청 가능 물품 목록 조회
+     * @ return : 가맹점 발주 신청 가능 물품 목록
+     */
     public List<FranchiseOrderableItemDTO> selectFranchiseOrderableItemList() {
 
         List<FranchiseOrderableItem> franchiseOrderableItemList = franchiseOrderableItemRepository.findByFranchiseOrderableItem_OrderItemInfo_ItemInfoStatusYn("N");
@@ -554,6 +679,12 @@ public class OrderService {
         return franchiseOrderableItemList.stream().map(franchiseOrderableItem -> modelMapper.map(franchiseOrderableItem, FranchiseOrderableItemDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * insertFranchiseOrder : 가맹점 발주 신청
+     * @ param memberNo : 가맹점 발주 신청자 번호
+     * @ param itemAmount : 가맹점 발주 신청 물품 수량 목록
+     * @ param itemInfoNo : 가맹점 발주 신청 물품 번호 목록
+     */
     @Transactional
     public void insertFranchiseOrder(int memberNo, int[] itemInfoNo, int[] itemAmount) {
 
@@ -631,6 +762,12 @@ public class OrderService {
         franchiseOrderStatusHistoryRepository.save(franchiseOrderStatusHistory);
     }
 
+    /**
+     * setFranchiseOrder : 가맹점 발주 신청 정보 세팅
+     * @ param today : 가맹점 발주 신청일자
+     * @ param member : 가맹점 발주 신청자 정보
+     * @ return : 세팅된 가맹점 발주 신청 정보
+     */
     private FranchiseOrder setFranchiseOrder(java.sql.Date today, String orderNumber, Member member) {
 
         FranchiseOrder franchiseOrder = new FranchiseOrder();
@@ -642,6 +779,13 @@ public class OrderService {
         return franchiseOrder;
     }
 
+    /**
+     * setFranchiseOrderItem : 가맹점 발주 신청 물품 정보 세팅
+     * @ param itemInfoNo : 가맹점 발주 신청 물품 번호 목록
+     * @ param itemAmount : 가맹점 발주 신청 물품 수량 목록
+     * @ param franchiseOrderNo : 가맹점 발주 신청 번호
+     * @ return : 세팅된 가맹점 발주 신청 물품 정보 목록
+     */
     private List<FranchiseOrderItem> setFranchiseOrderItem(int[] itemInfoNo, int[] itemAmount, int franchiseOrderNo) {
 
         List<FranchiseOrderItem> franchiseOrderItemList = new ArrayList<>();
@@ -675,6 +819,13 @@ public class OrderService {
         return franchiseOrderItemList;
     }
 
+    /**
+     * setFranchiseOrderList : 본사가 조회 가능한 가맹점 발주 목록 정보 세팅
+     * @ param franchiseOrderList : 가맹점 발주 내역 목록
+     * @ param franchiseInfoList : 가맹점 대표자 정보 목록
+     * @ param franchiseAccountList : 가맹점 발주 직원 정보 목록
+     * @ return : 본사가 조회 가능한 가맹점 발주 목록 정보
+     */
     private List<FranchiseOrderListDTO> setFranchiseOrderList(List<FranchiseOrder> franchiseOrderList, List<OrderFranchiseInfo> franchiseInfoList, List<OrderFranchiseAccount> franchiseAccountList) {
 
         List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();
@@ -749,6 +900,13 @@ public class OrderService {
         return franchiseOrderListDTOList;
     }
 
+    /**
+     * setFranchiseOrderListByFranchise : 가맹점이 조회 가능한 거래처 발주 목록 정보 세팅
+     * @ param franchiseOrderList : 가맹점 발주 내역 목록
+     * @ param franchiseInfoList : 가맹점 대표자 정보
+     * @ param franchiseAccountList : 가맹점 발주 직원 정보 목록
+     * @ return : 본사가 조회 가능한 가맹점 발주 목록 정보
+     */
     private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo, List<OrderFranchiseAccount> orderFranchiseAccountList) {
 
         List<FranchiseOrderListDTO> franchiseOrderListDTOList = new ArrayList<>();

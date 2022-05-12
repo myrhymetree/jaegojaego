@@ -1,7 +1,5 @@
 package com.greedy.jaegojaego.order.order.model.dto.company;
 
-
-
 import com.greedy.jaegojaego.order.client.model.dto.OrderClientContractItemDTO;
 
 public class OrderApplicationItemDTO {
