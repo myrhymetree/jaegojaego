@@ -12,6 +12,7 @@ import com.greedy.jaegojaego.member.model.repository.MemberRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
 import com.greedy.jaegojaego.member.model.repository.PasswordUpdatedRecordRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +35,15 @@ public class FranchiseService {
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
     private final PasswordUpdatedRecordRepository passwordUpdatedRecordRepository;
-    private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
+
+//    @Autowired
+//    public ModelMapper strictModelMapper() {
+//        modelMapper.getConfiguration()
+//                .setMatchingStrategy(MatchingStrategies.STRICT);
+//        return modelMapper;
+//    }
 
     @Autowired
     public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ModelMapper getMapper) {
@@ -47,8 +55,8 @@ public class FranchiseService {
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.passwordUpdatedRecordRepository = passwordUpdatedRecordRepository;
-        this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
