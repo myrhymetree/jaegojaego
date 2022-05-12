@@ -32,12 +32,12 @@ public class ClientService {
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ClientContractInfoRepository clientContractInfoRepository;
     private final ClientContractItemRepository clientContractItemRepository;
-
+    private final ClientCbrRepository clientCbrRepository;
     private final ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ClientCbrRepository clientCbrRepository, ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
         this.clientBusinessTypeRepository = clientBusinessTypeRepository;
@@ -47,6 +47,7 @@ public class ClientService {
         this.clientBusinessTypeDivisionRepository = clientBusinessTypeDivisionRepository;
         this.clientContractInfoRepository = clientContractInfoRepository;
         this.clientContractItemRepository = clientContractItemRepository;
+        this.clientCbrRepository = clientCbrRepository;
         this.clientContractItemAttachmentFileRepository = clientContractItemAttachmentFileRepository;
         this.modelMapper = modelMapper;
     }
@@ -394,13 +395,14 @@ public class ClientService {
         return clientContractItemList;
     }
 
-    public Page<ClientCbrDTO> findClientCbrList(Pageable pageable) {
+
+    public Page<ClientDTO> findClientList2(Pageable pageable) {
 
         pageable = PageRequest.of(pageable.getPageNumber() <= 0? 0 : pageable.getPageNumber() - 1,
                 pageable.getPageSize(),
-                Sort.by("clientCbrNo").descending());
+                Sort.by("clientNo").descending());
 
-        return clientRepository.findAll(pageable).map(clientCbr -> modelMapper.map(clientCbr, ClientCbrDTO.class));
+        return clientRepository.findAll(pageable).map(client -> modelMapper.map(client, ClientDTO.class));
 
     }
 }

@@ -74,19 +74,34 @@ public class ClientController {
     @GetMapping("/cbrlist")
     public ModelAndView clientCbrList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
-        Page<ClientCbrDTO> clientCbrList = null;
+        Page<ClientDTO> clientList = null;
 
-        clientCbrList = clientService.findClientCbrList(pageable);
+        clientList = clientService.findClientList2(pageable); //list로 바꾼다음에
+        System.out.println("ㄷㄷ");
+        clientList.forEach(System.out::println);
 
-        mv.addObject("clientCbrList", clientCbrList);
+        //이소현이 적은 거 시작
+//        List<ClientCbrDTO> clientCbrDTOList = null;
+//        ClientCbrDTO clientCbrDTO = null;
+//
+//        for(int i = 0; i < clientList.getSize(); i++) { //반복이 9번 되요 ㅋㅋㅋ
+//
+//            System.out.println("반복 몇번?"); //9번 나온다고 ㅋㅋㅋㅋ개빡치네
+//            clientCbrDTO.setClientCbrAttachmentNo(clientList.get(i).clientCbrAttachmentNo);
+//
+//        }
+//
+//controller에서 clientCbrList를 넣어서 mv.addObject 넣어가지고 그친구 데려오면
+//(여기 읽어줘)이소현이 적은 거 끝 ===> 안되는 사유 : clientList를 반복해서 set해서 ClientCbrList를 넣어주고 그걸 add.object뭐시기 할랬는데? get(i)부터가 안되고 , getSIze는 9번함 ㅋㅋㅋ 어이가 없네 이거 안됨 쳐내자 기주형 안ㅡ도ㅔ!
 
-        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(clientCbrList);
+        mv.addObject("clientList", clientList);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(clientList);
         mv.addObject("paging", paging);
 
-/*        mv.addObject("searchCondition", searchCondition);
-        mv.addObject("searchValue", searchValue);*/
 
-        mv.setViewName("/client/clientList");
+
+        mv.setViewName("/client/clientCbrList");
 
         return mv;
     }

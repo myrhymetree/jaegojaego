@@ -20,17 +20,16 @@
                 <div class="col-sm-8">
                     <div class="ibox">
                         <div class="ibox-content">
-                            <h2>거래처 리스트</h2>
+                            <h2>거래처 사업자등록증</h2>
                             <div class="input-group">
                                 <input type="text" placeholder="Search client " class="input form-control">
                                 <span class="input-group-append">
-                                        <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> Search</button>&nbsp;&nbsp;<button type="button" id="registNewClient" class="btn btn btn-primary" onclick="location.href='/client/regist';">신규등록</button>
+                                        <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> Search</button>
                                 </span>
                             </div>
                             <div class="clients-list">
-                                <span class="float-right small text-muted">업체 카운트(로직처리)</span>
                                 <ul class="nav nav-tabs">
-                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-briefcase"></i> 거래처 정보</a></li>
+                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-briefcase"></i> 거래처 사업자등록증</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="tab-1" class="tab-pane active">
@@ -42,35 +41,63 @@
                                                         <td>번호</td>
                                                         <td>회사명</td>
                                                         <td>대표자명</td>
-                                                        <td>  </td>
-                                                        <td>전화번호</td>
-                                                        <!--<td></td>
-                                                        <td></td>-->
+                                                        <td>사업자등록증</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="client : ${ clientList }">
-                                                        <td th:text="${ client.clientNo }"></td>
-                                                        <td><a class="client-link"><th:block th:text="${ client.clientName }"></th:block></a></td>
-                                                        <td th:text="${ client.clientRepresentativeName }"></td>
-                                                        <td class="contact-type"><i class="fa fa-phone"> </i></td>
-                                                        <td th:text="${ client.clientRepresentativePhone }"></td>
-                                                        <!--<td th:text="${ client.clientCategory.clientCategory }"></td>-->
-                                                       <!-- <td th:text="${ client.contract.contractStatus }"class="client-status"><span class="label label-primary"></span></td>-->
+                                                    <tr th:each="clientList : ${ clientList }" >
+                                                        <td th:text="${ clientList.clientNo }"></td>
+                                                        <td th:text="${ clientList.clientName }"></td>
+                                                        <td th:text="${ clientList.clientRepresentativeName  }"></td>
+                                                        <td>
+                                                            <th:block th:each="clientCbrList : ${ clientList.clientCbrList }">
+
+                                                                <!-- 받아오면 for문 돌려서  -->
+                                                                <th:block th:if="${not #strings.isEmpty(clientCbrList)} ">
+                                                                    <th:block th:text="${ clientCbrList.clientCbrAttachmentOriginalName }"></th:block>
+<!--                                                                    <label for="regist-btn">등록하기</label>-->
+<!--                                                                    <input type="file" id="regist-btn"/>-->
+                                                                </th:block>
+
+                                                                <th:block th:if="${ #strings.isEmpty(clientCbrList) }">
+<!--                                                                <input type="file">등록하기</input>-->
+                                                                    <button>등록하기</button>
+                                                                </th:block>
+
+                                                            </th:block>
+                                                        </td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
+                                                <div id="paging" align="center">
+                                                    <!— 맨 앞으로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/cbrlist?page=' + @{${ paging.startPage }} + '\''"
+                                                            th:disabled="${ clientList.first }"><<</button>
+
+                                                    <!— 이전 페이지로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/cbrlist?page=' + @{${ paging.currentPage - 1 }} + '\''"
+                                                            th:disabled="${ clientList.first }"><</button>
+
+                                                    <!— 숫자 버튼 —>
+                                                    <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                                                        <button th:onclick="'location.href=\'/client/cbrlist?page=' + @{${ page }} + '\''"
+                                                                th:text="${ page }"
+                                                                th:disabled="${ paging.currentPage eq page }"></button>
+                                                    </th:block>
+
+                                                    <!— 다음 페이지로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/cbrlist?page=' + @{${ paging.currentPage + 1 }} + '\''"
+                                                            th:disabled="${ clientList.last }">></button>
+
+                                                    <!— 맨 마지막으로 이동 —>
+                                                    <button th:onclick="'location.href=\'/client/cbrlist?page=' + @{${ paging.endPage }} + '\''"
+                                                            th:disabled="${ clientList.last }">>></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="clientScroll">
-                        <div id="clientDetailArea" class="ibox-content" style="overflow: auto; margin-bottom: 50%;">
                         </div>
                     </div>
                 </div>
@@ -89,5 +116,12 @@
 <script src="js/plugins/pace/pace.min.js"></script>
 
 <th:block th:replace="/common/footer.html"></th:block>
+<script>
+    console.log("되냐? 0");
+
+    const test = "[[${ clientCbrList }]]"; //에러는 안나는데 안나옴
+    console.log("test :L " + test); //안나옴 ㅇㅇ
+
+</script>
 </body>
 </html>
