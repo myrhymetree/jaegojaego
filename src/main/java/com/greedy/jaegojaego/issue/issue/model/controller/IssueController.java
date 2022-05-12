@@ -28,6 +28,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * <pre>
+ * Class : IssueController
+ * Comment : 가맹점 이슈(Issue)관련 메소드를 모아놓은 Controller 입니다.
+ * History
+ * 2022/05/03 (박인근) 이슈 목록 조회, 이슈 등록 발주 목록 조회, 이슈 등록 발주별 물품 목록 조회
+ * 2022/05/04 (박인근) 이슈 목록 조회, 이슈 상세 조회
+ * 2022/05/06 (박인근) 이슈 등록 발주 목록 조회, 이슈 등록 발주별 물품 목록 조회
+ * 2022/05/07 (박인근) 이슈 등록, 이미지 파일 업로드
+ * 2022/05/08 (박인근) 이슈 등록, 이슈 상세 조회, 이슈 수정
+ * 2022/05/09 (박인근) 이슈 수정, 이슈 삭제
+ * 2022/05/10 (박인근) 이슈 삭제, 이슈 처리 상태 변경
+ * </pre>
+ * @version 7
+ * @author 박인근
+ */
 @Controller
 @RequestMapping("/issue")
 public class IssueController {

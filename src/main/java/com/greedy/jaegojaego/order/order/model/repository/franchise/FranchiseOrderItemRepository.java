@@ -5,4 +5,5 @@ import com.greedy.jaegojaego.order.order.model.entity.franchise.FranchiseOrderIt
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FranchiseOrderItemRepository extends JpaRepository<FranchiseOrderItem, FranchiseOrderItemPK> {
+    Object findByFranchiseOrderItem_FranchiseOrder_FranchiseOrderNo(int franchiseOrderNo);
 }

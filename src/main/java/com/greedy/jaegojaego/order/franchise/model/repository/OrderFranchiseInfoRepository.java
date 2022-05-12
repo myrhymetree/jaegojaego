@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface OrderFranchiseInfoRepository extends JpaRepository<OrderFranchiseInfo, Integer> {
 
-
     List<OrderFranchiseInfo> findByHeadOfficeSupervisor_MemberNo(int memberNo);
 }
