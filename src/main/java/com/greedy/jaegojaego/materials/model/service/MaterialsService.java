@@ -24,10 +24,10 @@ public class MaterialsService {
     private final MaterialsCategoryRepository materialsCategoryRepository;
     private final MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository;
     private final MaterialRepository materialRepository;
-
+    private final MaterialProductRepository materialProductRepository;
     @Autowired
     public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, MaterialsClientContractItemRepository clientContractItemRepository, MaterialsClientContractItemMaterialRepository clientContractItemMaterialRepository,
-                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository, MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository, MaterialRepository materialRepository){
+                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository, MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository, MaterialRepository materialRepository, MaterialProductRepository materialProductRepository){
         this.materialsRepository = materialsRepository;
         this.modelMapper = modelMapper;
         this.clientContractItemRepository = clientContractItemRepository;
@@ -36,6 +36,7 @@ public class MaterialsService {
         this.materialsCategoryRepository = materialsCategoryRepository;
         this.materialFranchiseOrderableItemRepository = materialFranchiseOrderableItemRepository;
         this.materialRepository = materialRepository;
+        this.materialProductRepository = materialProductRepository;
     }
 
     public List<MaterialsDTO> findMaterialsList() {
@@ -120,6 +121,53 @@ public class MaterialsService {
         System.out.println("테스트 " + materialConut);
         System.out.println("테스트 " + materialConut);
         return materialConut;
+    }
+
+    @Transactional
+    public void MaterialsProductRegist(MaterialProductDTO material) {
+
+        System.out.println("여기까지 올거야!");
+
+        System.out.println("들오긴하냐? : " + material);
+
+        MaterialProduct materialRegist = new MaterialProduct();
+        FranchiseOrderableItem franchiseOrderableItem = new FranchiseOrderableItem();
+
+//        System.out.println("왜? :" + franchiseOrderableItem);
+//        MaterialsCategory materialsCategory = new MaterialsCategory();
+          franchiseOrderableItem.setItemInfoNo(material.getItemInfoNo());
+          franchiseOrderableItem.setItemPrice(material.getFranchiseOrderableItem().getItemPrice());
+//        materialsCategory.setMaterialCategoryNo(material.getMaterialCategory());
+
+        materialRegist.setItemInfoNo(material.getItemInfoNo());
+        materialRegist.setItemInfoName(material.getItemInfoName());
+        materialRegist.setItemSerialNo(material.getItemSerialNo());
+        materialRegist.setMaterialCategory(material.getMaterialCategory());
+        materialRegist.setSubdivisionUnit(material.getSubdivisionUnit());
+        materialRegist.setSubdivisionYN(material.getSubdivisionYN());
+        materialRegist.setItemStatus("N");
+        System.out.println("materialRegist" + " " + materialRegist);
+
+        materialProductRepository.save(materialRegist);
+        materialFranchiseOrderableItemRepository.save(franchiseOrderableItem);
+
+    }
+    @Transactional
+    public void materialFileRegist(MaterialFileDTO materialFileDTO) {
+
+        MaterialFile materialFile = new MaterialFile();
+        MaterialFileCategory materialFileCategory = new MaterialFileCategory();
+        materialFileCategory.setFileCategoryNo(materialFileDTO.getMaterialFileCategory().getFileCategoryNo());
+
+        materialFile.setFileOriginalName(materialFileDTO.getFileOriginalName());
+        materialFile.setFileChangedName(materialFileDTO.getFileChangedName());
+        materialFile.setFileUrl(materialFileDTO.getFileUrl());
+        materialFile.setDeleteYn(materialFileDTO.getDeleteYn());
+        materialFile.setThumbnailUrl(materialFileDTO.getThumbnailUrl());
+        materialFile.setFileDivision(materialFileDTO.getFileDivision());
+        materialFile.setItemInfoNo(materialFileDTO.getItemInfoNo());
+        materialFile.setFileCategory(materialFileCategory);
+
     }
 }
 

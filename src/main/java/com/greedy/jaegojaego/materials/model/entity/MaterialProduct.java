@@ -1,12 +1,10 @@
 package com.greedy.jaegojaego.materials.model.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-@Entity(name = "Material")
+@Entity(name = "materialProduct")
 @Table(name = "ITEM_INFO")
-public class Material implements Serializable {
-
+public class MaterialProduct {
 
     @Id
     @Column(name = "ITEM_INFO_NO")
@@ -16,20 +14,14 @@ public class Material implements Serializable {
     @JoinColumn(name = "ITEM_INFO_NO")
     private FranchiseOrderableItem franchiseOrderableItem;
 
-    /*@OneToMany
-    @JoinColumn(name = "조회올것")
-    private List<FranchiseOrderableItem> franchiseOrderableItem;*/
-    //리팩토링 해야하니 나중에 다시 할 것
-
     @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
 
     @Column(name = "ITEM_INFO_ITEM_SERIAL_NO")
     private String itemSerialNo;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "MATERIAL_CATEGORY_NO")
-    private MaterialsCategory materialCategory;
+    @Column(name = "MATERIAL_CATEGORY_NO")
+    private int materialCategory;
 
     @Column(name = "SUBDIVISION_UNIT")
     private Integer subdivisionUnit;
@@ -40,10 +32,10 @@ public class Material implements Serializable {
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemStatus;
 
-    public Material() {
+    public MaterialProduct() {
     }
 
-    public Material(int itemInfoNo, FranchiseOrderableItem franchiseOrderableItem, String itemInfoName, String itemSerialNo, MaterialsCategory materialCategory, Integer subdivisionUnit, String subdivisionYN, String itemStatus) {
+    public MaterialProduct(int itemInfoNo, FranchiseOrderableItem franchiseOrderableItem, String itemInfoName, String itemSerialNo, int materialCategory, Integer subdivisionUnit, String subdivisionYN, String itemStatus) {
         this.itemInfoNo = itemInfoNo;
         this.franchiseOrderableItem = franchiseOrderableItem;
         this.itemInfoName = itemInfoName;
@@ -86,11 +78,11 @@ public class Material implements Serializable {
         this.itemSerialNo = itemSerialNo;
     }
 
-    public MaterialsCategory getMaterialCategory() {
+    public int getMaterialCategory() {
         return materialCategory;
     }
 
-    public void setMaterialCategory(MaterialsCategory materialCategory) {
+    public void setMaterialCategory(int materialCategory) {
         this.materialCategory = materialCategory;
     }
 
@@ -120,7 +112,7 @@ public class Material implements Serializable {
 
     @Override
     public String toString() {
-        return "Material{" +
+        return "MaterialProduct{" +
                 "itemInfoNo=" + itemInfoNo +
                 ", franchiseOrderableItem=" + franchiseOrderableItem +
                 ", itemInfoName='" + itemInfoName + '\'' +

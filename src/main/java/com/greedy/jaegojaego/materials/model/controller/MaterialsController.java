@@ -4,21 +4,31 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.greedy.jaegojaego.materials.model.dto.*;
+import com.greedy.jaegojaego.materials.model.entity.Material;
 import com.greedy.jaegojaego.materials.model.service.MaterialsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/materials")
 public class MaterialsController {
 
     private final MaterialsService materialsService;
+
+    @Value("${jaegojaego.materials.upload.path}")
+    private String rootLocation;
 
     @Autowired
     public MaterialsController(MaterialsService materialsService) {
@@ -128,6 +138,85 @@ public class MaterialsController {
         mv.setViewName("redirect:/materials/regist");
 
        return mv;
+    }
+
+    @PostMapping("/product/register")
+    public ModelAndView productRegister(ModelAndView mv ,MaterialProductDTO material, @RequestParam("materialItemImage") MultipartFile materialItemImage, RedirectAttributes rttr, Locale locale) {
+
+        System.out.println("첫번째 사진");
+        System.out.println("material11" + "" + material);
+        System.out.println("material" + "" + material);
+        System.out.println("materialItemImage" + "" + materialItemImage);
+        System.out.println("materialItemImage" + "" + materialItemImage);
+
+        materialsService.MaterialsProductRegist(material);
+
+        System.out.println("두번째 사진");
+        MaterialFileDTO materialFileDTO = new MaterialFileDTO();
+        MaterialFileCategoryDTO materialFileCategoryDTO = new MaterialFileCategoryDTO();
+
+        materialFileCategoryDTO.setFileCategoryNo(6);
+
+        materialFileDTO.setMaterialFileCategory(materialFileCategoryDTO);
+        
+        String fileUploadDirectory = rootLocation;
+        File conversionFileDirectory = new File(fileUploadDirectory);
+        
+        System.out.println("세번째 사진");
+        
+        String thumbnailPath = "/upload/matrials/conversion/";
+
+        File uploadDirectory = new File(fileUploadDirectory);
+        File thumbnailDirectory = new File(thumbnailPath);
+
+        if(!materialItemImage.isEmpty()) {
+
+            if (!uploadDirectory.exists() || !thumbnailDirectory.exists()) {
+
+            }
+
+            try {
+                if (materialItemImage.getSize() > 0) {
+
+                    String orgName = materialItemImage.getOriginalFilename();
+                    String ext = orgName.substring(orgName.lastIndexOf("."));
+                    String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+
+                    materialItemImage.transferTo(new File(uploadDirectory + "/thumbnail_" + savedName));
+
+                    materialFileDTO.setDeleteYn("N");
+                    materialFileDTO.setFileUrl(fileUploadDirectory);
+                    materialFileDTO.setFileChangedName(savedName);
+                    materialFileDTO.setFileOriginalName(orgName);
+                    materialFileDTO.setFileDivision("자재");
+                    materialFileDTO.setMaterialFileCategory(materialFileCategoryDTO);
+                    materialFileDTO.setItemInfoNo(material.getItemInfoNo());
+
+                    materialFileDTO.setThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
+                }
+
+                materialsService.materialFileRegist(materialFileDTO);
+
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+
+                File deleteFile = new File(uploadDirectory + "/" + materialFileDTO.getFileChangedName());
+                boolean isDeleted1 = deleteFile.delete();
+
+                File deleteThumbnail = new File(thumbnailDirectory + "/thumbnail_" + materialFileDTO.getFileChangedName());
+                boolean isDeleted2 = deleteThumbnail.delete();
+
+                if (isDeleted1 && isDeleted2) {
+                    e.printStackTrace();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+            mv.setViewName("redirect:/materials/item/regist");
+
+        return mv;
     }
 
     @PostMapping("/modify")

@@ -63,7 +63,7 @@
                         </a>
                     </div>
                 </div>
-                <form action="/materials/update" method="post">
+                <form action="/materials/product/register" method="post" enctype="multipart/form-data">
                 <div class="ibox-content" style="height: 700px;">
                     <div style="float: left; width: 40%;">자재 정보
                         <hr></hr>
@@ -88,7 +88,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">카테고리</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" id="category1">
+                                    <select class="form-control m-b" id="category1" name="materialCategory">
                                         <option selected>선택해주세요</option>
                                         <option th:each="categoryList : ${categoryList}" th:value="${categoryList.materialCategoryNo}"
                                                 th:text="${categoryList.materialCategoryName}"></option>
@@ -108,7 +108,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">판매 가격</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="itemPrice" id="itemPrice">
+                                    <input type="number" class="form-control" name="franchiseOrderableItem.itemPrice" id="itemPrice">
                                 </div>
                             </div>
                             <div class="form-group  row">
@@ -131,8 +131,8 @@
                             <div class="ibox">
                                 <div class="ibox-content product-box">
 
-                                    <div class="product-imitation">
-                                        [ INFO ]
+                                    <div class="product-imitation" id="image_container">
+
                                     </div>
                                     <div class="product-desc">
                                 <span class="product-price" id="price">
@@ -145,7 +145,7 @@
                                             자재품번 :
                                         </div>
                                         <div class="m-t text-righ">
-                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                            <input type="file" class="btn btn-xs btn-outline btn-primary" id="materialItemImage" accept=".jpg, .gif, .png, .jpeg" onchange="setThumbnail(event);" name="materialItemImage"/>
                                         </div>
                                     </div>
                                 </div>
@@ -159,17 +159,6 @@
     </div>
 </div>
 <th:blockpi th:replace="/common/footer.html"></th:blockpi>
-
-
-<!--<script>-->
-<!--    let clientItemNo = document.getElementById("clientItemNo").value;-->
-<!--    let itemInfoNo = document.getElementById("itemInfoNo").value;-->
-<!--    if(clientItemNo || itemInfoNo != "" && !null) {-->
-<!--        $("#mapping").click(function () {-->
-
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 <script>
 
@@ -195,14 +184,26 @@
 
     });
 
-    $("#category1").on("propertychange change paste input" , function (){
+<!--    $("#category1").on("propertychange change paste input" , function (){-->
 
-        let $category = document.getElementById('category');
-        // $category.innerText = "Category" + this."${categoryList.materialCategoryName}";
+<!--       let $category = document.getElementById('category');-->
+<!--       $category.innerText = "Category" + this.value";-->
 
-    });
-
+<!--   });-->
 
 </script>
+
+<!--<script>-->
+<!--    function setThumbnail(event) {-->
+<!--        var reader = new FileReader();-->
+<!--        reader.onload = function(event) {-->
+<!--            var img = document.createElement("img");-->
+<!--            img.setAttribute("src", event.target.result);-->
+<!--            document.querySelector("div#image_container").appendChild(img);-->
+<!--        };-->
+<!--        reader.readAsDataURL(event.target.files[0]);-->
+<!--    }-->
+<!--</script>-->
+
 </body>
 </html>
