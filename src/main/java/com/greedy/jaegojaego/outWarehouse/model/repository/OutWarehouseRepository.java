@@ -19,4 +19,6 @@ public interface OutWarehouseRepository extends JpaRepository<OutWarehouse, Inte
 //    List<OutWarehouse> findOutWarehouseList();
 
 //    OutWarehouse findByOutWarehouseNo(int outWarehouseNo);
+
+    OutWarehouse findByOutWarehouseNo(int outWarehouseNo);
 }

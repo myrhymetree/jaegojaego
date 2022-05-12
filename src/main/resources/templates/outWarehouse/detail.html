@@ -52,12 +52,10 @@
     <br>
         <h3>작업 상태</h3>
         <select id="outWarehouseStatus" th:style="${'width:10%; height:2rem; text-align:center; font-size:1.2rem;'}">
-            <option value="출고 대기">출고 대기</option>
-            <option value="출고 작업">출고 작업</option>
-            <option value="출하 작업">출하 작업</option>
-            <option value="출하 완료">출하 완료</option>
+            <option value="출고대기">출고 대기</option>
+            <option value="출고완료">출고 완료</option>
         </select>
-        <button onclick="asyncModifyStatus()" class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
+        <button th:onclick="'javascipt:asyncModifyStatus();'" class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
     <br>
     <br>
 
@@ -69,8 +67,6 @@
             <th>품목</th>
             <th>품명</th>
             <th>출고 수량</th>
-            <th>목적지(가맹점명)</th>
-            <th>목적지(가맹점 주소)</th>
             <th>작업 처리상태</th>
             <th>작업 처리일자</th>
         </tr>
@@ -82,8 +78,6 @@
             <td th:text="${ outWarehouseDetail.materialCategoryName }"></td>
             <td th:text="${ outWarehouseDetail.itemInfoName }"></td>
             <td th:text="${ outWarehouseDetail.outWarehouseItemAmount }"></td>
-            <td th:text="${ outWarehouseDetail.franchiseBranchName }"></td>
-            <td th:text="${ outWarehouseDetail.franchiseAddress }"></td>
             <td th:text="${ outWarehouseDetail.outWarehouseWorkingStatusName }"></td>
             <td th:text="${ outWarehouseDetail.outWarehouseWorkingFinishedDate }"></td>
         </tr>

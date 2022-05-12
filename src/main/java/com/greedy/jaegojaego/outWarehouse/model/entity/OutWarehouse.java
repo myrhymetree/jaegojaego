@@ -5,10 +5,20 @@ import java.sql.Date;
 
 @Entity(name = "outWarehouse")
 @Table(name = "OUT_WAREHOUSE")
+@SequenceGenerator(
+        name = "OUT_WAREHOUSE_NO_SEQ_GENERATOR",
+        sequenceName = "OUT_WAREHOUSE_NO",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class OutWarehouse {
 
     @Id
     @Column(name = "OUT_WAREHOUSE_NO")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "OUT_WAREHOUSE_NO_SEQ_GENERATOR"
+    )
     private int outWarehouseNo;
 
     @ManyToOne(fetch = FetchType.LAZY)

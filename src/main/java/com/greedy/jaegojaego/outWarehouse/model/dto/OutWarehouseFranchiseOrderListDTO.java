@@ -6,14 +6,16 @@ public class OutWarehouseFranchiseOrderListDTO {
     private int memberNo;
     private String franchiseName;
     private String franchiseAddress;
+    private int franchiseRepresentativeNo;
 
     public OutWarehouseFranchiseOrderListDTO() {}
 
-    public OutWarehouseFranchiseOrderListDTO(int franchiseOrderNo, int memberNo, String franchiseName, String franchiseAddress) {
+    public OutWarehouseFranchiseOrderListDTO(int franchiseOrderNo, int memberNo, String franchiseName, String franchiseAddress, int franchiseRepresentativeNo) {
         this.franchiseOrderNo = franchiseOrderNo;
         this.memberNo = memberNo;
         this.franchiseName = franchiseName;
         this.franchiseAddress = franchiseAddress;
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
     }
 
     public int getFranchiseOrderNo() {
@@ -48,6 +50,14 @@ public class OutWarehouseFranchiseOrderListDTO {
         this.franchiseAddress = franchiseAddress;
     }
 
+    public int getFranchiseRepresentativeNo() {
+        return franchiseRepresentativeNo;
+    }
+
+    public void setFranchiseRepresentativeNo(int franchiseRepresentativeNo) {
+        this.franchiseRepresentativeNo = franchiseRepresentativeNo;
+    }
+
     @Override
     public String toString() {
         return "OutWarehouseFranchiseOrderListDTO{" +
@@ -55,6 +65,7 @@ public class OutWarehouseFranchiseOrderListDTO {
                 ", memberNo=" + memberNo +
                 ", franchiseName='" + franchiseName + '\'' +
                 ", franchiseAddress='" + franchiseAddress + '\'' +
+                ", franchiseRepresentativeNo=" + franchiseRepresentativeNo +
                 '}';
     }
 }
