@@ -16,8 +16,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @ComponentScan(basePackages = "com.greedy.jaegojaego")
 public class BeanConfiguration {
 
-    private static ModelMapper MAPPER;
-
     @Bean
     public ModelMapper modelMapper() {
 
