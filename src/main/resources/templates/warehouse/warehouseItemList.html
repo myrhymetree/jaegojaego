@@ -27,19 +27,7 @@
                 <h5>제품 종류</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">3개</h1>
-                <br>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-2">
-        <div class="ibox ">
-            <div class="ibox-title">
-                <h5>입고 완료</h5>
-            </div>
-            <div class="ibox-content">
-                <h1 class="no-margins">2건</h1>
+                <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
                 <br>
             </div>
         </div>
@@ -52,6 +40,7 @@
 
     <h2>재고 목록</h2>
 
+    <form id="updateForm" action="/warehouse/modify" method="get" >
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
@@ -74,9 +63,13 @@
             <td>
                 <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.warehouseItemInfo.getItemInfoNo()}')|">수량 변경</button>
             </td>
+
+            <input type="hidden" name="itemAmount" th:value="${ warehouse.warehouseItemAmount }" >
+
         </tr>
         </tfoot>
     </table>
+    </form>
 </div>
 <!-- 테이블 끝 -->
 <script>
@@ -85,8 +78,6 @@
         location.href="/warehouse/item/detail/" + num;
     }
 </script>
-
-
 <th:block th:replace="/common/footer.html"></th:block>
 </body>
 </html>

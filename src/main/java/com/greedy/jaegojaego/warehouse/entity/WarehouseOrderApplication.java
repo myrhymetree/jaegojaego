@@ -22,7 +22,7 @@ public class WarehouseOrderApplication {
             strategy = GenerationType.SEQUENCE,
             generator = "ORDER_APPLICATION_SEQ_GENERATOR"
     )
-    private int orderApplicationNo;
+    private Integer orderApplicationNo;
 
 //    @ManyToOne
 //    @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
@@ -32,18 +32,23 @@ public class WarehouseOrderApplication {
     @JoinColumn(name = "CLIENT_NO")
     private WarehouseClient orderClient;
 
+    @OneToMany
+    @JoinColumn(name = "ORDER_APPLICATION_NO")
+    private List<WarehouseOrderApplicationItem> orderApplicationItemList;
+
     public WarehouseOrderApplication() {}
 
-    public WarehouseOrderApplication(int orderApplicationNo, WarehouseClient orderClient) {
+    public WarehouseOrderApplication(Integer orderApplicationNo, WarehouseClient orderClient, List<WarehouseOrderApplicationItem> orderApplicationItemList) {
         this.orderApplicationNo = orderApplicationNo;
         this.orderClient = orderClient;
+        this.orderApplicationItemList = orderApplicationItemList;
     }
 
-    public int getOrderApplicationNo() {
+    public Integer getOrderApplicationNo() {
         return orderApplicationNo;
     }
 
-    public void setOrderApplicationNo(int orderApplicationNo) {
+    public void setOrderApplicationNo(Integer orderApplicationNo) {
         this.orderApplicationNo = orderApplicationNo;
     }
 
@@ -55,11 +60,20 @@ public class WarehouseOrderApplication {
         this.orderClient = orderClient;
     }
 
+    public List<WarehouseOrderApplicationItem> getOrderApplicationItemList() {
+        return orderApplicationItemList;
+    }
+
+    public void setOrderApplicationItemList(List<WarehouseOrderApplicationItem> orderApplicationItemList) {
+        this.orderApplicationItemList = orderApplicationItemList;
+    }
+
     @Override
     public String toString() {
         return "WarehouseOrderApplication{" +
                 "orderApplicationNo=" + orderApplicationNo +
                 ", orderClient=" + orderClient +
+                ", orderApplicationItemList=" + orderApplicationItemList +
                 '}';
     }
 }

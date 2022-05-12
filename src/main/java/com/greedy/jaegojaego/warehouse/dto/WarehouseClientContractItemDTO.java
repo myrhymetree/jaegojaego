@@ -13,14 +13,13 @@ public class WarehouseClientContractItemDTO {
     private int clientContractItemSupplyPrice;
     private int companyAccount;
     private java.sql.Date clientContractItemCreatedDate;
-//    private OrderClientContractInfoDTO clientContractInfo;
-    private int clientContractInfo;
-//    private WarehouseItemInfoDTO orderItemInfo;
-    private int orderItemInfo;
+    private OrderClientContractInfoDTO clientContractInfo;
+//    private WarehouseCl clientContractInfo;
+    private WarehouseItemInfoDTO orderItemInfo;
 
     public WarehouseClientContractItemDTO() {}
 
-    public WarehouseClientContractItemDTO(int clientContractItemNo, String clientContractItemName, int clientContractItemSupplyPrice, int companyAccount, Date clientContractItemCreatedDate, int clientContractInfo, int orderItemInfo) {
+    public WarehouseClientContractItemDTO(int clientContractItemNo, String clientContractItemName, int clientContractItemSupplyPrice, int companyAccount, Date clientContractItemCreatedDate, OrderClientContractInfoDTO clientContractInfo, WarehouseItemInfoDTO orderItemInfo) {
         this.clientContractItemNo = clientContractItemNo;
         this.clientContractItemName = clientContractItemName;
         this.clientContractItemSupplyPrice = clientContractItemSupplyPrice;
@@ -70,19 +69,19 @@ public class WarehouseClientContractItemDTO {
         this.clientContractItemCreatedDate = clientContractItemCreatedDate;
     }
 
-    public int getClientContractInfo() {
+    public OrderClientContractInfoDTO getClientContractInfo() {
         return clientContractInfo;
     }
 
-    public void setClientContractInfo(int clientContractInfo) {
+    public void setClientContractInfo(OrderClientContractInfoDTO clientContractInfo) {
         this.clientContractInfo = clientContractInfo;
     }
 
-    public int getOrderItemInfo() {
+    public WarehouseItemInfoDTO getOrderItemInfo() {
         return orderItemInfo;
     }
 
-    public void setOrderItemInfo(int orderItemInfo) {
+    public void setOrderItemInfo(WarehouseItemInfoDTO orderItemInfo) {
         this.orderItemInfo = orderItemInfo;
     }
 

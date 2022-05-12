@@ -9,9 +9,5 @@ import java.util.List;
 @Repository
 public interface WarehouseItemChangeHistoryRepository extends JpaRepository<WarehouseItemChangeHistory, Integer> {
 
-//    WarehouseItemChangeHistory findByItemInfoNo(int itemInfoNo);
 
-//    WarehouseItemChangeHistory findByItemInfoNo(int itemInfoNo);
-
-//    WarehouseItemChangeHistory findByItemChangeDivision(int itemChangeDivision);
 }

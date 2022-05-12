@@ -2,6 +2,8 @@ package com.greedy.jaegojaego.warehouse.entity;
 
 import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
 import com.greedy.jaegojaego.order.order.model.entity.company.OrderApplication;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -17,12 +19,12 @@ public class WarehouseOrderApplicationItemPK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-    private WarehouseOrderApplication orderClientContractItem;
+    private WarehouseClientContractItem orderClientContractItem;
 
     public WarehouseOrderApplicationItemPK() {
     }
 
-    public WarehouseOrderApplicationItemPK(WarehouseOrderApplication orderApplication, WarehouseOrderApplication orderClientContractItem) {
+    public WarehouseOrderApplicationItemPK(WarehouseOrderApplication orderApplication, WarehouseClientContractItem orderClientContractItem) {
         this.orderApplication = orderApplication;
         this.orderClientContractItem = orderClientContractItem;
     }
@@ -35,18 +37,18 @@ public class WarehouseOrderApplicationItemPK implements Serializable {
         this.orderApplication = orderApplication;
     }
 
-    public WarehouseOrderApplication getOrderClientContractItem() {
+    public WarehouseClientContractItem getOrderClientContractItem() {
         return orderClientContractItem;
     }
 
-    public void setOrderClientContractItem(WarehouseOrderApplication orderClientContractItem) {
+    public void setOrderClientContractItem(WarehouseClientContractItem orderClientContractItem) {
         this.orderClientContractItem = orderClientContractItem;
     }
 
     @Override
     public String toString() {
         return "WarehouseOrderApplicationItemPK{" +
-                "orderApplication=" + orderApplication +
+//                "orderApplication=" + orderApplication +
                 ", orderClientContractItem=" + orderClientContractItem +
                 '}';
     }

@@ -33,11 +33,16 @@ public class WarehouseOrderApplicationItem {
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
 
+    @Column(name = "ORDER_APPLICATION_IN_YN")
+    private String orderApplicationItemYN;
+
+
     @Override
     public String toString() {
         return "WarehouseOrderApplicationItem{" +
                 "orderApplicationItemPK=" + orderApplicationItemPK +
                 ", orderApplicationItemAmount=" + orderApplicationItemAmount +
+                ", orderApplicationItemYN='" + orderApplicationItemYN + '\'' +
                 '}';
     }
 }

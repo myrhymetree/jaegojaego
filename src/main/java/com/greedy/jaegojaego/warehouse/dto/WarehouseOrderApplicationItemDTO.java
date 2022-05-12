@@ -4,14 +4,16 @@ public class WarehouseOrderApplicationItemDTO {
 
     private WarehouseOrderApplicationDTO orderApplication;
     private int orderApplicationItemAmount;
-    private int clientContractItem;
+    private WarehouseClientContractItemDTO clientContractItem;
+    private String orderApplicationItemYN;
 
     public WarehouseOrderApplicationItemDTO() {}
 
-    public WarehouseOrderApplicationItemDTO(WarehouseOrderApplicationDTO orderApplication, int orderApplicationItemAmount, int clientContractItem) {
+    public WarehouseOrderApplicationItemDTO(WarehouseOrderApplicationDTO orderApplication, int orderApplicationItemAmount, WarehouseClientContractItemDTO clientContractItem, String orderApplicationItemYN) {
         this.orderApplication = orderApplication;
         this.orderApplicationItemAmount = orderApplicationItemAmount;
         this.clientContractItem = clientContractItem;
+        this.orderApplicationItemYN = orderApplicationItemYN;
     }
 
     public WarehouseOrderApplicationDTO getOrderApplication() {
@@ -30,20 +32,29 @@ public class WarehouseOrderApplicationItemDTO {
         this.orderApplicationItemAmount = orderApplicationItemAmount;
     }
 
-    public int getClientContractItem() {
+    public WarehouseClientContractItemDTO getClientContractItem() {
         return clientContractItem;
     }
 
-    public void setClientContractItem(int clientContractItem) {
+    public void setClientContractItem(WarehouseClientContractItemDTO clientContractItem) {
         this.clientContractItem = clientContractItem;
+    }
+
+    public String getOrderApplicationItemYN() {
+        return orderApplicationItemYN;
+    }
+
+    public void setOrderApplicationItemYN(String orderApplicationItemYN) {
+        this.orderApplicationItemYN = orderApplicationItemYN;
     }
 
     @Override
     public String toString() {
         return "WarehouseOrderApplicationItemDTO{" +
-//                "orderApplication=" + orderApplication +
+                "orderApplication=" + orderApplication +
                 ", orderApplicationItemAmount=" + orderApplicationItemAmount +
                 ", clientContractItem=" + clientContractItem +
+                ", orderApplicationItemYN='" + orderApplicationItemYN + '\'' +
                 '}';
     }
 }

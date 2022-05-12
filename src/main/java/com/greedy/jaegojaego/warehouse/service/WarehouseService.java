@@ -1,17 +1,8 @@
 package com.greedy.jaegojaego.warehouse.service;
 
-import com.greedy.jaegojaego.warehouse.dto.WarehouseCompanyOrderHistoryDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseItemAmountDTO;
-import com.greedy.jaegojaego.warehouse.dto.WarehouseItemChangeHistoryDTO;
-import com.greedy.jaegojaego.warehouse.entity.Warehouse;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseCompanyOrderHistory;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseItemAmount;
-import com.greedy.jaegojaego.warehouse.entity.WarehouseItemChangeHistory;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseCompanyOrderRepository;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseItemAmountRepository;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseItemChangeHistoryRepository;
-import com.greedy.jaegojaego.warehouse.repository.WarehouseRepository;
+import com.greedy.jaegojaego.warehouse.dto.*;
+import com.greedy.jaegojaego.warehouse.entity.*;
+import com.greedy.jaegojaego.warehouse.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -29,35 +20,37 @@ public class WarehouseService {
     private final WarehouseCompanyOrderRepository warehouseCompanyOrderRepository;
     private final WarehouseItemAmountRepository warehouseItemAmountRepository;
     private final WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository;
+    private final WarehouseOrderApplicationRepository warehouseOrderApplicationRepository;
+    private final WarehouseOrderApplicationItemRepository warehouseOrderApplicationItemRepository;
     private final ModelMapper modelMapper;
 
     /* Repository 의존성 주입 */
     @Autowired
-    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseCompanyOrderRepository warehouseCompanyOrderRepository, WarehouseItemAmountRepository warehouseItemAmountRepository, WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository, ModelMapper modelMapper) {
+    public WarehouseService(WarehouseRepository warehouseRepository, WarehouseCompanyOrderRepository warehouseCompanyOrderRepository, WarehouseItemAmountRepository warehouseItemAmountRepository, WarehouseItemChangeHistoryRepository warehouseItemChangeHistoryRepository, WarehouseOrderApplicationRepository warehouseOrderApplicationRepository, WarehouseOrderApplicationItemRepository warehouseOrderApplicationItemRepository, ModelMapper modelMapper) {
         this.warehouseRepository = warehouseRepository;
         this.warehouseCompanyOrderRepository = warehouseCompanyOrderRepository;
         this.warehouseItemAmountRepository = warehouseItemAmountRepository;
         this.warehouseItemChangeHistoryRepository = warehouseItemChangeHistoryRepository;
+        this.warehouseOrderApplicationRepository = warehouseOrderApplicationRepository;
+        this.warehouseOrderApplicationItemRepository = warehouseOrderApplicationItemRepository;
         this.modelMapper = modelMapper;
     }
 
     /** 입고 목록 조회용  */
     public List<WarehouseDTO> findAllWarehouseList() {
 
-        List<Warehouse> warehouseList = warehouseRepository.findAll(Sort.by(Sort.Direction.DESC, "warehouseNo"));
+        List<Warehouse> warehouseList = warehouseRepository.findAll();
 
         return warehouseList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
     }
 
-    /** 입고 상태 수정용 + 재고 변동사항 등록용 */
-    public void modifyStatus(String status, int warehouseNo) {
+    /** 입고 상태 수정용 + 재고 변동사항 등록용 + 재고 수량 수정용 */
+    public void modifyStatus(String status, int warehouseNo, int warehouseAmount) {
 
         /* 입고 정보 수정용 */
         Warehouse warehouse = warehouseRepository.findByWarehouseNo(warehouseNo);
         warehouse.setWarehouseStatus(status);
         warehouse.setWarehouseCompleteDate(new Date(System.currentTimeMillis()));
-
-        System.out.println("service warehouse = " + warehouse);
 
         /* 수정 후 변동 내역 table 추가용 */
         WarehouseItemChangeHistory itemChangeHistory = new WarehouseItemChangeHistory();
@@ -70,20 +63,27 @@ public class WarehouseService {
 //        itemChangeHistory.setItemDecrementReasonNo();                             //감소 사유 아직 필요 x
 //        itemChangeHistory.setOutWarehouseDivisionNo();                            //출고 번호 구분 필요 x
 
+        /* 추가 후 재고 관리 table 수량 수정용 */
+
+        int amount = warehouseAmount + (itemChangeHistory.getItemChangeAmount());
+
+        WarehouseItemAmount itemAmountList = new WarehouseItemAmount();
+
+        itemAmountList.setWarehouseItemInfoNo(itemChangeHistory.getItemInfoNo().getItemInfoNo());
+        itemAmountList.setWarehouseItemAmount(amount);
+
         /* 입고 정보 수정 적용 */
         warehouseRepository.save(warehouse);
         /* 변동 내역 table 추가 적용 */
         warehouseItemChangeHistoryRepository.save(itemChangeHistory);
+        /* 추가 후 재고 관리 table 수량 수정 적용 */
+        warehouseItemAmountRepository.save(itemAmountList);
     }
 
     /** 발주 승인 "완료" 목록 조회용 */
     public List<WarehouseCompanyOrderHistoryDTO> selectCompanyOrderList() {
 
-//        modelMapper.getConfiguration().setAmbiguityIgnored(true);
-
         List<WarehouseCompanyOrderHistory> warehouseCompanyOrderList = warehouseCompanyOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "companyOrderHistoryNo"));
-
-        System.out.println("service warehouseCompanyOrderList = " + warehouseCompanyOrderList);
 
         return warehouseCompanyOrderList.stream().map(companyOrder -> modelMapper.map(companyOrder, WarehouseCompanyOrderHistoryDTO.class)).collect(Collectors.toList());
     }
@@ -93,189 +93,74 @@ public class WarehouseService {
 
         WarehouseCompanyOrderHistory orderHistory = warehouseCompanyOrderRepository.findById(companyOrderHistoryNo).get();
 
-        System.out.println("service orderHistory = " + orderHistory);
-
         return modelMapper.map(orderHistory, WarehouseCompanyOrderHistoryDTO.class);
     }
 
     /** 발주 상세 목록에서 제품을 입고 목록에 등록용 */
     @Transactional
-    public Object registNewOrder(int orderNo) {
+    public void registCompleteItem(int completeItemInfoNo, int orderApplicationNo, int clientNo, int clientContractItemNo, int companyAmount) {
 
         Warehouse warehouse = new Warehouse();
 
-        WarehouseCompanyOrderHistory orderNoList = new WarehouseCompanyOrderHistory();
+        WarehouseItemInfo warehouseItemInfo = new WarehouseItemInfo();
+        WarehouseClient warehouseClient = new WarehouseClient();
 
-        orderNoList.setCompanyOrderHistoryNo(orderNo);      //발주내역Entity에 받아온 값(orderNo) 넣어주기
+        warehouseItemInfo.setItemInfoNo(completeItemInfoNo);
+        warehouseClient.setClientNo(clientNo);
 
-//        warehouse.setOrderHistoryNo(orderNoList);           //입고Entity에 받아온 값 넣은 발주내역Entity 넣어주기
-////        warehouse.setWarehouseNo();                       //Entity에 시퀀스로 된 것은 자동으로 처리돼서 기입해줄 필요 없다.
-//        warehouse.setWarehouseManuDate(new Date(System.currentTimeMillis()));
-//        warehouse.setWarehouseDivisionItem(1);
-//        warehouse.setWarehouseWorkingName("입하 대기");
-//        warehouse.setWarehouseWorkingDate(new Date(System.currentTimeMillis()));
+        System.out.println("====================================================================================");
+        System.out.println("service warehouseClient = " + warehouseClient);
+        System.out.println("====================================================================================");
 
-        System.out.println("service orderNoList = " + orderNoList);
-        System.out.println("service warehouse = " + warehouse);
+//        warehouse.setWarehouseNo();                                           //Entity에 시퀀스로 된 것은 자동으로 처리돼서 기입해줄 필요 없다.
+        warehouse.setItemInfoNo(warehouseItemInfo);                             //아이템 번호
+        warehouse.setClientNo(warehouseClient);                                 //거래처 번호
+        warehouse.setOrderApplication(orderApplicationNo);                      //본사 발주 신청서 번호
+        warehouse.setClientContractItem(clientContractItemNo);                  //거래처 판매 계약 상품 번호
+        warehouse.setWarehouseAmount(companyAmount);                            //입고 수량
+        warehouse.setWarehouseStatus("입고 대기");                                //입고 상태
+        warehouse.setWarehouseDate(new Date(System.currentTimeMillis()));       //입고 대기 일자
 
-        return warehouseRepository.save(warehouse);
+        /* 발주 아이템별 구분 */
+        WarehouseOrderApplicationItem orderApplicationItem = new WarehouseOrderApplicationItem();
+
+        /* pk 묶음 */
+        WarehouseOrderApplicationItemPK warehouseOrderApplicationItemPK = new WarehouseOrderApplicationItemPK();
+        /* pk1 */
+        WarehouseOrderApplication warehouseOrderApplication = new WarehouseOrderApplication();
+        /* pk2 */
+        WarehouseClientContractItem warehouseClientContractItem = new WarehouseClientContractItem();
+
+        warehouseOrderApplication.setOrderApplicationNo(orderApplicationNo);
+        warehouseClientContractItem.setClientContractItemNo(clientContractItemNo);
+
+        warehouseOrderApplicationItemPK.setOrderApplication(warehouseOrderApplication);
+        warehouseOrderApplicationItemPK.setOrderClientContractItem(warehouseClientContractItem);
+
+        orderApplicationItem.setOrderApplicationItemPK(warehouseOrderApplicationItemPK);
+        orderApplicationItem.setOrderApplicationItemAmount(companyAmount);
+        orderApplicationItem.setOrderApplicationItemYN("Y");
+
+        /* 입고 table 추가용 */
+        warehouseRepository.save(warehouse);
+        /* 상태 변경용 */
+        warehouseOrderApplicationItemRepository.save(orderApplicationItem);
     }
+
 
     /** 재고 관리 목록 조회용 */
     public List<WarehouseItemAmountDTO> findAllItemAmount() {
 
         List<WarehouseItemAmount> warehouseItemAmount = warehouseItemAmountRepository.findAll();
 
-        System.out.println("service warehouseItemAmount = " + warehouseItemAmount);
-
         return warehouseItemAmount.stream().map(warehouseItemAmountList -> modelMapper.map(warehouseItemAmountList, WarehouseItemAmountDTO.class)).collect(Collectors.toList());
-//        return null;
     }
 
     /** 재고 관리 상세 조회용 */
     public List<WarehouseItemChangeHistoryDTO> findChangeHistoryByItemInfoNo() {
-//컬럼 이용해서 불러와야하는데 PK이용해서 불러옴
-        List<WarehouseItemChangeHistory> changeHistory = warehouseItemChangeHistoryRepository.findAll();
 
-        System.out.println("service changeHistory = " + changeHistory);
+        List<WarehouseItemChangeHistory> changeHistory = warehouseItemChangeHistoryRepository.findAll();
 
         return changeHistory.stream().map(changeHistoryList -> modelMapper.map(changeHistoryList, WarehouseItemChangeHistoryDTO.class)).collect(Collectors.toList());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    /** 발주 승인 완료 목록 불러오기 */
-//    public List<WarehouseCompanyOrderHistoryDTO> selectCompanyOrderList() {
-//
-//        modelMapper.getConfiguration().setAmbiguityIgnored(true);
-//
-//        List<WarehouseCompanyOrderHistory> warehouseCompanyOrderList = warehouseCompanyOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "companyOrderHistoryNo"));
-//
-//        System.out.println("service warehouseCompanyOrderList = " + warehouseCompanyOrderList);
-//
-//        return warehouseCompanyOrderList.stream().map(companyOrder -> modelMapper.map(companyOrder, WarehouseCompanyOrderHistoryDTO.class)).collect(Collectors.toList());
-//    }
-//
-//    /** 입고 목록에 발주 승인 완료된 정보 등록용 */
-//    @Transactional
-//    public Object registNewOrder(int orderNo) {
-//
-//        Warehouse warehouse = new Warehouse();
-//
-//        WarehouseCompanyOrderHistory orderNoList = new WarehouseCompanyOrderHistory();
-//
-//        orderNoList.setCompanyOrderHistoryNo(orderNo);      //발주내역Entity에 받아온 값(orderNo) 넣어주기
-//
-//        warehouse.setOrderHistoryNo(orderNoList);           //입고Entity에 받아온 값 넣은 발주내역Entity 넣어주기
-////        warehouse.setWarehouseNo();                       //Entity에 시퀀스로 된 것은 자동으로 처리돼서 기입해줄 필요 없다.
-//        warehouse.setWarehouseManuDate(new Date(System.currentTimeMillis()));
-//        warehouse.setWarehouseDivisionItem(1);
-//        warehouse.setWarehouseWorkingName("입하 대기");
-//        warehouse.setWarehouseWorkingDate(new Date(System.currentTimeMillis()));
-//
-//        System.out.println("service orderNoList = " + orderNoList);
-//        System.out.println("service warehouse = " + warehouse);
-//
-//        return warehouseRepository.save(warehouse);
-//    }
-//
-//    /** 입고, 입하 상태 목록 조회용 */
-//    public List<WarehouseDTO> findAllWarehouseList() {
-//
-//        List<Warehouse> warehouseList = warehouseRepository.findAll();
-//
-//        return warehouseList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
-//    }
-//
-//    /** 입고, 입하 상태 상세 조회용 */
-//    public WarehouseDTO findWarehouseByWarehouseNo(int warehouseNo) {
-//
-//        Warehouse warehouseDetailNo = warehouseRepository.findById(warehouseNo).get();
-//
-//        System.out.println("Service warehouseDetailNo = " + warehouseDetailNo);
-//
-//        return modelMapper.map(warehouseDetailNo, WarehouseDTO.class);
-//    }
-//
-//    /** 가공 대기 창고 목록 조회용 */
-////    public List<WarehouseStatusHistoryDTO> findAllRawList() {
-////
-////        List<WarehouseStatusHistory> itemRawList = itemWarehouseRepository.findAll();
-////
-////        return itemRawList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseStatusHistoryDTO.class)).collect(Collectors.toList());
-////        return null;
-////    }
-//    public List<WarehouseDTO> findAllRawList() {
-//
-//        List<Warehouse> itemRawList = warehouseRepository.findAll();
-//
-//        List<WarehouseDTO> rawWarehouseList = new ArrayList<>();
-//
-//        for(int i = 0; i < itemRawList.size(); i++) {
-//            WarehouseDTO rawWarehouse = new WarehouseDTO();
-////            rawWarehouse.setWarehouseMaterialCategoryName(itemRawList.get(i).getCompanyOrderItemList().get(i).getWarehouseItemInfo().getWarehouseMaterialCategory().getMaterialCategoryName());
-////            rawWarehouse.setWarehouseItemInfoName(itemRawList.get(i).getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoName());
-////            rawWarehouse.setWarehouseItemInfoItemSerialNo(itemRawList.get(i).getCompanyOrderItemList().get(i).getWarehouseItemInfo().getItemInfoItemSerialNo());
-//            rawWarehouse.setWarehouseNo(rawWarehouse.getWarehouseNo());
-//
-//            rawWarehouseList.add(rawWarehouse);
-//        }
-//
-//        return rawWarehouseList;
-////        return itemRawList.stream().map(warehouse -> modelMapper.map(warehouse, WarehouseDTO.class)).collect(Collectors.toList());
-////        return null;
-//    }
-//
-////    public List<WarehouseDTO> findAllRawList() {
-////
-////        List<Warehouse> rawItemList = warehouseRepository.findAll();
-////
-////        System.out.println("Service rawItemList = " + rawItemList);
-////
-////        return modelMapper.map(rawItemList, WarehouseDTO.class);
-////    }
-//    /** 가공 완성 창고 목록 조회용 */
-//    public List<ItemWarehouseDTO> findAllManuList() {
-//
-//        List<ItemWarehouse> itemManuList = itemWarehouseRepository.findAll();
-//
-//        System.out.println("Service itemManuList = " + itemManuList);
-//
-//        return itemManuList.stream().map(warehouse -> modelMapper.map(warehouse, ItemWarehouseDTO.class)).collect(Collectors.toList());
-//    }
-//
-//
-//    /** 입고, 입하 상태 수정용 */
-//    public void modifyStatus(String status, int warehouseNo) {
-//
-//        WarehouseStatusHistory warehouseStatusHistory = new WarehouseStatusHistory();
-//
-//        Warehouse warehouse = warehouseRepository.findByWarehouseNo(warehouseNo);
-//        warehouse.setWarehouseWorkingName(status);
-//        warehouse.setWarehouseWorkingDate(new Date(System.currentTimeMillis()));
-//
-//        System.out.println("service warehouse = " + warehouse);
-//
-////        warehouseStatusHistory.setWarehouseNo(warehouseNo);
-////        warehouseStatusHistory.setWarehouseNo();
-//        warehouseStatusHistory.setWarehouseHistoryDate(warehouse.getWarehouseWorkingDate());
-//        warehouseStatusHistory.setWarehouseStatusName(status);
-//        warehouseStatusHistory.setWarehouseStatusAmount(2);
-////        warehouseStatusHistory.setWarehouseStatusHistoryNo(2);
-//
-//        warehouseRepository.save(warehouse);
-////        warehouseRepository.save(warehouseStatusHistory);
-//    }
 }
