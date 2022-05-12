@@ -21,6 +21,37 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * <pre>
+ * Class : MaterialsController
+ * Comment : 자재관련 메소드를 모아놓은 Controller입니다.
+ *           자재생성, 수정, 삭제, 거래처와의 매핑, 상세보기 , 거래처 목록, 자재 목록
+ *           이 있습니다.
+ *
+ * History
+ * 2022/04/19 (김영광) MaterialsController 뷰 완성 후 시범 동작
+ * 2022/04/20 ~ 4/21 (김영광) 자재 목록 조회
+ * 2022/04/24 자재 상세 페이지 조회
+ * 2022/04/26 매핑 자재 비동기 목록 조회
+ * 2022/04/27 매핑 자재 비동기 목록 조회
+ * 2022/04/28 자재 매핑 등록
+ * 2022/04/29 자재 매핑 등록
+ * 2022/05/01 자재 매핑 등록
+ * 2022/05/02 매핑 거래처 비동기 목록 조호;
+ * 2022/05/03 매핑 거래처 비동기 목록 조호;
+ * 2022/05/04 거래처 매핑 등록;
+ * 2022/05/05 거래처 자재 매핑 매치;
+ * 2022/05/06 거래처 자재 매핑 매치;
+ * 2022/05/08 자재 수정;
+ * 2022/05/09 자재 수정;
+ * 2022/05/10 자재 삭제
+ * 2022/05/11 자재 생성
+ * 2022/05/12 사진 파일 업로드 등록
+ *
+ * </pre>
+ * @version 18
+ * @author 김영광
+ */
 @Controller
 @RequestMapping("/materials")
 public class MaterialsController {
@@ -35,13 +66,14 @@ public class MaterialsController {
         this.materialsService = materialsService;
     }
 
+    /**
+     * selectMenuList : 자재 목록 조회
+     *
+     * @return mv : 자재 목록
+     * */
     @GetMapping("/product/list")
     public ModelAndView MaterialsList(ModelAndView mv) {
 
-        System.out.println("안되나");
-        System.out.println("안되나");
-        System.out.println("안되나");
-        System.out.println("안되나");
         List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
 
         for(MaterialsDTO list : materialsList) {
@@ -54,29 +86,20 @@ public class MaterialsController {
         return mv;
     }
 
+    /**
+     * findMaterialsByCode : 선택한 자재 상세 조회 번호
+     * @param itemInfoNo : 선택한 자재의 번호
+     *
+     * @return mv : 선택한 자재 상세
+     * */
     @GetMapping("/{itemInfoNo}")
     public ModelAndView findMaterialsByCode(ModelAndView mv, @PathVariable int itemInfoNo) {
 
-        System.out.println("들어오나! 숫자" + itemInfoNo);
-        System.out.println("들어오나! 숫자" + itemInfoNo);
-        System.out.println("들어오나! 숫자" + itemInfoNo);
-
-//        MaterialsDTO materials = materialsService.findMaterialsByCode(itemInfoNo);
-
         Map<String, Object> productAllList = materialsService.findMaterialsByCode(itemInfoNo);
-
-        System.out.println("상세조회" + " " + productAllList);
-        System.out.println("상세조회" + " " + productAllList);
-        System.out.println("상세조회" + " " + productAllList);
 
         MaterialsDTO materials = (MaterialsDTO)productAllList.get("materialsDTO");
         List<ClientContractItemDTO> clientList =  (List<ClientContractItemDTO>)productAllList.get("clientContractItemDTO");
-
-        System.out.println("상세조회2" + " " + materials);
-        System.out.println("상세조회2" + " " + materials);
-        System.out.println("상세조회3" + " " + clientList);
-        System.out.println("상세조회3" + " " + clientList);
-
+        
         mv.addObject("materials", materials);
         mv.addObject("clientList", clientList);
         mv.setViewName("materials/productDetail");
@@ -84,20 +107,31 @@ public class MaterialsController {
         return mv;
     }
 
+    /**
+     * removeMaterial : 선택한 자재 삭제 번호
+     * @param itemInfoNo : 선택한 자재의 번호
+     *
+     * @return mv : 자재 목록 조회
+     * */
     @GetMapping("/delete/{itemInfoNo}")
     public ModelAndView removeMaterialNo(ModelAndView mv, @PathVariable int itemInfoNo, RedirectAttributes rttr) {
 
         materialsService.removeMaterial(itemInfoNo);
 
         String successMessage = "삭제 성공하셨습니다.";
-
+        System.out.println("333왔나");
         rttr.addFlashAttribute("successMessage", successMessage);
 
-        mv.setViewName("redirect:/materials/productList");
+        mv.setViewName("redirect:/materials/product/list");
 
         return mv;
     }
 
+    /**
+     *  자재 거래처 매핑 등록 뷰 요청
+     *
+     * @return mv : 자재 거래처 매핑 뷰 반환
+     * */
     @GetMapping("/regist")
     public ModelAndView productMaterials(ModelAndView mv) {
 
@@ -106,6 +140,12 @@ public class MaterialsController {
         return mv;
     }
 
+    /**
+     * findMaterialCount : 자재 목록 총 수 조회
+     * findCategory : 카테고리 목록 조회
+     * 
+     * @return mv : 자재 생성 뷰 반환
+     * */
     @GetMapping("/item/regist")
     public ModelAndView itemRegist(ModelAndView mv) {
 
@@ -119,6 +159,12 @@ public class MaterialsController {
         return mv;
     }
 
+    /**
+     * updateMapping : 거래처와 자재 정보 매핑 등록
+     * @param  parameter : 자재 번호, 거래처 번호
+     *
+     * @return mv : 자재, 거래처 매핑 등록 페이지
+     * */
     @PostMapping("/update")
     public ModelAndView itemMapping(ModelAndView mv, @RequestParam Map<String, String> parameter, RedirectAttributes rttr) {
         
@@ -140,26 +186,25 @@ public class MaterialsController {
        return mv;
     }
 
+    /**
+     * materialsProductRegist : 자재 생성 정보 등록
+     * materialFileRegist : 파일 정보 등록
+     * @param material : 자재 생성 정보
+     * @param materialItemImage : 사진파일 이미지
+     *
+     * @return mv : 자재 생성 페이지
+     * */
     @PostMapping("/product/register")
     public ModelAndView productRegister(ModelAndView mv ,MaterialProductDTO material, @RequestParam("materialItemImage") MultipartFile materialItemImage, RedirectAttributes rttr, Locale locale) {
 
-        System.out.println("첫번째 사진");
-        System.out.println("material11" + "" + material);
-        System.out.println("material" + "" + material);
-        System.out.println("materialItemImage" + "" + materialItemImage);
-        System.out.println("materialItemImage" + "" + materialItemImage);
+        materialsService.materialsProductRegist(material);
 
-        materialsService.MaterialsProductRegist(material);
-
-        System.out.println("두번째 사진");
         MaterialFileDTO materialFileDTO = new MaterialFileDTO();
 
         String fileUploadDirectory = rootLocation;
         File conversionFileDirectory = new File(fileUploadDirectory);
-        
-        System.out.println("세번째 사진");
-        
-        String thumbnailPath = "/upload/matrials/conversion/";
+
+        String thumbnailPath = "/upload/materials/conversion/";
 
         File uploadDirectory = new File(fileUploadDirectory);
         File thumbnailDirectory = new File(thumbnailPath);
@@ -190,7 +235,6 @@ public class MaterialsController {
                     materialFileDTO.setThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
                 }
 
-                System.out.println("materialFileDTO" + "" + materialFileDTO);
                 materialsService.materialFileRegist(materialFileDTO);
 
             } catch (IllegalStateException | IOException e) {
@@ -210,35 +254,45 @@ public class MaterialsController {
             }
 
         }
+
+            String successMessage = "등록에 성공하셨습니다.";
+
+            rttr.addFlashAttribute("successMessage", successMessage);
             mv.setViewName("redirect:/materials/item/regist");
 
         return mv;
     }
 
+    /**
+     * materialModify : 자재 정보 업데이트
+     * @param materialDTO : 자재 정보
+     *
+     * @return mv : 자재 전체 목록
+     * */
     @PostMapping("/modify")
     public ModelAndView materialModify(ModelAndView mv, @ModelAttribute MaterialDTO materialDTO ,RedirectAttributes rttr) {
 
-        System.out.println("materialsDTO = " + materialDTO);
         materialsService.materialModify(materialDTO);
 
         String successMessage = "수정에 성공하셨습니다.";
 
         rttr.addFlashAttribute("successMessage", successMessage);
-        mv.setViewName("redirect:/materials/productList");
+        mv.setViewName("redirect:/materials/product/list");
 
         return mv;
     }
 
+    /**
+     * registList : 매핑등록용 자재목록 조회
+     *
+     * @return mv : 매핑 자재 목록
+     * */
     @GetMapping(value = "/registList", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ModelAndView registproductMaterialsList(ModelAndView mv) {
 
-//        if(materialsList.subdivisionUnit = null) {
+        List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
 
-            List<MaterialsDTO> materialsList = materialsService.findMaterialsList();
-//        }
-        System.out.println("도달했는가" + "" + materialsList);
-        System.out.println("도달했는가" + "" + materialsList);
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
                 .setPrettyPrinting()
@@ -253,18 +307,16 @@ public class MaterialsController {
         return mv;
     }
 
+    /**
+     * registClientList : 매핑등록용 거래처 목록 조회
+     *
+     * @return mv : 매핑 거래처 목록 반환
+     * */
     @GetMapping(value = "/registClientList", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ModelAndView registproductClientList(ModelAndView mv) {
 
-        System.out.println("일단 들어 오는가");
-        System.out.println("일단 들어 오는가");
-        System.out.println("일단 들어 오는가");
-
         List<ClientContractItemMaterialDTO> clientList =  materialsService.findClientList();
-
-        System.out.println("도달했는가" + "" + clientList);
-        System.out.println("도달했는가" + "" + clientList);
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
