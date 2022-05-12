@@ -38,6 +38,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * <pre>
+ * Class : IssueController
+ * Comment : 가맹점 이슈(Issue)관련 메소드를 모아놓은 Controller 입니다.
+ * History
+ * 2022/05/03 (박인근) 이슈 목록 조회, 이슈 등록 발주 목록 조회, 이슈 등록 발주별 물품 목록 조회
+ * 2022/05/04 (박인근) 이슈 목록 조회, 이슈 상세 조회
+ * 2022/05/06 (박인근) 이슈 등록 발주 목록 조회, 이슈 등록 발주별 물품 목록 조회
+ * 2022/05/07 (박인근) 이슈 등록, 이미지 파일 업로드
+ * 2022/05/08 (박인근) 이슈 등록, 이슈 상세 조회, 이슈 수정
+ * 2022/05/09 (박인근) 이슈 수정, 이슈 삭제
+ * 2022/05/10 (박인근) 이슈 삭제, 이슈 처리 상태 변경
+ * </pre>
+ * @version 7
+ * @author 박인근
+ */
 @Service
 public class IssueService {
 
@@ -71,6 +87,11 @@ public class IssueService {
         this.issueCompanyAccountRepository = issueCompanyAccountRepository;
     }
 
+    /**
+     * selectIssueList : 가맹점 이슈 목록 조회
+     * @ param customUser : 로그인한 사용자 정보
+     * @ return : 로그인한 사용자 별 가맹점 발주 목록
+     */
     public List<IssueDetailDTO> selectIssueList(CustomUser customUser) {
 
         List<Issue> issueList = new ArrayList<>();
@@ -149,6 +170,13 @@ public class IssueService {
         return issueDetailList;
     }
 
+    /**
+     * setIssueDetailByFranchise : 가맹점 로그인 시 가맹점 이슈 목록 정보 세팅
+     * @ param issueList : 가맹점 이슈 목록
+     * @ param issueFranchiseInfo : 가맹점 대표자 정보
+     * @ param issueFranchiseAccountList : 가맹점 직원 정보 목록
+     * @ return : 세팅된 가맹점 이슈 목록
+     */
     private List<IssueDetailDTO> setIssueDetailByFranchise(List<Issue> issueList, IssueFranchiseInfo issueFranchiseInfo, List<IssueFranchiseAccount> issueFranchiseAccountList) {
 
         List<IssueDetailDTO> issueDetailList = new ArrayList<>();
@@ -197,6 +225,13 @@ public class IssueService {
         return issueDetailList;
     }
 
+    /**
+     * setIssueDetail : 본사 로그인 시 가맹점 이슈 목록 정보 세팅
+     * @ param issueList : 가맹점 이슈 목록
+     * @ param issueFranchiseInfo : 가맹점 대표자 정보 목록
+     * @ param issueFranchiseAccountList : 가맹점 직원 정보 목록
+     * @ return : 세팅된 가맹점 이슈 목록
+     */
     private List<IssueDetailDTO> setIssueDetail(List<Issue> issueList, List<IssueFranchiseInfo> issueFranchiseInfoList, List<IssueFranchiseAccount> franchiseAccountList) {
 
         List<IssueDetailDTO> issueDetailList = new ArrayList<>();
@@ -266,6 +301,11 @@ public class IssueService {
         return issueDetailList;
     }
 
+    /**
+     * selectIssueDetail : 가맹점 이슈 상세 정보 조회
+     * @ param issueNo : 상세 조회할 이슈 번호
+     * @ return : 가맹점 이슈 상세 정보
+     */
     public IssueDTO selectIssueDetail(int issueNo) {
 
         Issue issue = issueRepository.findById(issueNo).get();
@@ -287,6 +327,11 @@ public class IssueService {
         return issueDTO;
     }
 
+    /**
+     * selectIssueOrderList : 가맹점 이슈 신청 로그인한 사용자의 가맹점 발주 목록 조회
+     * @ param customUser : 로그인한 사용자 정보
+     * @ return : 가맹점 이슈 신청 로그인한 사용자의 가맹점 발주 목록
+     */
     public List<FranchiseOrderDTO> selectIssueOrderList(CustomUser customUser) {
 
         List<FranchiseOrder> franchiseOrderList = new ArrayList<>();
@@ -359,6 +404,14 @@ public class IssueService {
         return detailOrderList.stream().map(franchiseOrder -> modelMapper.map(franchiseOrder, FranchiseOrderDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * registIssue : 가맹점 이슈 신청
+     * @ param customUser : 로그인한 사용자 정보
+     * @ param issueAttachmentFileList : 가맹점 이슈 신청 첨부파일 정보 목록
+     * @ param issue : 가맹점 이슈 신청 정보
+     * @ param orderNo : 가맹점 이슈 신청 해당 발주 번호
+     * @ param issueItemList : 가맹점 이슈 신청 물품 정보 목록
+     */
     @Transactional
     public void registIssue(CustomUser customUser, List<IssueAttachmentFileDTO> issueAttachmentFileList, IssueDTO issue, int orderNo, List<IssueItemDTO> issueItemList) {
 
@@ -416,6 +469,15 @@ public class IssueService {
 
     }
 
+    /**
+     * updateIssue : 가맹점 이슈 수정
+     * @ param customUser : 로그인한 사용자 정보
+     * @ param issueAttachmentFileList : 가맹점 이슈 수정 첨부파일 정보 목록
+     * @ param issue : 가맹점 이슈 수정 정보
+     * @ param orderNo : 가맹점 이슈 수정 해당 발주 번호
+     * @ param issueItemList : 가맹점 이슈 수정 물품 정보 목록
+     * @ param imgResetCheck : 가맹점 이슈 첨부파일 초기화 여부
+     */
     @Transactional
     public void updateIssue(CustomUser customUser, List<IssueAttachmentFileDTO> issueAttachmentFileList, IssueDTO issue, int issueOrderNo, List<IssueItemDTO> issueItemList, int imgResetCheck) {
 
@@ -480,6 +542,10 @@ public class IssueService {
 
     }
 
+    /**
+     * deleteIssue : 가맹점 이슈 삭제
+     * @ param removeIssueNo : 삭제할 가맹점 이슈 번호
+     */
     public void deleteIssue(int removeIssueNo) {
 
         Issue deleteIssue = issueRepository.findById(removeIssueNo).get();
@@ -509,6 +575,12 @@ public class IssueService {
 
     }
 
+    /**
+     * updateIssueStatus : 가맹점 이슈 처리 상태 변경
+     * @ param customUser : 로그인한 사용자 정보
+     * @ param issueNo : 처리 상태를 변경할 이슈 번호
+     * @ param status : 변경할 이슈 처리 상태
+     */
     public void updateIssueStatus(CustomUser customUser, int issueNo, String status) {
 
         Issue issue = issueRepository.findById(issueNo).get();
