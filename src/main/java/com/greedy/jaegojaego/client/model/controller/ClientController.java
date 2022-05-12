@@ -1,3 +1,36 @@
+/**
+ * <pre>
+ * Class : ClientController
+ * Comment : Client(거래처 관리)관련 메소드를 모아놓은 Controller입니다.
+ * History
+ * 2022/04/18 (윤기주) ClientController 기본 설정 작성
+ * 2022/04/19 (윤기주) Client 목록 조회 페이지 이동 및 완성
+ * 2022/04/21 (윤기주) Client 목록 조회 기능 작성
+ * 2022/04/23 (윤기주) Client 상세 조회 기능 작성 및 완성
+ * 2020/04/23 (윤기주) Client 메모 조회 기능 작성 및 완성
+ * 2022/04/24 (윤기주) Client 등록 기능 작성
+ * 2022/04/25 (윤기주) Client 삭제 기능 작성 및 완성
+ * 2022/04/26 (윤기주) Client 목록 조회 기능 수정(JOIN TABLE 조회 추가) 및 완성
+ * 2022/04/27 (윤기주) Client 등록 기능 1차 수정
+ * 2022/04/29 (윤기주) Client 등록 기능 2차 수정
+ * 2022/04/30 (윤기주) Client 등록 기능 3차 수정 및 완성
+ * 2020/05/01 (윤기주) ClientContractItem 목록 조회 페이지 이동 및 완성
+ * 2022/05/01 (윤기주) ClientContractItem 목록 조회 기능 작성 및 완성
+ * 2020/05/03 (윤기주) ClientContractItem 목록 등록 기능 작성 및 완성
+ * 2020/05/04 (윤기주) ClientContractItem 목록 조회 기능 수정(JOIN TABLE 조회 추가) 및 완성
+ * 2020/05/06 (윤기주) ClientContractItem 목록 등록 기능 1차 수정
+ * 2020/05/07 (윤기주) ClientContractItem 목록 이미지 등록 기능 작성
+ * 2020/05/08 (윤기주) ClientContractItem 목록 등록 기능 1차 수정
+ * 2020/05/09 (윤기주) ClientContractItem 목록 등록 기능 2차 수정 및 완성
+ * 2020/05/10 (윤기주) ClientContractItem 목록 이미지 및 썸네일 경로 기능 작성
+ * 2020/05/11 (윤기주) ClientContractItem 첨부파일 등록 기능 작성
+ * 2020/05/11 (윤기주) ClientContractItem 첨부파일 등록 기능 1차 수정(미완성)
+ * </pre>
+ * @version 11
+ * @author 윤기주
+ */
+
+
 package com.greedy.jaegojaego.client.model.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,6 +77,12 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    /**
+     * clientSelectList : Client 조회 페이지 이동 및 목록 출력 메소드
+     * @ param searchCondition : 검색 카테고리
+     * @ param searchValue : 검색 내용
+     * @ return : 페이징을 포함한 목록 데이터, 화면 경로
+     * */
     @GetMapping("/list")
     public ModelAndView clientSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
@@ -63,36 +102,23 @@ public class ClientController {
         PagingButtonInfo paging = Pagenation.getPagingButtonInfo(clientList);
         mv.addObject("paging", paging);
 
-/*        mv.addObject("searchCondition", searchCondition);
-        mv.addObject("searchValue", searchValue);*/
-
         mv.setViewName("/client/clientList");
 
         return mv;
     }
-
+    /**
+     * clientCbrList : Client 사업자 등록증 조회 페이지 이동 및 목록 출력 메소드
+     * @ return : 페이징을 포함한 목록 데이터, 화면 경로
+     * 기능 미완성
+     * */
     @GetMapping("/cbrlist")
     public ModelAndView clientCbrList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
         Page<ClientDTO> clientList = null;
 
-        clientList = clientService.findClientList2(pageable); //list로 바꾼다음에
+        clientList = clientService.findClientList2(pageable);
         System.out.println("ㄷㄷ");
         clientList.forEach(System.out::println);
-
-        //이소현이 적은 거 시작
-//        List<ClientCbrDTO> clientCbrDTOList = null;
-//        ClientCbrDTO clientCbrDTO = null;
-//
-//        for(int i = 0; i < clientList.getSize(); i++) { //반복이 9번 되요 ㅋㅋㅋ
-//
-//            System.out.println("반복 몇번?"); //9번 나온다고 ㅋㅋㅋㅋ개빡치네
-//            clientCbrDTO.setClientCbrAttachmentNo(clientList.get(i).clientCbrAttachmentNo);
-//
-//        }
-//
-//controller에서 clientCbrList를 넣어서 mv.addObject 넣어가지고 그친구 데려오면
-//(여기 읽어줘)이소현이 적은 거 끝 ===> 안되는 사유 : clientList를 반복해서 set해서 ClientCbrList를 넣어주고 그걸 add.object뭐시기 할랬는데? get(i)부터가 안되고 , getSIze는 9번함 ㅋㅋㅋ 어이가 없네 이거 안됨 쳐내자 기주형 안ㅡ도ㅔ!
 
         mv.addObject("clientList", clientList);
 
@@ -106,6 +132,10 @@ public class ClientController {
         return mv;
     }
 
+    /**
+     * clientSelectDetail : Client 상세 조회 페이지 이동 및 목록 출력 메소드
+     * @ return : 상세조회 목록 데이터
+     * */
     @GetMapping(value = "/detail", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String clientSelectDetail(HttpServletRequest request, ModelAndView mv, int clientNo) throws JsonProcessingException {
@@ -126,6 +156,11 @@ public class ClientController {
         return gson.toJson(clientContractInfoList);
     }
 
+    /**
+     * clientMemo : Client 메모조회 페이지 이동 및 목록 출력 메소드
+     * @ param clientNo : 해당 메모가 저장되어있는 ClientNo(PK)
+     * @ return : 메모 목록 데이터
+     * */
     @GetMapping(value = "/memo", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String clientMemo(HttpServletRequest request, ModelAndView mv, int clientNo) throws JsonProcessingException {
@@ -146,7 +181,10 @@ public class ClientController {
 
         return gson.toJson(clientMemoList);
     }
-
+    /**
+     * sendClientRegistForm : Client 등록 화면 전환 메소드
+     * @ return : Client 등록 화면 경로
+     * */
     @GetMapping("/regist")
     public ModelAndView sendClientRegistForm(ModelAndView mv) {
 
@@ -164,69 +202,19 @@ public class ClientController {
 
         return mv;
     }
-
-/*    @GetMapping(value = "/registclient")
-    @ResponseBody
-    public void registClient(@ModelAttribute ClientDTO clientDTO, @ModelAttribute ClientBusinessItemDvisionDTO clientBusinessItemDvisionDTO,
-                               @ModelAttribute ClientBusinessTypeDvisionDTO clientBusinessTypeDvisionDTO, @ModelAttribute ClientContractInfoDTO clientContractInfoDTO,
-                               @ModelAttribute ClientMemberDTO clientMemberDTO, HttpServletRequest request, RedirectAttributes rttr, Locale locale,
-                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date clientContractInfoStartDate,
-                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date clientContractInfoEndDate) {
-
-        System.out.println("컨트롤러 도착");
-        String clientName = request.getParameter("clientName");
-        String clientCbrNo = request.getParameter("clientCbrNo");
-        String clientRepresentativeName = request.getParameter("clientRepresentativeName");
-        String clientRepresentativePhone = request.getParameter("clientRepresentativePhone");
-        String clientRepresentativeEmail = request.getParameter("clientRepresentativeEmail");
-        String clientAddress = request.getParameter("clientAddress");
-        int clientBusinessItem = Integer.parseInt(request.getParameter("clientBusinessItem"));
-        int clientBusinessType = Integer.parseInt(request.getParameter("clientBusinessType"));
-
-        System.out.println("clientName : " + clientName);
-
-        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
-        CustomUser customUser1 = (CustomUser) authentication1.getPrincipal();
-
-        System.out.println("customUser1.getMemberNo() = " + customUser1.getMemberNo());
-
-        int memberNo = customUser1.getMemberNo();
-        ClientMember loginMember = clientService.findClientLoginNo(memberNo);
-
-        System.out.println("memeberNo : " + memberNo);
-
-        clientDTO.setClientName(clientName);
-        clientDTO.setClientCbrNo(clientCbrNo);
-        clientDTO.setClientRepresentativeName(clientRepresentativeName);
-        clientDTO.setClientRepresentativePhone(clientRepresentativePhone);
-        clientDTO.setClientRepresentativeEmail(clientRepresentativeEmail);
-        clientDTO.setClientMemberNo(loginMember);
-
-        System.out.println("clientDTO : " + clientDTO);
-
-        clientService.registClient(clientDTO);
-
-        int clientInsertNo = clientService.findClientNoByName(clientName);
-
-
-        clientBusinessItemDvisionDTO.setClientBusinessItemNo(clientBusinessItem);
-        System.out.println("업종번호 : " + clientBusinessItem);
-        clientBusinessItemDvisionDTO.setClientNo(clientInsertNo);
-        System.out.println("거래처번호 : " + clientInsertNo);
-        clientService.registClientBusinessItemDevision(clientBusinessItemDvisionDTO);
-
-        clientBusinessTypeDvisionDTO.setClientBusinessTypeNo(clientBusinessType);
-        System.out.println("업태번호 : " + clientBusinessType);
-        clientBusinessTypeDvisionDTO.setClientNo(clientInsertNo);
-        clientService.registClientBusinessTypeDevision(clientBusinessTypeDvisionDTO);
-
-        clientContractInfoDTO.setClientContractInfoStartDate(clientContractInfoStartDate);
-        clientContractInfoDTO.setClientContractInfoEndDate(clientContractInfoEndDate);
-        clientContractInfoDTO.setClientNo(clientInsertNo);
-        clientService.registClientContractInfo(clientContractInfoDTO);
-
-    }*/
-
+    /**
+     * registClient : Client 등록 메소드
+     * @ param clientName : 입력받은 clientName
+     * @ param clientCbrNo : 입력받은 clientCbrNo
+     * @ param clientRepresentativeName : 입력받은 clientRepresentativeName
+     * @ param clientRepresentativePhone : 입력받은 clientRepresentativePhone
+     * @ param clientRepresentativePhone : 입력받은 clientRepresentativePhone
+     * @ param clientRepresentativeEmail : 입력받은 clientRepresentativeEmail
+     * @ param clientBusinessItemNo : ClientBusinessItem 목록에서 입력받은 clientBusinessItem의 clientBusinessItemNo
+     * @ param clientBusinessTypeNo : ClientBusinessType 목록에서 입력받은 clientBusinessType의 clientBusinessTypeNo
+     * @ param clientContractStartDate : 입력받은 clientContractStartDate
+     * @ param clientContractEndDate : 입력받은 clientContractEndDate
+     * */
     @GetMapping(value = "/registclient")
     @ResponseBody
     public void registClient(ClientDTO client, ClientContractInfoDTO clientContractInfo, HttpServletRequest request, RedirectAttributes rttr, Locale locale) {
@@ -277,7 +265,10 @@ public class ClientController {
 
 
     }
-
+    /**
+     * removeClient : Client 삭제 메소드
+     * @ param clientNo : 삭제하기위한 Client 데이터의 clientNo(PK)
+     * */
     @GetMapping("/removeclient")
     public void removeClient(HttpServletRequest request, RedirectAttributes rttr) {
 
@@ -288,72 +279,24 @@ public class ClientController {
 
         clientService.deleteClient(clientNo);
     }
-
+    /**
+     * registMemo : Client 등록 메소드
+     * @ param clientMemoBody : 입력받은 clientMemoBody
+     * @ param clientNo : 입력할 clientMemo의 clientNo(FK)
+     * 기능 미완성
+     * */
     @GetMapping("/registmemo")
     public void registMemo(HttpServletRequest request, RedirectAttributes rttr) {
 
         String clientMemoBody = request.getParameter("clientMemoBody");
     }
 
-
-//    @GetMapping(value ="/businesstypeoption", produces = "application/json; charset=UTF-8")
-//    @ResponseBody
-//    public String clientBusinessType(HttpServletRequest request, ModelAndView mv) throws JsonProcessingException{
-//
-//        List<ClientBusinessTypeDTO> clientBusinessType = new ArrayList<>();
-//
-//        clientBusinessType = clientService.findClientBusinessType();
-//
-//        Gson gson = new GsonBuilder()
-//                .setDateFormat("yyyy-MM-dd")
-//                .setPrettyPrinting()
-//                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-//                .serializeNulls()
-//                .disableHtmlEscaping()
-//                .create();
-//
-//        return gson.toJson(clientBusinessType);
-//
-//
-//
-//    }
-
-
-/*    @GetMapping("/productlist")
-    public ModelAndView clientContractItemList(ModelAndView mv) {
-
-        mv.setViewName("/client/clientContractItemList");
-
-        return mv;
-    }*/
-
-
-//    @GetMapping("/itemlist")
-//    public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
-//
-//        String searchCondition = request.getParameter("searchCondition");
-//        String searchValue = request.getParameter("searchValue");
-//
-//        Page<ClientContractItemDTO> clientContractItemList = null;
-//
-//        if (searchCondition != null && !"".equals(searchCondition)) {
-//            clientContractItemList = clientService.findClientItemSearchList(searchCondition, searchValue, pageable);
-//        } else {
-//            clientContractItemList = clientService.findClientItemList(pageable);
-//        }
-//
-//        mv.addObject("clientContractItemList", clientContractItemList);
-//
-//        PagingButtonInfo paging = ClientPagenation.getPagingButtonInfo(clientContractItemList);
-//        mv.addObject("paging", paging);
-//
-//        System.out.println("계약상품 : " + clientContractItemList);
-//
-//        mv.setViewName("/client/clientContractItemList");
-//
-//        return mv;
-//    }
-
+    /**
+     * clientContractItemSelectList : Client 조회 페이지 이동 및 목록 출력 메소드
+     * @ param searchCondition : 검색 카테고리
+     * @ param searchValue : 검색 내용
+     * @ return : 페이징을 포함한 목록 데이터, 화면 경로
+     * */
     @GetMapping("/itemlist")
     public ModelAndView clientContractItemSelectList(HttpServletRequest request, ModelAndView mv, @PageableDefault Pageable pageable) {
 
@@ -365,25 +308,13 @@ public class ClientController {
         mv.setViewName("/client/clientContractItemList");
 
         return mv;
-
     }
-
-
-
-
-    @GetMapping("/itemregist")
-    public ModelAndView sendClientItemRegistForm(ModelAndView mv) {
-
-        List<ClientDTO> client = new ArrayList<>();
-
-        client = clientService.findClient();
-
-        mv.addObject("client", client);
-        mv.setViewName("/client/clientContractItemRegistForm");
-
-        return mv;
-    }
-
+    /**
+     * registClientItem : 거래처 계약 상품 등록 및 이미지 등록, 써네일 경로 등록
+     * @ param clientContractItemDTO : 로그인되어있는 id 번호
+     * @ param clientDTO : 검색 내용
+     * @ return : 페이징을 포함한 목록 데이터, 화면 경로
+     * */
     @PostMapping("/registclientitem")
     public ModelAndView registClientItem(@AuthenticationPrincipal CustomUser user, @ModelAttribute ClientContractItemDTO clientContractItemDTO, @ModelAttribute ClientDTO clientDTO, @RequestParam("clientItemImage") MultipartFile clientItemImage, ModelAndView mv, RedirectAttributes rttr, Locale locale) {
         System.out.println("clientContractItemDTO = " + clientContractItemDTO);
