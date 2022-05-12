@@ -14,9 +14,8 @@ import org.springframework.stereotype.Repository;
  * 2022/04/21 (이소현) MenuMaterialRepository 기본 설정 작성
  * 2022/04/25 (이소현) 메뉴 등록
  * </pre>
- * @version ㄱㄷ
+ * @version 2
  * @author 이소현
- * @see MenuMaterial , MenuService, MenuMaterialsDTO
  * */
 @Repository
 public interface MenuMaterialRepository extends JpaRepository<MenuMaterial, Integer> {

@@ -12,9 +12,8 @@ import org.springframework.stereotype.Repository;
  * History
  * 2022/05/05 (이소현) BacklogClientRepository 기본 설정 작성, 입고 백로그 목록 조회
  * </pre>
- * @version ㄱㄷ
+ * @version 1
  * @author 이소현
- * @see BacklogClient , BacklogService, BacklogClientDTO
  * */
 @Repository
 public interface BacklogClientRepository extends JpaRepository<BacklogClient, Integer> {

@@ -19,9 +19,8 @@ import java.util.List;
  * 2022/04/19 (이소현) RawMaterialRepository 기본 설정 작성
  * 2022/04/20 (이소현) 메뉴 상세 조회
  * </pre>
- * @version ㄱㄷ
+ * @version 2
  * @author 이소현
- * @see RawMaterial, MenuService, RawMaterialDTO
  * */
 @Repository
 public interface RawMaterialRepository extends JpaRepository<RawMaterial, Integer> {

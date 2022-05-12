@@ -39,9 +39,8 @@ import java.util.Map;
  * 2022/05/08 (이소현) 출고 백로그 조회
  * 2022/05/09 (이소현) 출고 백로그 막대 그래프 조회
  * </pre>
- * @version ㄱㄷ
+ * @version 9
  * @author 이소현
- * @see BacklogService, InWarehouseBacklogRepository, InWarehouseBacklogRepository 등
  */
 @Controller
 @RequestMapping("backlog")
@@ -54,6 +53,10 @@ public class BacklogController {
         this.backlogService = backlogService;
     }
 
+    /**
+     * selectInWarehouseBacklogList : 입고 백로그 목록 조회
+     * @ return : 입고 백로그 목록
+     * */
    @GetMapping("list")
     public ModelAndView backlogPage(ModelAndView mv) {
         List<BacklogInWarehouseDTO> inWarehouseBacklogList = backlogService.selectInWarehouseBacklogList();
@@ -65,6 +68,10 @@ public class BacklogController {
         return mv;
    }
 
+    /**
+     * selectOutWarehouseBacklogList : 출고 백로그 목록 조회
+     * @ return : 출고 백로그 목록
+     * */
    @GetMapping("outwarehouselist")
    public ModelAndView moveOutWarehouseListPage(ModelAndView mv) {
         List<OutWarehouseBacklogDTO> outWarehouseBacklogList = backlogService.selectOutWarehouseBacklogList();
@@ -75,6 +82,10 @@ public class BacklogController {
         return mv;
    }
 
+    /**
+     * findItemInfoList : 자재 목록 조회
+     * @ return : 자재 목록
+     * */
    @GetMapping(value = "iteminfolist", produces = "application/json; charset=UTF-8")
    @ResponseBody
    public List<BacklogItemInfoDTO> findItemInfoList() {
@@ -82,6 +93,11 @@ public class BacklogController {
         return backlogService.findItemInfoList();
    }
 
+    /**
+     * findBacklogInWarehouseBySelectBox : 입고 백로그 그래프를 위한 특정 자재 번호에 따른 특정 자재 내용 조회
+     * @ param itemInfoNo : 특정 자재 번호
+     * @ return : 특정 자재 내용
+     * */
    @GetMapping(value = "selectonebackloglist", produces = "application/json; charset=UTF-8")
    @ResponseBody
    public List<BacklogInWarehouseDTO> findBacklogInWarehouseBySelectBox(@RequestParam int itemInfoNo) {
@@ -89,6 +105,12 @@ public class BacklogController {
         return backlogService.findBacklogInWarehouseBySelectBox(itemInfoNo);
    }
 
+
+    /**
+     * findBacklogOutWarehouseBySelectBox : 출고 백로그 그래프를 위한 특정 자재 번호에 따른 특정 자재 내용 조회
+     * @ param itemInfoNo : 특정 자재 번호
+     * @ return : 특정 자재의 이슈발생날짜
+     * */
    @GetMapping(value = "selectoneoutwarehousebackloglist", produces = "application/json; charset=UTF-8")
    @ResponseBody
    public List<Date> findBacklogOutWarehouseBySelectBox(@RequestParam int itemInfoNo) {

@@ -39,9 +39,8 @@ import java.util.stream.Collectors;
  * 2022/04/28 (이소현) 메뉴 삭제
  * 2022/04/30 (이소현) 메뉴 삭제
  * </pre>
- * @version ㄱㄷ
+ * @version 10
  * @author 이소현
- * @see MenuRepository, RawMaterialRepository, MenuController
  * */
 @Service
 public class MenuService {
@@ -60,6 +59,10 @@ public class MenuService {
     }
 
 
+    /**
+     * findAll : 메뉴 전체 리스트 조회
+     * @ return : 메뉴 전체 리스트
+     * */
     public List<MenuDTO> selectMenuList() {
 
         List<Menu> menuList = menuRepository.findAll();
@@ -68,6 +71,11 @@ public class MenuService {
 
     }
 
+    /**
+     * selectOneMenu : 선택한 메뉴 목록 내용 조회
+     * @ param menuNo : 선택한 메뉴의 메뉴번호
+     * @ return : 선택한 메뉴 목록 내용
+     * */
     public List<RawMaterialDTO> selectOneMenu(int menuNo) {
 
         List<RawMaterial> selectOneMenu = rawMaterialRepository.selectOneMenu(menuNo);
@@ -75,6 +83,10 @@ public class MenuService {
         return selectOneMenu.stream().map(rawMaterial -> modelMapper.map(rawMaterial, RawMaterialDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findAll : 자재 전체 리스트 조회
+     * @ return : 자재 전체 리스트
+     * */
     public List<MenuMaterialsDTO> findRawMaterialList() {
 
         List<MenuMaterial> rawMaterialList = menuMaterialRepository.findAll();
@@ -82,6 +94,19 @@ public class MenuService {
         return rawMaterialList.stream().map(menuMaterial -> modelMapper.map(menuMaterial, MenuMaterialsDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * save : 메뉴 등록
+     * @ param menu : 등록할 메뉴의 내용들
+     *
+     * selectMenuByMenuName : 특정 메뉴 이름에 맞는 메뉴 리스트 조회
+     * @ param menu.getMenuName() : 특정 메뉴 이름
+     *
+     * selectMenuMaterialBymenuName : 특정 메뉴 이름에 맞는 자재 리스트 조회
+     * @ param menuName : 특정 메뉴 이름
+     *
+     * save : 원재료 등록
+     * @ param rawMaterial : 등록할 원재료의 내용들
+     * */
     @Transactional
     public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
 
@@ -144,6 +169,23 @@ public class MenuService {
 
         }
 
+    /**
+     * findById : 특정 메뉴 조회
+     * @ param menu.getMenuNo() : 특정 메뉴 조회할 메뉴의 번호
+     *
+     * deleteRawMaterialByMenuNo : 특정 메뉴 번호에 따른 원재료 목록 삭제
+     * @ param selectMenu.getMenuNo() : 특정 원재료를 삭제할 메뉴의 번호
+     *
+     * //ㄱㄷ
+     * selectMenuByMenuName : 특정 메뉴 이름에 따른 특정 메뉴 조회
+     * @ param menu.getMenuName() : 특정 메뉴 이름
+     *
+     * selectMenuMaterialBymenuName : 특정 메뉴 이름에 따른 특정 자재 조회
+     * @ param menuName : 특정 메뉴 이름
+     *
+     * save : 원재료 등록
+     * @ param rawMaterial : 등록할 원재료의 내용들
+     * */
     @Transactional
     public void modifyMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
 
@@ -205,6 +247,10 @@ public class MenuService {
         }
     }
 
+    /**
+     * deleteById : 특정 메뉴 번호에 따른 특정 메뉴 삭제
+     * @ param menuNo : 특정 메뉴 번호
+     * */
     public void deleteMenu(int menuNo) {
 
         menuRepository.deleteById(menuNo);

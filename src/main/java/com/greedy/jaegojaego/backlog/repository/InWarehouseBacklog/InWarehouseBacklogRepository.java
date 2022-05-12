@@ -16,9 +16,8 @@ import java.util.Optional;
  * History
  * 2022/05/02 (이소현) InWarehouseBacklogRepository 기본 설정 작성, 입고 백로그 목록 조회
  * </pre>
- * @version ㄱㄷ
+ * @version 1
  * @author 이소현
- * @see BacklogInWarehouse , BacklogService, BacklogInWarehouseDTO
  * */
 @Repository
 public interface InWarehouseBacklogRepository extends JpaRepository<BacklogInWarehouse, Integer> {

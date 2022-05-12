@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,9 +42,8 @@ import java.util.Map;
  * 2022/04/28 (이소현) 메뉴 삭제
  * 2022/04/30 (이소현) 메뉴 삭제
  * </pre>
- * @version ㄱㄷ
+ * @version 11
  * @author 이소현
- * @see MenuDTO, MenuService, MenuRepository, RawMaterialRepository 등
  */
 @Controller
 @RequestMapping("/menu")
@@ -56,6 +56,10 @@ public class MenuController {
         this.menuService = menuService;
     }
 
+    /**
+     * selectMenuList : 메뉴 목록 조회
+     * @ return : 메뉴 목록
+     * */
     @GetMapping("/list")
     public ModelAndView moveMenu(ModelAndView mv, Authentication authentication) {
 
@@ -68,6 +72,11 @@ public class MenuController {
         return mv;
     }
 
+    /**
+     * selectOneMenu : 선택한 메뉴 상세 조회
+     * @ param : 선택한 메뉴의 번호
+     * @ return : 선택한 메뉴 상세
+     * */
     @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String selectOneMenu(int menuNo) {
@@ -86,6 +95,10 @@ public class MenuController {
         return gson.toJson(rawMaterialList);
     }
 
+    /**
+     * findRawMaterialList : 자재 전체 목록 조회
+     * @ return : 자재 전체 목록
+     * */
     @GetMapping(value = "/materialcategory", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<MenuMaterialsDTO> findRawMaterialList() {
@@ -93,8 +106,14 @@ public class MenuController {
         return menuService.findRawMaterialList();
     }
 
+    /**
+     * registMenu : 메뉴 등록
+     * @ param menu : 등록할 메뉴의 내용들
+     * @ param menuMaterial : 등록할 자재의 내용들
+     * @ param materialNameAndCapacityList : 등록할 자재이름과 용량이 합쳐진 목록 내용들
+     * */
     @PostMapping("/regist")
-    public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request) {
+    public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, WebRequest request) {
 
         String[] materialNameAndCapacityList = request.getParameterValues("materials");
 
@@ -105,8 +124,14 @@ public class MenuController {
         return mv;
     }
 
+    /**
+     * modifyMenu : 메뉴 수정
+     * @ param menu : 수정할 메뉴의 내용들
+     * @ param menuMaterial : 수정할 자재의 내용들
+     * @ param materialNameAndCapacityList : 수정할 자재이름과 용량이 합쳐진 목록 내용들
+     * */
     @PostMapping("/modify")
-    public ModelAndView modifyMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, HttpServletRequest request) {
+    public ModelAndView modifyMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, WebRequest request) {
 
 
         String[] materialNameAndCapacityList = request.getParameterValues("materialsForModify");
@@ -119,9 +144,13 @@ public class MenuController {
 
     }
 
+    /**
+     * modifyMenu : 메뉴 삭제
+     * @ param menuNo : 삭제할 메뉴의 번호
+     * */
     @GetMapping("/delete")
     @ResponseBody
-    public void deleteMenu(HttpServletRequest request) {
+    public void deleteMenu(WebRequest request) {
 
         int menuNo = Integer.parseInt(request.getParameter("menuNo"));
 

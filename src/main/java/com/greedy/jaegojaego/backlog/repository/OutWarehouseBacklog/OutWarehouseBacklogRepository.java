@@ -15,9 +15,8 @@ import java.util.List;
  * History
  * 2022/05/08 (이소현) OutWarehouseBacklogRepository 기본 설정 작성, 출고 백로그 조회
  * </pre>
- * @version ㄱㄷ
+ * @version 1
  * @author 이소현
- * @see OutWarehouseBacklog , BacklogService, OutWarehouseBacklogDTO
  * */
 @Repository
 public interface OutWarehouseBacklogRepository extends JpaRepository<OutWarehouseBacklog,Integer> {

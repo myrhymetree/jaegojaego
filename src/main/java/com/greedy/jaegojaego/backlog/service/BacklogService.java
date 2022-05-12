@@ -37,9 +37,8 @@ import java.util.stream.Collectors;
  * 2022/05/08 (이소현) 출고 백로그 조회
  * 2022/05/09 (이소현) 출고 백로그 막대 그래프 조회
  * </pre>
- * @version ㄱㄷ
+ * @version 9
  * @author 이소현
- * @see InWarehouseBacklogRepository , BacklogController
  * */
 @Service
 public class BacklogService {
@@ -59,6 +58,10 @@ public class BacklogService {
         this.outWarehouseBacklogRepository = outWarehouseBacklogRepository;
     }
 
+    /**
+     * findAll : 입고 전체 리스트 조회
+     * @ return : 입고 전체 리스트
+     * */
     public List<BacklogInWarehouseDTO> selectInWarehouseBacklogList() {
 
         /** 입고 목록 전체 조회 */
@@ -97,6 +100,10 @@ public class BacklogService {
 
     }
 
+    /**
+     * findAll : 자재 전체 리스트 조회
+     * @ return : 자제 전체 리스트
+     * */
     public List<BacklogItemInfoDTO> findItemInfoList() {
 
         List<BacklogItemInfo> ItemInfoList = backlogItemInfoRepository.findAll();
@@ -104,6 +111,11 @@ public class BacklogService {
         return ItemInfoList.stream().map(backlogItemInfo -> modelMapper.map(backlogItemInfo, BacklogItemInfoDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findBacklogInWarehouseBySelectBox : 특정 자재 선택에 따른 특정 입고 내용 조회
+     * @ param itemInfoNo : 특정 자재 번호
+     * @ return : 특정 입고 내용
+     * */
     public List<BacklogInWarehouseDTO> findBacklogInWarehouseBySelectBox(int itemInfoNo) {
 
         List<BacklogInWarehouse> findBacklogInWarehouseBySelectBox = inWarehouseBacklogRepository.findBacklogInWarehouseBySelectBox(itemInfoNo);
@@ -111,6 +123,10 @@ public class BacklogService {
         return findBacklogInWarehouseBySelectBox.stream().map(backlogInWarehouse -> modelMapper.map(backlogInWarehouse, BacklogInWarehouseDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findAll : 거래처 전체 리스트 조회
+     * @ return : 거래처 전체 리스트
+     * */
     public List<BacklogClientDTO> findClientList() {
 
         List<BacklogClient> clinetList = backlogClientRepository.findAll();
@@ -118,6 +134,10 @@ public class BacklogService {
         return clinetList.stream().map(backlogClient -> modelMapper.map(backlogClient, BacklogClientDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findAll : 전체 출고 리스트 조회
+     * @ return : 전체 출고 리스트
+     * */
     public List<OutWarehouseBacklogDTO> selectOutWarehouseBacklogList() {
 
         List<OutWarehouseBacklog> outWarehouseBacklogList = outWarehouseBacklogRepository.findAll();
@@ -125,6 +145,14 @@ public class BacklogService {
         return outWarehouseBacklogList.stream().map(outWarehouseBacklog -> modelMapper.map(outWarehouseBacklog, OutWarehouseBacklogDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findAll : 특정 자재 선택에 따른 특정 출고 내용 조회
+     * @ return : 특정 출고 내용
+     *
+     * findById : 특정 자재 번호에 따른 특정 자재 이름 조회
+     * @ param itemInfoNo : 특정 자재 번호
+     * @ return : 특정 자재 이름
+     * */
     public List<Date> findBacklogOutWarehouseBySelectBox(int itemInfoNo) {
 
         /** 출고 목록 전체 조회 */ 

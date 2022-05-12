@@ -20,9 +20,8 @@ import java.util.List;
  * 2022/04/25 (이소현) 매뉴 등록
  * 2022/04/27 (이소현) 매뉴 수정
  * </pre>
- * @version ㄱㄷ
+ * @version 5
  * @author 이소현
- * @see Menu, MenuService, MenuDTO
  * */
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
