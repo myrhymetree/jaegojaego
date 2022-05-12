@@ -2,7 +2,7 @@
     border: 0.5px solid gray;
     margin-left: 30px;
     margin-top: 30px;
-    height: 820px;
+    height: 900px;
     width: 30%;
     float: left;
     background: white;
@@ -13,8 +13,8 @@
     float: left;
     margin-left: 30px;
     margin-top: 30px;
-    height: 820px;
-    width: 62%;
+    height: 900px;
+    width: 64%;
     background: white;
 }
 
@@ -24,7 +24,7 @@
     float: left;
     margin-left: 30px;
     margin-top: 30px;
-    height: 820px;
+    height: 900px;
     width: 62%;
     background: white;
 }
@@ -49,18 +49,18 @@
 
 .modal-layer {
     position: relative;
-    top: -74.5%;
-    left:-90%;
-    width: 1825px;
-    height: 890px;
+    top: -77%;
+    left:-113%;
+    width: 2100px;
+    height: 1010px;
     background: rgba(0, 0, 0, 0.5);
     z-index: -1;
 }
 
 .forz-index {
     position: absolute;
-    top: 22.3%;
-    left: 29.5%;
+    top: 21.3%;
+    left: 32.5%;
     z-index: 1050
 }
 
@@ -107,13 +107,13 @@
 
 .registMenuButton {
     position: absolute;
-    top: 16.5%;
+    top: 14.5%;
     left: 26%;
 }
 
 .modifyMenuButton {
     position: absolute;
-    top: 16.5%;
+    top: 14.5%;
     left: 90%;
 }
 
@@ -134,7 +134,7 @@
     position: relative;
     left: 15%;
     margin-top: 8px;
-    margin-left: 80px;
+    margin-left: 130px;
 }
 
 .registMenuSubmitButton {

@@ -4,17 +4,7 @@
     left:2%;
     top: 14%;
     height: 340px;
-    width: 1750px;
-    background: white;
-}
-
-.whiteboardForCalendar {
-    border: 0.5px solid gray;
-    position: absolute;
-    left:-0.1%;
-    top: -0.5%;
-    height: 760px;
-    width: 1750px;
+    width: 1950px;
     background: white;
 }
 
@@ -25,10 +15,10 @@
 .backlogListWhiteboard {
     border: 0.5px solid gray;
     position: absolute;
-    top: 51%;
+    top: 50%;
     left: 2%;
-    height: 450px;
-    width: 1750px;
+    height: 530px;
+    width: 1950px;
     background: white;
 }
 
@@ -46,43 +36,20 @@
     top: 48%;
 }
 
-.calendar-button {
-    position: absolute;
-    top: 3%;
-    left: 91%;
-}
-
-.calendarback-button {
-    position: absolute;
-    top: 3%;
-    left: 93%;
-    z-index: 1050;
-}
-
 .barGraph {
     border: 0.5px solid gray;
     height: 300px;
-    width: 1650px;
+    width: 1850px;
     position: relative;
     margin-top: 15px;
     margin-left: 50px;
     float: left;
 }
 
-/*.circleGraph {*/
-/*    border: 0.5px solid gray;*/
-/*    height: 300px;*/
-/*    width: 600px;*/
-/*    position: relative;*/
-/*    margin-top: 15px;*/
-/*    margin-left: 50px;*/
-/*    float: left;*/
-/*}*/
-
 .barGraphForOut {
     border: 0.5px solid gray;
     height: 300px;
-    width: 1500px;
+    width: 1750px;
     position: relative;
     margin-top: 15px;
     margin-left: 100px;
@@ -146,7 +113,7 @@
 }
 
 #morris-bar-chart {
-    width: 1650px;
+    width: 1750px;
     /*heigth: 20px;*/
 }
 
@@ -155,7 +122,7 @@ svg {
 }
 
 #morris-bar-chart2 {
-    width: 1500px;
+    width: 1750px;
     z-index: 1050;
     height: 270px;
 }
