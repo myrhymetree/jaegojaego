@@ -35,7 +35,7 @@ public class MaterialsController {
         this.materialsService = materialsService;
     }
 
-    @GetMapping("/productList")
+    @GetMapping("/product/list")
     public ModelAndView MaterialsList(ModelAndView mv) {
 
         System.out.println("안되나");
@@ -153,12 +153,7 @@ public class MaterialsController {
 
         System.out.println("두번째 사진");
         MaterialFileDTO materialFileDTO = new MaterialFileDTO();
-        MaterialFileCategoryDTO materialFileCategoryDTO = new MaterialFileCategoryDTO();
 
-        materialFileCategoryDTO.setFileCategoryNo(6);
-
-        materialFileDTO.setMaterialFileCategory(materialFileCategoryDTO);
-        
         String fileUploadDirectory = rootLocation;
         File conversionFileDirectory = new File(fileUploadDirectory);
         
@@ -184,17 +179,18 @@ public class MaterialsController {
 
                     materialItemImage.transferTo(new File(uploadDirectory + "/thumbnail_" + savedName));
 
-                    materialFileDTO.setDeleteYn("N");
-                    materialFileDTO.setFileUrl(fileUploadDirectory);
-                    materialFileDTO.setFileChangedName(savedName);
                     materialFileDTO.setFileOriginalName(orgName);
+                    materialFileDTO.setFileChangedName(savedName);
+                    materialFileDTO.setFileUrl(fileUploadDirectory);
+                    materialFileDTO.setDeleteYn("N");
+                    materialFileDTO.setMaterialFileCategory(6);
                     materialFileDTO.setFileDivision("자재");
-                    materialFileDTO.setMaterialFileCategory(materialFileCategoryDTO);
                     materialFileDTO.setItemInfoNo(material.getItemInfoNo());
 
                     materialFileDTO.setThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
                 }
 
+                System.out.println("materialFileDTO" + "" + materialFileDTO);
                 materialsService.materialFileRegist(materialFileDTO);
 
             } catch (IllegalStateException | IOException e) {
