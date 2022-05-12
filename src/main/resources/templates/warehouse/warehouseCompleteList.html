@@ -42,17 +42,16 @@
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
-            <th>No</th>
             <th>발주 번호</th>
             <th>발주 일시</th>
             <th>승인 처리 상태</th>
+            <th>제품 종류 개수</th>
             <th>입하 대기 추가</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="warehouse,num : ${ warehouseCompanyOrderList }">
             <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
-                <td th:text="${ num.size - num.index }"></td>
                 <td th:text="${ warehouse.companyOrderHistoryNo }"></td>
                 <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>
                 <td>
@@ -60,6 +59,7 @@
                         <a>승인 완료</a>
                     </th:block>
                 </td>
+                <td th:text="${ warehouse.companyOrderItemList.size() }+ 종류"></td>
                 <td>
                     <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.companyOrderHistoryNo}')|">상세 정보 조회</button>
                 </td>

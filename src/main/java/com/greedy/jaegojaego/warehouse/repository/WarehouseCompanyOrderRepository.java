@@ -11,5 +11,4 @@ import java.util.List;
 @Repository
 public interface WarehouseCompanyOrderRepository extends JpaRepository<WarehouseCompanyOrderHistory, Integer> {
 
-
 }

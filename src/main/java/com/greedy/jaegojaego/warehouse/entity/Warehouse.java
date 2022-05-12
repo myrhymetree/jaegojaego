@@ -39,6 +39,12 @@ public class Warehouse {
     @Column(name = "IN_WAREHOUSE_DATE")
     private java.sql.Date warehouseDate;
 
+    @Column(name = "ORDER_APPLICATION_NO")
+    private int orderApplication;
+
+    @Column(name = "CLIENT_CONTRACT_ITEM_NO")
+    private int clientContractItem;
+
 //    @ManyToOne
 //    @JoinColumns({
 //            @JoinColumn(name = "ORDER_APPLICATION_NO"),
@@ -146,6 +152,21 @@ public class Warehouse {
 //        this.warehouseCompleteDate = warehouseCompleteDate;
 //    }
 
+//    @Override
+//    public String toString() {
+//        return "Warehouse{" +
+//                "warehouseNo=" + warehouseNo +
+//                ", warehouseAmount=" + warehouseAmount +
+//                ", warehouseStatus='" + warehouseStatus + '\'' +
+//                ", warehouseDate=" + warehouseDate +
+////                ", orderApplicationItemPK=" + orderApplicationItemPK +
+//                ", itemInfoNo=" + itemInfoNo +
+//                ", clientNo=" + clientNo +
+//                ", warehouseCompleteDate=" + warehouseCompleteDate +
+//                '}';
+//    }
+
+
     @Override
     public String toString() {
         return "Warehouse{" +
@@ -153,7 +174,8 @@ public class Warehouse {
                 ", warehouseAmount=" + warehouseAmount +
                 ", warehouseStatus='" + warehouseStatus + '\'' +
                 ", warehouseDate=" + warehouseDate +
-//                ", orderApplicationItemPK=" + orderApplicationItemPK +
+                ", orderApplication=" + orderApplication +
+                ", clientContractItem=" + clientContractItem +
                 ", itemInfoNo=" + itemInfoNo +
                 ", clientNo=" + clientNo +
                 ", warehouseCompleteDate=" + warehouseCompleteDate +

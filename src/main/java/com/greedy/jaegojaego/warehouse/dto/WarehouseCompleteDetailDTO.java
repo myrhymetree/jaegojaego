@@ -22,9 +22,11 @@ public class WarehouseCompleteDetailDTO {
 
     private int clientContractItemNo;                       //거래처 판매 계약 상품 번호
 
+    private String orderApplicationItemYN;                    //입고 목록 추가 여부
+
     public WarehouseCompleteDetailDTO(){}
 
-    public WarehouseCompleteDetailDTO(int companyOrderHistoryNo, int clientNo, String clientName, Date companyOrderHistoryCreatedDate, int completeItemInfoNo, int companyAmount, int completeItemCategoryNo, String completeItemCategoryName, String completeItemSerialNo, String completeItemName, int orderApplicationNo, int clientContractItemNo) {
+    public WarehouseCompleteDetailDTO(int companyOrderHistoryNo, int clientNo, String clientName, Date companyOrderHistoryCreatedDate, int completeItemInfoNo, int companyAmount, int completeItemCategoryNo, String completeItemCategoryName, String completeItemSerialNo, String completeItemName, int orderApplicationNo, int clientContractItemNo, String orderApplicationItemYN) {
         this.companyOrderHistoryNo = companyOrderHistoryNo;
         this.clientNo = clientNo;
         this.clientName = clientName;
@@ -37,6 +39,7 @@ public class WarehouseCompleteDetailDTO {
         this.completeItemName = completeItemName;
         this.orderApplicationNo = orderApplicationNo;
         this.clientContractItemNo = clientContractItemNo;
+        this.orderApplicationItemYN = orderApplicationItemYN;
     }
 
     public int getCompanyOrderHistoryNo() {
@@ -135,6 +138,14 @@ public class WarehouseCompleteDetailDTO {
         this.clientContractItemNo = clientContractItemNo;
     }
 
+    public String getOrderApplicationItemYN() {
+        return orderApplicationItemYN;
+    }
+
+    public void setOrderApplicationItemYN(String orderApplicationItemYN) {
+        this.orderApplicationItemYN = orderApplicationItemYN;
+    }
+
     @Override
     public String toString() {
         return "WarehouseCompleteDetailDTO{" +
@@ -150,6 +161,7 @@ public class WarehouseCompleteDetailDTO {
                 ", completeItemName='" + completeItemName + '\'' +
                 ", orderApplicationNo=" + orderApplicationNo +
                 ", clientContractItemNo=" + clientContractItemNo +
+                ", orderApplicationItemYN='" + orderApplicationItemYN + '\'' +
                 '}';
     }
 }
