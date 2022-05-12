@@ -16,15 +16,10 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @ComponentScan(basePackages = "com.greedy.jaegojaego")
 public class BeanConfiguration {
 
-    private static ModelMapper MAPPER;
-
     @Bean
     public ModelMapper modelMapper() {
-        if (MAPPER == null) {
-            MAPPER = new ModelMapper();
-            MAPPER.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        }
-        return MAPPER;
+
+        return new ModelMapper();
     }
 
     @Bean

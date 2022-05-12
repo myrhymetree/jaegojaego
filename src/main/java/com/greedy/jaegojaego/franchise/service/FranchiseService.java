@@ -12,6 +12,7 @@ import com.greedy.jaegojaego.member.model.repository.MemberRepository;
 import com.greedy.jaegojaego.member.model.repository.MemberRoleRepository;
 import com.greedy.jaegojaego.member.model.repository.PasswordUpdatedRecordRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,11 +35,17 @@ public class FranchiseService {
     private final MemberRepository memberRepository;
     private final MemberRoleRepository memberRoleRepository;
     private final PasswordUpdatedRecordRepository passwordUpdatedRecordRepository;
-    private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
+    private ModelMapper strictModelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT);
+        return modelMapper;
+    }
+
     @Autowired
-    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ModelMapper getMapper) {
+    public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.franchiseRepository = franchiseRepository;
         this.franchiseDetailViewReposirory = franchiseDetailViewReposirory;
         this.franchiseAccountRepository = franchiseAccountRepository;
@@ -47,7 +54,6 @@ public class FranchiseService {
         this.memberRepository = memberRepository;
         this.memberRoleRepository = memberRoleRepository;
         this.passwordUpdatedRecordRepository = passwordUpdatedRecordRepository;
-        this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -56,7 +62,7 @@ public class FranchiseService {
 
         franchiseInfo.setOfficeDivision("대표자");
 
-        FranchiseInfo franchise = modelMapper.map(franchiseInfo, FranchiseInfo.class);
+        FranchiseInfo franchise = strictModelMapper().map(franchiseInfo, FranchiseInfo.class);
 
         FranchiseInfo result = memberRepository.save(franchise);
 
@@ -70,7 +76,7 @@ public class FranchiseService {
 
         franchiseContractUpdatedRecordDTO.setFranchiseRepresentativeNo(result.getMemberNo());
 
-        FranchiseContractUpdatedRecord franchiseContractUpdatedRecord = modelMapper.map(franchiseContractUpdatedRecordDTO, FranchiseContractUpdatedRecord.class);
+        FranchiseContractUpdatedRecord franchiseContractUpdatedRecord = strictModelMapper().map(franchiseContractUpdatedRecordDTO, FranchiseContractUpdatedRecord.class);
 
         franchiseContractRepository.save(franchiseContractUpdatedRecord);
     }
@@ -87,7 +93,7 @@ public class FranchiseService {
         manager.setOfficeDivision("직원");
         manager.setMemberDivision("가맹점");
 
-        FranchiseAccount convertedManager = modelMapper.map(manager, FranchiseAccount.class);
+        FranchiseAccount convertedManager = strictModelMapper().map(manager, FranchiseAccount.class);
 
         FranchiseAccount result = memberRepository.save(convertedManager);
 
@@ -105,7 +111,7 @@ public class FranchiseService {
 
          List<FranchiseInfo> franchiseInfos = franchiseRepository.findAll();
 
-         return franchiseInfos.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+         return franchiseInfos.stream().map(franchise -> strictModelMapper().map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
     }
 
@@ -236,11 +242,11 @@ public class FranchiseService {
 
         /* 프랜차이즈 대표자 계정 목록 조회 */
         List<FranchiseInfo> franchiseList = franchiseRepository.searchFranchise(searchWord);
-        List<FranchiseInfoDTO> franchises = franchiseList.stream().map(franchise -> modelMapper.map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+        List<FranchiseInfoDTO> franchises = franchiseList.stream().map(franchise -> strictModelMapper().map(franchise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
         /* 삭제된 프렌차이즈 대표자 계정 목록 조회 */
         List<FranchiseInfo> removedFranchiseList = franchiseRepository.searchRemovedFranchise(searchWord);
-        List<FranchiseInfoDTO> removedFranchises = removedFranchiseList.stream().map(removedFrachise -> modelMapper.map(removedFrachise, FranchiseInfoDTO.class)).collect(Collectors.toList());
+        List<FranchiseInfoDTO> removedFranchises = removedFranchiseList.stream().map(removedFrachise -> strictModelMapper().map(removedFrachise, FranchiseInfoDTO.class)).collect(Collectors.toList());
 
         /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
         FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
@@ -260,46 +266,46 @@ public class FranchiseService {
 
         System.out.println("franchiseContractUpdatedRecord = " + franchiseContractUpdatedRecord);
 
-        return modelMapper.map(franchiseDetailInfo, FranchiseDetailViewDTO.class);
+        return strictModelMapper().map(franchiseDetailInfo, FranchiseDetailViewDTO.class);
     }
 
     public FranchiseAccountDTO findManagerDetailInfo(Integer managerNo) {
 
         FranchiseAccount managerDetailInfo = franchiseAccountRepository.findByMemberNo(managerNo);
 
-        return modelMapper.map(managerDetailInfo, FranchiseAccountDTO.class);
+        return strictModelMapper().map(managerDetailInfo, FranchiseAccountDTO.class);
     }
 
     public FranchiseAttachmentFileDTO findContractFile(Integer fileNo) {
 
         FranchiseAttachmentFile contractFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
 
-        return modelMapper.map(contractFile, FranchiseAttachmentFileDTO.class);
+        return strictModelMapper().map(contractFile, FranchiseAttachmentFileDTO.class);
     }
 
     public FranchiseAttachmentFileDTO findBusinessRegistration(Integer fileNo) {
 
         FranchiseAttachmentFile businessRegistrationFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
 
-        return modelMapper.map(businessRegistrationFile, FranchiseAttachmentFileDTO.class);
+        return strictModelMapper().map(businessRegistrationFile, FranchiseAttachmentFileDTO.class);
     }
 
     public FranchiseAttachmentFileDTO findBusinesBankAccount(Integer fileNo) {
 
         FranchiseAttachmentFile bankAccoutFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
 
-        return modelMapper.map(bankAccoutFile, FranchiseAttachmentFileDTO.class);
+        return strictModelMapper().map(bankAccoutFile, FranchiseAttachmentFileDTO.class);
     }
 
     public FranchiseListDTO findManagerList(String searchWord) {
 
         /* 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
         List<FranchiseAccount> managerList = franchiseAccountRepository.searchManager(searchWord);
-        List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> modelMapper.map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+        List<FranchiseAccountDTO> managers = managerList.stream().map(manager -> strictModelMapper().map(manager, FranchiseAccountDTO.class)).collect(Collectors.toList());
 
         /* 삭제된 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
         List<FranchiseAccount> removedManagerList = franchiseAccountRepository.searchRemovedManager(searchWord);
-        List<FranchiseAccountDTO> removedManagers = removedManagerList.stream().map(removedManager -> modelMapper.map(removedManager, FranchiseAccountDTO.class)).collect(Collectors.toList());
+        List<FranchiseAccountDTO> removedManagers = removedManagerList.stream().map(removedManager -> strictModelMapper().map(removedManager, FranchiseAccountDTO.class)).collect(Collectors.toList());
 
         /* 컨트롤러에 dto로 전달해주기 위해서 생성한 dto 클래스 */
         FranchiseListDTO franchiseListDTO = new FranchiseListDTO();
