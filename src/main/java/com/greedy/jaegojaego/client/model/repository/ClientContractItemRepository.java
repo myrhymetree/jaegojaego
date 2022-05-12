@@ -1,5 +1,6 @@
 package com.greedy.jaegojaego.client.model.repository;
 
+import com.greedy.jaegojaego.client.model.dto.ClientContractItemDTO;
 import com.greedy.jaegojaego.client.model.entity.Client;
 import com.greedy.jaegojaego.client.model.entity.ClientContractInfo;
 import com.greedy.jaegojaego.client.model.entity.ClientContractItem;
@@ -17,4 +18,25 @@ public interface ClientContractItemRepository extends JpaRepository<ClientContra
                     , nativeQuery = true
     )
     Page<ClientContractItem> findAll(Pageable pageable);
+
+    @Query(value = "SELECT *" +
+    "               FROM CLIENT_CONTRACT_ITEM A" +
+    "               JOIN CLIENT_CONTRACT_INFO B ON (A.CLIENT_CONTRACT_INFO_NO = B.CLIENCT_CONTRACT_INFO_NO)" +
+    "               JOIN CLIENT C ON(B.CLIENT_NO = C.CLIENT_NO)" +
+    "               WHERE C.CLIENT_NO = ?1", nativeQuery = true
+    )
+    ClientContractInfo findByClient(int clientNo);
+    @Query(value = "SELECT A.*" +
+            "               FROM CLIENT_CONTRACT_ITEM A" +
+            "               JOIN CLIENT_CONTRACT_INFO B ON (A.CLIENT_CONTRACT_INFO_NO = B.CLIENT_CONTRACT_INFO_NO)" +
+            "               JOIN CLIENT C ON(B.CLIENT_NO = C.CLIENT_NO)" +
+            "               WHERE C.CLIENT_NO = ?1", nativeQuery = true
+    )
+    ClientContractItemDTO findClientContractInfoNoByClientNo(int clientNo);
+
+
+    @Query(value = "SELECT CLIENT_CONTRACT_ITEM_NO.CURRVAL" +
+    "               FROM DUAL", nativeQuery = true
+    )
+    int findClientContractItemNoByClientContractItemName();
 }

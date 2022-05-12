@@ -14,6 +14,7 @@ public class ClientContractItemDTO {
     private MemberDTO memberNo;
     private java.sql.Date clientContractItemCreatedDate;
     private ClientContractInfoDTO clientContractInfoNo;
+    private String filePath;
 
     /*private int clientContractItemNo;
     private String clientContractItemName;

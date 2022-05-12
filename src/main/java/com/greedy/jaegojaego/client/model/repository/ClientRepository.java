@@ -14,10 +14,9 @@ import java.util.Optional;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Integer> {
     Page<Client> findAll(Pageable pageable);
-
-
     int findClientNoByClientName(String clientName);
 
     Client findByClientName(String clientName);
 
+    Client findByClientNo(int clientNo);
 }

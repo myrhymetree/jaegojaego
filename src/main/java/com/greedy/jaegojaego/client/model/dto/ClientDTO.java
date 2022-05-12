@@ -1,12 +1,11 @@
 package com.greedy.jaegojaego.client.model.dto;
 
-import com.greedy.jaegojaego.client.model.entity.ClientBusinessItem;
-import com.greedy.jaegojaego.client.model.entity.ClientBusinessType;
-import com.greedy.jaegojaego.client.model.entity.ClientContractInfo;
-import com.greedy.jaegojaego.client.model.entity.ClientMember;
+import com.greedy.jaegojaego.client.model.entity.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 public class ClientDTO {
 
@@ -22,6 +21,7 @@ public class ClientDTO {
     private String clientAddress;
     private ClientBusinessType clientBusinessTypeNo;
     private ClientBusinessItem clientBusinessItemNo;
-    private ClientContractInfoDTO clientContractInfo;
+//    private ClientContractInfoDTO clientContractInfo;
+    private List<ClientCbrDTO> clientCbrList;
 
 }

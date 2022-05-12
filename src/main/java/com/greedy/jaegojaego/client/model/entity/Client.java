@@ -55,4 +55,8 @@ public class Client {
     @Column(name = "CLIENT_PAYMENT_METHOD")
     private String clientPaymentMethod;
 
+    @OneToMany(mappedBy = "client")
+    private List<ClientCbr> clientCbrList;
+
+
 }

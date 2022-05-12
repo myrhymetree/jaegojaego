@@ -3,6 +3,7 @@ package com.greedy.jaegojaego.main;
 import com.greedy.jaegojaego.authentification.model.dto.CustomUser;
 import com.greedy.jaegojaego.member.model.dto.CompanyAccountDTO;
 import com.greedy.jaegojaego.member.model.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
-
     private final MemberService memberService;
 
     public MainController(MemberService memberService) {

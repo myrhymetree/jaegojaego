@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FranchiseRepository extends JpaRepository<FranchiseInfo, Integer>, FranchiseRepositoryCustom {
-
     FranchiseInfo  findAllByMemberNoAndMemberDivisionAndOfficeDivision
             (Integer memberNo, String memberDivision, String officeDivision);
 
+
     @EntityGraph( attributePaths = { "franchiseAttachmentFiles" }, type = EntityGraph.EntityGraphType.FETCH)
     FranchiseInfo findByMemberNo(Integer memberNo);
+
 }
