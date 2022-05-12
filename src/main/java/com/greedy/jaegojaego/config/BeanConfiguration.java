@@ -20,11 +20,8 @@ public class BeanConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
-        if (MAPPER == null) {
-            MAPPER = new ModelMapper();
-            MAPPER.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        }
-        return MAPPER;
+
+        return new ModelMapper();
     }
 
     @Bean
