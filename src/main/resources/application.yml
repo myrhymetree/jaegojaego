@@ -38,9 +38,9 @@ spring:
     resources:
       static-locations: file:src/main/resources/static/
 
-#  thymeleaf:
-#    cache: false
-#    prefix: file:src/main/resources/templates/
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
 
 # file upload
   servlet:

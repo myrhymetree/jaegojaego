@@ -58,6 +58,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                         <img alt="image" class="rounded-circle" th:src="@{/img/profile_small.jpg}"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="block m-t-xs font-bold" sec:authentication="name"></span>
+<!--                            <span class="text-muted text-xs block" th:text="${ data.department.departmentName }"><b class="caret"></b></span>-->
                             <span class="text-muted text-xs block"><b class="caret"></b></span>
                         </a>
                         <!-- 본사 관리자, 직원만 계정 정보 확인 가능 -->
