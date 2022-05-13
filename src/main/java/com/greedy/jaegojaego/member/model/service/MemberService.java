@@ -11,6 +11,7 @@ import com.greedy.jaegojaego.member.model.dto.*;
 import com.greedy.jaegojaego.member.model.entity.*;
 import com.greedy.jaegojaego.member.model.repository.*;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * <pre>
+ * Class : MemberService
+ * Comment : 본사 직원 계정 관련 서비스 메소드를 모아놓은 Service 클래스 입니다.
+ * History
+ * 2022.05.12 (박성준)
+ * </pre>
+ *
+ * @author 박성준
+ * @version 1.0
+ */
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -35,6 +47,31 @@ public class MemberService {
     private final ModelMapper modelMappper;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * strictModelMapper : modelMapper Strict 전략을 이용하기 위한 private 메소드
+     * @return modelMapper : 매핑 전략을 사용하기 위한 modelMapper 객체 반환
+     *
+     * @author 박성준
+     */
+    private ModelMapper strictModelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return modelMapper;
+    }
+
+    /**
+     * Instantiates a new Member service.
+     *
+     * @param memberRepository                the member repository
+     * @param departmentRepository            the department repository
+     * @param memberRoleRepository            the member role repository
+     * @param companyAccountRepository        the company account repository
+     * @param franchiseRepository             the franchise repository
+     * @param franchiseAccountRepository      the franchise account repository
+     * @param passwordUpdatedRecordRepository the password updated record repository
+     * @param modelMappper                    the model mappper
+     * @param passwordEncoder                 the password encoder
+     */
     @Autowired
     public MemberService(MemberRepository memberRepository, DepartmentRepository departmentRepository,
                          MemberRoleRepository memberRoleRepository, CompanyAccountRepository companyAccountRepository, FranchiseRepository franchiseRepository, FranchiseAccountRepository franchiseAccountRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMappper, PasswordEncoder passwordEncoder) {
@@ -49,6 +86,12 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * 본사 계정 정보 조회 메소드
+     *
+     * @param memberId 본사 계정 아이디
+     * @return the member dto 본사 계정 정보 반환
+     */
     public MemberDTO findMemberById(String memberId) {
 
         Member member = memberRepository.findMemberByMemberId(memberId);
@@ -56,6 +99,11 @@ public class MemberService {
         return modelMappper.map(member, MemberDTO.class);
     }
 
+    /**
+     * 본사 계정 등록 메소드
+     *
+     * @param newMember 본사 신규 계정 정보
+     */
     @Transactional
     public void registNewMember(CompanyAccountDTO newMember) {
 
@@ -77,13 +125,13 @@ public class MemberService {
 
         memberRoleRepository.save(memberRole);
 
-//        Member member = new Member();
-//        CompanyAccount companyAccount = new CompanyAccount();
-//        companyAccount.setMemberNo(modelMappper.map(newMember, Member.class).getMemberNo());
-//        memberRepository.save(memberrole);
-
     }
 
+    /**
+     * 본사 부서 목록 조회 메소드
+     *
+     * @return the list 본사 부서 목록 반환
+     */
     public List<DepartmentDTO> findDepartmentAll() {
 
         List<Department> departmentList = departmentRepository.findAll();
@@ -91,6 +139,12 @@ public class MemberService {
         return departmentList.stream().map(department -> modelMappper.map(department, DepartmentDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * 아이디 중복체크 메소드
+     *
+     * @param memberId 중복 여부를 체크할 아이디
+     * @return the boolean 결과 값(true/false)
+     */
     public boolean duplicationCheckId(String memberId) {
 
         boolean status = memberRepository.existsByMemberId(memberId);
@@ -98,6 +152,12 @@ public class MemberService {
         return status;
     }
 
+    /**
+     * 본사 직원 계정 목록 조회 메소드
+     *
+     * @param searchWord 검색어
+     * @return the member list dto 본사 직원 계정 목록 반환
+     */
     public MemberListDTO findMemberList(String searchWord) {
 
         /* 본사 직원 계정 목록 조회 */
@@ -108,6 +168,7 @@ public class MemberService {
         List<CompanyAccount> removedMemberList = companyAccountRepository.searchRemovedMember(searchWord);
         List<CompanyAccountDTO> removedMembers = removedMemberList.stream().map(removedMember -> modelMappper.map(removedMember, CompanyAccountDTO.class)).collect(Collectors.toList());
 
+        /* 컨트롤러에 인자 하나로 전달하기 위해서 DTO타입을 생성해서 담아줌 */
         MemberListDTO memberListDTO = new MemberListDTO();
         memberListDTO.setMembers(memberDTOList);
         memberListDTO.setRemovedMembers(removedMembers);
@@ -116,6 +177,12 @@ public class MemberService {
 
     }
 
+    /**
+     * 로그인한 계정 정보(개인정보) 조회 메소드
+     *
+     * @param customUser 로그인한 계정 정보
+     * @return the object 본사, 가맹점, 직원, 대표자 여부에 따른 서로 다른 계정정보 반환
+     */
     public Object findLoginMemberInfo(CustomUser customUser) {
 
         Integer memberNo = customUser.getMemberNo();
@@ -134,11 +201,11 @@ public class MemberService {
 
             FranchiseInfo franchiseInfo = franchiseRepository.findAllByMemberNoAndMemberDivisionAndOfficeDivision(memberNo, memberDivision, officeDivision);
 
-            FranchiseInfoDTO loginMember = modelMappper.map(franchiseInfo, FranchiseInfoDTO.class);
+            FranchiseInfoDTO loginMember = strictModelMapper().map(franchiseInfo, FranchiseInfoDTO.class);
 
             return loginMember;
 
-        } else {
+        } else {        // 가맹점 직원
 
             FranchiseAccount franchiseAccount = franchiseAccountRepository.findAllByMemberNoAndMemberDivisionAndOfficeDivision(memberNo, memberDivision, officeDivision);
 
@@ -148,6 +215,11 @@ public class MemberService {
         }
     }
 
+    /**
+     * 로그인한 계정의 정보 수정
+     *
+     * @param member 수정할 계정 정보
+     */
     @Transactional
     public void updateLoginMemberInfo(CompanyAccountDTO member) {
 
@@ -183,6 +255,12 @@ public class MemberService {
 
     }
 
+    /**
+     * 본사 직원 계정 상세조회 메소드.
+     *
+     * @param memberNo 조회할 계정 번호
+     * @return the company account dto 상세조회한 계정 정보
+     */
     public CompanyAccountDTO findMemberDetailInfo(Integer memberNo) {
 
         CompanyAccount memberDetailInfo =  companyAccountRepository.findByMemberNo(memberNo);
@@ -190,6 +268,11 @@ public class MemberService {
         return modelMappper.map(memberDetailInfo, CompanyAccountDTO.class);
     }
 
+    /**
+     * 본사직원 계정목록 수정 메소드
+     *
+     * @param member 수정할 본사직원의 정보
+     */
     public void modifyMemberInfo(CompanyAccountDTO member) {
 
         CompanyAccount companyAccount = new CompanyAccount();
@@ -223,6 +306,12 @@ public class MemberService {
     }
 
 
+    /**
+     * 본사직원 계정 삭제 메소드
+     *
+     * @param memberNo 삭제할 계정 번호
+     * @return the string 리다이렉트할 뷰를 나타내기 위한 조건 값 반환
+     */
     @Transactional
     public String removeMember(Integer memberNo) {
 
@@ -239,6 +328,12 @@ public class MemberService {
         return result;
     }
 
+    /**
+     * 삭제된 본사 직원 계정 복구 메소드
+     *
+     * @param memberNo 복구할 본사 직원 계정 번호
+     * @return the string 리다이렉트할 뷰를 나타내기 위한 조건 값 반환
+     */
     @Transactional
     public String restoreMember(Integer memberNo) {
 
@@ -254,6 +349,11 @@ public class MemberService {
         return result;
     }
 
+    /**
+     * 가맹계약팀 본사 직원 목록 조회 메소드.
+     *
+     * @return the list 가맹계약팀 본사직원 목록 반환
+     */
     public List<CompanyAccountDTO> findSuperVisor() {
 
         List<CompanyAccount> supervisors = companyAccountRepository.findSupervisorByDepartment_DepartmentNo(2);

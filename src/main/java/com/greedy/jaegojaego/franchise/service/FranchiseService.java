@@ -24,6 +24,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * <pre>
+ * Class : FranchiseService
+ * Comment : 가맹점 계정 관련 서비스 메소드를 모아놓은 Service 클래스 입니다.
+ * History
+ * 2022.05.12 (박성준)
+ * </pre>
+ * @version 1.0
+ * @author 박성준
+ */
 @Service
 public class FranchiseService {
 
@@ -37,13 +47,32 @@ public class FranchiseService {
     private final PasswordUpdatedRecordRepository passwordUpdatedRecordRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * strictModelMapper : modelMapper Strict 전략을 이용하기 위한 private 메소드
+     * @return modelMapper : 매핑 전략을 사용하기 위한 modelMapper 객체 반환
+     *
+     * @author 박성준
+     */
     private ModelMapper strictModelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper;
     }
 
+    /**
+     * Instantiates a new Franchise service.
+     *
+     * @param franchiseRepository             the franchise repository
+     * @param franchiseDetailViewReposirory   the franchise detail view reposirory
+     * @param franchiseAccountRepository      the franchise account repository
+     * @param franchiseContractRepository     the franchise contract repository
+     * @param franchiseAttachmentRepository   the franchise attachment repository
+     * @param memberRepository                the member repository
+     * @param memberRoleRepository            the member role repository
+     * @param passwordUpdatedRecordRepository the password updated record repository
+     * @param modelMapper                     the model mapper
+     * @param passwordEncoder                 the password encoder
+     */
     @Autowired
     public FranchiseService(FranchiseRepository franchiseRepository, FranchiseDetailViewReposirory franchiseDetailViewReposirory, FranchiseAccountRepository franchiseAccountRepository, FranchiseContractRepository franchiseContractRepository, FranchiseAttachmentRepository franchiseAttachmentRepository, MemberRepository memberRepository, MemberRoleRepository memberRoleRepository, PasswordUpdatedRecordRepository passwordUpdatedRecordRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.franchiseRepository = franchiseRepository;
@@ -57,6 +86,13 @@ public class FranchiseService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * 가맹점 대표자 계정 등록 메소드
+     *
+     * @param franchiseInfo                      가맹점 계정 정보
+     * @param franchiseContractUpdatedRecordDTO  가맹점 계약 정보
+     * @author 박성준
+     */
     @Transactional
     public void registFranchise(FranchiseInfoDTO franchiseInfo, FranchiseContractUpdatedRecordDTO franchiseContractUpdatedRecordDTO) {
 
@@ -81,6 +117,12 @@ public class FranchiseService {
         franchiseContractRepository.save(franchiseContractUpdatedRecord);
     }
 
+    /**
+     * 가맹점 직원 계정 등록 메소드
+     *
+     * @param manager 가맹점 직원 계정 정보
+     * @author 박성준
+     */
     @Transactional
     public void registManager(FranchiseAccountDTO manager) {
 
@@ -107,6 +149,12 @@ public class FranchiseService {
 
     }
 
+    /**
+     * 모든 가맹점 대표자 계정 목록 메소드
+     *
+     * @return list 모든 가맹점 계정 대표자 목록
+     * @author 박성준
+     */
     public List<FranchiseInfoDTO> findAllFranchise() {
 
          List<FranchiseInfo> franchiseInfos = franchiseRepository.findAll();
@@ -115,8 +163,13 @@ public class FranchiseService {
 
     }
 
+    /**
+     * 로그인한 가맹점 직원 계정 정보 수정 메소드
+     *
+     * @param manager 가맹점 직원 계정 정보
+     */
     @Transactional
-    public void updateManagerInfo(FranchiseAccountDTO manager) {
+    public void modifyManagerInfoByMyself(FranchiseAccountDTO manager) {
 
         /* 로그인 인증 정보 가져오기 */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -150,6 +203,12 @@ public class FranchiseService {
 
     }
 
+    /**
+     * 로그인한 가맹점 대표자 계정 정보 수정 메소드
+     *
+     * @param franchiseInfo 가맹점 대표자 계정 정보
+     * @author 박성준
+     */
     @Transactional
     public void updateFranchiseInfo(FranchiseInfoDTO franchiseInfo) {
 
@@ -184,8 +243,14 @@ public class FranchiseService {
         franchiseRepository.updateFranchise(franchise);
     }
 
+    /**
+     * 가맹점 대표자 계정 목록 상세 정보 수정 메소드
+     *
+     * @param franchiseInfo 가맹점 대표자 계정 정보
+     * @author 박성준
+     */
     @Transactional
-    public void modifyFranchiseByCompany(FranchiseInfoDTO franchiseInfo) {
+    public void updateFranchiseByCompany(FranchiseInfoDTO franchiseInfo) {
 
         /* 로그인 인증 정보 가져오기 */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -238,6 +303,13 @@ public class FranchiseService {
         franchiseRepository.updateFranchise(franchise);
     }
 
+    /**
+     * 검색 조건에 의한 가맹점 계정 목록 조회 메소드
+     *
+     * @param searchWord 검색어
+     * @return the franchise list dto 검색된 가맹점 계정 목록
+     * @author 박성준
+     */
     public FranchiseListDTO findFranchiseList(String searchWord) {
 
         /* 프랜차이즈 대표자 계정 목록 조회 */
@@ -256,6 +328,13 @@ public class FranchiseService {
         return franchiseListDTO;
     }
 
+    /**
+     * 가맹점 대표자 계정 상세정보 조회 메소드
+     *
+     * @param franchiseNo 계정번호(가맹점번호)
+     * @return the franchise detail view dto 조회된 가맹점 대표자 계정 상세정보
+     * @author 박성준
+     */
     public FranchiseDetailViewDTO findFranchiseDetailInfo(Integer franchiseNo) {
 
         FranchiseDetailView franchiseDetailInfo = franchiseDetailViewReposirory.findByMemberNo(franchiseNo);
@@ -269,6 +348,13 @@ public class FranchiseService {
         return strictModelMapper().map(franchiseDetailInfo, FranchiseDetailViewDTO.class);
     }
 
+    /**
+     * 가맹점 직원 계정 상세정보 조회 메소드
+     *
+     * @param managerNo 계정번호(직원번호)
+     * @return the franchise account dto 조회된 가맹점 직원 계정 상세정보
+     * @author 박성준
+     */
     public FranchiseAccountDTO findManagerDetailInfo(Integer managerNo) {
 
         FranchiseAccount managerDetailInfo = franchiseAccountRepository.findByMemberNo(managerNo);
@@ -276,6 +362,13 @@ public class FranchiseService {
         return strictModelMapper().map(managerDetailInfo, FranchiseAccountDTO.class);
     }
 
+    /**
+     * 계약 관련 첨부파일 조회 메소드
+     *
+     * @param fileNo 첨부파일 번호
+     * @return the franchise attachment file dto 계약서 정보
+     * @author 박성준
+     */
     public FranchiseAttachmentFileDTO findContractFile(Integer fileNo) {
 
         FranchiseAttachmentFile contractFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
@@ -283,6 +376,13 @@ public class FranchiseService {
         return strictModelMapper().map(contractFile, FranchiseAttachmentFileDTO.class);
     }
 
+    /**
+     * 사업자 등록증 첨부파일 조회 메소드
+     *
+     * @param fileNo 첨부파일 번호
+     * @return the franchise attachment file dto 사업자등록증 정보
+     * @author 박성준
+     */
     public FranchiseAttachmentFileDTO findBusinessRegistration(Integer fileNo) {
 
         FranchiseAttachmentFile businessRegistrationFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
@@ -290,6 +390,13 @@ public class FranchiseService {
         return strictModelMapper().map(businessRegistrationFile, FranchiseAttachmentFileDTO.class);
     }
 
+    /**
+     * 계좌확인서 첨부파일 조회 메소드
+     *
+     * @param fileNo 첨부파일 번호
+     * @return the franchise attachment file dto
+     * @author 박성준
+     */
     public FranchiseAttachmentFileDTO findBusinesBankAccount(Integer fileNo) {
 
         FranchiseAttachmentFile bankAccoutFile = franchiseAttachmentRepository.findByAttachmentNo(fileNo);
@@ -297,6 +404,13 @@ public class FranchiseService {
         return strictModelMapper().map(bankAccoutFile, FranchiseAttachmentFileDTO.class);
     }
 
+    /**
+     * 검색결과에 따른 가맹점 직원 계정 목록 조회 메소드
+     *
+     * @param searchWord 검색어
+     * @return the franchise list dto 검색된 가맹점 직원 계정 목록
+     * @author 박성준
+     */
     public FranchiseListDTO findManagerList(String searchWord) {
 
         /* 프렌차이즈 매니저 계정 목록 조회 및 dto타입으로 변환 */
