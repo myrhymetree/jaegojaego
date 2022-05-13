@@ -28,12 +28,6 @@ public class WarehouseControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private OrderController orderController;
-
     @Test
     @DisplayName("입고 목록 조회용")
     public void selectWarehouseList() throws Exception {

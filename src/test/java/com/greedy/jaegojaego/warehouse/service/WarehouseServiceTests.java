@@ -3,7 +3,6 @@ package com.greedy.jaegojaego.warehouse.service;
 import com.greedy.jaegojaego.config.BeanConfiguration;
 import com.greedy.jaegojaego.config.JaegojaegoApplication;
 import com.greedy.jaegojaego.config.JpaConfiguration;
-import com.greedy.jaegojaego.order.order.model.entity.company.CompanyOrderHistory;
 import com.greedy.jaegojaego.warehouse.entity.*;
 import com.greedy.jaegojaego.warehouse.repository.*;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.sql.Date;

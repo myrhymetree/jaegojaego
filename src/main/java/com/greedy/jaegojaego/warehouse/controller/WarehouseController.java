@@ -195,7 +195,7 @@ public class WarehouseController {
     }
 
     /**
-     * registWarehouseCompleteItem : 재고 관리 목록 조회용
+     * selectWarehouseItemAmountList : 재고 관리 목록 조회용
      * @ param mv : 재고 수량 정보와 view page url을 담은 변수
      * @ return : 재고 수량 정보와 view page
      */
@@ -216,7 +216,7 @@ public class WarehouseController {
     }
 
     /**
-     * registWarehouseCompleteItem : 재고 변동 내역 조회용
+     * selectWarehouseChangeDetail : 재고 변동 내역 조회용
      * @ param mv : 재고 변동 내역과 view page url을 담은 변수
      * @ return : 재고 변동 내역과 view page
      */
