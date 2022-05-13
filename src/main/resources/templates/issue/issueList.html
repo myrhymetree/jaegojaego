@@ -169,12 +169,26 @@
 
     <div th:replace="/common/header.html"></div>
 
-    <div class="ibox ">
-        <div class="body-header">
-            <div class="menu-title">이슈 목록</div>
-            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/issue/list}" style="font-weight: bold">이슈 목록</a></div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>이슈 목록</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    발주 관리
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/issue/list}" style="font-weight: bold">이슈 목록</a>
+                </li>
+            </ol>
         </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
 
+    <div class="ibox ">
         <div class="row" style="margin-top: 20px;">
             <div class="col-lg-12">
                 <div class="ibox">
@@ -363,7 +377,7 @@
                                                 <div class="issue-detail-modal-body">
                                                     발주 물품 :
                                                     <select id="regist-franchise-order-item-select-list" style="text-align: center">
-                                                        <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
+                                                        <option selected disabled id="issue-regist-item-option-reset">이슈 발생 물품을 선택해주세요.</option>
                                                     </select>
                                                 </div>
                                                 <div class="issue-detail-modal-body">
@@ -437,7 +451,7 @@
                                             <div class="issue-detail-modal-body">
                                                 발주 물품 :
                                                 <select id="modify-franchise-order-item-select-list" style="text-align: center">
-                                                    <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
+                                                    <option selected disabled  id="issue-modify-item-option-reset">이슈 발생 물품을 선택해주세요.</option>
                                                 </select>
                                             </div>
                                             <div class="issue-detail-modal-body">
@@ -544,7 +558,7 @@
 
                 $('#regist-franchise-order-item-select-list').html("");
 
-                let firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>'
+                let firstSelectIdx = '<option disabled selected  id="issue-regist-item-option-reset">이슈 발생 물품을 선택해주세요.</option>'
 
                 $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
 
@@ -561,7 +575,6 @@
                         }
 
                         $('#regist-franchise-order-item-select-list').append(franchiseIssueOrderItem);
-
                     })
                     .catch(err => {
                         swal({
@@ -585,7 +598,7 @@
 
                 $('#modify-franchise-order-item-select-list').html("");
 
-                let firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>'
+                let firstSelectIdx = '<option disabled selected  id="issue-modify-item-option-reset">이슈 발생 물품을 선택해주세요.</option>'
 
                 $('#modify-franchise-order-item-select-list').append(firstSelectIdx);
 
@@ -602,7 +615,6 @@
                         }
 
                         $('#modify-franchise-order-item-select-list').append(franchiseIssueOrderItem);
-
                     })
                     .catch(err => {
                         swal({
@@ -1393,7 +1405,6 @@
 
         modifyImgFiles.addEventListener("change", handleModifyFiles);
 
-
         //등록 물품 선택시
         $(document).on('change', '#regist-franchise-order-item-select-list', function() {
 
@@ -1413,6 +1424,7 @@
             registModalItemAreaTBody += '</tr>';
 
             $('#regist-modal-item-area-tbody').append(registModalItemAreaTBody);
+            $("#issue-regist-item-option-reset").prop("selected", true);
         });
 
         //수정 물품 선택시
@@ -1434,6 +1446,7 @@
             modifyModalItemAreaTBody += '</tr>';
 
             $('#modify-modal-item-area-tbody').append(modifyModalItemAreaTBody);
+            $("#issue-modify-item-option-reset").prop("selected", true);
         });
 
         //목록 테이블 클릭 시
@@ -1538,7 +1551,7 @@
 
                 $('#regist-franchise-order-item-select-list').html("");
 
-                firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>';
+                firstSelectIdx = '<option disabled selected id="issue-regist-item-option-reset">이슈 발생 물품을 선택해주세요.</option>';
 
                 $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
 
