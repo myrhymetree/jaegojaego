@@ -58,9 +58,11 @@ public class MaterialsService {
     private final MaterialProductRepository materialProductRepository;
     private final MaterialFileRepository materialFileRepository;
 
+    private final MaterialAmauntRepository materialAmauntRepository;
+
     @Autowired
     public MaterialsService(MaterialsRepository materialsRepository, ModelMapper modelMapper, MaterialsClientContractItemRepository clientContractItemRepository, MaterialsClientContractItemMaterialRepository clientContractItemMaterialRepository,
-                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository, MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository, MaterialRepository materialRepository, MaterialProductRepository materialProductRepository, MaterialFileRepository materialFileRepository){
+                            MaterialsClientUpdateRepository materialsClientUpdateRepository, MaterialsCategoryRepository materialsCategoryRepository, MaterialFranchiseOrderableItemRepository materialFranchiseOrderableItemRepository, MaterialRepository materialRepository, MaterialProductRepository materialProductRepository, MaterialFileRepository materialFileRepository, MaterialAmauntRepository materialAmauntRepository){
         this.materialsRepository = materialsRepository;
         this.modelMapper = modelMapper;
         this.clientContractItemRepository = clientContractItemRepository;
@@ -71,6 +73,7 @@ public class MaterialsService {
         this.materialRepository = materialRepository;
         this.materialProductRepository = materialProductRepository;
         this.materialFileRepository = materialFileRepository;
+        this.materialAmauntRepository = materialAmauntRepository;
     }
 
     /**
@@ -221,7 +224,9 @@ public class MaterialsService {
 
         MaterialProduct materialRegist = new MaterialProduct();
         FranchiseOrderableItem franchiseOrderableItem = new FranchiseOrderableItem();
+        MaterialItemAmount materialItemAmount = new MaterialItemAmount();
 
+        materialItemAmount.setItemInfoNo(material.getItemInfoNo());
         franchiseOrderableItem.setItemInfoNo(material.getItemInfoNo());
         franchiseOrderableItem.setItemPrice(material.getFranchiseOrderableItem().getItemPrice());
 
@@ -236,6 +241,7 @@ public class MaterialsService {
 
         materialProductRepository.save(materialRegist);
         materialFranchiseOrderableItemRepository.save(franchiseOrderableItem);
+        materialAmauntRepository.save(materialItemAmount);
 
     }
 

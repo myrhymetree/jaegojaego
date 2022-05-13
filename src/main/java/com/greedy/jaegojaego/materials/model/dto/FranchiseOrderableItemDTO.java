@@ -2,8 +2,8 @@ package com.greedy.jaegojaego.materials.model.dto;
 
 public class FranchiseOrderableItemDTO {
 
-    private int itemInfoNo;         //자재번호
-    private int itemPrice;                //자재 가격
+    private int itemInfoNo;
+    private int itemPrice;
 
     public FranchiseOrderableItemDTO() {
     }
