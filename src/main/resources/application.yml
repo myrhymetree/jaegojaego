@@ -59,16 +59,16 @@ com:
   greedy:
     jaegojaego:
       upload:
-        path: C:\Users\qandz\Documents\jaegojaego\src\main\resources\static\upload\account
+        path: C:\96_tak\workspace\jaego\src\main\resources\static\upload\account
 
 
 jaegojaego:
   issue:
     upload:
-        path: D:\jaegojaego\src\main\resources\static\upload\issue\conversion
+        path: C:\96_tak\workspace\jaego\src\main\resources\static\upload\issue\conversion
   client:
     upload:
-      path: C:\Users\kidol\git\JaeoGoJaeGo\src\main\resources\static\upload\client\conversion
+      path: C:\96_tak\workspace\jaego\src\main\resources\static\upload\client\conversion
   materials:
      upload:
-        path: D:\finaljaego\src\main\resources\static\upload\materials\conversion
+        path: C:\96_tak\workspace\jaego\src\main\resources\static\upload\materials\conversion
