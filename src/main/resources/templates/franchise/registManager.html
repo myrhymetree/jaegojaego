@@ -38,11 +38,6 @@
     </div>
 </div>
 
-<!--<div class="body-header">-->
-<!--    <div class="menu-title">계정 생성</div>-->
-<!--    <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">가맹점 관리</a> / <a href="">계정 생성</a></div>-->
-<!--</div>-->
-
 <!-- 컨텐츠 작성 영역 -->
 <div align="center">
     <img alt="image" th:src="@{/img/jaegojaego_logo.png}"/>
@@ -75,12 +70,13 @@
             <input type="text" class="form-control" id="managerPhone" name="managerPhone" placeholder="휴대전화 번호를 입력하세요" data-mask="(000) 0000-0000">
         </div>
 
-        <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
-        </select>
-        <br>
         <div class="form-group">
             <input type="email"  name="managerEmail" class="form-control" placeholder="이메일을 입력하세요">
         </div>
+        
+        <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
+        </select>
+        <br>
         <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
     </form>
 </div>
