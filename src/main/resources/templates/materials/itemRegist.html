@@ -16,6 +16,9 @@
         .bg{ background-color: white;
             height: 300px;
         }
+
+        img { height: 50%; width: 50%;
+        }
     </style>
 </head>
 <body>
@@ -29,13 +32,13 @@
                 <a th:href="@{/}">메인페이지</a>
             </li>
             <li class="breadcrumb-item">
-                <a th:href="@{/materials/productList}">자재관리</a>
+                <a th:href="@{/materials/product/list}">자재관리</a>
             </li>
             <li class="breadcrumb-item">
-                <a th:href="@{/materials/productList}">자재목록</a>
+                <a th:href="@{/materials/product/list}">자재목록</a>
             </li>
             <li class="breadcrumb-item active">
-                <a th:href="@{/materials/productList}"><strong>자재 생성</strong></a>
+                <a th:href="@{/materials/item/regist}"><strong>자재 생성</strong></a>
             </li>
         </ol>
     </div>
@@ -193,17 +196,17 @@
 
 </script>
 
-<!--<script>-->
-<!--    function setThumbnail(event) {-->
-<!--        var reader = new FileReader();-->
-<!--        reader.onload = function(event) {-->
-<!--            var img = document.createElement("img");-->
-<!--            img.setAttribute("src", event.target.result);-->
-<!--            document.querySelector("div#image_container").appendChild(img);-->
-<!--        };-->
-<!--        reader.readAsDataURL(event.target.files[0]);-->
-<!--    }-->
-<!--</script>-->
+<script>
+    function setThumbnail(event) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var img = document.createElement("img");
+            img.setAttribute("src", event.target.result);
+            document.querySelector("div#image_container").appendChild(img);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 
 </body>
 </html>

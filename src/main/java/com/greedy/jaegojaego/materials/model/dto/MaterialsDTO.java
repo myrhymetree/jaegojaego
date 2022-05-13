@@ -2,14 +2,14 @@ package com.greedy.jaegojaego.materials.model.dto;
 
 public class MaterialsDTO {
 
-    private int itemInfoNo;                            //자재 번호
-    private String itemInfoName;                       //자재 품명
-    private String itemSerialNo;                       //자재 품번
-    private MaterialsCategoryDTO materialsCategory;    //자재 카테고리
-    private String itemStatus;                         //자재 삭제 상태
-    private Integer subdivisionUnit;                   //자재 소분
-    private String subdivisionYN;                      //자재 가공 유무
-    private int itemPrice;                             //자재 가격
+    private int itemInfoNo;
+    private String itemInfoName;
+    private String itemSerialNo;
+    private MaterialsCategoryDTO materialsCategory;
+    private String itemStatus;
+    private Integer subdivisionUnit;
+    private String subdivisionYN;
+    private int itemPrice;
 
     public MaterialsDTO() {
     }
