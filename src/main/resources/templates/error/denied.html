@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/error/errorcss.css}" rel="stylesheet">
     <title>Title</title>
 </head>
 <body>
-    <h1 align="center">접근권한이 없습니다. 관리자에게 문의해주세요.</h1>
-    <button onclick="location.href='/member/login'">로그인버튼</button>
+    <div id="deniedImage" class="deniedImage"/>
+    <div id="sadFace" class="sadFace"/>
 </body>
 </html>
