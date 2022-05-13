@@ -1,8 +1,5 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import com.greedy.jaegojaego.order.client.model.entity.OrderClient;
-import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,10 +20,6 @@ public class WarehouseOrderApplication {
             generator = "ORDER_APPLICATION_SEQ_GENERATOR"
     )
     private Integer orderApplicationNo;
-
-//    @ManyToOne
-//    @JoinColumn(name = "COMPANY_ORDER_HISTORY_NO")
-//    private WarehouseCompanyOrderHistory companyOrderHistory;
 
     @ManyToOne
     @JoinColumn(name = "CLIENT_NO")

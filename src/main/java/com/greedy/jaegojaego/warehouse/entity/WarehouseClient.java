@@ -1,8 +1,5 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import com.greedy.jaegojaego.order.company.model.entity.OrderCompanyAccount;
-import lombok.*;
-
 import javax.persistence.*;
 import java.sql.Date;
 

@@ -10,7 +10,7 @@
 <th:block th:include="/common/header.html"></th:block>
 
 <div class="body-header">
-    <div class="menu-title">재고 관리</div>
+    <div class="menu-title">재고 변동 내역</div>
     <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/quality}">재고 변동 내역</a>
     </div>
 </div>
@@ -24,7 +24,7 @@
     <div class="col-lg-2">
         <div class="ibox ">
             <div class="ibox-title">
-                <h5>품질 관리 창고</h5>
+                <h5>재고 변동 내역</h5>
             </div>
             <div class="ibox-content">
                 <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
@@ -38,12 +38,12 @@
 <!-- 테이블 시작 -->
 <div class="ibox-content">
 
-    <h2>재고 목록</h2>
+    <h2>재고 변동 내역</h2>
 
     <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
-<!--            <th>No</th>-->
+            <th>No</th>
             <th>품목</th>
             <th>품번</th>
             <th>품명</th>
@@ -55,8 +55,7 @@
         </thead>
         <tbody>
         <tr th:each="warehouse,num : ${ changeHistory }">
-<!--            <td th:text="${ num.size - num.index }"></td>-->
-<!--            <td th:text="${ warehouse.getItemInfoNo().getItemInfoNo() }"></td>-->
+            <td th:text="${ num.size - num.index }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getMaterialCategory().getMaterialCategoryName() }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getItemInfoItemSerialNo() }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getItemInfoName() }"></td>
@@ -64,6 +63,9 @@
             <td>
                 <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
                     <a>증가</a>
+                </th:block>
+                <th:block th:if="${ warehouse.itemChangeDivision eq 2 }">
+                    <a>감소</a>
                 </th:block>
             </td>
             <td th:text="${ warehouse.itemChangeAmount }"></td>

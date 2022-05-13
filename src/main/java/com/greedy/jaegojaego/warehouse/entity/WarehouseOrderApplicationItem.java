@@ -1,34 +1,14 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
 
-import lombok.*;
-
 import javax.persistence.*;
-import java.io.Serializable;
 
-/** 새로 고쳐줌 */
 @Entity(name = "warehouseOrderApplicationItem")
 @Table(name = "ORDER_APPLICATION_ITEM")
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class WarehouseOrderApplicationItem {
 
     @EmbeddedId
     private WarehouseOrderApplicationItemPK orderApplicationItemPK;
-
-//    @Id
-//    @ManyToOne
-//    @JoinColumn(name = "ORDER_APPLICATION_NO")
-//    private WarehouseOrderApplication orderApplicationNo;
-
-
-//    @Id
-//    @ManyToOne
-//    @JoinColumn(name = "CLIENT_CONTRACT_ITEM_NO")
-//    private WarehouseOrderApplication clientContractItemNo;
 
     @Column(name = "ORDER_APPLICATION_ITEM_AMOUNT")
     private int orderApplicationItemAmount;
@@ -36,6 +16,37 @@ public class WarehouseOrderApplicationItem {
     @Column(name = "ORDER_APPLICATION_IN_YN")
     private String orderApplicationItemYN;
 
+    public WarehouseOrderApplicationItem() {}
+
+    public WarehouseOrderApplicationItem(WarehouseOrderApplicationItemPK orderApplicationItemPK, int orderApplicationItemAmount, String orderApplicationItemYN) {
+        this.orderApplicationItemPK = orderApplicationItemPK;
+        this.orderApplicationItemAmount = orderApplicationItemAmount;
+        this.orderApplicationItemYN = orderApplicationItemYN;
+    }
+
+    public WarehouseOrderApplicationItemPK getOrderApplicationItemPK() {
+        return orderApplicationItemPK;
+    }
+
+    public void setOrderApplicationItemPK(WarehouseOrderApplicationItemPK orderApplicationItemPK) {
+        this.orderApplicationItemPK = orderApplicationItemPK;
+    }
+
+    public int getOrderApplicationItemAmount() {
+        return orderApplicationItemAmount;
+    }
+
+    public void setOrderApplicationItemAmount(int orderApplicationItemAmount) {
+        this.orderApplicationItemAmount = orderApplicationItemAmount;
+    }
+
+    public String getOrderApplicationItemYN() {
+        return orderApplicationItemYN;
+    }
+
+    public void setOrderApplicationItemYN(String orderApplicationItemYN) {
+        this.orderApplicationItemYN = orderApplicationItemYN;
+    }
 
     @Override
     public String toString() {

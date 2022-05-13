@@ -14,7 +14,6 @@ public class WarehouseClientContractItemDTO {
     private int companyAccount;
     private java.sql.Date clientContractItemCreatedDate;
     private OrderClientContractInfoDTO clientContractInfo;
-//    private WarehouseCl clientContractInfo;
     private WarehouseItemInfoDTO orderItemInfo;
 
     public WarehouseClientContractItemDTO() {}

@@ -1,10 +1,5 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import com.greedy.jaegojaego.order.client.model.entity.OrderClientContractItem;
-import com.greedy.jaegojaego.order.order.model.entity.company.OrderApplication;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

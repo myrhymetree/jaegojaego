@@ -1,5 +1,13 @@
 package com.greedy.jaegojaego.warehouse.dto;
 
+import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
+import com.greedy.jaegojaego.warehouse.entity.Warehouse;
+import com.greedy.jaegojaego.warehouse.entity.WarehouseItemInfo;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 public class WarehouseItemChangeHistoryDTO {
 
     private int itemChangeHistoryNo;
@@ -7,21 +15,23 @@ public class WarehouseItemChangeHistoryDTO {
     private int itemChangeDivision;
     private int itemChangeAmount;
     private Integer itemDecrementReasonNo;
-    private String outWarehouseDivisionNo;
+    private OutWarehouseListDTO outWarehouseNo;
     private WarehouseDTO warehouseNo;
     private String warehouseStatus;
+    private String outWarehouseStatus;
 
     public WarehouseItemChangeHistoryDTO() {}
 
-    public WarehouseItemChangeHistoryDTO(int itemChangeHistoryNo, WarehouseItemInfoDTO itemInfoNo, int itemChangeDivision, int itemChangeAmount, Integer itemDecrementReasonNo, String outWarehouseDivisionNo, WarehouseDTO warehouseNo, String warehouseStatus) {
+    public WarehouseItemChangeHistoryDTO(int itemChangeHistoryNo, WarehouseItemInfoDTO itemInfoNo, int itemChangeDivision, int itemChangeAmount, Integer itemDecrementReasonNo, OutWarehouseListDTO outWarehouseNo, WarehouseDTO warehouseNo, String warehouseStatus, String outWarehouseStatus) {
         this.itemChangeHistoryNo = itemChangeHistoryNo;
         this.itemInfoNo = itemInfoNo;
         this.itemChangeDivision = itemChangeDivision;
         this.itemChangeAmount = itemChangeAmount;
         this.itemDecrementReasonNo = itemDecrementReasonNo;
-        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+        this.outWarehouseNo = outWarehouseNo;
         this.warehouseNo = warehouseNo;
         this.warehouseStatus = warehouseStatus;
+        this.outWarehouseStatus = outWarehouseStatus;
     }
 
     public int getItemChangeHistoryNo() {
@@ -64,12 +74,12 @@ public class WarehouseItemChangeHistoryDTO {
         this.itemDecrementReasonNo = itemDecrementReasonNo;
     }
 
-    public String getOutWarehouseDivisionNo() {
-        return outWarehouseDivisionNo;
+    public OutWarehouseListDTO getOutWarehouseNo() {
+        return outWarehouseNo;
     }
 
-    public void setOutWarehouseDivisionNo(String outWarehouseDivisionNo) {
-        this.outWarehouseDivisionNo = outWarehouseDivisionNo;
+    public void setOutWarehouseNo(OutWarehouseListDTO outWarehouseNo) {
+        this.outWarehouseNo = outWarehouseNo;
     }
 
     public WarehouseDTO getWarehouseNo() {
@@ -88,6 +98,14 @@ public class WarehouseItemChangeHistoryDTO {
         this.warehouseStatus = warehouseStatus;
     }
 
+    public String getOutWarehouseStatus() {
+        return outWarehouseStatus;
+    }
+
+    public void setOutWarehouseStatus(String outWarehouseStatus) {
+        this.outWarehouseStatus = outWarehouseStatus;
+    }
+
     @Override
     public String toString() {
         return "WarehouseItemChangeHistoryDTO{" +
@@ -96,9 +114,10 @@ public class WarehouseItemChangeHistoryDTO {
                 ", itemChangeDivision=" + itemChangeDivision +
                 ", itemChangeAmount=" + itemChangeAmount +
                 ", itemDecrementReasonNo=" + itemDecrementReasonNo +
-                ", outWarehouseDivisionNo='" + outWarehouseDivisionNo + '\'' +
+                ", outWarehouseNo=" + outWarehouseNo +
                 ", warehouseNo=" + warehouseNo +
                 ", warehouseStatus='" + warehouseStatus + '\'' +
+                ", outWarehouseStatus='" + outWarehouseStatus + '\'' +
                 '}';
     }
 }

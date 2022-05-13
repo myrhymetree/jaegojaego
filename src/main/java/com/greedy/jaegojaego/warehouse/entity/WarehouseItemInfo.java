@@ -1,7 +1,5 @@
 package com.greedy.jaegojaego.warehouse.entity;
 
-import lombok.*;
-
 import javax.persistence.*;
 
 @Entity(name = "warehouseItemInfo")
@@ -12,11 +10,6 @@ import javax.persistence.*;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class WarehouseItemInfo {
 
     @Id
@@ -43,6 +36,65 @@ public class WarehouseItemInfo {
 
     @Column(name = "ITEM_INFO_STATUS_YN")
     private String itemInfoStatusYn;
+
+    public WarehouseItemInfo() {}
+
+    public WarehouseItemInfo(int itemInfoNo, WarehouseItemAmount warehouseItemAmount, String itemInfoName, String itemInfoItemSerialNo, WarehouseMaterialCategory warehouseMaterialCategory, String itemInfoStatusYn) {
+        this.itemInfoNo = itemInfoNo;
+        this.warehouseItemAmount = warehouseItemAmount;
+        this.itemInfoName = itemInfoName;
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+        this.warehouseMaterialCategory = warehouseMaterialCategory;
+        this.itemInfoStatusYn = itemInfoStatusYn;
+    }
+
+    public int getItemInfoNo() {
+        return itemInfoNo;
+    }
+
+    public void setItemInfoNo(int itemInfoNo) {
+        this.itemInfoNo = itemInfoNo;
+    }
+
+    public WarehouseItemAmount getWarehouseItemAmount() {
+        return warehouseItemAmount;
+    }
+
+    public void setWarehouseItemAmount(WarehouseItemAmount warehouseItemAmount) {
+        this.warehouseItemAmount = warehouseItemAmount;
+    }
+
+    public String getItemInfoName() {
+        return itemInfoName;
+    }
+
+    public void setItemInfoName(String itemInfoName) {
+        this.itemInfoName = itemInfoName;
+    }
+
+    public String getItemInfoItemSerialNo() {
+        return itemInfoItemSerialNo;
+    }
+
+    public void setItemInfoItemSerialNo(String itemInfoItemSerialNo) {
+        this.itemInfoItemSerialNo = itemInfoItemSerialNo;
+    }
+
+    public WarehouseMaterialCategory getWarehouseMaterialCategory() {
+        return warehouseMaterialCategory;
+    }
+
+    public void setWarehouseMaterialCategory(WarehouseMaterialCategory warehouseMaterialCategory) {
+        this.warehouseMaterialCategory = warehouseMaterialCategory;
+    }
+
+    public String getItemInfoStatusYn() {
+        return itemInfoStatusYn;
+    }
+
+    public void setItemInfoStatusYn(String itemInfoStatusYn) {
+        this.itemInfoStatusYn = itemInfoStatusYn;
+    }
 
     @Override
     public String toString() {
