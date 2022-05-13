@@ -50,9 +50,9 @@ import java.util.UUID;
  * Class : FranchiseController
  * Comment : 가맹점 계정 관련 컨트롤러 메소드를 모아놓은 Controller 클래스 입니다.
  * History
- * 2022.05.12 (박성준)
+ * 2022.05.13 (박성준)
  * </pre>
- * @version 1.0
+ * @version 1.1
  * @author 박성준
  */
 @Controller
@@ -102,14 +102,10 @@ public class FranchiseController {
      *
      * @param request                  날짜 정보를 받기 위한 HttpServletRequest
      * @param franchise                가맹점 계정 정보
-     * @param bankAccountFile          계좌확인서 첨부파일
-     * @param businessRegistrationFile 사업자 등록증 첨부파일
-     * @param contractFile             가맹 계약서 첨부파일
      * @return 가맹점 대표자 계정 생성 페이지 redirect
      */
     @PostMapping("/regist")
-    public String registMember(HttpServletRequest request, @ModelAttribute FranchiseInfoDTO franchise,
-                               @RequestParam  MultipartFile bankAccountFile, @RequestParam  MultipartFile businessRegistrationFile, @RequestParam MultipartFile contractFile) {
+    public String registMember(HttpServletRequest request, @ModelAttribute FranchiseInfoDTO franchise) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
@@ -137,120 +133,6 @@ public class FranchiseController {
         franchise.setMemberRemoveStatus("Y");
         franchise.setMemberDivision("가맹점");
         franchise.setWritedMemberNo(loginUser.getMemberNo());
-
-        List<FranchiseAttachmentFileDTO> attachmentFiles = new ArrayList<>();
-
-        if(bankAccountFile.getSize() > 0) {
-
-            /* 업로드 된 파일 */
-            FranchiseAttachmentFileDTO bankAccountFileDTO = new FranchiseAttachmentFileDTO();
-
-            String bankAccountOriginalName = bankAccountFile.getOriginalFilename();
-            System.out.println("bankAccountOriginalName = " + bankAccountOriginalName);
-
-            String bankAccountfileName = bankAccountOriginalName.substring(bankAccountOriginalName.lastIndexOf("."));
-            System.out.println("bankAccountfileName = " + bankAccountfileName);
-
-            log.info("bankAccountfileName : " + bankAccountfileName );
-
-            //날짜 폴더 생성
-            String folederPath = makeFolder();
-
-            //UUID
-            String uuid = UUID.randomUUID().toString();
-
-            //저장할 파일 이름 중간에 "-"를 이용해서 구분
-            String bankAccountSaveName = uploadPath + File.separator + folederPath + File.separator + uuid + "_" + bankAccountfileName;
-
-            Path bankAccountSavePath = Paths.get(bankAccountSaveName);
-
-            /* file 정보 저장하여 DTO에 insert */
-            bankAccountFileDTO.setAttachmentFileOriginalName(bankAccountOriginalName);
-            bankAccountFileDTO.setAttachmentFileChangedName(bankAccountSaveName);
-            bankAccountFileDTO.setAttachmentFileURL(folederPath);
-            bankAccountFileDTO.setAttachmentFileDeleteYn("Y");
-            bankAccountFileDTO.setAttachmentFileCategoryNo(2);
-
-            try {
-                bankAccountFile.transferTo(bankAccountSavePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            attachmentFiles.add(0, bankAccountFileDTO);
-        }
-        if(businessRegistrationFile.getSize() > 0) {
-
-            FranchiseAttachmentFileDTO businessRegistrationFileDTO = new FranchiseAttachmentFileDTO();
-
-            String businessRegistrationFileOriginalName = businessRegistrationFile.getOriginalFilename();
-            String businessRegistrationfileName = businessRegistrationFileOriginalName.substring(businessRegistrationFileOriginalName.lastIndexOf("."));
-
-            log.info("businessRegistrationfileName : " + businessRegistrationfileName );
-
-            //날짜 폴더 생성
-            String folederPath = makeFolder();
-
-            //UUID
-            String uuid = UUID.randomUUID().toString();
-
-            String businessRegistrationSaveName = uploadPath + File.separator + folederPath + File.separator + uuid + "_" + businessRegistrationfileName;
-
-            Path businessRegistrationSavePath = Paths.get(businessRegistrationSaveName);
-
-            businessRegistrationFileDTO.setAttachmentFileOriginalName(businessRegistrationFileOriginalName);
-            businessRegistrationFileDTO.setAttachmentFileChangedName(businessRegistrationSaveName);
-            businessRegistrationFileDTO.setAttachmentFileURL(folederPath);
-            businessRegistrationFileDTO.setAttachmentFileDeleteYn("Y");
-            businessRegistrationFileDTO.setAttachmentFileCategoryNo(3);
-
-            try {
-                businessRegistrationFile.transferTo(businessRegistrationSavePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            attachmentFiles.add(1, businessRegistrationFileDTO);
-
-        }
-        if(contractFile.getSize() > 0) {
-
-            FranchiseAttachmentFileDTO contractFileDTO = new FranchiseAttachmentFileDTO();
-
-            String contractFileOriginalName = contractFile.getOriginalFilename();
-
-            String contractfileName = contractFileOriginalName.substring(contractFileOriginalName.lastIndexOf("."));
-
-            log.info("contractfileName : " + contractfileName );
-
-            //날짜 폴더 생성
-            String folederPath = makeFolder();
-
-            //UUID
-            String uuid = UUID.randomUUID().toString();
-
-            String contractSaveName = uploadPath + File.separator + folederPath + File.separator + uuid + "_" + contractfileName;
-
-            Path contractSavePath = Paths.get(contractSaveName);
-
-            contractFileDTO.setAttachmentFileOriginalName(contractFileOriginalName);
-            contractFileDTO.setAttachmentFileChangedName(contractSaveName);
-            contractFileDTO.setAttachmentFileURL(folederPath);
-            contractFileDTO.setAttachmentFileDeleteYn("Y");
-            contractFileDTO.setAttachmentFileCategoryNo(1);
-
-            try {
-                contractFile.transferTo(contractSavePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            attachmentFiles.add(2, contractFileDTO);
-        }
-
-        franchise.setFranchiseAttachmentFiles(attachmentFiles);
-
-        System.out.println("franchise" + franchise);
 
         franchiseService.registFranchise(franchise, franchiseContractUpdatedRecordDTO);
 

@@ -139,7 +139,7 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
             updateBuilder.set(companyAccount.officePhoneNumber, member.getOfficePhoneNumber());
         }
 
-        if(StringUtils.hasText(String.valueOf(member.getDepartmentNo()))) {
+        if(String.valueOf(member.getDepartmentNo()).isEmpty()) {
             updateBuilder.set(companyAccount.departmentNo, member.getDepartmentNo());
         }
 

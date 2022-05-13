@@ -87,6 +87,9 @@ public class MemberController {
         newMember.setMemberRemoveStatus("Y");
         newMember.setOfficeDivision("직원");
         newMember.setMemberDivision("본사");
+        newMember.setCompanyAddress("서울시 서초구");
+
+
 
         System.out.println("NewMember" + newMember);
 

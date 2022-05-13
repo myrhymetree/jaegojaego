@@ -1,19 +1,19 @@
 $(document).ready(function(){
 
     <!-- password meter -->
-    var options1 = {};
-    options1.ui = {
+    let options3 = {};
+    options3.ui = {
         container: "#pwd-container2",
         showVerdictsInsideProgressBar: true,
         viewports: {
             progress: ".pwstrength_viewport_progress"
         }
     };
-    options1.common = {
+    options3.common = {
         debug: false,
     };
 
-    $('.example2').pwstrength(options1);
+    $('.example2').pwstrength(options3);
 
     <!-- input mask, validation(password equality, length, email validation) -->
     $("#registForm").ready().validate({
@@ -27,16 +27,14 @@ $(document).ready(function(){
             },
             confirm: {
                 required: true,
-                equalTo: "#memberPwd",
+                equalTo: "#memberPwd2"
             },
             memberPwd: {
                 required: true,
                 minlength: 8,
-                maxlength: 15,
-                empty: true
+                maxlength: 15
             },
             memberName: {
-                empty: true,
                 required: true
             },
             businessRegistrationNo: {
@@ -47,21 +45,27 @@ $(document).ready(function(){
             },
             bankAccountNo: {
                 required: true
+            },
+            franchiseContractStartedDate1: {
+                required: true
+            },
+            franchiseContractExpiredDate1: {
+                required: true
             }
         }
 
     });
 
-    $(".select2_demo_1").select2({
-        theme: 'bootstrap4',
-    });
-    $(".select2_demo_2").select2({
-        theme: 'bootstrap4',
-    });
-    $(".select2_demo_3").select2({
+    $("#franchiseContractStatus").select2({
         theme: 'bootstrap4',
         placeholder: "계약상태를 선택하세요.",
-        allowClear: true
+        allowClear: false
+    });
+
+    $("#supervisor").select2({
+        theme: 'bootstrap4',
+        placeholder: "담당자를 선택하세요.",
+        allowClear: false
     });
 
     // $("#registForm").submit(function (e) {
@@ -205,7 +209,30 @@ $(document).ready(function(){
 //             $invoiceForm.submit();
 //         });
 //     }
-// });
+// }
+
+axios({
+    method: 'get',
+    url: '/member/supervisorList'
+})
+    .then(function (response) {
+
+        console.log(response);
+
+        const $supervisor = $("#supervisor");
+
+        $supervisor.append($("<option>"))
+
+        for(let i = 0; i < response.data[i].memberNo; i++) {
+            $supervisor.append($("<option>").val(response.data[i].memberNo).text(response.data[i].memberName));
+        }
+    })
+    .catch(function (error) {
+        console.log(error)
+    })
+    .then(function () {
+        console.log("안녕하세요");
+    });
 
 $(function() {
     $("input[name='memberId']").on("change", function (){
