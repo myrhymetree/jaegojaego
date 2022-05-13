@@ -22,7 +22,7 @@ public class OutWarehouseItemChangeHistory {
 
     @ManyToOne
     @JoinColumn(name = "ITEM_INFO_NO")
-    private OutWarehouseFranchiseOrderItem itemInfoNo;
+    private OutWarehouseItemInfo itemInfoNo;
 
     @Column(name = "ITEM_CHANGE_HISTORY_DIVISION")
     private int itemChangeHistoryDivision;
@@ -42,7 +42,7 @@ public class OutWarehouseItemChangeHistory {
 
     public OutWarehouseItemChangeHistory() {}
 
-    public OutWarehouseItemChangeHistory(int itemChangeHistoryNo, OutWarehouseFranchiseOrderItem itemInfoNo, int itemChangeHistoryDivision, int itemChangeHistoryAMount, int itemDecrementReasonNo, OutWarehouse outWarehouseNo, String outWarehouseStatus) {
+    public OutWarehouseItemChangeHistory(int itemChangeHistoryNo, OutWarehouseItemInfo itemInfoNo, int itemChangeHistoryDivision, int itemChangeHistoryAMount, int itemDecrementReasonNo, OutWarehouse outWarehouseNo, String outWarehouseStatus) {
         this.itemChangeHistoryNo = itemChangeHistoryNo;
         this.itemInfoNo = itemInfoNo;
         this.itemChangeHistoryDivision = itemChangeHistoryDivision;
@@ -60,11 +60,11 @@ public class OutWarehouseItemChangeHistory {
         this.itemChangeHistoryNo = itemChangeHistoryNo;
     }
 
-    public OutWarehouseFranchiseOrderItem getItemInfoNo() {
+    public OutWarehouseItemInfo getItemInfoNo() {
         return itemInfoNo;
     }
 
-    public void setItemInfoNo(OutWarehouseFranchiseOrderItem itemInfoNo) {
+    public void setItemInfoNo(OutWarehouseItemInfo itemInfoNo) {
         this.itemInfoNo = itemInfoNo;
     }
 
