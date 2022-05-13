@@ -2,8 +2,8 @@ package com.greedy.jaegojaego.materials.model.dto;
 
 public class MaterialsCategoryDTO {
 
-    private int materialCategoryNo;             //카테고리 번호
-    private String materialCategoryName;        //카테고리 이름
+    private int materialCategoryNo;
+    private String materialCategoryName;
 
     public MaterialsCategoryDTO() {
     }
