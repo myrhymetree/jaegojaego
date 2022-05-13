@@ -5,14 +5,40 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
 </head>
 <body>
     <th:block th:include="/common/header.html"></th:block>
 
-    <div class="body-header">
-        <div class="menu-title">계정 목록</div>
-        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="/member/list">계정 목록</a></div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>직원 계정 목록</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="">직원 관리</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href=""><strong>직원 계정 목록</strong></a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
     </div>
+
+<!--    <div class="body-header">-->
+<!--        <div class="menu-title">계정 목록</div>-->
+<!--        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="/member/list">계정 목록</a></div>-->
+<!--    </div>-->
 
     <div class="wrapper wrapper-content  animated fadeInRight">
         <div class="row">
@@ -145,12 +171,12 @@
 
                     console.log(response2);
 
-                    const $department = $("#department");
+                    const $department = $("#employeeDepartment");
                     $department.html("");
 
                     $department.append($("<option>"))
 
-                    for (let i = 0; i < response2.data[7].departmentNo; i++) {
+                    for (let i = 0; i < response2.data[i].departmentNo; i++) {
                         $department.append($("<option>").val(response2.data[i].departmentNo).text(response2.data[i].departmentName));
                     }
                 })
@@ -170,7 +196,7 @@
                 $("#removeMember").addClass("hover").attr('style', "display:none");
                 $("#restoreMember").addClass("hover").attr('style', "display:block");
 
-                /* td에 숫자가 안나오게 표시함 */
+                /* 파라미터에 값을 전달하기 위해 변수에 넣어줌 */
                 let memberNo = this.children[0].innerText;
 
                 console.log("번호는 : " + memberNo);
@@ -196,31 +222,6 @@
                     .then(function () {
 
                     });
-
-                axios({
-                    method: 'get',
-                    url: '/member/department'
-                })
-                    .then(function (response2) {
-
-                        console.log(response2);
-
-                        const $department = $("#department");
-                        $department.html("");
-
-                        $department.append($("<option>"))
-
-                        for (let i = 0; i < response2.data[7].departmentNo; i++) {
-                            $department.append($("<option>").val(response2.data[i].departmentNo).text(response2.data[i].departmentName));
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error)
-                    })
-                    .then(function () {
-
-                    });
-
             });
 
             /* 본사 직원 계정 삭제 이벤트 */
@@ -244,5 +245,23 @@
         });
     </script>
 
+    <!-- iCheck -->
+    <script th:src="@{js/plugins/iCheck/icheck.min.js}"></script>
+
+    <!-- Password meter -->
+    <script th:src="@{/js/plugins/pwstrength/pwstrength-bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/pwstrength/zxcvbn.js}"></script>
+
+    <!-- Jquery Validate -->
+    <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+    <!-- Input Mask-->
+    <script th:src="@{/js/plugins/jqueryMask/jquery.mask.min.js}"></script>
+
+    <!-- Select2 -->
+    <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+    <!-- Sweet alert -->
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 </body>
 </html>

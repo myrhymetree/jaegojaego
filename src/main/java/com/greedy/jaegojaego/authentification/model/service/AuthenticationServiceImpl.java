@@ -44,7 +44,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findMemberByMemberId(username);
+        String status = "Y";
+
+        Member member = memberRepository.findMemberByMemberIdAndMemberRemoveStatus(username, "Y");
 //        System.out.println("member = " + member);
 
         if(member == null) {

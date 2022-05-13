@@ -430,7 +430,7 @@ public class FranchiseService {
     }
 
     public void updateManagerInfoByCompany(FranchiseAccountDTO manager) {
-        
+
         franchiseAccountRepository.updateManager(strictModelMapper().map(manager, FranchiseAccount.class));
     }
 }

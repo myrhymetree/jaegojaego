@@ -23,6 +23,9 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @EntityGraph(attributePaths = {"memberRoleList"}, type = EntityGraph.EntityGraphType.LOAD)
     Member findMemberByMemberId(String memberId);
 
+    @EntityGraph(attributePaths = {"memberRoleList"}, type = EntityGraph.EntityGraphType.LOAD)
+    Member findMemberByMemberIdAndMemberRemoveStatus(String memberId, String status);
+
     /* 계정 존재 여부 조회 메소드 */
     boolean existsByMemberId(String memberId);
 
