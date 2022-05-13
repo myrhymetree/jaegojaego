@@ -27,7 +27,7 @@ $(document).ready(function(){
             },
             confirm: {
                 required: true,
-                equalTo: "#memberPwd",
+                equalTo: "#memberPwd1"
             },
             memberPwd: {
                 required: true,
@@ -53,7 +53,7 @@ $(document).ready(function(){
     $(".select2_demo_3").select2({
         theme: 'bootstrap4',
         placeholder: "부서를 선택하세요.",
-        allowClear: true
+        allowClear: false
     });
 
 })

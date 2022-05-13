@@ -107,11 +107,11 @@ public class MemberService {
     @Transactional
     public void registNewMember(CompanyAccountDTO newMember) {
 
-        Department department = departmentRepository.findByDepartmentNo(newMember.getDepartment().getDepartmentNo());
-
-        DepartmentDTO departmentDTO = modelMappper.map(department, DepartmentDTO.class);
-
-        newMember.setDepartment(departmentDTO);
+//        Department department = departmentRepository.findByDepartmentNo(newMember.getDepartment().getDepartmentNo());
+//
+//        DepartmentDTO departmentDTO = modelMappper.map(department, DepartmentDTO.class);
+//
+//        newMember.setDepartment(departmentDTO);
 
         CompanyAccount member = modelMappper.map(newMember, CompanyAccount.class);
 
