@@ -56,7 +56,7 @@ public class WarehouseService {
 
     /**
      * findAllWarehouseList : 입고 목록 조회용
-     * @ return : 입고 물품 정보
+     * @return : 입고 물품 정보
      */
     public List<WarehouseDTO> findAllWarehouseList() {
 
@@ -67,9 +67,9 @@ public class WarehouseService {
 
     /**
      * modifyStatus : 입고 상태 수정용 + 재고 변동사항 등록용 + 재고 수량 수정용
-     * @ param status : view에서 요청 받은 입고 상태 정보
-     * @ param warehouseNo : view에서 요청 받은 입고 번호
-     * @ param warehouseAmount : view에서 요청 받은 입고 수량
+     * @param status : view에서 요청 받은 입고 상태 정보
+     * @param warehouseNo : view에서 요청 받은 입고 번호
+     * @param warehouseAmount : view에서 요청 받은 입고 수량
      */
     public void modifyStatus(String status, int warehouseNo, int warehouseAmount) {
 
@@ -87,16 +87,26 @@ public class WarehouseService {
         itemChangeHistory.setItemChangeAmount(warehouse.getWarehouseAmount());      //입고된 수량
         itemChangeHistory.setWarehouseStatus(warehouse.getWarehouseStatus());       //입고 완료 정보 넣어주기
 
+
+
+
         /* 추가 후 재고 관리 table 수량 수정용 */
         /* 기존의 수량[warehouseAmount] + 새로 들어온 수량[getItemChangeAmount()] 를 더해서 update */
-        int amount = warehouseAmount + (itemChangeHistory.getItemChangeAmount());
+        List<WarehouseItemAmount> warehouseItemAmount = warehouseItemAmountRepository.findAll();
+
+        int amount = 0;
+
+        /* 기존 재고 수량을 불러오기 위함. List형식이라 For문 사용   */
+        for (int i = 0; i < itemChangeHistory.getItemInfoNo().getItemInfoNo(); i++) {
+            amount = warehouseAmount + warehouseItemAmount.get(i).getWarehouseItemAmount();
+        }
 
         /* 재고 table 수량 수정용 생성 */
         WarehouseItemAmount itemAmountList = new WarehouseItemAmount();
 
         /* 수량 update 중첩 처리를 위해 위해 위에서 선언한 amount를 대입 */
-        itemAmountList.setWarehouseItemInfoNo(itemChangeHistory.getItemInfoNo().getItemInfoNo());
         itemAmountList.setWarehouseItemAmount(amount);
+        itemAmountList.setWarehouseItemInfoNo(itemChangeHistory.getItemInfoNo().getItemInfoNo());
 
         /* 입고 정보 수정 적용 */
         warehouseRepository.save(warehouse);
@@ -108,7 +118,7 @@ public class WarehouseService {
 
     /**
      * findAllCompanyOrderList : 발주 승인 "완료" 목록 조회용
-     * @ return : 본사 발주 정보
+     * @return : 본사 발주 정보
      */
     public List<WarehouseCompanyOrderHistoryDTO> findAllCompanyOrderList() {
 
@@ -119,7 +129,7 @@ public class WarehouseService {
 
     /**
      * findOrderHistoryByCompanyOrderHistoryNo :발주 "완료" 상세 조회용
-     * @ return : 본사 발주 물품별 상세 정보
+     * @return : 본사 발주 물품별 상세 정보
      */
     public WarehouseCompanyOrderHistoryDTO findOrderHistoryByCompanyOrderHistoryNo(int companyOrderHistoryNo) {
 
@@ -130,11 +140,11 @@ public class WarehouseService {
 
     /**
      * registCompleteItem : 발주 상세 목록에서 제품을 입고 목록에 등록용
-     * @ param completeItemInfoNo : view에서 요청 받은 아이템 정보
-     * @ param orderApplicationNo : view에서 요청 받은 발주 신청서 번호
-     * @ param clientNo : view에서 요청 받은 거래처 번호
-     * @ param clientContractItemNo : view에서 요청 받은 거래처 판매 계약 상품 번호
-     * @ param companyAmount : view에서 요청 받은 발주 수량
+     * @param completeItemInfoNo : view에서 요청 받은 아이템 정보
+     * @param orderApplicationNo : view에서 요청 받은 발주 신청서 번호
+     * @param clientNo : view에서 요청 받은 거래처 번호
+     * @param clientContractItemNo : view에서 요청 받은 거래처 판매 계약 상품 번호
+     * @param companyAmount : view에서 요청 받은 발주 수량
      */
     @Transactional
     public void registCompleteItem(int completeItemInfoNo, int orderApplicationNo, int clientNo, int clientContractItemNo, int companyAmount) {
@@ -184,7 +194,7 @@ public class WarehouseService {
 
     /**
      * findAllItemAmount : 재고 관리 목록 조회용
-     * @ return : 재고 수량 정보
+     * @return : 재고 수량 정보
      */
     public List<WarehouseItemAmountDTO> findAllItemAmount() {
 
@@ -195,7 +205,7 @@ public class WarehouseService {
 
     /**
      * findChangeHistoryByItemInfoNo : 재고 변동 내역 조회용
-     * @ return : 재고 변동 내역 정보
+     * @return : 재고 변동 내역 정보
      */
     public List<WarehouseItemChangeHistoryDTO> findChangeHistoryByItemInfoNo() {
 

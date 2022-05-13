@@ -9,9 +9,22 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
-<div class="body-header">
-    <div class="menu-title">재고 변동 내역</div>
-    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/quality}">재고 변동 내역</a>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>재고 변동 내역</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/main}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">입고관리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/change}">재고 변동 내역</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
     </div>
 </div>
 
@@ -48,14 +61,14 @@
             <th>품번</th>
             <th>품명</th>
             <th>처리일자</th>
-            <th>증가/감소 구분</th>
+            <th>증가</th>
             <th>변동 수량</th>
             <th>변동 사유</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="warehouse,num : ${ changeHistory }">
-            <td th:text="${ num.size - num.index }"></td>
+            <td th:text="${ num.index + 1 }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getMaterialCategory().getMaterialCategoryName() }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getItemInfoItemSerialNo() }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getItemInfoName() }"></td>

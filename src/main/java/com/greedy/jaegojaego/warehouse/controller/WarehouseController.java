@@ -47,8 +47,8 @@ public class WarehouseController {
 
     /**
      * selectWarehouseList : 입고 목록 조회용
-     * @ param mv : 입고 물품 정보와 view page url을 담은 변수
-     * @ return : 입고 물품 정보와 view page
+     * @param mv : 입고 물품 정보와 view page url을 담은 변수
+     * @return : 입고 물품 정보와 view page
      */
     @GetMapping("/list")
     public ModelAndView selectWarehouseList(ModelAndView mv) {
@@ -68,15 +68,18 @@ public class WarehouseController {
 
     /**
      * modifyWarehouseStatus : 입고 상태 수정용 + 재고 변동사항 등록용 + 재고 수량 수정용
-     * @ param request : view에서 요청한 정보를 사용하기위해 담아둔 변수
-     * @ return : 요청을 처리 하여 view <script> 내 success 이동
+     * @param request : view에서 요청한 정보를 사용하기위해 담아둔 변수
+     * @return : 요청을 처리 하여 view <script> 내 success 이동
      */
     @PostMapping(value = "/modify", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String modifyWarehouseStatus(HttpServletRequest request) {
 
+        /* 입고 상태 수정되는 입고번호 */
         int modifyWarehouseNo = Integer.parseInt(request.getParameter("warehouseNo"));
+        /* 입고 완료 상태인 정보를 담은 상태 */
         String modifyStatus = request.getParameter("warehouseStatus");
+        /* 입고 완료 처리 시 입고되는 수량 */
         int warehouseAmount = Integer.parseInt(request.getParameter("warehouseAmount"));
 
         warehouseService.modifyStatus(modifyStatus, modifyWarehouseNo, warehouseAmount);
@@ -90,8 +93,8 @@ public class WarehouseController {
 
     /**
      * selectWarehouseCompleteList : 발주 승인 "완료" 목록 조회용
-     * @ param mv : 본사 발주 정보와 view page url을 담은 변수
-     * @ return : 본사 발주 정보와 view page
+     * @param mv : 본사 발주 정보와 view page url을 담은 변수
+     * @return : 본사 발주 정보와 view page
      */
     @GetMapping("/complete")
     public ModelAndView selectWarehouseCompleteList(ModelAndView mv) {
@@ -113,9 +116,9 @@ public class WarehouseController {
 
     /**
      * selectWarehouseCompleteDetail : 발주 승인 "완료" 상세 조회용
-     * @ param mv : 본사 발주 상세 정보와 추가로 필요한 상세 정보, view page url을 담은 변수
-     * @ param companyOrderHistoryNo : view에서 요청한 정보를 사용하기위해 담아둔 변수
-     * @ return : 본사 발주 상세 정보와 추가로 필요한 상세 정보, view page
+     * @param mv : 본사 발주 상세 정보와 추가로 필요한 상세 정보, view page url을 담은 변수
+     * @param companyOrderHistoryNo : view에서 요청한 정보를 사용하기위해 담아둔 변수
+     * @return : 본사 발주 상세 정보와 추가로 필요한 상세 정보, view page
      */
     @GetMapping("/complete/detail/{companyOrderHistoryNo}")
     public ModelAndView selectWarehouseCompleteDetail(ModelAndView mv, @PathVariable int companyOrderHistoryNo) {
@@ -125,7 +128,7 @@ public class WarehouseController {
         /* 상세보기를 위한 발주 정보담은 DTO 확인용 */
         List<WarehouseCompleteDetailDTO> completeDetail = new ArrayList<>(companyOrderHistoryNo);
 
-        /*  [하나의 발주에 여러가지 제품. 하나의 제품 안에 여러 거래처]이기에 2중 for문을 사용 */
+        /*  [하나의 발주에 여러가지 제품. 하나의 제품 안에 여러 거래처]이기에 2중 for문 사용 */
         for(int i = 0; i < orderHistory.getOrderApplicationList().size(); i++) {
 
             for(int j = 0; j < orderHistory.getOrderApplicationList().get(i).getOrderApplicationItemList().size(); j++) {
@@ -172,8 +175,8 @@ public class WarehouseController {
 
     /**
      * registWarehouseCompleteItem : 발주 상세 목록에서 제품을 입고 목록에 등록용
-     * @ param request : view에서 요청한 정보를 사용하기위해 담아둔 변수
-     * @ return : 요청을 처리 하여 view <script> 내 success 이동
+     * @param request : view에서 요청한 정보를 사용하기위해 담아둔 변수
+     * @return : 요청을 처리 하여 view <script> 내 success 이동
      */
     @PostMapping(value = "/complete/regist", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -196,8 +199,8 @@ public class WarehouseController {
 
     /**
      * selectWarehouseItemAmountList : 재고 관리 목록 조회용
-     * @ param mv : 재고 수량 정보와 view page url을 담은 변수
-     * @ return : 재고 수량 정보와 view page
+     * @param mv : 재고 수량 정보와 view page url을 담은 변수
+     * @return : 재고 수량 정보와 view page
      */
     @GetMapping("/item")
     public ModelAndView selectWarehouseItemAmountList(ModelAndView mv) {
@@ -217,8 +220,8 @@ public class WarehouseController {
 
     /**
      * selectWarehouseChangeDetail : 재고 변동 내역 조회용
-     * @ param mv : 재고 변동 내역과 view page url을 담은 변수
-     * @ return : 재고 변동 내역과 view page
+     * @param mv : 재고 변동 내역과 view page url을 담은 변수
+     * @return : 재고 변동 내역과 view page
      */
     @GetMapping("/change")
     public ModelAndView selectWarehouseChangeDetail(ModelAndView mv) {
