@@ -1,20 +1,26 @@
 package com.greedy.jaegojaego.member.model.entity;
 
-import com.greedy.jaegojaego.franchise.entity.FranchiseInfoUpdatedRecord;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.naming.Name;
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+
+/**
+ * <pre>
+ * Class : Member
+ * Comment : MEMBER 테이블과 대응할 엔티티, 계정 테이블이다.
+ *
+ * History
+ * 2022. 5. 13.  (박성준)
+ * </pre>
+ * @version 1.0
+ * @author 박성준
+ */
 @Entity(name = "Member")
 @Table(name = "MEMBER")
 @SequenceGenerator(
@@ -23,24 +29,12 @@ import java.util.Set;
         initialValue = 1,
         allocationSize = 1
 )
-@Setter
-@Getter
-@AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)     //상속매핑의 join전략을 사용한다.
 @DynamicUpdate
 @DynamicInsert
-//@DiscriminatorColumn(name = "MEMBER_DIVISION")
 public class Member {
-
-//    @ElementCollection(fetch = FetchType.LAZY)
-//    @Builder.Default
-//    private Set<MemberRole> roleSet = new HashSet<>();
-
-//    public void addMemberRole(MemberRole memberRole) {
-//        roleSet.add(memberRole);
-//    }
 
     @Id
     @GeneratedValue(
@@ -49,22 +43,6 @@ public class Member {
     )
     @Column(name = "MEMBER_NO")
     private Integer memberNo;
-    //int를 지양하는 이유 : int는 0을 담을 수 있기 때문이다, Integer는 보통 10억바이트 정도만 담을 수 있기때문에 보통은 Long이 권장됨
-    //데이터가 많이 쌓여있을 때 Integer -> Long으로 바꾸면 여러 문제가 생길 수 있다
-
-    /* 일대일 정리 :
-    * 주 테이블에 외래 키
-    * - 주 객체가 대상 객체의 참조를 가지는 것처럼 주 테이블에 외래키를 두고 대상 테이블을 찾음
-    * - JPA 매핑 편리
-    * 장점 : 주 테이블만 조회해도 대상 테이블의 데이터가 있는지 확인 가능
-    * 단점 : 값이 없으면 외래 키에 null 허용 */
-//    @OneToOne
-//    @JoinColumn(name = "MEMBER_NO")
-//    private EmployeeInfo employeeInfo;
-//
-//    @OneToOne
-//    @JoinColumn(name = "MEMBER_NO")
-//    private CompanyAccount companyAccount;
 
     @Column(name = "MEMBER_ID")
     private String memberId;        //id라고 명시를 해줘야 쿼리문을 쓰는게 아닌 자동으로 jpa가 취급해줌
@@ -98,19 +76,122 @@ public class Member {
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<MemberRole> memberRoleList;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "MEMBER_NO")
     private List<PasswordUpdatedRecord> passwordUpdatedRecords;
 
-//    @JoinColumn(name = "MEMBER_NO")
-//    @OneToOne(cascade = CascadeType.PERSIST)
-//    private MemberRole memberRole;
-
-
-//    @OneToOne
-//    @JoinColumn(name = "MEMBER_NO")
-//    private MemberRole memberRole;
-
     public Member() {}
+
+    public Member(Integer memberNo, String memberId, String memberPwd, LocalDateTime memberPwdUpdateDate, String memberPwdInitStatus, LocalDateTime memberCreatedDate, LocalDateTime memberRemovedDate, String memberRemoveStatus, String officeDivision, String memberDivision, List<MemberRole> memberRoleList, List<PasswordUpdatedRecord> passwordUpdatedRecords) {
+        this.memberNo = memberNo;
+        this.memberId = memberId;
+        this.memberPwd = memberPwd;
+        this.memberPwdUpdateDate = memberPwdUpdateDate;
+        this.memberPwdInitStatus = memberPwdInitStatus;
+        this.memberCreatedDate = memberCreatedDate;
+        this.memberRemovedDate = memberRemovedDate;
+        this.memberRemoveStatus = memberRemoveStatus;
+        this.officeDivision = officeDivision;
+        this.memberDivision = memberDivision;
+        this.memberRoleList = memberRoleList;
+        this.passwordUpdatedRecords = passwordUpdatedRecords;
+    }
+
+    public Integer getMemberNo() {
+        return memberNo;
+    }
+
+    public void setMemberNo(Integer memberNo) {
+        this.memberNo = memberNo;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getMemberPwd() {
+        return memberPwd;
+    }
+
+    public void setMemberPwd(String memberPwd) {
+        this.memberPwd = memberPwd;
+    }
+
+    public LocalDateTime getMemberPwdUpdateDate() {
+        return memberPwdUpdateDate;
+    }
+
+    public void setMemberPwdUpdateDate(LocalDateTime memberPwdUpdateDate) {
+        this.memberPwdUpdateDate = memberPwdUpdateDate;
+    }
+
+    public String getMemberPwdInitStatus() {
+        return memberPwdInitStatus;
+    }
+
+    public void setMemberPwdInitStatus(String memberPwdInitStatus) {
+        this.memberPwdInitStatus = memberPwdInitStatus;
+    }
+
+    public LocalDateTime getMemberCreatedDate() {
+        return memberCreatedDate;
+    }
+
+    public void setMemberCreatedDate(LocalDateTime memberCreatedDate) {
+        this.memberCreatedDate = memberCreatedDate;
+    }
+
+    public LocalDateTime getMemberRemovedDate() {
+        return memberRemovedDate;
+    }
+
+    public void setMemberRemovedDate(LocalDateTime memberRemovedDate) {
+        this.memberRemovedDate = memberRemovedDate;
+    }
+
+    public String getMemberRemoveStatus() {
+        return memberRemoveStatus;
+    }
+
+    public void setMemberRemoveStatus(String memberRemoveStatus) {
+        this.memberRemoveStatus = memberRemoveStatus;
+    }
+
+    public String getOfficeDivision() {
+        return officeDivision;
+    }
+
+    public void setOfficeDivision(String officeDivision) {
+        this.officeDivision = officeDivision;
+    }
+
+    public String getMemberDivision() {
+        return memberDivision;
+    }
+
+    public void setMemberDivision(String memberDivision) {
+        this.memberDivision = memberDivision;
+    }
+
+    public List<MemberRole> getMemberRoleList() {
+        return memberRoleList;
+    }
+
+    public void setMemberRoleList(List<MemberRole> memberRoleList) {
+        this.memberRoleList = memberRoleList;
+    }
+
+    public List<PasswordUpdatedRecord> getPasswordUpdatedRecords() {
+        return passwordUpdatedRecords;
+    }
+
+    public void setPasswordUpdatedRecords(List<PasswordUpdatedRecord> passwordUpdatedRecords) {
+        this.passwordUpdatedRecords = passwordUpdatedRecords;
+    }
 
     @Override
     public String toString() {
