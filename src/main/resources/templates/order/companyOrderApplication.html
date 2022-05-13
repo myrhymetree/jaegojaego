@@ -40,11 +40,28 @@
 <body>
     <div th:replace="/common/header.html"></div>
 
-
     <div class="ibox ">
-        <div class="body-header">
-            <div class="menu-title">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</div>
-            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/order/companyorderlist}">발주 내역</a> / <a href="" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a></div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>발주 신청서</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/}">메인페이지</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        발주 관리
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/order/companyorderlist}">발주 내역</a>
+                    </li>
+                    <li class="breadcrumb-item" style="font-weight: bold">
+                        <a href="#" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
         </div>
 
         <div class="float-right">
