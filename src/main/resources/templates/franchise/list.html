@@ -5,14 +5,19 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<!--    <style> tr:active { display : block  }</style>-->
+
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
 </head>
 <body>
     <th:block th:include="/common/header.html"></th:block>
 
     <div class="body-header">
         <div class="menu-title">계정 목록</div>
-        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="">계정 목록</a></div>
+        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">가맹점 관리</a> / <a href="">계정 목록</a></div>
     </div>
 
     <div class="wrapper wrapper-content  animated fadeInRight">
@@ -240,8 +245,57 @@
                 .then(function () {
                     console.log("안녕하세요");
                 });
+
+            <!-- password meter -->
+            let options3 = {};
+            options3.ui = {
+                container: "#pwd-container3",
+                showVerdictsInsideProgressBar: true,
+                viewports: {
+                    progress: ".pwstrength_viewport_progress3"
+                }
+            };
+            options3.common = {
+                debug: false,
+            };
+
+            // $('#representativePwd').pwstrength(options3);
+
+            <!-- input mask, validation(password equality, length, email validation) -->
+            $("#franchiseModifyForm").ready().validate({
+                errorPlacement: function (error, element) {
+                    element.before(error);
+                    console.log(error);
+                },
+                rules: {
+                    memberPwd: {
+                        minlength: 8,
+                        maxlength: 15
+                    },
+                    confirm: {
+                        equalTo: "#representativePwd",
+                        minlength: 8,
+                        maxlength: 15
+                    },
+                    representativeEmail: {
+                        email: true
+                    }
+                }
+            })
         });
     </script>
+
+    <!-- Sweet alert -->
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- Select2 -->
+    <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+    <!-- Jquery Validate -->
+    <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+    <!-- Input Mask-->
+    <script th:src="@{/js/plugins/jqueryMask/jquery.mask.min.js}"></script>
 
 </body>
 </html>
