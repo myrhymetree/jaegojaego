@@ -89,8 +89,8 @@ public class IssueService {
 
     /**
      * selectIssueList : 가맹점 이슈 목록 조회
-     * @ param customUser : 로그인한 사용자 정보
-     * @ return : 로그인한 사용자 별 가맹점 발주 목록
+     * @param customUser : 로그인한 사용자 정보
+     * @return : 로그인한 사용자 별 가맹점 발주 목록
      */
     public List<IssueDetailDTO> selectIssueList(CustomUser customUser) {
 
@@ -172,10 +172,10 @@ public class IssueService {
 
     /**
      * setIssueDetailByFranchise : 가맹점 로그인 시 가맹점 이슈 목록 정보 세팅
-     * @ param issueList : 가맹점 이슈 목록
-     * @ param issueFranchiseInfo : 가맹점 대표자 정보
-     * @ param issueFranchiseAccountList : 가맹점 직원 정보 목록
-     * @ return : 세팅된 가맹점 이슈 목록
+     * @param issueList : 가맹점 이슈 목록
+     * @param issueFranchiseInfo : 가맹점 대표자 정보
+     * @param issueFranchiseAccountList : 가맹점 직원 정보 목록
+     * @return : 세팅된 가맹점 이슈 목록
      */
     private List<IssueDetailDTO> setIssueDetailByFranchise(List<Issue> issueList, IssueFranchiseInfo issueFranchiseInfo, List<IssueFranchiseAccount> issueFranchiseAccountList) {
 
@@ -227,10 +227,10 @@ public class IssueService {
 
     /**
      * setIssueDetail : 본사 로그인 시 가맹점 이슈 목록 정보 세팅
-     * @ param issueList : 가맹점 이슈 목록
-     * @ param issueFranchiseInfo : 가맹점 대표자 정보 목록
-     * @ param issueFranchiseAccountList : 가맹점 직원 정보 목록
-     * @ return : 세팅된 가맹점 이슈 목록
+     * @param issueList : 가맹점 이슈 목록
+     * @param issueFranchiseInfoList : 가맹점 대표자 정보 목록
+     * @param franchiseAccountList : 가맹점 직원 정보 목록
+     * @return : 세팅된 가맹점 이슈 목록
      */
     private List<IssueDetailDTO> setIssueDetail(List<Issue> issueList, List<IssueFranchiseInfo> issueFranchiseInfoList, List<IssueFranchiseAccount> franchiseAccountList) {
 
@@ -303,8 +303,8 @@ public class IssueService {
 
     /**
      * selectIssueDetail : 가맹점 이슈 상세 정보 조회
-     * @ param issueNo : 상세 조회할 이슈 번호
-     * @ return : 가맹점 이슈 상세 정보
+     * @param issueNo : 상세 조회할 이슈 번호
+     * @return : 가맹점 이슈 상세 정보
      */
     public IssueDTO selectIssueDetail(int issueNo) {
 
@@ -329,8 +329,8 @@ public class IssueService {
 
     /**
      * selectIssueOrderList : 가맹점 이슈 신청 로그인한 사용자의 가맹점 발주 목록 조회
-     * @ param customUser : 로그인한 사용자 정보
-     * @ return : 가맹점 이슈 신청 로그인한 사용자의 가맹점 발주 목록
+     * @param customUser : 로그인한 사용자 정보
+     * @return : 가맹점 이슈 신청 로그인한 사용자의 가맹점 발주 목록
      */
     public List<FranchiseOrderDTO> selectIssueOrderList(CustomUser customUser) {
 
@@ -406,11 +406,11 @@ public class IssueService {
 
     /**
      * registIssue : 가맹점 이슈 신청
-     * @ param customUser : 로그인한 사용자 정보
-     * @ param issueAttachmentFileList : 가맹점 이슈 신청 첨부파일 정보 목록
-     * @ param issue : 가맹점 이슈 신청 정보
-     * @ param orderNo : 가맹점 이슈 신청 해당 발주 번호
-     * @ param issueItemList : 가맹점 이슈 신청 물품 정보 목록
+     * @param customUser : 로그인한 사용자 정보
+     * @param issueAttachmentFileList : 가맹점 이슈 신청 첨부파일 정보 목록
+     * @param issue : 가맹점 이슈 신청 정보
+     * @param orderNo : 가맹점 이슈 신청 해당 발주 번호
+     * @param issueItemList : 가맹점 이슈 신청 물품 정보 목록
      */
     @Transactional
     public void registIssue(CustomUser customUser, List<IssueAttachmentFileDTO> issueAttachmentFileList, IssueDTO issue, int orderNo, List<IssueItemDTO> issueItemList) {
@@ -471,12 +471,12 @@ public class IssueService {
 
     /**
      * updateIssue : 가맹점 이슈 수정
-     * @ param customUser : 로그인한 사용자 정보
-     * @ param issueAttachmentFileList : 가맹점 이슈 수정 첨부파일 정보 목록
-     * @ param issue : 가맹점 이슈 수정 정보
-     * @ param orderNo : 가맹점 이슈 수정 해당 발주 번호
-     * @ param issueItemList : 가맹점 이슈 수정 물품 정보 목록
-     * @ param imgResetCheck : 가맹점 이슈 첨부파일 초기화 여부
+     * @param customUser : 로그인한 사용자 정보
+     * @param issueAttachmentFileList : 가맹점 이슈 수정 첨부파일 정보 목록
+     * @param issue : 가맹점 이슈 수정 정보
+     * @param issueOrderNo : 가맹점 이슈 수정 해당 발주 번호
+     * @param issueItemList : 가맹점 이슈 수정 물품 정보 목록
+     * @param imgResetCheck : 가맹점 이슈 첨부파일 초기화 여부
      */
     @Transactional
     public void updateIssue(CustomUser customUser, List<IssueAttachmentFileDTO> issueAttachmentFileList, IssueDTO issue, int issueOrderNo, List<IssueItemDTO> issueItemList, int imgResetCheck) {
@@ -544,7 +544,7 @@ public class IssueService {
 
     /**
      * deleteIssue : 가맹점 이슈 삭제
-     * @ param removeIssueNo : 삭제할 가맹점 이슈 번호
+     * @param removeIssueNo : 삭제할 가맹점 이슈 번호
      */
     public void deleteIssue(int removeIssueNo) {
 
@@ -577,9 +577,9 @@ public class IssueService {
 
     /**
      * updateIssueStatus : 가맹점 이슈 처리 상태 변경
-     * @ param customUser : 로그인한 사용자 정보
-     * @ param issueNo : 처리 상태를 변경할 이슈 번호
-     * @ param status : 변경할 이슈 처리 상태
+     * @param customUser : 로그인한 사용자 정보
+     * @param issueNo : 처리 상태를 변경할 이슈 번호
+     * @param status : 변경할 이슈 처리 상태
      */
     public void updateIssueStatus(CustomUser customUser, int issueNo, String status) {
 
