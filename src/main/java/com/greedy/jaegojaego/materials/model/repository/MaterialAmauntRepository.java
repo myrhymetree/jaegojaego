@@ -2,11 +2,9 @@ package com.greedy.jaegojaego.materials.model.repository;
 
 
 import com.greedy.jaegojaego.materials.model.entity.Material;
-import com.greedy.jaegojaego.materials.model.entity.Materials;
+import com.greedy.jaegojaego.materials.model.entity.MaterialItemAmount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 /**
  * <pre>
@@ -18,9 +16,7 @@ import java.util.List;
  * @version
  * @author 김영광
  * */
-public interface MaterialRepository extends JpaRepository<Material, Integer> {
+public interface MaterialAmauntRepository extends JpaRepository<MaterialItemAmount, Integer> {
 
-    @Query(value = "SELECT COUNT(*) FROM ITEM_INFO", nativeQuery = true)
-    Integer findByIdCount();
 }
 

@@ -58,7 +58,7 @@ public class MenuController {
 
     /**
      * selectMenuList : 메뉴 목록 조회
-     * @ return : 메뉴 목록
+     * @return : 메뉴 목록
      * */
     @GetMapping("/list")
     public ModelAndView moveMenu(ModelAndView mv, Authentication authentication) {
@@ -74,8 +74,8 @@ public class MenuController {
 
     /**
      * selectOneMenu : 선택한 메뉴 상세 조회
-     * @ param : 선택한 메뉴의 번호
-     * @ return : 선택한 메뉴 상세
+     * @param menuNo : 선택한 메뉴의 번호
+     * @return : 선택한 메뉴 상세
      * */
     @GetMapping(value = "/selectonemenu", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -97,7 +97,7 @@ public class MenuController {
 
     /**
      * findRawMaterialList : 자재 전체 목록 조회
-     * @ return : 자재 전체 목록
+     * @return : 자재 전체 목록
      * */
     @GetMapping(value = "/materialcategory", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -108,9 +108,9 @@ public class MenuController {
 
     /**
      * registMenu : 메뉴 등록
-     * @ param menu : 등록할 메뉴의 내용들
-     * @ param menuMaterial : 등록할 자재의 내용들
-     * @ param materialNameAndCapacityList : 등록할 자재이름과 용량이 합쳐진 목록 내용들
+     * @param menu : 등록할 메뉴의 내용들
+     * @param menuMaterial : 등록할 자재의 내용들
+     * @param request : 등록할 자재이름과 용량이 합쳐진 목록 내용들
      * */
     @PostMapping("/regist")
     public ModelAndView registMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, WebRequest request) {
@@ -126,9 +126,9 @@ public class MenuController {
 
     /**
      * modifyMenu : 메뉴 수정
-     * @ param menu : 수정할 메뉴의 내용들
-     * @ param menuMaterial : 수정할 자재의 내용들
-     * @ param materialNameAndCapacityList : 수정할 자재이름과 용량이 합쳐진 목록 내용들
+     * @param menu : 수정할 메뉴의 내용들
+     * @param menuMaterial : 수정할 자재의 내용들
+     * @param request : 수정할 자재이름과 용량이 합쳐진 목록 내용들
      * */
     @PostMapping("/modify")
     public ModelAndView modifyMenu(MenuMaterialsDTO menuMaterial, MenuDTO menu, ModelAndView mv, WebRequest request) {
@@ -146,7 +146,7 @@ public class MenuController {
 
     /**
      * modifyMenu : 메뉴 삭제
-     * @ param menuNo : 삭제할 메뉴의 번호
+     * @param request : 삭제할 메뉴의 번호
      * */
     @GetMapping("/delete")
     @ResponseBody

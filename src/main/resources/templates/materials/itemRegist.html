@@ -16,6 +16,9 @@
         .bg{ background-color: white;
             height: 300px;
         }
+
+        img { height: 50%; width: 50%;
+        }
     </style>
 </head>
 <body>
@@ -29,13 +32,13 @@
                 <a th:href="@{/}">메인페이지</a>
             </li>
             <li class="breadcrumb-item">
-                <a th:href="@{/materials/productList}">자재관리</a>
+                <a th:href="@{/materials/product/list}">자재관리</a>
             </li>
             <li class="breadcrumb-item">
-                <a th:href="@{/materials/productList}">자재목록</a>
+                <a th:href="@{/materials/product/list}">자재목록</a>
             </li>
             <li class="breadcrumb-item active">
-                <a th:href="@{/materials/productList}"><strong>자재 생성</strong></a>
+                <a th:href="@{/materials/item/regist}"><strong>자재 생성</strong></a>
             </li>
         </ol>
     </div>
@@ -64,7 +67,7 @@
                     </div>
                 </div>
                 <form action="/materials/product/register" method="post" enctype="multipart/form-data">
-                <div class="ibox-content" style="height: 700px;">
+                <div class="ibox-content" style="height: 700px;" id="required">
                     <div style="float: left; width: 40%;">자재 정보
                         <hr></hr>
                             <div class="form-group  row">
@@ -76,20 +79,20 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 품번</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="itemSerialNo" id="itemSerialNo">
+                                    <input type="text" class="form-control" name="itemSerialNo" id="itemSerialNo" required>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">자재 품명</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="itemInfoName" id="itemInfoName">
+                                    <input type="text" class="form-control" name="itemInfoName" id="itemInfoName" required>
                                 </div>
                             </div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">카테고리</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" id="category1" name="materialCategory">
-                                        <option selected>선택해주세요</option>
+                                    <select class="form-control m-b" id="category1" name="materialCategory" required>
+                                        <option value="" selected>선택해주세요</option>
                                         <option th:each="categoryList : ${categoryList}" th:value="${categoryList.materialCategoryNo}"
                                                 th:text="${categoryList.materialCategoryName}"></option>
                                     </select>
@@ -98,8 +101,8 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">가공 유무</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="subdivisionYN" id="subdivisionYN">
-                                        <option selected>선택해주세요</option>
+                                    <select class="form-control m-b" name="subdivisionYN" id="subdivisionYN" required>
+                                        <option value="" selected>선택해주세요</option>
                                         <option th:value="Y">Y</option>
                                         <option th:value="N">N</option>
                                     </select>
@@ -108,7 +111,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">판매 가격</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="franchiseOrderableItem.itemPrice" id="itemPrice">
+                                    <input type="number" class="form-control" name="franchiseOrderableItem.itemPrice" id="itemPrice" required>
                                 </div>
                             </div>
                             <div class="form-group  row">
@@ -193,17 +196,17 @@
 
 </script>
 
-<!--<script>-->
-<!--    function setThumbnail(event) {-->
-<!--        var reader = new FileReader();-->
-<!--        reader.onload = function(event) {-->
-<!--            var img = document.createElement("img");-->
-<!--            img.setAttribute("src", event.target.result);-->
-<!--            document.querySelector("div#image_container").appendChild(img);-->
-<!--        };-->
-<!--        reader.readAsDataURL(event.target.files[0]);-->
-<!--    }-->
-<!--</script>-->
+<script>
+    function setThumbnail(event) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var img = document.createElement("img");
+            img.setAttribute("src", event.target.result);
+            document.querySelector("div#image_container").appendChild(img);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 
 </body>
 </html>

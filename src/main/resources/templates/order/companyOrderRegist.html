@@ -40,6 +40,7 @@
 
         #ui-id-1 {
             border: none;
+            position: absolute;
         }
 
         .item-select-cancel-btn {
@@ -58,11 +59,26 @@
 
     <div th:replace="/common/header.html"></div>
 
-    <div class="ibox ">
-        <div class="body-header">
-            <div class="menu-title">발주 신청</div>
-            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 본사 발주 관리 / <a th:href="@{/order/companyorderregist}" style="font-weight: bold">발주 신청</a></div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>발주 신청</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    발주 관리
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/order/companyorderregist}" style="font-weight: bold">발주 신청</a>
+                </li>
+            </ol>
         </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="ibox ">
         <div class="ibox-title" style="margin-top: 30px">
             <h2 style="font-weight: bold">물품 찾기</h2>
         </div>

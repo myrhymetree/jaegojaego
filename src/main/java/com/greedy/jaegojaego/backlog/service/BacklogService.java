@@ -60,7 +60,7 @@ public class BacklogService {
 
     /**
      * findAll : 입고 전체 리스트 조회
-     * @ return : 입고 전체 리스트
+     * @return : 입고 전체 리스트
      * */
     public List<BacklogInWarehouseDTO> selectInWarehouseBacklogList() {
 
@@ -102,7 +102,7 @@ public class BacklogService {
 
     /**
      * findAll : 자재 전체 리스트 조회
-     * @ return : 자제 전체 리스트
+     * @return : 자제 전체 리스트
      * */
     public List<BacklogItemInfoDTO> findItemInfoList() {
 
@@ -113,8 +113,8 @@ public class BacklogService {
 
     /**
      * findBacklogInWarehouseBySelectBox : 특정 자재 선택에 따른 특정 입고 내용 조회
-     * @ param itemInfoNo : 특정 자재 번호
-     * @ return : 특정 입고 내용
+     * @param itemInfoNo : 특정 자재 번호
+     * @return : 특정 입고 내용
      * */
     public List<BacklogInWarehouseDTO> findBacklogInWarehouseBySelectBox(int itemInfoNo) {
 
@@ -125,7 +125,7 @@ public class BacklogService {
 
     /**
      * findAll : 거래처 전체 리스트 조회
-     * @ return : 거래처 전체 리스트
+     * @return : 거래처 전체 리스트
      * */
     public List<BacklogClientDTO> findClientList() {
 
@@ -136,7 +136,7 @@ public class BacklogService {
 
     /**
      * findAll : 전체 출고 리스트 조회
-     * @ return : 전체 출고 리스트
+     * @return : 전체 출고 리스트
      * */
     public List<OutWarehouseBacklogDTO> selectOutWarehouseBacklogList() {
 
@@ -147,11 +147,11 @@ public class BacklogService {
 
     /**
      * findAll : 특정 자재 선택에 따른 특정 출고 내용 조회
-     * @ return : 특정 출고 내용
+     * @return : 특정 출고 내용
      *
      * findById : 특정 자재 번호에 따른 특정 자재 이름 조회
-     * @ param itemInfoNo : 특정 자재 번호
-     * @ return : 특정 자재 이름
+     * @param itemInfoNo : 특정 자재 번호
+     * @return : 특정 자재 이름
      * */
     public List<Date> findBacklogOutWarehouseBySelectBox(int itemInfoNo) {
 

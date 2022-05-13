@@ -55,7 +55,7 @@ public class BacklogController {
 
     /**
      * selectInWarehouseBacklogList : 입고 백로그 목록 조회
-     * @ return : 입고 백로그 목록
+     * @return : 입고 백로그 목록
      * */
    @GetMapping("list")
     public ModelAndView backlogPage(ModelAndView mv) {
@@ -70,7 +70,7 @@ public class BacklogController {
 
     /**
      * selectOutWarehouseBacklogList : 출고 백로그 목록 조회
-     * @ return : 출고 백로그 목록
+     * @return : 출고 백로그 목록
      * */
    @GetMapping("outwarehouselist")
    public ModelAndView moveOutWarehouseListPage(ModelAndView mv) {
@@ -84,7 +84,7 @@ public class BacklogController {
 
     /**
      * findItemInfoList : 자재 목록 조회
-     * @ return : 자재 목록
+     * @return : 자재 목록
      * */
    @GetMapping(value = "iteminfolist", produces = "application/json; charset=UTF-8")
    @ResponseBody
@@ -95,8 +95,8 @@ public class BacklogController {
 
     /**
      * findBacklogInWarehouseBySelectBox : 입고 백로그 그래프를 위한 특정 자재 번호에 따른 특정 자재 내용 조회
-     * @ param itemInfoNo : 특정 자재 번호
-     * @ return : 특정 자재 내용
+     * @param itemInfoNo : 특정 자재 번호
+     * @return : 특정 자재 내용
      * */
    @GetMapping(value = "selectonebackloglist", produces = "application/json; charset=UTF-8")
    @ResponseBody
@@ -108,8 +108,8 @@ public class BacklogController {
 
     /**
      * findBacklogOutWarehouseBySelectBox : 출고 백로그 그래프를 위한 특정 자재 번호에 따른 특정 자재 내용 조회
-     * @ param itemInfoNo : 특정 자재 번호
-     * @ return : 특정 자재의 이슈발생날짜
+     * @param itemInfoNo : 특정 자재 번호
+     * @return : 특정 자재의 이슈발생날짜
      * */
    @GetMapping(value = "selectoneoutwarehousebackloglist", produces = "application/json; charset=UTF-8")
    @ResponseBody
