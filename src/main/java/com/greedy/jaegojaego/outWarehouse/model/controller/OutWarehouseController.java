@@ -17,14 +17,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/*
+/**
  * <pre>
- * Class : OutWarehouseController
+ * Class : OutWarehouseControlller
+ * Comment : 출고 관련 데이터를 view에서 받아서 service로 보내거나 view로 반환하는 메소드를 모아둔 Controller입니다.
  * History
- * 2022/04/18 (이태준) 처음 작성
+ * 2022/04/21 (이태준) 출고 화면 이동경로 설정
  * 2022/04/21 (이태준) 출고 목록 조회 기능, 출고 상세조회 기능
+ * 2022/04/25 (이태준) 출고 상세정보 조회 및 정보 수정 기능
+ * 2022/04/27 (이태준) 테이블 수정으로 코드 재작성
+ * 2022/04/30 (이태준) 출고 목록 데이터 조회 기능
+ * 2022/05/01 (이태준) 출고 발주 목록 조회 기능
+ * 2022/05/03 (이태준) 출고 발주 목록 조회 수정
+ * 2022/05/10 (이태준) 출고 발주 목록 조회 기능 및 출고 데이터 삽입
+ * 2022/05/11 (이태준) 출고 데이터 삽입 기능, 가맹점 발주상태 수정 기능
+ * 2022/05/12 (이태준) 출고 목록 조회 기능, 출고 데이터 수정 기능, 재고 데이터 수정 기능
  * </pre>
- * @version 1
+ * @version 1.1
  * @author 이태준
  * */
 @Controller
@@ -40,7 +49,7 @@ public class OutWarehouseController {
 
     /**
      * findOutwarehouseList : 출고 목록 조회
-     * @param mv : 출고 목록 정보와 화면 경로 정보를 담은 객체
+     * @param mv : 컨트롤러에서 처리한 결과와 전달할 값을 응답할 화면에 전달하기 위한 객체
      * @return : 출고 목록, 화면 경로
      */
     @GetMapping("/list")
@@ -61,9 +70,6 @@ public class OutWarehouseController {
             }
         }
 
-//        System.out.println(outWarehouseDataCnt);
-//        System.out.println(outWarehouseCompletedCnt);
-
         mv.addObject("outWarehouseList", outWarehouseList);
         mv.addObject("outWarehouseDataCnt", outWarehouseDataCnt);
         mv.addObject("outWarehouseCompletedCnt", outWarehouseCompletedCnt);
@@ -73,14 +79,13 @@ public class OutWarehouseController {
     }
 
     /**
-     * @param mv
-     * @param outWarehouseNo
-     * @return
+     * selectOutWarehouseDetail : 선택한 출고 처리할 데이터 목록의 상세정보 조회
+     * @param mv : 컨트롤러에서 처리한 결과와 전달할 값을 응답할 화면에 전달하기 위한 객체
+     * @param outWarehouseNo : 선택한 데이터의 출고번호
+     * @return : 선택한 출고 상세정보, 화면 경로
      */
     @GetMapping("/detail/{outWarehouseNo}")
     public ModelAndView selectOutWarehouseDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
-
-//        System.out.println("출고 번호 : " + outWarehouseNo);
 
         int No = 0;
         int itemListCnt;
@@ -99,47 +104,40 @@ public class OutWarehouseController {
     }
 
     /**
-     * @return
+     * selectOrderList : 승인 완료된 가맹점 발주 목록 조회
+     * @return : 승인 완료된 가맹점 발주 목록
      */
     @GetMapping("/orderlist")
     @ResponseBody
     public List<OutWarehouseFranchiseOrderListDTO> selectOrderList() {
 
         List<OutWarehouseFranchiseOrderListDTO> outWarehouseOrderList = outWarehouseService.findAllOrderList();
-//        outWarehouseOrderList.forEach(System.out::println);
 
         return outWarehouseOrderList;
     }
 
     /**
-     * @param mv
-     * @param data
+     * insertOutWarehouseData : 출고 테이블에 데이터 삽입
+     * @param mv : 컨트롤러에서 처리한 결과와 전달할 값을 응답할 화면에 전달하기 위한 객체
+     * @param data : 화면에서 비동기 처리로 넘겨주는 데이터를 받기 위한 Map형태의 변수
      */
     @PostMapping(value = "/insertorderdata")
     @ResponseBody
     public void insertOutWarehouseData(ModelAndView mv, @RequestBody Map<String, Object> data) {
 
-//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
-//        System.out.println(data);
-//        System.out.println(data.get("orderNums"));
-//        System.out.println(data.get("representativeNums"));
-//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
         List<Integer> orderNums = (List<Integer>) data.get("orderNums");
         List<Integer> representativeNums = (List<Integer>) data.get("representativeNums");
         String sDate = (String) data.get("today");
 
         Date today = Date.valueOf(sDate);
 
-//        System.out.println(orderNums);
-//        System.out.println(representativeNums);
-//        System.out.println(today);
-
         outWarehouseService.insertOrderData(orderNums, representativeNums, today);
     }
 
 
     /**
-     * @param outWarehouseStatus
+     * modifyOutWarehouseStatus : 출고 처리상태 정보 수정
+     * @param outWarehouseStatus : 화면에서 비동기 처리로 넘긴 처리상태 데이터
      */
     @PostMapping("/modify")
     @ResponseBody

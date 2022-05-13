@@ -7,19 +7,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * <pre>
+ * Class : OutWarehouseDetailRepository
+ * Comment : 출고 목록 상세정보와 관련 로직 처리 메소드를 모아둔 Repository입니다.
+ * History
+ * 2022/04/21 (이태준) 출고 상세조회 로직
+ * 2022/04/25 (이태준) 출고 상세조회 로직 재작성
+ * 2022/05/01 (이태준) 출고 상세조회 로직 마무리
+ * </pre>
+ * @version 1.1
+ * @author 이태준
+ * */
 @Repository
 public interface OutWarehouseDetailRespository extends JpaRepository<OutWarehouseFranchiseOrderItem, Integer> {
-//
-//    @Query(value = "SELECT a, b, c, d, e " +
-//            "         FROM OutWarehouseItem a " +
-//            "         JOIN a.outWarehouseNo b " +
-//            "         JOIN a.itemWarehouseNo c " +
-//            "         JOIN b.franchiseRepresentativeNo d " +
-//            "         JOIN c.itemInfoNo e " +
-//            "         JOIN e.materialCategoryNo f " +
-//            "        WHERE a.outWarehouseNo.outWarehouseNo = :outWarehouseNo")
-//    List<OutWarehouseItem> findByOutWarehouseNo(int outWarehouseNo);
 
+    /**
+     * findAllFranchiseOrderItemList회 : 가맹점 발주 신청 물품 목록 리스트
+     * @param outWarehouseNo : 출고번호
+     * @return : 출고할 제품 목록 리스트
+     */
     @Query(value = "SELECT A.FRANCHISE_ORDER_NO, A.FRANCHISE_ORDER_ITEM_AMOUNT, " +
             "              B.ITEM_INFO_NO, B.ITEM_INFO_ITEM_SERIAL_NO, B.ITEM_INFO_NAME, " +
             "              C.MATERIAL_CATEGORY_NO, C.MATERIAL_CATEGORY_NAME " +
