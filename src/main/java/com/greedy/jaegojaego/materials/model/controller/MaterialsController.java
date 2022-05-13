@@ -199,66 +199,81 @@ public class MaterialsController {
 
         materialsService.materialsProductRegist(material);
 
-        MaterialFileDTO materialFileDTO = new MaterialFileDTO();
+        System.out.println("materialItemImage" + "" + materialItemImage);
 
-        String fileUploadDirectory = rootLocation;
-        File conversionFileDirectory = new File(fileUploadDirectory);
+        if(materialItemImage.getSize() != 0) {
 
-        String thumbnailPath = "/upload/materials/conversion/";
+            System.out.println("materialItemImage12" + "" + materialItemImage);
 
-        File uploadDirectory = new File(fileUploadDirectory);
-        File thumbnailDirectory = new File(thumbnailPath);
+            MaterialFileDTO materialFileDTO = new MaterialFileDTO();
 
-        if(!materialItemImage.isEmpty()) {
+            String fileUploadDirectory = rootLocation;
+            File conversionFileDirectory = new File(fileUploadDirectory);
 
-            if (!uploadDirectory.exists() || !thumbnailDirectory.exists()) {
+            String thumbnailPath = "/upload/materials/conversion/";
 
-            }
+            File uploadDirectory = new File(fileUploadDirectory);
+            File thumbnailDirectory = new File(thumbnailPath);
 
-            try {
-                if (materialItemImage.getSize() > 0) {
+            if (!materialItemImage.isEmpty()) {
 
-                    String orgName = materialItemImage.getOriginalFilename();
-                    String ext = orgName.substring(orgName.lastIndexOf("."));
-                    String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
+                if (!uploadDirectory.exists() || !thumbnailDirectory.exists()) {
 
-                    materialItemImage.transferTo(new File(uploadDirectory + "/thumbnail_" + savedName));
-
-                    materialFileDTO.setFileOriginalName(orgName);
-                    materialFileDTO.setFileChangedName(savedName);
-                    materialFileDTO.setFileUrl(fileUploadDirectory);
-                    materialFileDTO.setDeleteYn("N");
-                    materialFileDTO.setMaterialFileCategory(6);
-                    materialFileDTO.setFileDivision("자재");
-                    materialFileDTO.setItemInfoNo(material.getItemInfoNo());
-
-                    materialFileDTO.setThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
                 }
 
-                materialsService.materialFileRegist(materialFileDTO);
+                try {
+                    if (materialItemImage.getSize() > 0) {
 
-            } catch (IllegalStateException | IOException e) {
-                e.printStackTrace();
+                        String orgName = materialItemImage.getOriginalFilename();
+                        String ext = orgName.substring(orgName.lastIndexOf("."));
+                        String savedName = UUID.randomUUID().toString().replace("-", "") + ext;
 
-                File deleteFile = new File(uploadDirectory + "/" + materialFileDTO.getFileChangedName());
-                boolean isDeleted1 = deleteFile.delete();
+                        materialItemImage.transferTo(new File(uploadDirectory + "/thumbnail_" + savedName));
 
-                File deleteThumbnail = new File(thumbnailDirectory + "/thumbnail_" + materialFileDTO.getFileChangedName());
-                boolean isDeleted2 = deleteThumbnail.delete();
+                        materialFileDTO.setFileOriginalName(orgName);
+                        materialFileDTO.setFileChangedName(savedName);
+                        materialFileDTO.setFileUrl(fileUploadDirectory);
+                        materialFileDTO.setDeleteYn("N");
+                        materialFileDTO.setMaterialFileCategory(6);
+                        materialFileDTO.setFileDivision("자재");
+                        materialFileDTO.setItemInfoNo(material.getItemInfoNo());
 
-                if (isDeleted1 && isDeleted2) {
+                        materialFileDTO.setThumbnailUrl(thumbnailPath + "thumbnail_" + savedName);
+                    }
+
+                    materialsService.materialFileRegist(materialFileDTO);
+
+                } catch (IllegalStateException | IOException e) {
                     e.printStackTrace();
-                } else {
-                    e.printStackTrace();
+
+                    File deleteFile = new File(uploadDirectory + "/" + materialFileDTO.getFileChangedName());
+                    boolean isDeleted1 = deleteFile.delete();
+
+                    File deleteThumbnail = new File(thumbnailDirectory + "/thumbnail_" + materialFileDTO.getFileChangedName());
+                    boolean isDeleted2 = deleteThumbnail.delete();
+
+                    if (isDeleted1 && isDeleted2) {
+                        e.printStackTrace();
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-        }
+            }
 
             String successMessage = "등록에 성공하셨습니다.";
 
             rttr.addFlashAttribute("successMessage", successMessage);
             mv.setViewName("redirect:/materials/item/regist");
+
+            return mv;
+        }
+
+        System.out.println("여기까지 오나 하핫");
+        String successMessage = "자재 등록에 성공하셨습니다.";
+
+        rttr.addFlashAttribute("successMessage", successMessage);
+        mv.setViewName("redirect:/materials/item/regist");
 
         return mv;
     }
