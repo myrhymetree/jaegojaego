@@ -16,12 +16,21 @@
 
     <th:block th:replace="/common/header.html"></th:block>
 
-    <div class="ibox">
-        <div class="body-header">
-            <div class="menu-title">백로그 관리</div>
-            <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/backlog/list}">백로그 관리</a></div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>백로그관리</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a th:href="@{/backlog/list}"><strong>백로그 관리</strong></a>
+                </li>
+            </ol>
         </div>
-    <div>
+        <div class="col-lg-2">
+        </div>
+    </div>
 
     <div class="chartAreaWhiteBoard">
         <div class="chart-modalForIn" id="chartModalForIn">
