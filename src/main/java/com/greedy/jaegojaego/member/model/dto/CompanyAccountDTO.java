@@ -9,6 +9,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CompanyAccountDTO extends MemberDTO {
 
     private String memberName;
@@ -17,9 +18,10 @@ public class CompanyAccountDTO extends MemberDTO {
     private String officePhoneNumber;
     private Integer departmentNo;
     private DepartmentDTO department;
+    private String companyAddress;
 
     @QueryProjection
-    public CompanyAccountDTO(Integer memberNo, String memberId, String memberPwd, LocalDateTime memberPwdUpdateDate, String memberPwdInitStatus, LocalDateTime memberCreatedDate, LocalDateTime memberRemovedDate, String memberRemoveStatus, String officeDivision, String memberDivision, CompanyAccountDTO companyAccountDTO, List<AuthorityDTO> authorityDTOList, String memberName, String memberEmail, String memberCellPhone, String officePhoneNumber, Integer departmentNo, DepartmentDTO department) {
+    public CompanyAccountDTO(Integer memberNo, String memberId, String memberPwd, LocalDateTime memberPwdUpdateDate, String memberPwdInitStatus, LocalDateTime memberCreatedDate, LocalDateTime memberRemovedDate, String memberRemoveStatus, String officeDivision, String memberDivision, CompanyAccountDTO companyAccountDTO, List<AuthorityDTO> authorityDTOList, String memberName, String memberEmail, String memberCellPhone, String companyAddress, String officePhoneNumber, Integer departmentNo, DepartmentDTO department) {
         super(memberNo, memberId, memberPwd, memberPwdUpdateDate, memberPwdInitStatus, memberCreatedDate, memberRemovedDate, memberRemoveStatus, officeDivision, memberDivision, companyAccountDTO, authorityDTOList);
         this.memberName = memberName;
         this.memberEmail = memberEmail;
@@ -27,6 +29,8 @@ public class CompanyAccountDTO extends MemberDTO {
         this.officePhoneNumber = officePhoneNumber;
         this.departmentNo = departmentNo;
         this.department = department;
+        this.companyAddress = companyAddress;
+
     }
 
     @Override
@@ -38,6 +42,7 @@ public class CompanyAccountDTO extends MemberDTO {
                 ", memberEmail='" + memberEmail + '\'' +
                 ", memberCellPhone='" + memberCellPhone + '\'' +
                 ", officePhoneNumber='" + officePhoneNumber + '\'' +
+                ", companyAddress='" + companyAddress + '\'' +
                 ", department=" + department +
                 '}';
     }
