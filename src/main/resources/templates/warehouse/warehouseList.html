@@ -10,9 +10,23 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
-<div class="body-header">
-    <div class="menu-title">입고 관리</div>
-    <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 입고 관리 / <a th:href="@{/warehouse/list}">입고 관리</a></div>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>입고 관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/main}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">입고관리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/list}">입고 관리</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
 </div>
 
 <!-- 컨텐츠 작성 영역 -->
@@ -43,7 +57,7 @@
         <br>
 
         <h3>
-            <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/complete'">본사 발주 상태 "완료" 목록 조회
+            <button class="btn btn-w-m btn-primary" onclick="location.href='/warehouse/complete'">본사 발주 목록 조회
             </button>
             <br>
         </h3>
@@ -68,7 +82,7 @@
 
         <tbody>
         <tr th:each="warehouse,num : ${ warehouseList }">
-            <td th:text="${ num.size - num.index }"></td>
+            <td th:text="${ num.index + 1 }"></td>
             <td id="warehouseNo" th:text="${ warehouse.warehouseNo }"></td>
             <td th:text="${ warehouse.itemInfoNo.getItemInfoItemSerialNo() }"></td>
             <td th:text="${ warehouse.itemInfoNo.getMaterialCategory().getMaterialCategoryName() }"></td>
@@ -80,9 +94,7 @@
             <td th:text="${ warehouse.warehouseStatus }"></td>
             <td>
                 <th:block th:if="${ warehouse.warehouseStatus eq '입고 대기' }">
-                    <button id="warehouseStatus" value="입고 완료" class="modifyStatusBtn btn btn-w-m btn-primary">입고 완료
-                        처리
-                    </button>
+                    <button id="warehouseStatus" value="입고 완료" class="modifyStatusBtn btn btn-w-m btn-primary">입고 완료처리</button>
                 </th:block>
                 <th:block th:if="${ warehouse.warehouseStatus eq '입고 완료' }">
                     <a>-</a>
