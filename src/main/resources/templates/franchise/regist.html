@@ -57,8 +57,7 @@
                 <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
                 <label id="duplicationText"></label>
             </div>
-<!--            <div class="col-">-->
-<!--            </div>-->
+
             <div class="form-group col-6">
                 <input type="text"  id="representativeName" name="representativeName" class="form-control" placeholder="가맹점 대표 이름을 입력하세요." required>
             </div>
@@ -90,6 +89,18 @@
             <input type="text" class="form-control" id="businessRegistrationNo" name="businessRegistrationNo" placeholder="가맹점 사업자 등록증 번호를 입력하세요" required>
         </div>
 
+        <div class="form-group">
+            <input type="text" placeholder="가맹점 유선 전화 번호를 입력하세요" name="phone" class="form-control" data-mask="(00) 0000-0000">
+        </div>
+
+        <div class="form-group">
+            <input type="text" placeholder="가맹점 주소를 입력하세요" name="address" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <input type="email"  name="" class="form-control" placeholder="가맹점 대표 이메일을 입력하세요">
+        </div>
+
         <select class="select2_demo_3 form-control m-b" name="franchiseContractStatus" id="franchiseContractStatus" required>
             <option></option>
             <option value="계약전">계약전</option>
@@ -109,18 +120,6 @@
             <select class="select2_demo_3 form-control m-b" id="supervisor" name="supervisorNo">
 
             </select>
-        </div>
-
-        <div class="form-group">
-            <input type="text" placeholder="가맹점 유선 전화 번호를 입력하세요" name="phone" class="form-control" data-mask="(00) 0000-0000">
-        </div>
-
-        <div class="form-group">
-            <input type="text" placeholder="가맹점 주소를 입력하세요" name="address" class="form-control" required>
-        </div>
-
-        <div class="form-group">
-            <input type="email"  name="" class="form-control" placeholder="가맹점 대표 이메일을 입력하세요">
         </div>
         <br>
         <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
