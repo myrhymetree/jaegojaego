@@ -13,7 +13,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+/**
+ * <pre>
+ * Class : MaterialsService
+ * Comment : 자재관련 메소드를 모아놓은 MaterialsService.
+ *           자재생성, 수정, 삭제, 거래처와의 매핑, 상세보기 , 거래처 목록, 자재 목록
+ *           이 있습니다.
+ *
+ * History
+ * 2022/04/19 (김영광) MaterialsController 뷰 완성 후 시범 동작
+ * 2022/04/20 ~ 4/21 (김영광) 자재 목록 조회
+ * 2022/04/24 (김영광) 자재 상세 페이지 조회
+ * 2022/04/26 (김영광) 매핑 자재 비동기 목록 조회
+ * 2022/04/27 (김영광) 매핑 자재 비동기 목록 조회
+ * 2022/04/28 (김영광) 자재 매핑 등록
+ * 2022/04/29 (김영광) 자재 매핑 등록
+ * 2022/05/01 (김영광) 자재 매핑 등록
+ * 2022/05/02 (김영광) 매핑 거래처 비동기 목록 조호;
+ * 2022/05/03 (김영광) 매핑 거래처 비동기 목록 조호;
+ * 2022/05/04 (김영광) 거래처 매핑 등록;
+ * 2022/05/05 (김영광) 거래처 자재 매핑 매치;
+ * 2022/05/06 (김영광) 거래처 자재 매핑 매치;
+ * 2022/05/08 (김영광) 자재 수정;
+ * 2022/05/09 (김영광) 자재 수정;
+ * 2022/05/10 (김영광) 자재 삭제
+ * 2022/05/11 (김영광) 자재 생성
+ * 2022/05/12 (김영광) 사진 파일 업로드 등록
+ *
+ * </pre>
+ * @version 18
+ * @author 김영광
+ */
 @Service
 public class MaterialsService {
 
@@ -43,26 +73,36 @@ public class MaterialsService {
         this.materialFileRepository = materialFileRepository;
     }
 
+    /**
+     * findAllProductList : 자재 목록 전체 리스트 조회
+     *
+     * @return ml : 메뉴 전체 리스트
+     * */
     public List<MaterialsDTO> findMaterialsList() {
 
         List<Materials> materialsList = materialsRepository.findAllProductList();
-
-        System.out.println("제발" + materialsList);
 
         List<MaterialsDTO> ml = new ArrayList<>();
         materialsList.forEach(materials -> {
             MaterialsDTO materialsDTO = modelMapper.map(materials, MaterialsDTO.class);
             materialsDTO.setMaterialsCategory(modelMapper.map(materials.getMaterialCategory(),MaterialsCategoryDTO.class ));
-            
             ml.add(materialsDTO);
         });
 
         ml.forEach(m ->{
             System.out.println("m.getMaterialsCategory() = " + m.getMaterialsCategory());
         });
+
         return ml;
     }
 
+    /**
+     * findByMaterialsByCode : 선택한 자재 목록 조회
+     * findAllClientList : 선택한 자재와 매핑된 거래처 목록 조회
+     * @param itemInfoNo : 선택한 자재 번호
+     *
+     * @return productAllList : 선택한 자재와 매핑된 거래처 목록
+     * */
     public Map<String, Object> findMaterialsByCode(int itemInfoNo) {
 
         Map<String, Object> productAllList = new HashMap<>();
@@ -77,7 +117,7 @@ public class MaterialsService {
 
         for (ClientContractItemDTO list: clientContractItemDTO
              ) {
-            System.out.println("언제 돼!" + list);
+            System.out.println("list" + list);
         }
 
         productAllList.put("materialsDTO", materialsDTO);
@@ -86,7 +126,11 @@ public class MaterialsService {
         return productAllList;
     }
 
-
+    /**
+     * findClientList : 거래처 목록 전체 조회
+     *
+     * @return : 거래처 목록 리스트
+     * */
     public List<ClientContractItemMaterialDTO> findClientList() {
 
         List<ClientContractItemMaterial> clientMaterialList = clientContractItemMaterialRepository.findClientList();
@@ -94,13 +138,28 @@ public class MaterialsService {
         return clientMaterialList.stream().map(clientMaterial -> modelMapper.map(clientMaterial, ClientContractItemMaterialDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findClientList : 거래처 목록 전체 조회
+     *
+     * @param clientMaterialUpdateDTO : 거래처와 매핑할 자재 정보
+     * @return : 거래처 목록 리스트
+     * */
     @Transactional
-    public void updateMapping(/*ClientContractItemMaterialDTO clientContractItemMaterialDTO*/ ClientMaterialUpdateDTO clientMaterialUpdateDTO) {
+    public void updateMapping(ClientMaterialUpdateDTO clientMaterialUpdateDTO) {
 
         ClientMaterialUpdate clientMaterialUpdate = materialsClientUpdateRepository.findUpdate(clientMaterialUpdateDTO.getClientItemNo());
         clientMaterialUpdate.setItemInfoNo(clientMaterialUpdateDTO.getItemInfoNo());
     }
 
+    /**
+     * findByMaterialCategoryName : 선택한 카테고리 이름 수정
+     * findById : 해당 번호로 자재 가격 조회
+     * findById : 해당 번호로 자재 정보 조회
+     * @param materialDTO : 수정할 자재 정보
+     *
+     * @return : 수정된 자재 정보
+     *
+     * */
     @Transactional
     public void materialModify(MaterialDTO materialDTO) {
 
@@ -117,12 +176,22 @@ public class MaterialsService {
         material.setFranchiseOrderableItem(franchiseOrderableItem);
     }
 
+    /**
+     * findById : 선택한 자재 번호로 정보 조회
+     * @param itemInfoNo : 삭제할 자재 번호
+     * */
+    @Transactional
     public void removeMaterial(int itemInfoNo) {
 
         Material material = materialRepository.findById(itemInfoNo).get();
         material.setItemStatus("Y");
     }
 
+    /**
+     * findAll : 카테고리 전체 목록 리스트 조회
+     *
+     * @return MaterialsCategoryDTO : 카테고리 전체 목록 리스트 반환
+     * */
     public List<MaterialsCategoryDTO> findCategory() {
 
         List<MaterialsCategory> categoryList = materialsCategoryRepository.findAll();
@@ -130,31 +199,31 @@ public class MaterialsService {
         return categoryList.stream().map(materialsCategory -> modelMapper.map(materialsCategory, MaterialsCategoryDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     * findByIdCount : 등록된 자재 행 갯수 조회
+     *
+     * @return materialConut : 등록된 자재 행 갯수
+     * */
     public Integer findMaterialCount() {
 
         Integer materialConut = materialRepository.findByIdCount() + 1;
 
-        System.out.println("테스트 " + materialConut);
-        System.out.println("테스트 " + materialConut);
-        System.out.println("테스트 " + materialConut);
         return materialConut;
     }
 
+    /**
+     * save : 등록할 자재 정보
+     * save : 등록할 자재 가격
+     * @param material : 등록할 자재 정보
+     * */
     @Transactional
-    public void MaterialsProductRegist(MaterialProductDTO material) {
-
-        System.out.println("여기까지 올거야!");
-
-        System.out.println("들오긴하냐? : " + material);
+    public void materialsProductRegist(MaterialProductDTO material) {
 
         MaterialProduct materialRegist = new MaterialProduct();
         FranchiseOrderableItem franchiseOrderableItem = new FranchiseOrderableItem();
 
-//        System.out.println("왜? :" + franchiseOrderableItem);
-//        MaterialsCategory materialsCategory = new MaterialsCategory();
-          franchiseOrderableItem.setItemInfoNo(material.getItemInfoNo());
-          franchiseOrderableItem.setItemPrice(material.getFranchiseOrderableItem().getItemPrice());
-//        materialsCategory.setMaterialCategoryNo(material.getMaterialCategory());
+        franchiseOrderableItem.setItemInfoNo(material.getItemInfoNo());
+        franchiseOrderableItem.setItemPrice(material.getFranchiseOrderableItem().getItemPrice());
 
         materialRegist.setItemInfoNo(material.getItemInfoNo());
         materialRegist.setItemInfoName(material.getItemInfoName());
@@ -169,6 +238,11 @@ public class MaterialsService {
         materialFranchiseOrderableItemRepository.save(franchiseOrderableItem);
 
     }
+
+    /**
+     * save : 등록할 자재 이미지 정보
+     * @param materialFileDTO : 등록할 자재 이미지 정보
+     * */
     @Transactional
     public void materialFileRegist(MaterialFileDTO materialFileDTO) {
 
@@ -182,8 +256,6 @@ public class MaterialsService {
         materialFile.setFileDivision(materialFileDTO.getFileDivision());
         materialFile.setItemInfoNo(materialFileDTO.getItemInfoNo());
         materialFile.setMaterialFileCategory(materialFileDTO.getMaterialFileCategory());
-
-        System.out.println("materialFile" + "" + materialFile);
 
         materialFileRepository.save(materialFile);
 
