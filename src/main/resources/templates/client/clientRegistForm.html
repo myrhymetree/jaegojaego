@@ -26,6 +26,7 @@
             <label class="client-regist-label">업종 : </label>
                 <select id="clientBusinessType" class="client-regist-select" style="margin-right: 5%;">
                     <option></option>
+                    <option th:each= "clientType : ${ clientBusinessType }" th:value="${ clientType.getClientBusinessTypeNo() }" th:text="${ clientType.getClientBusinessTypeName() }"/>
                 </select>
             <label class="client-regist-label" style="margin-left: 10%;">업태 : </label>
                 <select id="clientBusinessItem" class="client-regist-select">
@@ -51,7 +52,7 @@
             <hr><br>
             <div class="client-regist-buttonarea">
                 <button class="client-regist-submit" type="button" id="clientRegistSubmit">등록</button>
-                <button class="client-regist-cancel" type="button" id="clientRegistCancel">취소</button>
+                <button class="client-regist-cancel" type="button" id="clientRegistCancel" onclick="location.href='/client/list'">취소</button>
             </div>
         </form>
 
@@ -123,9 +124,9 @@
         } else if($("#registClientEndDate").val() == "") {
             alert("계약종료일을 입력하세요");
         } else if($("#clientBusinessItem").val() == "") {
-            alert("업종을 선택하세요");
-        } else if($("#clientBusinessType").val() == "") {
             alert("업태를 선택하세요");
+        } else if($("#clientBusinessType").val() == "") {
+            alert("업종을 선택하세요");
         }  else if($("#clientAddress").val() == "") {
             alert("주소를 입력하세요");
         } else {
