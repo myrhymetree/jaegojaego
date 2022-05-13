@@ -1,6 +1,7 @@
 package com.greedy.jaegojaego.member.model.entity;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ import java.util.List;
 @EqualsAndHashCode
 @Table(name = "COMPANY_ACCOUNT")
 @DynamicUpdate
+@DynamicInsert
 @NamedEntityGraph(name = "Department.all", attributeNodes = @NamedAttributeNode("department"))
 @PrimaryKeyJoinColumn(name = "MEMBER_NO")
 public class CompanyAccount extends Member {
