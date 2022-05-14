@@ -11,7 +11,8 @@ import java.util.List;
  * Class : MaterialsClientContractItemMaterialRepository
  * Comment : MaterialsClientContractItemMaterialRepository Entity관련 메소드를 모아놓은 MaterialsClientContractItemMaterialRepository입니다..
  * History
- * 2022/05/10 (김영광) MaterialsClientContractItemMaterialRepository 자재와 매치되지 않는 거래처상품, 거래처 조회
+ * 2022/05/10 (김영광) MaterialsCategoryRepository 자재 카테고리 조회
+ * </pre>
  * @version
  * @author 김영광
  * */

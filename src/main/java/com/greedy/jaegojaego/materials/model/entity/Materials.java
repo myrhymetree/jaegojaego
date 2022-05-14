@@ -21,6 +21,11 @@ public class Materials implements Serializable {
     @Column(name = "ITEM_INFO_NO")
     private int itemInfoNo;
 
+    /*@OneToMany
+    @JoinColumn(name = "조회올것")
+    private List<FranchiseOrderableItem> franchiseOrderableItem;*/
+    //리팩토링 해야하니 나중에 다시 할 것
+
     @Column(name = "ITEM_INFO_NAME")
     private String itemInfoName;
 

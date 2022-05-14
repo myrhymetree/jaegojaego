@@ -273,9 +273,25 @@
                     for(let i = 0; i < $tds.length; i++) {
 
                         $tds[i].onclick = function() {
+                            // const itemInfoNo = this.parentNode.children[0].innerText;
+                            // location.href = "/materials/" + itemInfoNo;
 
                             $('#materialModalList').modal('hide');
                             $itemInfo += $tds[i].innerHTML;
+                            // $itemInfo += $tds[i].itemInfoNo.innerHTML;
+                            // $itemInfo += $tds[i].itemSerialNo.innerHTML;
+                            // $itemInfo += $tds[i].itemInfoName.innerHTML;
+                            // $itemInfo += $tds[i].materialsCategory.materialCategoryName.innerHTML;
+                            // $itemInfo += $tds[i].subdivisionYN.innerHTML;
+                            // $itemInfo += $tds[i].itemPrice.innerHTML;
+
+                            // console.log($itemInfo);
+                            // console.log(typeof($itemInfo));
+                            // let $itemInfoTd = $itemInfo.replaceAll("<td>", "");
+                            // let $itemInfoList = $itemInfoTd.replaceAll("</td>", "");
+                            // $itemInfo.replace("<td>", "");
+                            // $itemInfo.replace("</td>", "");
+                            // console.log($itemInfoList);
 
                             let $firstSplit = $itemInfo.split("<td>");
                             let $secondSplit = String($firstSplit).split("</td>");
@@ -300,18 +316,76 @@
                             $("input[name=subdivisionYN]").attr('value', $subdivisionYN);
                             $("input[name=itemPrice]").attr('value', $itemPrice);
                             $("input[name=subdivisionUnit]").attr('value', $subdivisionUnit);
+                            // for(let i = 0; i < $filtered.length; i++) {
+                            //
+                            // }
+
 
                         }
                     }
                 }
             },
             error: function (data) {
-                console.log("error");
+                console.log("error 잘못");
             }
         });
     });
 
-
+    // function pageLink(curPage, totalPages, funName) {
+    //
+    //     var pageUrl = "";
+    //     var pageLimit = 5;
+    //     var startPage = parseInt((curPage - 1) / pageLimit) * pageLimit + 1;
+    //     var endPage = startPage + pageLimit - 1;
+    //
+    //     if (totalPages < endPage) {
+    //         endPage = totalPages;
+    //     }
+    //
+    //     var nextPage = endPage + 1;
+    //     //console.log(curPage,"curPage,",startPage,"startPage,",endPage,"endPage,",nextPage,"nextPage")
+    //
+    //     //맨 첫 페이지
+    //     if (curPage > 1 && pageLimit < curPage) {
+    //         pageUrl += "<a class='page first' href='javascript:" + funName + "(1);'>" +
+    //             "<i class='fas fa-angle-double-left'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //이전 페이지
+    //     if (curPage > pageLimit) {
+    //         pageUrl += " <a class='page prev' href='javascript:" + funName + "(" + (startPage == 1 ? 1 : startPage - 1) + ");'>" +
+    //             "<i class='fas fa-angle-left'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //~pageLimit 맞게 페이지 수 보여줌
+    //     for (var i = startPage; i <= endPage; i++) {
+    //         //현재페이지면 진하게 표시
+    //         if (i == curPage) {
+    //             pageUrl += " <a href='#'>" +
+    //                 "<strong>" + i + "</strong>" +
+    //                 "</a>"
+    //         } else {
+    //             pageUrl += " <a href='javascript:" + funName + "(" + i + ");'> " + i + " </a>";
+    //         }
+    //     }
+    //
+    //     //다음 페이지
+    //     if (nextPage <= totalPages) {
+    //         pageUrl += "<a class='page next' href='javascript:" + funName + "(" + (nextPage < totalPages ? nextPage : totalPages) + ");'>" +
+    //             "<i class='fas fa-angle-right'>" +
+    //             "</a>";
+    //     }
+    //
+    //     //맨 마지막 페이지
+    //     if (curPage < totalPages && nextPage < totalPages) {
+    //         pageUrl += "<a class='page last' href='javascript:" + funName + "(" + totalPages + ");'>" +
+    //             "<i class='fas fa-angle-double-right'>" +
+    //             "</a>";
+    //     }
+    //     //console.log(pageUrl); return pageUrl;
+    // }
 
 
 </script>
@@ -370,6 +444,8 @@
                     for(let i = 0; i < $trs.length; i++) {
 
                         $trs[i].onclick = function() {
+                            // const itemInfoNo = this.parentNode.children[0].innerText;
+                            // location.href = "/materials/" + itemInfoNo;
 
                             $('#clientList').modal('hide');
                             $clientInfo += $trs[i].innerHTML;
@@ -403,12 +479,21 @@
                 }
             },
             error: function (data) {
-                console.log("error");
+                console.log("error 잘못");
             }
         });
     });
 
 </script>
 
+<!--<script>-->
+<!--    let clientItemNo = document.getElementById("clientItemNo").value;-->
+<!--    let itemInfoNo = document.getElementById("itemInfoNo").value;-->
+<!--    if(clientItemNo || itemInfoNo != "" && !null) {-->
+<!--        $("#mapping").click(function () {-->
+
+<!--        });-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>
