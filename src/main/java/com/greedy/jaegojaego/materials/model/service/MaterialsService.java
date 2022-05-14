@@ -237,7 +237,6 @@ public class MaterialsService {
         materialRegist.setSubdivisionUnit(material.getSubdivisionUnit());
         materialRegist.setSubdivisionYN(material.getSubdivisionYN());
         materialRegist.setItemStatus("N");
-        System.out.println("materialRegist" + " " + materialRegist);
 
         materialProductRepository.save(materialRegist);
         materialFranchiseOrderableItemRepository.save(franchiseOrderableItem);
