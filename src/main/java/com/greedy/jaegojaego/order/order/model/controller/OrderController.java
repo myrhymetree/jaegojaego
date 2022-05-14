@@ -60,8 +60,8 @@ public class OrderController {
 
     /**
      * selectCompanyOrderList : 전체 발주 목록 조회
-     * @ param mv : 발주 목록에서 보여줄 정보들과 이동할 페이지의 요청 url을 담을 파라미터
-     * @ return : 전체 발주 목록
+     * @param mv : 발주 목록에서 보여줄 정보들과 이동할 페이지의 요청 url을 담을 파라미터
+     * @return : 전체 발주 목록
      */
     @GetMapping("/companyorderlist")
     public ModelAndView selectCompanyOrderList(ModelAndView mv) {
@@ -136,8 +136,8 @@ public class OrderController {
 
     /**
      * selectCompanyOrderDetail : 선택한 프로젝트의 상세 정보
-     * @ param companyOrderHistoryNo : 상세 조회할 본사 발주 내역 번호
-     * @ return : 본사 발주 내역 상세 정보
+     * @param companyOrderHistoryNo : 상세 조회할 본사 발주 내역 번호
+     * @return : 본사 발주 내역 상세 정보
      */
     @GetMapping(value = "/selectcompanyorderdetail", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -204,8 +204,8 @@ public class OrderController {
 
     /**
      * selectOneCompanyOrderApplicationList : 선택한 본사 발주 내역의 거래처 발주 신청서 목록 조회
-     * @ param companyOrderHistoryNo : 선택한 본사 발주 내역 번호
-     * @ return : 선택한 본사 내역의 거래처 발주 신청서 목록
+     * @param companyOrderHistoryNo : 선택한 본사 발주 내역 번호
+     * @return : 선택한 본사 내역의 거래처 발주 신청서 목록
      */
     @GetMapping(value ="selectonecompanyorderapplicationlist", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -241,8 +241,8 @@ public class OrderController {
 
     /**
      * companyOrderRegist : 본사 발주 신청 view 페이지 이동
-     * @ param mv :본사 발주 신청 view 페이지 url을 담은 변수
-     * @ return : 본사 발주 신청 페이지 이동
+     * @param mv :본사 발주 신청 view 페이지 url을 담은 변수
+     * @return : 본사 발주 신청 페이지 이동
      */
     @GetMapping("/companyorderregist")
     public ModelAndView companyOrderRegist(ModelAndView mv) {
@@ -254,10 +254,10 @@ public class OrderController {
 
     /**
      * registCompanyOrder : 본사 발주 신청
-     * @ param mv : 본사 발주 내역 발주 신청서 목록과 이동할 요청 url을 담은 변수
-     * @ param authentication : 로그인한 사용자의 정보
-     * @ param webRequest : 요청 페이지에서 전달 받은 선택한 자재의 각 자재번호, 신청수량, 거래처 번호, 거래처 판매 계약 물품 번호들을 사용하기 위한 변수
-     * @ return : 본사 발주 내역 발주 신청서 목록과 본사 발주 내역 발주 신청서 조회 url 로 이동
+     * @param mv : 본사 발주 내역 발주 신청서 목록과 이동할 요청 url을 담은 변수
+     * @param authentication : 로그인한 사용자의 정보
+     * @param webRequest : 요청 페이지에서 전달 받은 선택한 자재의 각 자재번호, 신청수량, 거래처 번호, 거래처 판매 계약 물품 번호들을 사용하기 위한 변수
+     * @return : 본사 발주 내역 발주 신청서 목록과 본사 발주 내역 발주 신청서 조회 url 로 이동
      */
     @PostMapping("companyorderregist")
     public ModelAndView registCompanyOrder(ModelAndView mv, Authentication authentication, WebRequest webRequest) {
@@ -279,9 +279,9 @@ public class OrderController {
 
     /**
      * companyOrderApplicationDetail : 본사 발주 내역 발주 신청서 상세 조회
-     * @ param mv : 본사 발주 내역 발주 신청서 상세 정보와 이동할 요청 url을 담은 변수
-     * @ param request : 요청 페이지에서 전달 받은 선택한 발주 발주 신청서의 발주 내역 번호, 거래처 번호를 사용하기 위한 변수
-     * @ return : 본사 발주 내역 발주 신청서 상세 정보와 본사 발주 내역 발주 신청서 상세 조회 url 로 이동
+     * @param mv : 본사 발주 내역 발주 신청서 상세 정보와 이동할 요청 url을 담은 변수
+     * @param request : 요청 페이지에서 전달 받은 선택한 발주 발주 신청서의 발주 내역 번호, 거래처 번호를 사용하기 위한 변수
+     * @return : 본사 발주 내역 발주 신청서 상세 정보와 본사 발주 내역 발주 신청서 상세 조회 url 로 이동
      */
     @GetMapping("companyorderapplicationdetail")
     public ModelAndView companyOrderApplicationDetail(ModelAndView mv, WebRequest request) {
@@ -316,8 +316,8 @@ public class OrderController {
 
     /**
      * searchItems : 본사 발주 신청가능 자재 목록 조회
-     * @ param request : 요청 페이지에서 전달 받은 사용자가 검색한 내용을 사용하기 위한 변수
-     * @ return : 검색한 내용이 자재 이름에 포함된 자재 목록
+     * @param request : 요청 페이지에서 전달 받은 사용자가 검색한 내용을 사용하기 위한 변수
+     * @return : 검색한 내용이 자재 이름에 포함된 자재 목록
      */
     @GetMapping(value = "/searchitems", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -339,8 +339,8 @@ public class OrderController {
 
     /**
      * selectClientItemList : 선택한 자재의 거래처 목록 조회
-     * @ param request : 요청 페이지에서 전달 받은 선택한 자재의 자재 번호를 사용하기 위한 변수
-     * @ return : 선택한 자재에 해당하는 거래처 판매 계약 상품 목록
+     * @param request : 요청 페이지에서 전달 받은 선택한 자재의 자재 번호를 사용하기 위한 변수
+     * @return : 선택한 자재에 해당하는 거래처 판매 계약 상품 목록
      */
     @GetMapping(value = "selectclientitemlist", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -357,9 +357,9 @@ public class OrderController {
 
     /**
      * modifyCompanyOrderHistoryStatus : 선택한 본사 발주 내역 처리 상태 변경
-     * @ param request : 요청 페이지에서 전달 받은 선택한 본사 발주 내역 번호와 변경된 처리 상태값을 사용하기 위한 변수
-     * @ param authentication : 로그인한 사용자의 정보
-     * @ return : 상태 변경 성공을 확인
+     * @param request : 요청 페이지에서 전달 받은 선택한 본사 발주 내역 번호와 변경된 처리 상태값을 사용하기 위한 변수
+     * @param authentication : 로그인한 사용자의 정보
+     * @return : 상태 변경 성공을 확인
      */
     @GetMapping(value = "modifycompanyorderhistorystatus", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -379,9 +379,9 @@ public class OrderController {
 
     /**
      * modifyCompanyOrder : 선택한 본사 발주 내역 수정 페이지 이동
-     * @ param request : 요청 페이지에서 전달 받은 선택한 본사 발주 내역 번호를 사용하기 위한 변수
-     * @ param mv : 본사 발주 내역 상세 정보와 이동할 요청 url을 담은 변수
-     * @ return : 본사 발주 내역 상세 정보와 본사 발주 내역 수정 url 로 이동
+     * @param request : 요청 페이지에서 전달 받은 선택한 본사 발주 내역 번호를 사용하기 위한 변수
+     * @param mv : 본사 발주 내역 상세 정보와 이동할 요청 url을 담은 변수
+     * @return : 본사 발주 내역 상세 정보와 본사 발주 내역 수정 url 로 이동
      */
     @GetMapping("/modifycompanyorder")
     public ModelAndView modifyCompanyOrder(WebRequest request, ModelAndView mv) {
@@ -398,9 +398,9 @@ public class OrderController {
 
     /**
      * modifyCompanyOrder : 선택한 본사 발주 내역 수정
-     * @ param request : 요청 페이지에서 전달 받은 선택한 자재들의 자재 번호, 수량, 거래처 번호, 거래처 물품 번호를 사용하기 위한 변수
-     * @ param authentication : 로그인한 사용자의 정보
-     * @ return : 본사 발주 목록 url 로 이동
+     * @param request : 요청 페이지에서 전달 받은 선택한 자재들의 자재 번호, 수량, 거래처 번호, 거래처 물품 번호를 사용하기 위한 변수
+     * @param authentication : 로그인한 사용자의 정보
+     * @return : 본사 발주 목록 url 로 이동
      */
     @PostMapping("/modifycompanyorder")
     public String modifyCompanyOrder(WebRequest request, Authentication authentication) {
@@ -420,9 +420,9 @@ public class OrderController {
 
     /**
      * selectFranchiseOrderList : 거래처 발주 내역 목록 조회
-     * @ param mv : 거래처 발주 목록, 로그인 사용자 정보, 이동할 요청 url 을 담은 변수
-     * @ param authentication : 로그인한 사용자의 정보
-     * @ return : 거래처 발주 목록, 로그인 사용자 정보, 거래처 발주 목록 url 로 이동
+     * @param mv : 거래처 발주 목록, 로그인 사용자 정보, 이동할 요청 url 을 담은 변수
+     * @param authentication : 로그인한 사용자의 정보
+     * @return : 거래처 발주 목록, 로그인 사용자 정보, 거래처 발주 목록 url 로 이동
      */
     @GetMapping("/franchiseorderlist")
     public ModelAndView selectFranchiseOrderList(ModelAndView mv, Authentication authentication) {
@@ -440,8 +440,8 @@ public class OrderController {
 
     /**
      * selectFranchiseOrderDetail : 거래처 발주 내역 상세 조회
-     * @ param request : 요청 페이지에서 전달 받은 거래처 발주 내역 번호를 사용하기 위한 변수
-     * @ return : 개래처 발주 내역 물품 목록
+     * @param request : 요청 페이지에서 전달 받은 거래처 발주 내역 번호를 사용하기 위한 변수
+     * @return : 개래처 발주 내역 물품 목록
      */
     @GetMapping(value = "/franchiseorderdetail", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -463,9 +463,9 @@ public class OrderController {
 
     /**
      * modifyFranchiseOrderStatus : 거래처 발주 내역 처리 상태 변경
-     * @ param request : 요청 페이지에서 전달 받은 거래처 발주 내역 번호, 처리 상태를 사용하기 위한 변수
-     * @ param authentication : 로그인한 사용자의 정보
-     * @ return : 거래처 발주 내역 처리 상태 변경 성공 확인
+     * @param request : 요청 페이지에서 전달 받은 거래처 발주 내역 번호, 처리 상태를 사용하기 위한 변수
+     * @param authentication : 로그인한 사용자의 정보
+     * @return : 거래처 발주 내역 처리 상태 변경 성공 확인
      */
     @GetMapping(value = "/modifyfranchiseorderstatus", produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -494,8 +494,8 @@ public class OrderController {
 
     /**
      * franchiseOrderRegist : 거래처 발주 신청 페이지로 이동
-     * @ param mv : 거래처 발주 신청 가능 물품 목록과 이동할 요청 url 을 담은 변수
-     * @ return : 거래처 발주 신청 가능 물품 목록과 거래처 발주 신청 url 로 이동
+     * @param mv : 거래처 발주 신청 가능 물품 목록과 이동할 요청 url 을 담은 변수
+     * @return : 거래처 발주 신청 가능 물품 목록과 거래처 발주 신청 url 로 이동
      */
     @GetMapping("/franchiseorderregist")
     public ModelAndView franchiseOrderRegist(ModelAndView mv) {
@@ -510,9 +510,9 @@ public class OrderController {
 
     /**
      * franchiseOrderRegist : 거래처 발주 신청
-     * @ param request : 요청 페이지에서 전달 받은 선택한 자재들의 자재 번호, 수량을 사용하기 위한 변수
-     * @ param authentication : 로그인한 사용자의 정보
-     * @ return : 거래처 발주 목록 url 로 이동
+     * @param request : 요청 페이지에서 전달 받은 선택한 자재들의 자재 번호, 수량을 사용하기 위한 변수
+     * @param authentication : 로그인한 사용자의 정보
+     * @return : 거래처 발주 목록 url 로 이동
      */
     @PostMapping("/franchiseorderregist")
     public String franchiseOrderRegist(WebRequest request, Authentication authentication) {
@@ -537,8 +537,8 @@ public class OrderController {
 
     /**
      * selectRejectContent : 거래처 발주 신청
-     * @ param request : 요청 페이지에서 전달 받은 선택한 거래처 발주의 발주 번호를 사용하기 위한 변수
-     * @ return : 거래처 발주 목록 url 로 이동
+     * @param request : 요청 페이지에서 전달 받은 선택한 거래처 발주의 발주 번호를 사용하기 위한 변수
+     * @return : 거래처 발주 목록 url 로 이동
      */
     @GetMapping(value = "/selectrejectcontent", produces = "application/json; charset=UTF-8")
     @ResponseBody

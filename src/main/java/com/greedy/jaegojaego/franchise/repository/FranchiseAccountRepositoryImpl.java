@@ -54,6 +54,10 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
             updateBuilder.set(franchiseAccount.memberPwd, manager.getMemberPwd());
         }
 
+        if(hasText(manager.getManagerName())) {
+            updateBuilder.set(franchiseAccount.managerName, manager.getManagerName());
+        }
+
         if(hasText(manager.getManagerEmail())) {
             updateBuilder.set(franchiseAccount.managerEmail, manager.getManagerEmail());
         }
@@ -64,7 +68,7 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
 
         updateBuilder
                 .where(franchiseAccount.memberNo.eq(manager.getMemberNo()))
-                .execute();     //쿼리문 실행
+                .execute();
     }
 
     /**

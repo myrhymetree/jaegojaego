@@ -94,6 +94,8 @@ public class MemberService {
      */
     public MemberDTO findMemberById(String memberId) {
 
+        String status = "Y";
+
         Member member = memberRepository.findMemberByMemberId(memberId);
 
         return modelMappper.map(member, MemberDTO.class);
@@ -193,7 +195,7 @@ public class MemberService {
 
             CompanyAccount companyAccount = companyAccountRepository.findAllByMemberNoAndMemberDivision(memberNo, memberDivision);
 
-            CompanyAccountDTO loginMember = modelMappper.map(companyAccount, CompanyAccountDTO.class);
+            CompanyAccountDTO loginMember = strictModelMapper().map(companyAccount, CompanyAccountDTO.class);
 
             return loginMember;
 

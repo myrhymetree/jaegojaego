@@ -169,12 +169,26 @@
 
     <div th:replace="/common/header.html"></div>
 
-    <div class="ibox ">
-        <div class="body-header">
-            <div class="menu-title">이슈 목록</div>
-            <div class="menu-path"><a th:href="@{/main}">메인페이지</a> / 발주 관리 / <a th:href="@{/issue/list}" style="font-weight: bold">이슈 목록</a></div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>이슈 목록</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    발주 관리
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/issue/list}" style="font-weight: bold">이슈 목록</a>
+                </li>
+            </ol>
         </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
 
+    <div class="ibox ">
         <div class="row" style="margin-top: 20px;">
             <div class="col-lg-12">
                 <div class="ibox">
@@ -249,7 +263,6 @@
                                         </th:block>
                                         <div class="status-change-div" id="status-change-div">
                                             <th:block th:if="${ member.memberDivision eq '본사' }">
-<!--                                                    <button class="issue-change-btn" id="issue-before-to-change-btn">교환처리</button>-->
                                                 <button class="issue-change-btn" id="issue-before-to-change-btn" style="display: none">교환처리</button>
                                                 <button class="issue-outcomplete-btn" id="issue-change-to-outcomplete-btn" style="display: none">출고완료</button>
                                                 <button class="issue-complete-btn" id="issue-outcomplete-to-complete-btn" style="display: none">처리완료</button>
@@ -258,26 +271,6 @@
                                                 <button class="issue-delete-btn" id="issue-delete-btn">삭제</button>
                                             </th:block>
                                         </div>
-
-<!--                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'CHANGE' }">-->
-<!--                                            <button class="issue-change-btn" id="issue-change-btn">교환처리</button>-->
-<!--                                            <th:block th:if="${ member.memberDivision eq '본사' }">-->
-<!--                                                <div class="status-change-div" id="status-change-to-outcomplete-company-div">-->
-<!--                                                    <button class="issue-outcomplete-btn" id="issue-change-to-outcomplete-btn">출고완료</button>-->
-<!--                                                </div>-->
-<!--                                            </th:block>-->
-<!--                                        </th:block>-->
-<!--                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'OUTCOMPLETE' }">-->
-<!--                                            <button class="issue-outcomplete-btn" id="issue-outcomplete-btn">출고완료</button>-->
-<!--                                            <th:block th:if="${ member.memberDivision eq '본사' }">-->
-<!--                                                <div class="status-change-div" id="status-outcomplete-to-complete-company-div">-->
-<!--                                                    <button class="issue-complete-btn" id="issue-outcomplete-to-complete-btn">처리완료</button>-->
-<!--                                                </div>-->
-<!--                                            </th:block>-->
-<!--                                        </th:block>-->
-<!--                                        <th:block th:if="${ issue.franchiseIssueStatus eq 'COMPLETE' }">-->
-<!--                                            <button class="issue-complete-btn">처리완료</button>-->
-<!--                                        </th:block>-->
                                     </td>
                                 </tr>
                             </tbody>
@@ -363,7 +356,7 @@
                                                 <div class="issue-detail-modal-body">
                                                     발주 물품 :
                                                     <select id="regist-franchise-order-item-select-list" style="text-align: center">
-                                                        <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
+                                                        <option selected disabled id="issue-regist-item-option-reset">이슈 발생 물품을 선택해주세요.</option>
                                                     </select>
                                                 </div>
                                                 <div class="issue-detail-modal-body">
@@ -437,7 +430,7 @@
                                             <div class="issue-detail-modal-body">
                                                 발주 물품 :
                                                 <select id="modify-franchise-order-item-select-list" style="text-align: center">
-                                                    <option selected disabled>이슈 발생 물품을 선택해주세요.</option>
+                                                    <option selected disabled  id="issue-modify-item-option-reset">이슈 발생 물품을 선택해주세요.</option>
                                                 </select>
                                             </div>
                                             <div class="issue-detail-modal-body">
@@ -544,7 +537,7 @@
 
                 $('#regist-franchise-order-item-select-list').html("");
 
-                let firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>'
+                let firstSelectIdx = '<option disabled selected  id="issue-regist-item-option-reset">이슈 발생 물품을 선택해주세요.</option>'
 
                 $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
 
@@ -561,7 +554,6 @@
                         }
 
                         $('#regist-franchise-order-item-select-list').append(franchiseIssueOrderItem);
-
                     })
                     .catch(err => {
                         swal({
@@ -585,7 +577,7 @@
 
                 $('#modify-franchise-order-item-select-list').html("");
 
-                let firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>'
+                let firstSelectIdx = '<option disabled selected  id="issue-modify-item-option-reset">이슈 발생 물품을 선택해주세요.</option>'
 
                 $('#modify-franchise-order-item-select-list').append(firstSelectIdx);
 
@@ -602,7 +594,6 @@
                         }
 
                         $('#modify-franchise-order-item-select-list').append(franchiseIssueOrderItem);
-
                     })
                     .catch(err => {
                         swal({
@@ -1393,7 +1384,6 @@
 
         modifyImgFiles.addEventListener("change", handleModifyFiles);
 
-
         //등록 물품 선택시
         $(document).on('change', '#regist-franchise-order-item-select-list', function() {
 
@@ -1413,6 +1403,7 @@
             registModalItemAreaTBody += '</tr>';
 
             $('#regist-modal-item-area-tbody').append(registModalItemAreaTBody);
+            $("#issue-regist-item-option-reset").prop("selected", true);
         });
 
         //수정 물품 선택시
@@ -1434,6 +1425,7 @@
             modifyModalItemAreaTBody += '</tr>';
 
             $('#modify-modal-item-area-tbody').append(modifyModalItemAreaTBody);
+            $("#issue-modify-item-option-reset").prop("selected", true);
         });
 
         //목록 테이블 클릭 시
@@ -1457,6 +1449,12 @@
                     const issueTitle = document.getElementById('issue-title');
                     const issueBody = document.getElementById('issue-body');
                     const issueNo = document.getElementById('issue-detail-no');
+
+                    if(this.parentNode.children[8].innerText == '처리전') {
+                        document.getElementById('issue-modify-start-btn').style.display = 'block';
+                    } else {
+                        document.getElementById('issue-modify-start-btn').style.display = 'none';
+                    }
 
                     issueTitle.innerText = '';
                     issueBody.innerText = '';
@@ -1538,7 +1536,7 @@
 
                 $('#regist-franchise-order-item-select-list').html("");
 
-                firstSelectIdx = '<option disabled selected>이슈 발생 물품을 선택해주세요.</option>';
+                firstSelectIdx = '<option disabled selected id="issue-regist-item-option-reset">이슈 발생 물품을 선택해주세요.</option>';
 
                 $('#regist-franchise-order-item-select-list').append(firstSelectIdx);
 

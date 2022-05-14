@@ -19,9 +19,23 @@
 <body>
 <th:block th:include="/common/header.html"></th:block>
 
-<div class="body-header">
-    <div class="menu-title">계정 생성</div>
-    <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">가맹점 관리</a> / <a href="">계정 생성</a></div>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>가맹점 직원 계정 생성</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="">가맹점 관리</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <a href=""><strong>가맹점 직원 계정 생성</strong></a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
 </div>
 
 <!-- 컨텐츠 작성 영역 -->
@@ -56,15 +70,15 @@
             <input type="text" class="form-control" id="managerPhone" name="managerPhone" placeholder="휴대전화 번호를 입력하세요" data-mask="(000) 0000-0000">
         </div>
 
-        <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
-        </select>
-        <br>
         <div class="form-group">
             <input type="email"  name="managerEmail" class="form-control" placeholder="이메일을 입력하세요">
         </div>
+        
+        <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
+        </select>
+        <br>
         <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
     </form>
-    <button type="button" class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#registMultipleModal">계정 일괄 생성</button>
 </div>
 </div>
 

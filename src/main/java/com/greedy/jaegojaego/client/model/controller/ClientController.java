@@ -398,4 +398,17 @@ public class ClientController {
         return mv;
 
     }
+
+    @GetMapping("/itemregist")
+    public ModelAndView sendClientItemRegistForm(ModelAndView mv) {
+
+        List<ClientDTO> client = new ArrayList<>();
+
+        client = clientService.findClient();
+
+        mv.addObject("client", client);
+        mv.setViewName("/client/clientContractItemRegistForm");
+
+        return mv;
+    }
 }

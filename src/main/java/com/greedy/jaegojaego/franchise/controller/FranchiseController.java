@@ -235,7 +235,7 @@ public class FranchiseController {
     }
 
     /**
-     * 가맹점 직원 계정 정보 수정 메소드
+     * 가맹점 직원 계정 정보(개인정보) 수정 메소드
      *
      * @param manager 가맹점 직원 계정 정보
      * @return the string 가맹점 직원 계정 목록 페이지 리다이렉트
@@ -243,7 +243,17 @@ public class FranchiseController {
     @PostMapping(value = "/modifymanager")
     public String modifyManager(FranchiseAccountDTO manager) {
 
+        System.out.println("매니저계정 = " + manager);
+
         franchiseService.modifyManagerInfoByMyself(manager);
+
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/updateManager")
+    public String updateManager(FranchiseAccountDTO manager) {
+
+        franchiseService.updateManagerInfoByCompany(manager);
 
         return "redirect:/franchise/managerList";
     }

@@ -174,4 +174,15 @@ class MemberServiceTest {
 
         assertNotNull(list);
     }
+
+    @Test
+    public void 로그인_테스트() {
+
+        String id = "dfdffddf";
+        String status = "Y";
+
+        Member result = memberRepository.findMemberByMemberIdAndMemberRemoveStatus(id, status);
+
+        assertEquals(id, result.getMemberId());
+    }
 }

@@ -119,7 +119,7 @@ public class OrderService {
 
     /**
      * selectCompanyOrderList : 본사 발주 내역 목록 조회
-     * @ return : 본사 발주 내역 목록
+     * @return : 본사 발주 내역 목록
      */
     public List<CompanyOrderHistoryDTO> selectCompanyOrderList() {
 
@@ -133,8 +133,8 @@ public class OrderService {
 
     /**
      * selectCompanyOrderHistoryDetail : 본사 발주 내역 목록 조회
-     * @ param companyOrderHistoryNo : 본사 발주 내역 번호
-     * @ return : 본사 발주 내역 상세 정보
+     * @param companyOrderHistoryNo : 본사 발주 내역 번호
+     * @return : 본사 발주 내역 상세 정보
      */
     public CompanyOrderHistoryDTO selectCompanyOrderHistoryDetail(int companyOrderHistoryNo) {
 
@@ -146,9 +146,9 @@ public class OrderService {
 
     /**
      * selectOrderApplicationDetail : 발주 신청서 상세 조회
-     * @ param companyOrderHistoryNo : 발주 신청서 해당 본사 발주 내역 번호
-     * @ param clientNo : 발주 신청서 해당 거래처 번호
-     * @ return : 본사 발주 신청서 상세 정보
+     * @param companyOrderHistoryNo : 발주 신청서 해당 본사 발주 내역 번호
+     * @param clientNo : 발주 신청서 해당 거래처 번호
+     * @return : 본사 발주 신청서 상세 정보
      */
     public List<OrderApplicationDTO> selectOrderApplicationDetail(int companyOrderHistoryNo, int clientNo) {
 
@@ -171,8 +171,8 @@ public class OrderService {
 
     /**
      * selectOrderItemInfoList : 본사 발주 신청 검색한 자재 목록 조회
-     * @ param searchItem : 검색한 내용
-     * @ return : 검색된 자재 목록
+     * @param searchItem : 검색한 내용
+     * @return : 검색된 자재 목록
      */
     public List<OrderItemInfoDTO> selectOrderItemInfoList(String searchItem) {
 
@@ -183,8 +183,8 @@ public class OrderService {
 
     /**
      * selectClientContractItemList : 자재별 거래처 목록 조회
-     * @ param itemInfoNo : 자재 번호
-     * @ return : 자재별 거래처 목록
+     * @param itemInfoNo : 자재 번호
+     * @return : 자재별 거래처 목록
      */
     public List<OrderClientContractItemDTO> selectClientContractItemList(int itemInfoNo) {
 
@@ -207,12 +207,12 @@ public class OrderService {
 
     /**
      * insertCompanyOrder : 본사 발주 신청
-     * @ param itemAmount : 신청 자재 수량 목록
-     * @ param clientItemNo : 거래처 판매 계약 상품 번호 목록
-     * @ param itemInfoNo : 신청 자재 번호 목록
-     * @ param memberNo : 본사 발주 신청자 번호
-     * @ param clientNo : 신청 물품 거래처 번호
-     * @ return : 발주 신청서 상세 정보
+     * @param itemAmount : 신청 자재 수량 목록
+     * @param clientItemNo : 거래처 판매 계약 상품 번호 목록
+     * @param itemInfoNo : 신청 자재 번호 목록
+     * @param memberNo : 본사 발주 신청자 번호
+     * @param clientNo : 신청 물품 거래처 번호
+     * @return : 발주 신청서 상세 정보
      */
     @Transactional
     public List<CompanyOrderDetailDTO> insertCompanyOrder(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, int memberNo, String[] clientNo) {
@@ -284,7 +284,7 @@ public class OrderService {
 
     /**
      * insertCompanyOrderHistory : 본사 발주 신청 데이터 저장
-     * @ param memberNo : 신청자 번호
+     * @param memberNo : 신청자 번호
      */
     private void insertCompanyOrderHistory(int memberNo) {
 
@@ -302,9 +302,9 @@ public class OrderService {
 
     /**
      * insertCompanyOrderItem : 본사 발주 신청 물품 데이터 저장
-     * @ param companyOrderHistoryNo : 본사 발주 내역 번호
-     * @ param itemInfoNo : 발주 신청 자재 물품 번호
-     * @ param itemAmount : 발주 신청 자재 물품 수량
+     * @param companyOrderHistoryNo : 본사 발주 내역 번호
+     * @param itemInfoNo : 발주 신청 자재 물품 번호
+     * @param itemAmount : 발주 신청 자재 물품 수량
      */
     private void insertCompanyOrderItem(int companyOrderHistoryNo, int itemInfoNo, int itemAmount) {
 
@@ -328,8 +328,8 @@ public class OrderService {
 
     /**
      * insertOrderApplication : 본사 발주 신청서 데이터 저장
-     * @ param companyOrderHistoryNo : 본사 발주 내역 번호
-     * @ param clientList : 발주 신청 거래처 번호 목록
+     * @param companyOrderHistoryNo : 본사 발주 내역 번호
+     * @param clientList : 발주 신청 거래처 번호 목록
      */
     private void insertOrderApplication(int companyOrderHistoryNo, List<Integer> clientList) {
 
@@ -352,10 +352,10 @@ public class OrderService {
 
     /**
      * insertOrderApplicationItem : 본사 발주 신청서 물품 데이터 저장
-     * @ param clientList : 발주 신청 거래처 번호 중복 제거 목록
-     * @ param clientItemNo : 발주 신청 거래처 물품 번호 목록
-     * @ param clientNo : 발주 신청 거래처 번호 목록
-     * @ param itemAmount : 발주 신청 거래처 물품 수량 목록
+     * @param clientList : 발주 신청 거래처 번호 중복 제거 목록
+     * @param clientItemNo : 발주 신청 거래처 물품 번호 목록
+     * @param clientNo : 발주 신청 거래처 번호 목록
+     * @param itemAmount : 발주 신청 거래처 물품 수량 목록
      */
     private void insertOrderApplicationItem(List<Integer> clientList, String[] clientItemNo, String[] clientNo, String[] itemAmount) {
 
@@ -393,9 +393,9 @@ public class OrderService {
 
     /**
      * updateCompanyOrderHistoryStatus : 본사 발주 내역 처리 상태 변경
-     * @ param memberNo : 변경할 본사 발주 내역 처리 상태 변경자 번호
-     * @ param companyOrderHistoryNo : 변경할 본사 발주 내역 번호
-     * @ param orderStatus : 변경할 처리 상태
+     * @param memberNo : 변경할 본사 발주 내역 처리 상태 변경자 번호
+     * @param companyOrderHistoryNo : 변경할 본사 발주 내역 번호
+     * @param orderStatus : 변경할 처리 상태
      */
     @Transactional
     public void updateCompanyOrderHistoryStatus(int memberNo, int companyOrderHistoryNo, String orderStatus) {
@@ -412,10 +412,10 @@ public class OrderService {
 
     /**
      * selectFranchiseOrderList : 가맹점 발주 내역 목록 조회
-     * @ param memberNo : 조회할 가맹점 발주 내역 권한 구분 사용자 번호
-     * @ param memberDivision : 본사, 가맹점 구분 정보
-     * @ param officeDivision : 대표자, 직원 구분 정보
-     * @ return : 가맹점 발주 내역 목록
+     * @param memberNo : 조회할 가맹점 발주 내역 권한 구분 사용자 번호
+     * @param memberDivision : 본사, 가맹점 구분 정보
+     * @param officeDivision : 대표자, 직원 구분 정보
+     * @return : 가맹점 발주 내역 목록
      */
     public List<FranchiseOrderListDTO> selectFranchiseOrderList(int memberNo, String memberDivision, String officeDivision) {
 
@@ -500,8 +500,8 @@ public class OrderService {
 
     /**
      * selectFranchiseOrderDetail : 가맹점 발주 내역 상세 조회
-     * @ param franchiseOrderNo : 조회할 가맹점 발주 내역 번호
-     * @ return : 가맹점 발주 내역 상세 정보
+     * @param franchiseOrderNo : 조회할 가맹점 발주 내역 번호
+     * @return : 가맹점 발주 내역 상세 정보
      */
     public List<FranchiseOrderDetailDTO> selectFranchiseOrderDetail(int franchiseOrderNo) {
 
@@ -526,9 +526,9 @@ public class OrderService {
 
     /**
      * updateFranchiseOrderStatus : 가맹점 발주 내역 처리 상태 승인완료로 변경
-     * @ param memberNo : 가맹점 발주 내역 변경자 번호
-     * @ param franchiseOrderNo : 변경할 가맹점 발주 내역 번호
-     * @ param orderStatus : 변경할 처리 상태
+     * @param memberNo : 가맹점 발주 내역 변경자 번호
+     * @param franchiseOrderNo : 변경할 가맹점 발주 내역 번호
+     * @param orderStatus : 변경할 처리 상태
      */
     @Transactional
     public void updateFranchiseOrderStatus(int memberNo, int franchiseOrderNo, String orderStatus) {
@@ -552,10 +552,10 @@ public class OrderService {
 
     /**
      * updateFranchiseOrderStatus : 가맹점 발주 내역 처리 상태 승인거절로 변경
-     * @ param memberNo : 가맹점 발주 내역 변경자 번호
-     * @ param franchiseOrderNo : 변경할 가맹점 발주 내역 번호
-     * @ param orderStatus : 변경할 처리 상태
-     * @ param rejectMessage : 승인거절 사유서 내용
+     * @param memberNo : 가맹점 발주 내역 변경자 번호
+     * @param franchiseOrderNo : 변경할 가맹점 발주 내역 번호
+     * @param orderStatus : 변경할 처리 상태
+     * @param rejectMessage : 승인거절 사유서 내용
      */
     @Transactional
     public void updateFranchiseOrderStatus(int memberNo, int franchiseOrderNo, String orderStatus, String rejectMessage) {
@@ -580,8 +580,8 @@ public class OrderService {
 
     /**
      * selectRejectContent : 가맹점 발주 내역 승인거절 사유서 조회
-     * @ param franchiseOrderNo : 조회할 가맹점 발주 내역 번호
-     * @ return : 승인거절 사유서 내용
+     * @param franchiseOrderNo : 조회할 가맹점 발주 내역 번호
+     * @return : 승인거절 사유서 내용
      */
     public String selectRejectContent(int franchiseOrderNo) {
 
@@ -594,11 +594,11 @@ public class OrderService {
 
     /**
      * updateCompanyOrderHistory : 본사 발주 내역 수정
-     * @ param itemAmount : 발주 수정 물품 수량 목록
-     * @ param clientItemNo : 발주 수정 물품 해당 거래처 계약 판매 상품 번호 목록
-     * @ param itemInfoNo : 발주 수정 물품 번호 목록
-     * @ param clientNo : 발주 수정 물품 해당 거래처 번호 목록
-     * @ param companyOrderHistoryNo :수정할 발주 내역 번호
+     * @param itemAmount : 발주 수정 물품 수량 목록
+     * @param clientItemNo : 발주 수정 물품 해당 거래처 계약 판매 상품 번호 목록
+     * @param itemInfoNo : 발주 수정 물품 번호 목록
+     * @param clientNo : 발주 수정 물품 해당 거래처 번호 목록
+     * @param companyOrderHistoryNo :수정할 발주 내역 번호
      */
     public void updateCompanyOrderHistory(String[] itemAmount, String[] clientItemNo, String[] itemInfoNo, String[] clientNo, int companyOrderHistoryNo) {
 
@@ -674,7 +674,7 @@ public class OrderService {
 
     /**
      * selectFranchiseOrderableItemList : 가맹점 발주 신청 가능 물품 목록 조회
-     * @ return : 가맹점 발주 신청 가능 물품 목록
+     * @return : 가맹점 발주 신청 가능 물품 목록
      */
     public List<FranchiseOrderableItemDTO> selectFranchiseOrderableItemList() {
 
@@ -698,9 +698,9 @@ public class OrderService {
 
     /**
      * insertFranchiseOrder : 가맹점 발주 신청
-     * @ param memberNo : 가맹점 발주 신청자 번호
-     * @ param itemAmount : 가맹점 발주 신청 물품 수량 목록
-     * @ param itemInfoNo : 가맹점 발주 신청 물품 번호 목록
+     * @param memberNo : 가맹점 발주 신청자 번호
+     * @param itemAmount : 가맹점 발주 신청 물품 수량 목록
+     * @param itemInfoNo : 가맹점 발주 신청 물품 번호 목록
      */
     @Transactional
     public void insertFranchiseOrder(int memberNo, int[] itemInfoNo, int[] itemAmount) {
@@ -781,9 +781,9 @@ public class OrderService {
 
     /**
      * setFranchiseOrder : 가맹점 발주 신청 정보 세팅
-     * @ param today : 가맹점 발주 신청일자
-     * @ param member : 가맹점 발주 신청자 정보
-     * @ return : 세팅된 가맹점 발주 신청 정보
+     * @param today : 가맹점 발주 신청일자
+     * @param member : 가맹점 발주 신청자 정보
+     * @return : 세팅된 가맹점 발주 신청 정보
      */
     private FranchiseOrder setFranchiseOrder(java.sql.Date today, String orderNumber, Member member) {
 
@@ -798,10 +798,10 @@ public class OrderService {
 
     /**
      * setFranchiseOrderItem : 가맹점 발주 신청 물품 정보 세팅
-     * @ param itemInfoNo : 가맹점 발주 신청 물품 번호 목록
-     * @ param itemAmount : 가맹점 발주 신청 물품 수량 목록
-     * @ param franchiseOrderNo : 가맹점 발주 신청 번호
-     * @ return : 세팅된 가맹점 발주 신청 물품 정보 목록
+     * @param itemInfoNo : 가맹점 발주 신청 물품 번호 목록
+     * @param itemAmount : 가맹점 발주 신청 물품 수량 목록
+     * @param franchiseOrderNo : 가맹점 발주 신청 번호
+     * @return : 세팅된 가맹점 발주 신청 물품 정보 목록
      */
     private List<FranchiseOrderItem> setFranchiseOrderItem(int[] itemInfoNo, int[] itemAmount, int franchiseOrderNo) {
 
@@ -838,10 +838,10 @@ public class OrderService {
 
     /**
      * setFranchiseOrderList : 본사가 조회 가능한 가맹점 발주 목록 정보 세팅
-     * @ param franchiseOrderList : 가맹점 발주 내역 목록
-     * @ param franchiseInfoList : 가맹점 대표자 정보 목록
-     * @ param franchiseAccountList : 가맹점 발주 직원 정보 목록
-     * @ return : 본사가 조회 가능한 가맹점 발주 목록 정보
+     * @param franchiseOrderList : 가맹점 발주 내역 목록
+     * @param franchiseInfoList : 가맹점 대표자 정보 목록
+     * @param franchiseAccountList : 가맹점 발주 직원 정보 목록
+     * @return : 본사가 조회 가능한 가맹점 발주 목록 정보
      */
     private List<FranchiseOrderListDTO> setFranchiseOrderList(List<FranchiseOrder> franchiseOrderList, List<OrderFranchiseInfo> franchiseInfoList, List<OrderFranchiseAccount> franchiseAccountList) {
 
@@ -919,10 +919,10 @@ public class OrderService {
 
     /**
      * setFranchiseOrderListByFranchise : 가맹점이 조회 가능한 거래처 발주 목록 정보 세팅
-     * @ param franchiseOrderList : 가맹점 발주 내역 목록
-     * @ param franchiseInfoList : 가맹점 대표자 정보
-     * @ param franchiseAccountList : 가맹점 발주 직원 정보 목록
-     * @ return : 본사가 조회 가능한 가맹점 발주 목록 정보
+     * @param franchiseOrderList : 가맹점 발주 내역 목록
+     * @param orderFranchiseInfo : 가맹점 대표자 정보
+     * @param orderFranchiseAccountList : 가맹점 발주 직원 정보 목록
+     * @return : 본사가 조회 가능한 가맹점 발주 목록 정보
      */
     private List<FranchiseOrderListDTO> setFranchiseOrderListByFranchise(List<FranchiseOrder> franchiseOrderList, OrderFranchiseInfo orderFranchiseInfo, List<OrderFranchiseAccount> orderFranchiseAccountList) {
 

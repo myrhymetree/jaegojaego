@@ -49,10 +49,10 @@
 
 .modal-layer {
     position: relative;
-    top: -77%;
+    top: -70%;
     left:-113%;
     width: 2100px;
-    height: 1010px;
+    height: 970px;
     background: rgba(0, 0, 0, 0.5);
     z-index: -1;
 }
@@ -107,13 +107,13 @@
 
 .registMenuButton {
     position: absolute;
-    top: 14.5%;
+    top: 17.5%;
     left: 26%;
 }
 
 .modifyMenuButton {
     position: absolute;
-    top: 14.5%;
+    top: 17.5%;
     left: 90%;
 }
 

@@ -61,7 +61,7 @@ public class MenuService {
 
     /**
      * findAll : 메뉴 전체 리스트 조회
-     * @ return : 메뉴 전체 리스트
+     * @return : 메뉴 전체 리스트
      * */
     public List<MenuDTO> selectMenuList() {
 
@@ -73,8 +73,8 @@ public class MenuService {
 
     /**
      * selectOneMenu : 선택한 메뉴 목록 내용 조회
-     * @ param menuNo : 선택한 메뉴의 메뉴번호
-     * @ return : 선택한 메뉴 목록 내용
+     * @param menuNo : 선택한 메뉴의 메뉴번호
+     * @return : 선택한 메뉴 목록 내용
      * */
     public List<RawMaterialDTO> selectOneMenu(int menuNo) {
 
@@ -85,7 +85,7 @@ public class MenuService {
 
     /**
      * findAll : 자재 전체 리스트 조회
-     * @ return : 자재 전체 리스트
+     * @return : 자재 전체 리스트
      * */
     public List<MenuMaterialsDTO> findRawMaterialList() {
 
@@ -96,16 +96,16 @@ public class MenuService {
 
     /**
      * save : 메뉴 등록
-     * @ param menu : 등록할 메뉴의 내용들
+     * @param menu : 등록할 메뉴의 내용들
      *
      * selectMenuByMenuName : 특정 메뉴 이름에 맞는 메뉴 리스트 조회
-     * @ param menu.getMenuName() : 특정 메뉴 이름
+     * @param menuMaterial menu.getMenuName() : 특정 메뉴 이름
      *
      * selectMenuMaterialBymenuName : 특정 메뉴 이름에 맞는 자재 리스트 조회
-     * @ param menuName : 특정 메뉴 이름
+     * @param menu menuName : 특정 메뉴 이름
      *
      * save : 원재료 등록
-     * @ param rawMaterial : 등록할 원재료의 내용들
+     * @param menuMaterial rawMaterial : 등록할 원재료의 내용들
      * */
     @Transactional
     public void registMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
@@ -171,20 +171,20 @@ public class MenuService {
 
     /**
      * findById : 특정 메뉴 조회
-     * @ param menu.getMenuNo() : 특정 메뉴 조회할 메뉴의 번호
+     * @param menu menu.getMenuNo() : 특정 메뉴 조회할 메뉴의 번호
      *
      * deleteRawMaterialByMenuNo : 특정 메뉴 번호에 따른 원재료 목록 삭제
-     * @ param selectMenu.getMenuNo() : 특정 원재료를 삭제할 메뉴의 번호
+     * @param menu selectMenu.getMenuNo() : 특정 원재료를 삭제할 메뉴의 번호
      *
      * //ㄱㄷ
      * selectMenuByMenuName : 특정 메뉴 이름에 따른 특정 메뉴 조회
-     * @ param menu.getMenuName() : 특정 메뉴 이름
+     * @param menu menu.getMenuName() : 특정 메뉴 이름
      *
      * selectMenuMaterialBymenuName : 특정 메뉴 이름에 따른 특정 자재 조회
-     * @ param menuName : 특정 메뉴 이름
+     * @param menu menuName : 특정 메뉴 이름
      *
      * save : 원재료 등록
-     * @ param rawMaterial : 등록할 원재료의 내용들
+     * @param menuMaterial rawMaterial : 등록할 원재료의 내용들
      * */
     @Transactional
     public void modifyMenu(MenuDTO menu, MenuMaterialsDTO menuMaterial, String[] materialNameAndCapacityList) {
@@ -249,7 +249,7 @@ public class MenuService {
 
     /**
      * deleteById : 특정 메뉴 번호에 따른 특정 메뉴 삭제
-     * @ param menuNo : 특정 메뉴 번호
+     * @param menuNo : 특정 메뉴 번호
      * */
     public void deleteMenu(int menuNo) {
 
