@@ -119,7 +119,7 @@ public class MaterialsController {
         materialsService.removeMaterial(itemInfoNo);
 
         String successMessage = "삭제 성공하셨습니다.";
-        System.out.println("333왔나");
+
         rttr.addFlashAttribute("successMessage", successMessage);
 
         mv.setViewName("redirect:/materials/product/list");
@@ -199,11 +199,7 @@ public class MaterialsController {
 
         materialsService.materialsProductRegist(material);
 
-        System.out.println("materialItemImage" + "" + materialItemImage);
-
         if(materialItemImage.getSize() != 0) {
-
-            System.out.println("materialItemImage12" + "" + materialItemImage);
 
             MaterialFileDTO materialFileDTO = new MaterialFileDTO();
 
@@ -269,7 +265,6 @@ public class MaterialsController {
             return mv;
         }
 
-        System.out.println("여기까지 오나 하핫");
         String successMessage = "자재 등록에 성공하셨습니다.";
 
         rttr.addFlashAttribute("successMessage", successMessage);
