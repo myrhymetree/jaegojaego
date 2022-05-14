@@ -325,7 +325,10 @@
                                 </div>
                                 <div class="modal-footer">
                                     <th:block th:if="${ member.memberDivision eq '가맹점' }">
-                                        <button type="button" id="issue-modify-start-btn" class="btn btn-white" style="background-color: brown; color: white" data-toggle="modal" data-target="#modify-modal">수정</button>
+                                        <button type="button" id="issue-modify-start-btn" class="btn btn-white" style="background-color: brown; color: white; display: block" data-toggle="modal" data-target="#modify-modal">수정</button>
+                                    </th:block>
+                                    <th:block th:if="${ member.memberDivision eq '본사' }">
+                                        <button type="button" id="issue-modify-start-btn" class="btn btn-white" style="background-color: brown; color: white; display: none" data-toggle="modal" data-target="#modify-modal">수정</button>
                                     </th:block>
                                     <button type="button" class="btn btn-primary" data-dismiss="modal" id="franchise-order-detail-modal-ok-btn">확인</button>
                                 </div>
