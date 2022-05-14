@@ -23,7 +23,7 @@
                 <span>가앵점 발주 관리</span>
             </li>
             <li class="breadcrumb-item">
-                <a th:href="@{/outWarehouse/list}"><strong>출고 관리</strong></a>
+                <a th:href="@{/outwarehouse/history}"><strong>출고 내역</strong></a>
             </li>
         </ol>
     </div>
@@ -108,7 +108,7 @@
 
 <script>
     function viewDetail(num) {
-        location.href="/outwarehouse/detail/" + num;
+        location.href="/outwarehouse/historyDetail/" + num;
     }
 </script>
 </body>
