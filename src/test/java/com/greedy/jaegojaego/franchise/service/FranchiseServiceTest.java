@@ -156,7 +156,7 @@ class FranchiseServiceTest {
     @Transactional
     public void 가맹점_계정_목록_조회() {
 
-        String searchWord = null;
+        String searchWord = "김덕팔";
 
         List<FranchiseInfo> franchiseInfos = franchiseRepository.searchFranchise(searchWord);
 

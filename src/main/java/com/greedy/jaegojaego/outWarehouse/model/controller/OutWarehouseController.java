@@ -1,10 +1,15 @@
 package com.greedy.jaegojaego.outWarehouse.model.controller;
 
+import com.greedy.jaegojaego.common.paging.Pagenation;
+import com.greedy.jaegojaego.common.paging.PagingButtonInfo;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseOrderListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.service.OutWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,10 +61,6 @@ public class OutWarehouseController {
     public ModelAndView findOutWarehouseList(ModelAndView mv) {
 
         List<OutWarehouseListDTO> outWarehouseList = outWarehouseService.findOutWarehouseList();
-
-        for(OutWarehouseListDTO list : outWarehouseList) {
-            System.out.println("list : " + list);
-        }
 
         int outWarehouseDataCnt = outWarehouseList.size();
         int outWarehouseCompletedCnt = 0;
@@ -134,7 +135,6 @@ public class OutWarehouseController {
         outWarehouseService.insertOrderData(orderNums, representativeNums, today);
     }
 
-
     /**
      * modifyOutWarehouseStatus : 출고 처리상태 정보 수정
      * @param outWarehouseStatus : 화면에서 비동기 처리로 넘긴 처리상태 데이터
@@ -152,8 +152,21 @@ public class OutWarehouseController {
         outWarehouseService.modifyStatus(status, outWarehouseNo);
     }
 
-//    @GetMapping("/history")
-//    public ModelAndView selectOutWarehouseHistory(ModelAndView mv) {
-//
-//    }
+    /**
+     * @param mv : 컨트롤러에서 처리한 결과와 전달할 값을 응답할 화면에 전달하기 위한 객체
+     * @return : 출고 목록, 내역 화면 경로
+     */
+    @GetMapping("/history")
+    public ModelAndView selectOutWarehouseHistory(ModelAndView mv, @PageableDefault Pageable pageable) {
+
+        Page<OutWarehouseListDTO> outWarehouseList = outWarehouseService.findPagedOutWarehouseList(pageable);
+
+        PagingButtonInfo paging = Pagenation.getPagingButtonInfo(outWarehouseList);
+
+        mv.addObject("paging", paging);
+        mv.addObject("outWarehouseList", outWarehouseList);
+        mv.setViewName("/outWarehouse/history");
+
+        return mv;
+    }
 }

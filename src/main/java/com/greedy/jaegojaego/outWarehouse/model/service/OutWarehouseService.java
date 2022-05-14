@@ -7,6 +7,10 @@ import com.greedy.jaegojaego.outWarehouse.model.entity.*;
 import com.greedy.jaegojaego.outWarehouse.model.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -233,5 +237,15 @@ public class OutWarehouseService {
 
 
         }
+    }
+
+    @Transactional
+    public Page<OutWarehouseListDTO> findPagedOutWarehouseList(Pageable pageable) {
+
+        pageable = PageRequest.of(pageable.getPageNumber() <= 0 ? 0 : pageable.getPageNumber() - 1,
+                pageable.getPageSize(),
+                Sort.by("outWarehouseNo").descending());
+
+        return outWarehouseRepository.findAll(pageable).map(outWarehouse -> modelMapper.map(outWarehouse, OutWarehouseListDTO.class));
     }
 }
