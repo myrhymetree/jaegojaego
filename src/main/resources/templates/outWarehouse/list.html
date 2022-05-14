@@ -28,9 +28,23 @@
 <th:block th:include="/common/header.html"></th:block>
 
 <!-- 컨텐츠 작성 영역 -->
-<div class="body-header">
-    <div class="menu-title">출고 관리</div>
-    <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a th:href="@{/franchiseorder/}">가맹점 발주 관리</a> / <a th:href="@{/outwarehouse/list}">출고 관리</a></div>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>출고 관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <span>가앵점 발주 관리</span>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/outWarehouse/list}"><strong>출고 관리</strong></a>
+            </li>
+        </ol>
+    </div>
+<!--    <div class="col-lg-2">-->
+<!--    </div>-->
 </div>
 <br>
 
@@ -42,23 +56,35 @@
                 <h5>출고 목록 수</h5>
             </div>
             <div class="ibox-content">
+                <h1 class="no-margins" th:text="${outWarehouseDataCnt}">건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 대기</h5>
+            </div>
+            <div class="ibox-content">
                 <h1 class="no-margins" th:text="${outWarehouseDataCnt - outWarehouseCompletedCnt}">건</h1>
                 <br>
             </div>
         </div>
     </div>
 
-<!--    <div class="col-lg-3">-->
-<!--        <div class="ibox ">-->
-<!--            <div class="ibox-title">-->
-<!--                <h5>출고 완료</h5>-->
-<!--            </div>-->
-<!--            <div class="ibox-content">-->
-<!--                <h1 class="no-margins" th:text="${outWarehouseCompletedCnt}">건</h1>-->
-<!--                <br>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 완료</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${outWarehouseCompletedCnt}">건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- 상단박스 끝 -->
 
@@ -101,7 +127,7 @@
 <!--        </tr>-->
         <tr th:each="outWarehouse, num : ${ outWarehouseList }">
             <th:block th:if="${!'출고완료'.equals(outWarehouse.outWarehouseWorkingStatusName.toString()) or #dates.format(#dates.createToday(), 'yyyy-MM-dd').equals(outWarehouse.outWarehouseWorkingFinishedDate.toString())}">
-                <td th:text="${ num.size - num.index }"></td>
+                <td th:text="${ num.index + 1 }"></td>
                 <td th:text="${ outWarehouse.outWarehouseNo }"></td>
                 <td th:text="${ outWarehouse.outWarehouseWorkingStatusName }"></td>
                 <td th:text="${ outWarehouse.outWarehouseWorkingFinishedDate }"></td>
@@ -163,7 +189,6 @@
     let dateForm;
 
     function viewDetail(num) {
-        let No = num;
         location.href="/outwarehouse/detail/" + num;
     }
 
@@ -358,10 +383,11 @@
                     today: dateForm
                 }
             })
-                // .then(function(res) {
-                //     alert("insert 성공");
-                //     console.log(res);
-                // })
+                .then(function(res) {
+                    alert("insert 성공");
+                    // console.log(res);
+                    location.reload();
+                })
         } catch(e) {
             alert("데이터 추가에 실패했습니다.");
         }
