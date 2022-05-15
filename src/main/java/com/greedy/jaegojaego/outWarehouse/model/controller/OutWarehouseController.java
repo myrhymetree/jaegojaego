@@ -200,7 +200,7 @@ public class OutWarehouseController {
      * @param outWarehouseNo : 출고번호
      * @return : 출고 내역 상세정보, 상세정보 화면 경로
      */
-    @GetMapping("/historyDetail/{outWarehouseNo}")
+    @GetMapping("/historydetail/{outWarehouseNo}")
     public ModelAndView selectOutWarehouseHistoryDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
 
         List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findHistoryOutItemsList(outWarehouseNo);
