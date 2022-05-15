@@ -115,9 +115,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="menu : ${ menuList }">
+                            <tr th:each="menu, index : ${ menuList }">
                                 <input type="hidden" th:value="${ menu.menuNo }" id="menuNo" name="menuNo">
-                                <td th:text="${ menu.menuNo }" class="menuNoTh" id="menuNoTh"></td>
+                                <td th:text="${ index.count }" class="menuNoTh" id="menuNoTh"></td>
                                 <td th:text="${ menu.menuName }" class="menuNameForModifyThing" id="menuNameForModifyThing"></td>
                                 <td th:text="${ menu.menuPrice }"></td>
                                 <td th:text="${ menu.menuOrderableStatus }"></td>
