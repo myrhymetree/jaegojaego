@@ -1,24 +1,9 @@
  $(document).ready(function(){
 
-     $("#managerModifyModal").children("input[class='form-control']").empty();
-
-     <!-- password meter -->
-    var options1 = {};
-    options1.ui = {
-        container: "#pwd-container1",
-        showVerdictsInsideProgressBar: true,
-        viewports: {
-            progress: ".pwstrength_viewport_progress"
-        }
-    };
-    options1.common = {
-    debug: false,
-    };
-
-    $('.example1').pwstrength(options1);
+     $("#managerModifyModal1").children("input[class='form-control']").empty();
 
     <!-- input mask, validation(password equality, length, email validation) -->
-    $("#modifyForm").ready().validate({
+    $("#modifyManagerForm1").ready().validate({
         errorPlacement: function (error, element) {
             element.before(error);
         },
@@ -28,9 +13,10 @@
                 maxlength: 15
             },
             confirm: {
-                equalTo: "#memberPwd",
-                minlength: 8,
-                maxlength: 15
+                equalTo: "#managerPwd1"
+            },
+            managerEmail: {
+                email: true
             }
         }
     });
