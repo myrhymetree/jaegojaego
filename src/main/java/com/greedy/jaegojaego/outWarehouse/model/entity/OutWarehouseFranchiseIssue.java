@@ -18,16 +18,16 @@ public class OutWarehouseFranchiseIssue {
     private String franchiseIssueStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FRANCHISE_ISSUE_COMPLETER")
-    private OutWarehouseCompanyAccount franchiseIssueCompleterNo;
+    @JoinColumn(name = "FRANCHISE_ISSUE_PRESENTER")
+    private OutWarehouseMember franchiseIssuePresenter;
 
     public OutWarehouseFranchiseIssue() {}
 
-    public OutWarehouseFranchiseIssue(int franchiseIssueNo, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, OutWarehouseCompanyAccount franchiseIssueCompleterNo) {
+    public OutWarehouseFranchiseIssue(int franchiseIssueNo, Date franchiseIssueStatusFinishDate, String franchiseIssueStatus, OutWarehouseMember franchiseIssuePresenter) {
         this.franchiseIssueNo = franchiseIssueNo;
         this.franchiseIssueStatusFinishDate = franchiseIssueStatusFinishDate;
         this.franchiseIssueStatus = franchiseIssueStatus;
-        this.franchiseIssueCompleterNo = franchiseIssueCompleterNo;
+        this.franchiseIssuePresenter = franchiseIssuePresenter;
     }
 
     public int getFranchiseIssueNo() {
@@ -54,12 +54,12 @@ public class OutWarehouseFranchiseIssue {
         this.franchiseIssueStatus = franchiseIssueStatus;
     }
 
-    public OutWarehouseCompanyAccount getFranchiseIssueCompleterNo() {
-        return franchiseIssueCompleterNo;
+    public OutWarehouseMember getFranchiseIssuePresenter() {
+        return franchiseIssuePresenter;
     }
 
-    public void setFranchiseIssueCompleterNo(OutWarehouseCompanyAccount franchiseIssueCompleterNo) {
-        this.franchiseIssueCompleterNo = franchiseIssueCompleterNo;
+    public void setFranchiseIssuePresenter(OutWarehouseMember franchiseIssuePresenter) {
+        this.franchiseIssuePresenter = franchiseIssuePresenter;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class OutWarehouseFranchiseIssue {
                 "franchiseIssueNo=" + franchiseIssueNo +
                 ", franchiseIssueStatusFinishDate=" + franchiseIssueStatusFinishDate +
                 ", franchiseIssueStatus='" + franchiseIssueStatus + '\'' +
-                ", franchiseIssueCompleterNo=" + franchiseIssueCompleterNo +
+                ", franchiseIssuePresenter=" + franchiseIssuePresenter +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.greedy.jaegojaego.outWarehouse.model.service;
 
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
+import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseIssueListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseOrderListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.entity.*;
@@ -34,8 +35,10 @@ import java.util.stream.Collectors;
  * 2022/05/10 (이태준) 출고 발주 목록 조회 기능
  * 2022/05/11 (이태준) 출고 데이터 삽입 기능, 가맹점 발주상태 수정 기능
  * 2022/05/12 (이태준) 출고 데이터 수정 기능
+ * 2022/05/13 (이태준) 출고 내역 조회 기능, 재고 변동 내역 추가 기능
+ * 2022/05/14 (이태준) 출고 내역 상세조회 기능능, 가맹점 이슈 조회 기능, 출고 데이터 삽입 기능
  * </pre>
- * @version 1.1
+ * @version 1.2
  * @author 이태준
  * */
 @Service
@@ -49,6 +52,8 @@ public class OutWarehouseService {
     private final OutWarehouseFranchiseAccountRepository outWarehouseFranchiseAccountRepository;
     private final OutWarehouseFranchiseOrderItemRepository outWarehouseFranchiseOrderItemRepository;
     private final OutWarehouseItemAmountRepository outWarehouseItemAmountRepository;
+    private final OutWarehouseItemChangeHistoryRepository outWarehouseItemChangeHistoryRepository;
+    private final OutWarehouseFranchiseIssueRepository outWarehouseFranchiseIssueRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -56,6 +61,7 @@ public class OutWarehouseService {
                                OutWarehouseMemberRepository outWarehouseMemberRepository, OutWarehouseFranchiseInfoRepository outWarehouseFranchiseInfoRepository,
                                OutWarehouseFranchiseAccountRepository outWarehouseFranchiseAccountRepository, OutWarehouseDetailRespository outWarehouseDetailRespository,
                                OutWarehouseFranchiseOrderItemRepository outWarehouseFranchiseOrderItemRepository, OutWarehouseItemAmountRepository outWarehouseItemAmountRepository,
+                               OutWarehouseItemChangeHistoryRepository outWarehouseItemChangeHistoryRepository, OutWarehouseFranchiseIssueRepository outWarehouseFranchiseIssueRepository,
                                ModelMapper modelMapper) {
         this.outWarehouseRepository = outWarehouseRepository;
         this.outWarehouseDetailRespository = outWarehouseDetailRespository;
@@ -65,6 +71,8 @@ public class OutWarehouseService {
         this.outWarehouseFranchiseAccountRepository = outWarehouseFranchiseAccountRepository;
         this.outWarehouseFranchiseOrderItemRepository = outWarehouseFranchiseOrderItemRepository;
         this.outWarehouseItemAmountRepository = outWarehouseItemAmountRepository;
+        this.outWarehouseItemChangeHistoryRepository = outWarehouseItemChangeHistoryRepository;
+        this.outWarehouseFranchiseIssueRepository = outWarehouseFranchiseIssueRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -75,7 +83,7 @@ public class OutWarehouseService {
     @Transactional
     public List<OutWarehouseListDTO> findOutWarehouseList() {
 
-        List<OutWarehouse> outWarehouseList = outWarehouseRepository.findAll();
+        List<OutWarehouse> outWarehouseList = outWarehouseRepository.findAll(Sort.by(Sort.Direction.DESC,"outWarehouseNo"));
 
         return outWarehouseList.stream().map(outWarehouse -> modelMapper.map(outWarehouse, OutWarehouseListDTO.class)).collect(Collectors.toList());
     }
@@ -132,38 +140,101 @@ public class OutWarehouseService {
      * @param orderNums : 발주 번호 리스트
      * @param representativeNums : 발주 신청 가맹점 대표 번호 리스트
      * @param today : 처리상태 변경 날짜
+     * @return : 임의의 값(result)
      */
     @Transactional
-    public void insertOrderData(List<Integer> orderNums, List<Integer> representativeNums, Date today) {
+    public int insertOrderData(List<Integer> orderNums, List<Integer> representativeNums, Date today) {
 
         OutWarehouse orderInfo = null;
+        int result = 0;
 
-        for(int i = 0; i < orderNums.size(); i++) {
-            orderInfo = new OutWarehouse();
-            OutWarehouseFranchiseOrder franchiseOrderInfo = outWarehouseFranchiseOrderRepository.findByFranchiseOrderNo(orderNums.get(i));
+        if(orderNums.size() > 0) {
+            for(int i = 0; i < orderNums.size(); i++) {
+                orderInfo = new OutWarehouse();
+                OutWarehouseFranchiseOrder franchiseOrderInfo = outWarehouseFranchiseOrderRepository.findByFranchiseOrderNo(orderNums.get(i));
 
-            OutWarehouseFranchiseInfoPk franchiseInfoPk = new OutWarehouseFranchiseInfoPk();
-            OutWarehouseMember memberInfo = outWarehouseMemberRepository.findByMemberNo(representativeNums.get(i));
-            franchiseInfoPk.setFranchiseRepresentativeNo(memberInfo);
+                OutWarehouseFranchiseInfoPk franchiseInfoPk = new OutWarehouseFranchiseInfoPk();
+                OutWarehouseMember memberInfo = outWarehouseMemberRepository.findByMemberNo(representativeNums.get(i));
+                franchiseInfoPk.setFranchiseRepresentativeNo(memberInfo);
 
-            OutWarehouseFranchiseInfo franchiseInfo = outWarehouseFranchiseInfoRepository.findByFranchiseRepresentativeNo(franchiseInfoPk);
+                OutWarehouseFranchiseInfo franchiseInfo = outWarehouseFranchiseInfoRepository.findByFranchiseRepresentativeNo(franchiseInfoPk);
 
-            orderInfo.setFranchiseOrderNo(franchiseOrderInfo);
-            orderInfo.setFranchiseRepresentativNo(franchiseInfo);
-            orderInfo.setOutWarehouseWorkingFinishedDate(today);
-            orderInfo.setOutWarehouseWorkingStatusName("출고대기");
+                orderInfo.setFranchiseOrderNo(franchiseOrderInfo);
+                orderInfo.setFranchiseRepresentativNo(franchiseInfo);
+                orderInfo.setOutWarehouseWorkingFinishedDate(today);
+                orderInfo.setOutWarehouseWorkingStatusName("출고대기");
 
-            franchiseOrderInfo.setFranchiseOrderOutYn("Y");
+                franchiseOrderInfo.setFranchiseOrderOutYn("Y");
 
-            outWarehouseRepository.save(orderInfo);
-            outWarehouseFranchiseOrderRepository.save(franchiseOrderInfo);
+                outWarehouseRepository.save(orderInfo);
+                outWarehouseFranchiseOrderRepository.save(franchiseOrderInfo);
+
+                result++;
+            }
         }
+
+        return result;
     }
 
     /**
-     * findOutItemsList
+     * findAllIssueList : 처리중인 이슈 목록 조회
+     * @return : 처리중인 이슈 목록 리스트
+     */
+    @Transactional
+    public List<OutWarehouseFranchiseIssueListDTO> findAllIssueList() {
+
+        String status = "CHANGE";   //교환처리인 놈은 조회
+        List<OutWarehouseFranchiseIssue> outWarehouseFranchiseIssueList = outWarehouseFranchiseIssueRepository.findByFranchiseIssueStatus(status);
+
+        return outWarehouseFranchiseIssueList.stream().map(outWarehouseFranchiseIssue -> modelMapper.map(outWarehouseFranchiseIssue, OutWarehouseFranchiseIssueListDTO.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * insertIssueData : 출고 테이블에 가맹점 이슈 데이터 삽입
+     * @param issueNums : 이슈번호 리스트
+     * @param representativeNums : 대표자 번호 리스트
+     * @param today : 처리상태 변경 날짜
+     * @return
+     */
+    @Transactional
+    public int insertIssueData(List<Integer> issueNums, List<Integer> representativeNums, Date today) {
+
+        OutWarehouse issueInfo = null;
+        int result = 0;
+
+        if(issueNums.size() > 0) {
+            for(int i = 0; i < issueNums.size(); i++) {
+                issueInfo = new OutWarehouse();
+                OutWarehouseFranchiseIssue franchiseIssueInfo = outWarehouseFranchiseIssueRepository.findByFranchiseIssueNo(issueNums.get(i));
+
+                OutWarehouseFranchiseInfoPk franchiseInfoPk = new OutWarehouseFranchiseInfoPk();
+                OutWarehouseMember memberInfo = outWarehouseMemberRepository.findByMemberNo(franchiseIssueInfo.getFranchiseIssuePresenter().getMemberNo());
+                franchiseInfoPk.setFranchiseRepresentativeNo(memberInfo);
+
+                OutWarehouseFranchiseInfo franchiseInfo = outWarehouseFranchiseInfoRepository.findByFranchiseRepresentativeNo(franchiseInfoPk);
+
+                issueInfo.setFranchiseRepresentativNo(franchiseInfo);
+                issueInfo.setFranchiseIssueNo(franchiseIssueInfo);
+                issueInfo.setOutWarehouseWorkingStatusName("출고대기");
+                issueInfo.setOutWarehouseWorkingFinishedDate(today);
+
+                franchiseIssueInfo.setFranchiseIssueStatus("OUTCOMPLETE");
+                franchiseIssueInfo.setFranchiseIssueStatusFinishDate(today);
+
+                outWarehouseRepository.save(issueInfo);
+                outWarehouseFranchiseIssueRepository.save(franchiseIssueInfo);
+
+                result++;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * findOutItemsList : 출고할 물품 정보 리스트 조회
      * @param outWarehouseNo : 출고번호
-     * @return : 발주 목록에 담긴 발주 요청 제품 정보 리스트
+     * @return : 출고 상세정보 리스트
      */
     @Transactional
     public List<OutWarehouseDetailListDTO> findOutItemsList(int outWarehouseNo) {
@@ -235,10 +306,22 @@ public class OutWarehouseService {
             outWarehouseItemAmount.setItemTotalAmount(updatedAmount);
             outWarehouseItemAmountRepository.save(outWarehouseItemAmount);
 
+            OutWarehouseItemChangeHistory outWarehouseItemChangeHistory = new OutWarehouseItemChangeHistory();
+            outWarehouseItemChangeHistory.setItemInfoNo(outWarehouseFranchiseOrderItemList.get(i).getFranchiseOrderItemPk().getItemInfoNo());
+            outWarehouseItemChangeHistory.setItemChangeHistoryDivision(2);
+            outWarehouseItemChangeHistory.setItemChangeHistoryAmount(itemOutAmount);
+            outWarehouseItemChangeHistory.setOutWarehouseNo(outWarehouse);
+            outWarehouseItemChangeHistory.setOutWarehouseStatus(outWarehouse.getOutWarehouseWorkingStatusName());
 
+            outWarehouseItemChangeHistoryRepository.save(outWarehouseItemChangeHistory);
         }
     }
 
+    /**
+     * findPagedOutWarehouseList : 페이징 처리된 출고 목록 리스트 조회
+     * @param pageable : 페이징 처리를 위한 메소드들이 담긴 변수
+     * @return : 페이징 처리된 출고 목록 리스트
+     */
     @Transactional
     public Page<OutWarehouseListDTO> findPagedOutWarehouseList(Pageable pageable) {
 
@@ -247,5 +330,36 @@ public class OutWarehouseService {
                 Sort.by("outWarehouseNo").descending());
 
         return outWarehouseRepository.findAll(pageable).map(outWarehouse -> modelMapper.map(outWarehouse, OutWarehouseListDTO.class));
+    }
+
+    /**
+     * findHistoryOutItemsList : 출고 내역 상세정보 물품 정보 리스트 조회
+     * @param outWarehouseNo : 출고번호
+     * @return : 출고 내역 상세정보 리스트
+     */
+    @Transactional
+    public List<OutWarehouseDetailListDTO> findHistoryOutItemsList(int outWarehouseNo) {
+
+        List<OutWarehouseFranchiseOrderItem> outWarehouseOrderItemList = outWarehouseDetailRespository.findAllFranchiseOrderItemList(outWarehouseNo);
+        OutWarehouse outWarehouseInfo = outWarehouseRepository.findByOutWarehouseNo(outWarehouseNo);
+
+        List<OutWarehouseDetailListDTO> outWarehouseDetailList = new ArrayList<>();
+
+        for(int i = 0; i < outWarehouseOrderItemList.size(); i++) {
+            OutWarehouseDetailListDTO dto = new OutWarehouseDetailListDTO();
+
+            dto.setOutWarehouseNo(outWarehouseNo);
+            dto.setOutWarehouseItemNo(outWarehouseOrderItemList.get(i).getFranchiseOrderItemPk().getItemInfoNo().getItemInfoNo());
+            dto.setItemInfoItemSerialNo(outWarehouseOrderItemList.get(i).getFranchiseOrderItemPk().getItemInfoNo().getItemSerialNo());
+            dto.setItemInfoName(outWarehouseOrderItemList.get(i).getFranchiseOrderItemPk().getItemInfoNo().getItemInfoName());
+            dto.setMaterialCategoryName(outWarehouseOrderItemList.get(i).getFranchiseOrderItemPk().getItemInfoNo().getMaterialCategoryNo().getMaterialCategoryName());
+            dto.setOutWarehouseItemAmount(outWarehouseOrderItemList.get(i).getFranchiseOrderitemAmount());
+            dto.setOutWarehouseWorkingStatusName(outWarehouseInfo.getOutWarehouseWorkingStatusName());
+            dto.setOutWarehouseWorkingFinishedDate(outWarehouseInfo.getOutWarehouseWorkingFinishedDate());
+
+            outWarehouseDetailList.add(dto);
+        }
+
+        return outWarehouseDetailList;
     }
 }

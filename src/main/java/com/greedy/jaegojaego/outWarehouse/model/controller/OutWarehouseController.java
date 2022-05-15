@@ -3,8 +3,10 @@ package com.greedy.jaegojaego.outWarehouse.model.controller;
 import com.greedy.jaegojaego.common.paging.Pagenation;
 import com.greedy.jaegojaego.common.paging.PagingButtonInfo;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseDetailListDTO;
+import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseIssueListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseFranchiseOrderListDTO;
 import com.greedy.jaegojaego.outWarehouse.model.dto.OutWarehouseListDTO;
+import com.greedy.jaegojaego.outWarehouse.model.entity.OutWarehouseFranchiseIssue;
 import com.greedy.jaegojaego.outWarehouse.model.service.OutWarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,8 +39,10 @@ import java.util.Map;
  * 2022/05/10 (이태준) 출고 발주 목록 조회 기능 및 출고 데이터 삽입
  * 2022/05/11 (이태준) 출고 데이터 삽입 기능, 가맹점 발주상태 수정 기능
  * 2022/05/12 (이태준) 출고 목록 조회 기능, 출고 데이터 수정 기능, 재고 데이터 수정 기능
+ * 2022/05/13 (이태준) 출고 내역 조회 기능, 재고 변동 내역 추가 기능
+ * 2022/05/14 (이태준) 출고 내역 상세조회 기능, 가맹점 이슈 조회 기능, 출고 데이터 삽입 기능
  * </pre>
- * @version 1.1
+ * @version 1.2
  * @author 이태준
  * */
 @Controller
@@ -93,10 +97,6 @@ public class OutWarehouseController {
         List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findOutItemsList(outWarehouseNo);
         itemListCnt = outWarehouseDetailList.size();
 
-        for(OutWarehouseDetailListDTO detailList : outWarehouseDetailList) {
-            System.out.println("detailList = " + detailList);
-        }
-
         mv.addObject("No", No);
         mv.addObject("itemListCnt", itemListCnt);
         mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
@@ -119,12 +119,12 @@ public class OutWarehouseController {
 
     /**
      * insertOutWarehouseData : 출고 테이블에 데이터 삽입
-     * @param mv : 컨트롤러에서 처리한 결과와 전달할 값을 응답할 화면에 전달하기 위한 객체
      * @param data : 화면에서 비동기 처리로 넘겨주는 데이터를 받기 위한 Map형태의 변수
+     * @return : 추가한 행 반환 수
      */
     @PostMapping(value = "/insertorderdata")
     @ResponseBody
-    public void insertOutWarehouseData(ModelAndView mv, @RequestBody Map<String, Object> data) {
+    public int insertOutWarehouseOrderData(@RequestBody Map<String, Object> data) {
 
         List<Integer> orderNums = (List<Integer>) data.get("orderNums");
         List<Integer> representativeNums = (List<Integer>) data.get("representativeNums");
@@ -132,7 +132,35 @@ public class OutWarehouseController {
 
         Date today = Date.valueOf(sDate);
 
-        outWarehouseService.insertOrderData(orderNums, representativeNums, today);
+        int res = outWarehouseService.insertOrderData(orderNums, representativeNums, today);
+
+        return res;
+    }
+
+    @GetMapping(value = "/issuelist")
+    @ResponseBody
+    public List<OutWarehouseFranchiseIssueListDTO> selectIssueList() {
+
+        List<OutWarehouseFranchiseIssueListDTO> outWarehouseIssueList = outWarehouseService.findAllIssueList();
+
+        outWarehouseIssueList.forEach(System.out::println);
+
+        return outWarehouseIssueList;
+    }
+
+    @PostMapping(value = "/insertissuedata")
+    @ResponseBody
+    public int insertOutWarehouseIssueData(@RequestBody Map<String, Object> data) {
+
+        List<Integer> issueNums = (List<Integer>) data.get("issueNums");
+        List<Integer> representativeNums = (List<Integer>) data.get("representativeNums");
+        String sDate = (String) data.get("today");
+
+        Date today = Date.valueOf(sDate);
+
+        int res = outWarehouseService.insertIssueData(issueNums, representativeNums, today);
+
+        return res;
     }
 
     /**
@@ -142,9 +170,6 @@ public class OutWarehouseController {
     @PostMapping("/modify")
     @ResponseBody
     public void modifyOutWarehouseStatus(@RequestBody Map<String, Object> outWarehouseStatus) {
-
-        System.out.println("this is outWarehouseStatus : " + outWarehouseStatus.get("outWarehouseStatus"));
-        System.out.println(outWarehouseStatus.get("outWarehouseNo"));
 
         int outWarehouseNo = (int) outWarehouseStatus.get("outWarehouseNo");
         String status = (String) outWarehouseStatus.get("outWarehouseStatus");
@@ -167,6 +192,21 @@ public class OutWarehouseController {
         mv.addObject("outWarehouseList", outWarehouseList);
         mv.setViewName("/outWarehouse/history");
 
+        return mv;
+    }
+
+    /**
+     * @param mv : 컨트롤러에서 처리한 결과와 전달할 값을 응답할 화면에 전달하기 위한 객체
+     * @param outWarehouseNo : 출고번호
+     * @return : 출고 내역 상세정보, 상세정보 화면 경로
+     */
+    @GetMapping("/historydetail/{outWarehouseNo}")
+    public ModelAndView selectOutWarehouseHistoryDetail(ModelAndView mv, @PathVariable int outWarehouseNo) {
+
+        List<OutWarehouseDetailListDTO> outWarehouseDetailList = outWarehouseService.findHistoryOutItemsList(outWarehouseNo);
+
+        mv.addObject("outWarehouseDetailList", outWarehouseDetailList);
+        mv.setViewName("/outWarehouse/historyDetail");
         return mv;
     }
 }
