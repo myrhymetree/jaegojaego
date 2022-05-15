@@ -60,8 +60,7 @@
             <th>품목</th>
             <th>품번</th>
             <th>품명</th>
-            <th>처리일자</th>
-            <th>증가</th>
+            <th>증가/감소</th>
             <th>변동 수량</th>
             <th>변동 사유</th>
         </tr>
@@ -72,7 +71,6 @@
             <td th:text="${ warehouse.getItemInfoNo().getMaterialCategory().getMaterialCategoryName() }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getItemInfoItemSerialNo() }"></td>
             <td th:text="${ warehouse.getItemInfoNo().getItemInfoName() }"></td>
-            <td th:text="${ warehouse.getWarehouseNo().getWarehouseCompleteDate() }"></td>
             <td>
                 <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
                     <a>증가</a>
@@ -86,6 +84,9 @@
             <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
                 <a>입고</a>
             </th:block>
+                <th:block th:if="${ warehouse.itemChangeDivision eq 2 }">
+                    <a>출고</a>
+                </th:block>
             </td>
         </tr>
         </tfoot>

@@ -68,7 +68,6 @@
         </thead>
         <tbody>
         <tr th:each="warehouse,num : ${ warehouseCompanyOrderList }">
-<!--            <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">-->
                 <td th:text="${ num.index + 1 }"></td>
                 <td th:text="${ warehouse.companyOrderHistoryNo }"></td>
                 <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>
@@ -93,7 +92,6 @@
                     </th:block>
 
                 </td>
-<!--            </th:block>-->
         </tr>
         </tfoot>
     </table>

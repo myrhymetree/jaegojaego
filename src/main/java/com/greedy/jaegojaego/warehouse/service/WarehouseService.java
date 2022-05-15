@@ -87,9 +87,6 @@ public class WarehouseService {
         itemChangeHistory.setItemChangeAmount(warehouse.getWarehouseAmount());      //입고된 수량
         itemChangeHistory.setWarehouseStatus(warehouse.getWarehouseStatus());       //입고 완료 정보 넣어주기
 
-
-
-
         /* 추가 후 재고 관리 table 수량 수정용 */
         /* 기존의 수량[warehouseAmount] + 새로 들어온 수량[getItemChangeAmount()] 를 더해서 update */
         List<WarehouseItemAmount> warehouseItemAmount = warehouseItemAmountRepository.findAll();

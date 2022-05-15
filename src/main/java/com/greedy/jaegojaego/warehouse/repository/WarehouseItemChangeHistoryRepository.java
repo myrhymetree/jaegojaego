@@ -16,6 +16,4 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface WarehouseItemChangeHistoryRepository extends JpaRepository<WarehouseItemChangeHistory, Integer> {
-
-
 }
