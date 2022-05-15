@@ -1,20 +1,5 @@
 $(document).ready(function(){
 
-    <!-- password meter -->
-    let options3 = {};
-    options3.ui = {
-        container: "#pwd-container3",
-        showVerdictsInsideProgressBar: true,
-        viewports: {
-            progress: ".pwstrength_viewport_progress3"
-        }
-    };
-    options3.common = {
-        debug: false,
-    };
-
-    $('#representativePwd').pwstrength(options3);
-
     <!-- input mask, validation(password equality, length, email validation) -->
     $("#franchiseModifyForm").ready().validate({
         errorPlacement: function (error, element) {

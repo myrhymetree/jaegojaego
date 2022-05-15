@@ -155,7 +155,7 @@ public class CompanyAccountRepositoryImpl extends QuerydslRepositorySupport impl
      * @author 박성준
      */
     @Override
-    public List<CompanyAccount> searchRemovedMember(String searchWord) {
+    public List<CompanyAccount> searchRemovedMembers(String searchWord) {
 
         if(searchWord != null && searchWord != "") {
             return queryFactory

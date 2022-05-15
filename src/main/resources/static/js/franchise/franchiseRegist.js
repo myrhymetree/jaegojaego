@@ -1,20 +1,5 @@
 $(document).ready(function(){
 
-    <!-- password meter -->
-    let options3 = {};
-    options3.ui = {
-        container: "#pwd-container2",
-        showVerdictsInsideProgressBar: true,
-        viewports: {
-            progress: ".pwstrength_viewport_progress"
-        }
-    };
-    options3.common = {
-        debug: false,
-    };
-
-    $('.example2').pwstrength(options3);
-
     <!-- input mask, validation(password equality, length, email validation) -->
     $("#registForm").ready().validate({
 

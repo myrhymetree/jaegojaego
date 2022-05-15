@@ -9,7 +9,8 @@
 }
 
 .dataTableH3 {
-    position: absolute;
+    /*position: absolute;*/
+    float: left;
 }
 
 .backlogListWhiteboard {
@@ -17,7 +18,7 @@
     position: absolute;
     top: 50%;
     left: 2%;
-    height: 530px;
+    height: 450px;
     width: 95%;
     background: white;
 }
@@ -101,10 +102,12 @@
 }
 
 .itemListForInWarehouseBacklog {
-    position: absolute;
-    left: 15%;
-    top: 3%;
+    /*position: absolute;*/
+    /*left: 15%;*/
+    /*top: 3%;*/
     z-index: 1050;
+    float: left;
+    margin-top: 10px;
 }
 
 .month {

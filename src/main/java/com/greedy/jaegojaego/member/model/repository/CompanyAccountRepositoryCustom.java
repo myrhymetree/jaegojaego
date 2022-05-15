@@ -23,5 +23,5 @@ public interface CompanyAccountRepositoryCustom {
     List<CompanyAccount> searchMembers(String searchWord);
 
     /* 검색어에 따른 삭제된 본사 직원 계정 목록 조회 메소드 */
-    List<CompanyAccount> searchRemovedMember(String searchWord);
+    List<CompanyAccount> searchRemovedMembers(String searchWord);
 }
