@@ -329,10 +329,6 @@
                             issueNums.push(this.value);
                             representativeNums.push(franchiseIssueList[i].franchiseRepresentativeNo);
 
-                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>")
-                            console.log(representativeNums);
-                            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>")
-
                             issueNums = orderNums.map((e) => parseInt(e));
                             representativeNums = representativeNums.map((e) => parseInt(e));
 
@@ -434,7 +430,7 @@
             })
                 .then(function(res) {
                     if(res.data === 1) {
-                        alert("출고에 정보가 추가되었습니다.");
+                        // alert("출고에 정보가 추가되었습니다.");
                         location.reload();
                     }
                 })
@@ -483,7 +479,7 @@
             })
                 .then(function(res) {
                     if(res.data === 1) {
-                        alert("출고에 정보가 추가되었습니다.");
+                        // alert("출고에 정보가 추가되었습니다.");
                         location.reload();
                     }
                 })

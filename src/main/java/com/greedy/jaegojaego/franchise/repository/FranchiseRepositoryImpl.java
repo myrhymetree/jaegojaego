@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 
@@ -79,7 +80,7 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
             updateBuilder.set(franchiseInfo.writedMemberNo, franchise.getWritedMemberNo());
         }
 
-        if((String.valueOf(franchise.getSupervisorNo())).isEmpty()) {
+        if((StringUtils.hasText(String.valueOf(franchise.getSupervisorNo())))) {
             updateBuilder.set(franchiseInfo.supervisorNo, franchise.getSupervisorNo());
         }
 

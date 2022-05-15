@@ -214,6 +214,8 @@ public class MemberController {
     @PostMapping(value = "/modifyMember")
     public String modifyMember(CompanyAccountDTO companyAccount) {
 
+        System.out.println("업데이트업데이트 = " + companyAccount);
+
         memberService.modifyMemberInfo(companyAccount);
 
         return "redirect:/member/list";
