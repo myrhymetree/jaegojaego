@@ -253,14 +253,25 @@
 
                 if(document.getElementById('order-cart-tbody').childElementCount == 0) {
                     document.getElementById('total-price').innerText = '0';
-                }
 
-                for(let i = 0; i < $itemInfo.length; i++) {
+                    for(let i = 0; i < $itemInfo.length; i++) {
 
-                    if(this.parentNode.parentNode.children[0].value == $itemInfo[i].children[0].value) {
+                        if(this.parentNode.parentNode.children[0].value == $itemInfo[i].children[0].value) {
+                            $itemInfo[i].children[2].value = 0;
+                        }
 
-                        $itemInfo[i].children[2].value = 0;
+                    }
 
+                } else {
+                    for(let i = 0; i < $itemInfo.length; i++) {
+
+                        if(this.parentNode.parentNode.children[0].value == $itemInfo[i].children[0].value) {
+
+                            $itemInfo[i].children[2].value = 0;
+
+                            document.getElementById('total-price').innerText = (document.getElementById('total-price').innerText * 1) - ($itemPrice[i].innerText * 1) * (this.parentNode.parentNode.children[1].value * 1);
+
+                        }
                     }
                 }
 
