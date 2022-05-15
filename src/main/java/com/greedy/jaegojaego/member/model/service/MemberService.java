@@ -288,6 +288,7 @@ public class MemberService {
             passwordUpdatedRecord.setPasswordUpdatedRecordPwd(memberPwd.getMemberPwd());
             passwordUpdatedRecord.setPasswordUpdatedRecordDate(LocalDateTime.now());
             passwordUpdatedRecord.setMemberNo(member.getMemberNo());
+            passwordUpdatedRecordRepository.save(passwordUpdatedRecord);
 
 
             /*변경된 비밀번호 사항을 저장해준다.*/
