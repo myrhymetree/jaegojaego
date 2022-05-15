@@ -377,7 +377,7 @@ public class FranchiseController {
     }
 
     /**
-     * 가맹점 계정 정보 수정 메소드
+     * 가맹점 계정 정보(개인정보) 수정 메소드
      *
      * @param franchiseInfo 가맹점 대표자 계정 정보
      * @return the string 가맹점 대표자 계정 목록 조회 페이지 리다이렉트

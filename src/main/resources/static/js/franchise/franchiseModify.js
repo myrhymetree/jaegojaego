@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+    <!-- 개인정보 수정 자바스크립트 -->
     <!-- input mask, validation(password equality, length, email validation) -->
     $("#franchiseModifyForm").ready().validate({
         errorPlacement: function (error, element) {

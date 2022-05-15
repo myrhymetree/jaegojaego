@@ -247,7 +247,7 @@
 
                     const $supervisor = $("#supervisor");
 
-                    $supervisor.append($("<option>"))
+                    $supervisor.append($("<option>"));
 
                     for(let i = 0; i < response.data[i].memberNo; i++) {
                         $supervisor.append($("<option>").val(response.data[i].memberNo).text(response.data[i].memberName));
@@ -272,7 +272,7 @@
                         maxlength: 15
                     },
                     confirm: {
-                        equalTo: "#representativePwd",
+                        equalTo: "#representativePwd1",
                         minlength: 8,
                         maxlength: 15
                     },
