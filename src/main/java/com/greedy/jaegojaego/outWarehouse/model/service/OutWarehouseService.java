@@ -177,8 +177,8 @@ public class OutWarehouseService {
     }
 
     /**
-     * findAllIssueList : 처리중인 이슈 목록 조회
-     * @return : 처리중인 이슈 목록 리스트
+     * findAllIssueList : 교환처리 상태인 이슈 목록 조회
+     * @return : 교환처리 상태인 이슈 목록 리스트
      */
     @Transactional
     public List<OutWarehouseFranchiseIssueListDTO> findAllIssueList() {
@@ -186,7 +186,49 @@ public class OutWarehouseService {
         String status = "CHANGE";   //교환처리인 놈은 조회
         List<OutWarehouseFranchiseIssue> outWarehouseFranchiseIssueList = outWarehouseFranchiseIssueRepository.findByFranchiseIssueStatus(status);
 
-        return outWarehouseFranchiseIssueList.stream().map(outWarehouseFranchiseIssue -> modelMapper.map(outWarehouseFranchiseIssue, OutWarehouseFranchiseIssueListDTO.class)).collect(Collectors.toList());
+        List<OutWarehouseFranchiseIssueListDTO> list = new ArrayList<>();
+
+        for(int i = 0; i < outWarehouseFranchiseIssueList.size(); i++) {
+
+            if("대표자".equals(outWarehouseFranchiseIssueList.get(i).getFranchiseIssuePresenter().getOfficeDivision())) {
+                OutWarehouseFranchiseInfoPk outWarehouseFranchiseInfoPk = new OutWarehouseFranchiseInfoPk();
+                outWarehouseFranchiseInfoPk.setFranchiseRepresentativeNo(outWarehouseFranchiseIssueList.get(i).getFranchiseIssuePresenter());
+
+                OutWarehouseFranchiseInfo outWarehouseFranchiseInfo = outWarehouseFranchiseInfoRepository.findByFranchiseRepresentativeNo(outWarehouseFranchiseInfoPk);
+
+                OutWarehouseFranchiseIssueListDTO outWarehouseFranchiseIssueListDTO = new OutWarehouseFranchiseIssueListDTO();
+                outWarehouseFranchiseIssueListDTO.setFranchiseIssueNo(outWarehouseFranchiseIssueList.get(i).getFranchiseIssueNo());
+                outWarehouseFranchiseIssueListDTO.setFranchiseIssueStatus(outWarehouseFranchiseIssueList.get(i).getFranchiseIssueStatus());
+                outWarehouseFranchiseIssueListDTO.setFranchiseName(outWarehouseFranchiseInfo.getFranchiseName());
+                outWarehouseFranchiseIssueListDTO.setFranchiseAddress(outWarehouseFranchiseInfo.getFranchiseAddress());
+                outWarehouseFranchiseIssueListDTO.setFranchiseRepresentativeNo(outWarehouseFranchiseIssueList.get(i).getFranchiseIssuePresenter().getMemberNo());
+                outWarehouseFranchiseIssueListDTO.setMemberNo(outWarehouseFranchiseIssueList.get(i).getFranchiseIssuePresenter().getMemberNo());
+
+                list.add(outWarehouseFranchiseIssueListDTO);
+            } else {
+                OutWarehouseFranchiseAccountPk outWarehouseFranchiseAccountPk = new OutWarehouseFranchiseAccountPk();
+                outWarehouseFranchiseAccountPk.setFranchiseManagerNo(outWarehouseFranchiseIssueList.get(i).getFranchiseIssuePresenter());
+
+                OutWarehouseFranchiseAccount outWarehouseFranchiseAccount = outWarehouseFranchiseAccountRepository.getRepresentativeNo(outWarehouseFranchiseAccountPk);
+
+                OutWarehouseFranchiseInfoPk outWarehouseFranchiseInfoPk = new OutWarehouseFranchiseInfoPk();
+                outWarehouseFranchiseInfoPk.setFranchiseRepresentativeNo(outWarehouseFranchiseAccount.getFranchiseRepresentativeNo().getFranchiseRepresentativeNo().getFranchiseRepresentativeNo());
+
+                OutWarehouseFranchiseInfo outWarehouseFranchiseInfo = outWarehouseFranchiseInfoRepository.getFranchiseInfo(outWarehouseFranchiseInfoPk);
+
+                OutWarehouseFranchiseIssueListDTO outWarehouseFranchiseIssueListDTO = new OutWarehouseFranchiseIssueListDTO();
+                outWarehouseFranchiseIssueListDTO.setFranchiseIssueNo(outWarehouseFranchiseIssueList.get(i).getFranchiseIssueNo());
+                outWarehouseFranchiseIssueListDTO.setFranchiseIssueStatus(outWarehouseFranchiseIssueList.get(i).getFranchiseIssueStatus());
+                outWarehouseFranchiseIssueListDTO.setFranchiseName(outWarehouseFranchiseInfo.getFranchiseName());
+                outWarehouseFranchiseIssueListDTO.setFranchiseAddress(outWarehouseFranchiseInfo.getFranchiseAddress());
+                outWarehouseFranchiseIssueListDTO.setFranchiseRepresentativeNo(outWarehouseFranchiseInfo.getFranchiseRepresentativeNo().getFranchiseRepresentativeNo().getMemberNo());
+                outWarehouseFranchiseIssueListDTO.setMemberNo(outWarehouseFranchiseAccount.getFranchiseManagerNo().getFranchiseManagerNo().getMemberNo());
+
+                list.add(outWarehouseFranchiseIssueListDTO);
+            }
+        }
+
+        return list;
     }
 
     /**
