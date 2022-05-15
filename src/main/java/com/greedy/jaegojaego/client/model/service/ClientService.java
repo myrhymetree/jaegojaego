@@ -64,12 +64,12 @@ public class ClientService {
     private final ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository;
     private final ClientContractInfoRepository clientContractInfoRepository;
     private final ClientContractItemRepository clientContractItemRepository;
-    private final ClientCbrRepository clientCbrRepository;
+//    private final ClientCbrRepository clientCbrRepository;
     private final ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ClientCbrRepository clientCbrRepository, ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, ClientMemoRepository clientMemoRepository, ClientBusinessTypeRepository clientBusinessTypeRepository, ClientBusinessItemRepository clientBusinessItemRepository, ClientMemberRepository clientMemberRepository, ClientBusinessItemDivisionRepository clientBusinessItemDivisionRepository, ClientBusinessTypeDivisionRepository clientBusinessTypeDivisionRepository, ClientContractInfoRepository clientContractInfoRepository, ClientContractItemRepository clientContractItemRepository, ClientContractItemAttachmentFileRepository clientContractItemAttachmentFileRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
         this.clientMemoRepository = clientMemoRepository;
         this.clientBusinessTypeRepository = clientBusinessTypeRepository;
@@ -79,7 +79,7 @@ public class ClientService {
         this.clientBusinessTypeDivisionRepository = clientBusinessTypeDivisionRepository;
         this.clientContractInfoRepository = clientContractInfoRepository;
         this.clientContractItemRepository = clientContractItemRepository;
-        this.clientCbrRepository = clientCbrRepository;
+//        this.clientCbrRepository = clientCbrRepository;
         this.clientContractItemAttachmentFileRepository = clientContractItemAttachmentFileRepository;
         this.modelMapper = modelMapper;
     }
