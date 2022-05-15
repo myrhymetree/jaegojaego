@@ -190,7 +190,7 @@
             /* 가맹점 계정 삭제 이벤트 */
             $(function () {
                 $("#removeManager").click(function () {
-                    const memberNo = $("#detail-memberNo").val();
+                    const memberNo = $("#detail-memberNo1").val();
                     location.href="/franchise/delete/" + memberNo;
                 });
             });
@@ -198,7 +198,7 @@
             /* 가맹점 계정 복구 이벤트 */
             $(function () {
                 $("#restoreManager").click(function () {
-                    const memberNo = $("#detail-memberNo").val();
+                    const memberNo = $("#detail-memberNo1").val();
                     location.href="/franchise/restore/" + memberNo;
                 });
             });
