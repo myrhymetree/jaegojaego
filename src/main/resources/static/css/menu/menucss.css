@@ -50,8 +50,8 @@
 .modal-layer {
     position: relative;
     top: -70%;
-    left:-113%;
-    width: 2100px;
+    left:-99%;
+    width: 1900px;
     height: 970px;
     background: rgba(0, 0, 0, 0.5);
     z-index: -1;
