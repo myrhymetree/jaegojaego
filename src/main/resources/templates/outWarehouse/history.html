@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/outWarehouse/outWarehouse.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<!-- 컨텐츠 작성 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>출고 관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <span>가앵점 발주 관리</span>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/outwarehouse/history}"><strong>출고 내역</strong></a>
+            </li>
+        </ol>
+    </div>
+    <!--    <div class="col-lg-2">-->
+    <!--    </div>-->
+</div>
+<br>
+
+<!-- 테이블 시작 -->
+<div class="ibox-content" th:style="${'width:98%; margin:0 auto;'}">
+
+    <h2 th:style="${'font-weight:bold;'}">출고 정보</h2>
+    <br>
+
+    <table class="outWarehouseTbl footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>출고 번호</th>
+            <th>작업상태</th>
+            <th>작업 처리일자</th>
+            <th>목적지(가맹점명)</th>
+            <th>목적지(가맹점 주소)</th>
+            <th>상세 정보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--        <tr>-->
+        <!--            <td>2</td>-->
+        <!--            <td class="outWarehouseNo">20222022</td>-->
+        <!--            <td>출하 대기</td>-->
+        <!--            <td>2022-04-14</td>-->
+        <!--            <td>서울 강남 2호점</td>-->
+        <!--            <td>서울시 강남구</td>-->
+        <!--            <td>500</td>-->
+        <!--            <td>-->
+        <!--                <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${outWarehouseNo}')|">상세 조회</button>-->
+        <!--            </td>-->
+        <!--        </tr>-->
+        <tr th:each="outWarehouse, num : ${ outWarehouseList }">
+                <td th:text="${ num.index + 1 }"></td>
+                <td th:text="${ outWarehouse.outWarehouseNo }"></td>
+                <td th:text="${ outWarehouse.outWarehouseWorkingStatusName }"></td>
+                <td th:text="${ outWarehouse.outWarehouseWorkingFinishedDate }"></td>
+                <td th:text="${ outWarehouse.franchiseName }"></td>
+                <td th:text="${ outWarehouse.franchiseAddress }"></td>
+                <td>
+                    <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${outWarehouse.outWarehouseNo}')|">상세 조회</button>
+                </td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="paging" align="center">
+        <!-- 맨 앞으로 이동 -->
+        <button th:onclick="'location.href=\'/outwarehouse/list?page=' + @{${ paging.startPage }} + '\''"
+                th:disabled="${ outWarehouseList.first }"><<</button>   <!-- menuList의 isFirst()가 true면 << 비활성화 -->
+
+        <!-- 이전 페이지로 이동 -->
+        <button th:onclick="'location.href=\'/outwarehouse/list?page=' + @{${ paging.currentPage - 1 }} + '\''"
+                th:disabled="${ outWarehouseList.first }"><</button>
+
+        <!-- 숫자 버튼 -->
+        <th:block th:each="page : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+            <button th:onclick="'location.href=\'/outwarehouse/list?page=' + @{${ page }} + '\''"
+                    th:text="${ page }"
+                    th:disabled="${ paging.currentPage eq page }">
+            </button>
+        </th:block>
+
+        <!-- 다음 페이지로 이동 -->
+        <button th:onclick="'location.href=\'/outwarehouse/list?page=' + @{${ paging.currentPage + 1 }} + '\''"
+                th:disabled="${ outWarehouseList.last }">></button>
+
+        <!-- 맨 마지막으로 이동 -->
+        <button th:onclick="'location.href=\'/menu/list?page=' + @{${ paging.endPage }} + '\''"
+                th:disabled="${ outWarehouseList.last }">>></button>    <!-- menuList의 isLast()가 true면 >> 비활성화 -->
+    </div>
+</div>
+<!-- 테이블 끝 -->
+
+<th:block th:replace="/common/footer.html"></th:block>
+
+<script>
+    function viewDetail(num) {
+        location.href="/outwarehouse/historydetail/" + num;
+    }
+</script>
+</body>
+</html>

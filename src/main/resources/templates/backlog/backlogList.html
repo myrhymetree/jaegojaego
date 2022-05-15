@@ -147,12 +147,12 @@
     <div class="list-modal" id="listModal">
         <div class="backlogListWhiteboard">
             <div class="releasebacklog-modal" id="releasebacklogModal">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 450px; overflow: auto;">
+                    <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 입고물품 백로그</h3>
                 <select class="itemListForInWarehouseBacklog" id="itemListForInWarehouseBacklog" onchange="selectOneItemInfo(this.value, this.options[this.selectedIndex].text);">
                     <option selected="selected" disabled="disabled">선택해주세요</option>
                 </select>
-                <div class="ibox">
-                    <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 입고물품 백로그</h3>
-                    <div class="ibox-content">
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover dataTables-example" >
                                 <thead>
@@ -331,7 +331,7 @@
 
     $(document).ready(function(){
         $('.dataTables-example').DataTable({
-            pageLength: 7,
+            pageLength: 6,
             responsive: true,
             lengthChange: false,
             info: false,

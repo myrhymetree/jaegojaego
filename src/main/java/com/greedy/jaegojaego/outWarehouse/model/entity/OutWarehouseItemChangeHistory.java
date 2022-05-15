@@ -17,7 +17,7 @@ public class OutWarehouseItemChangeHistory {
             strategy = GenerationType.SEQUENCE,
             generator = "OUT_WAREHOUSE_ITEM_CHANGE_HISTORY_SEQ_GENERATOR"
     )
-    @Column(name = "ITEM_CHANGE_HISTORY")
+    @Column(name = "ITEM_CHANGE_HISTORY_NO")
     private int itemChangeHistoryNo;
 
     @ManyToOne
@@ -28,10 +28,7 @@ public class OutWarehouseItemChangeHistory {
     private int itemChangeHistoryDivision;
 
     @Column(name = "ITEM_CHANGE_HISTORY_AMOUNT")
-    private int itemChangeHistoryAMount;
-
-    @Column(name = "ITEM_DECREMENT_REASON_NO")
-    private int itemDecrementReasonNo;
+    private int itemChangeHistoryAmount;
 
     @ManyToOne
     @JoinColumn(name = "OUT_WAREHOUSE_NO")
@@ -42,12 +39,11 @@ public class OutWarehouseItemChangeHistory {
 
     public OutWarehouseItemChangeHistory() {}
 
-    public OutWarehouseItemChangeHistory(int itemChangeHistoryNo, OutWarehouseItemInfo itemInfoNo, int itemChangeHistoryDivision, int itemChangeHistoryAMount, int itemDecrementReasonNo, OutWarehouse outWarehouseNo, String outWarehouseStatus) {
+    public OutWarehouseItemChangeHistory(int itemChangeHistoryNo, OutWarehouseItemInfo itemInfoNo, int itemChangeHistoryDivision, int itemChangeHistoryAmount, OutWarehouse outWarehouseNo, String outWarehouseStatus) {
         this.itemChangeHistoryNo = itemChangeHistoryNo;
         this.itemInfoNo = itemInfoNo;
         this.itemChangeHistoryDivision = itemChangeHistoryDivision;
-        this.itemChangeHistoryAMount = itemChangeHistoryAMount;
-        this.itemDecrementReasonNo = itemDecrementReasonNo;
+        this.itemChangeHistoryAmount = itemChangeHistoryAmount;
         this.outWarehouseNo = outWarehouseNo;
         this.outWarehouseStatus = outWarehouseStatus;
     }
@@ -76,20 +72,12 @@ public class OutWarehouseItemChangeHistory {
         this.itemChangeHistoryDivision = itemChangeHistoryDivision;
     }
 
-    public int getItemChangeHistoryAMount() {
-        return itemChangeHistoryAMount;
+    public int getItemChangeHistoryAmount() {
+        return itemChangeHistoryAmount;
     }
 
-    public void setItemChangeHistoryAMount(int itemChangeHistoryAMount) {
-        this.itemChangeHistoryAMount = itemChangeHistoryAMount;
-    }
-
-    public int getItemDecrementReasonNo() {
-        return itemDecrementReasonNo;
-    }
-
-    public void setItemDecrementReasonNo(int itemDecrementReasonNo) {
-        this.itemDecrementReasonNo = itemDecrementReasonNo;
+    public void setItemChangeHistoryAmount(int itemChangeHistoryAmount) {
+        this.itemChangeHistoryAmount = itemChangeHistoryAmount;
     }
 
     public OutWarehouse getOutWarehouseNo() {
@@ -114,8 +102,7 @@ public class OutWarehouseItemChangeHistory {
                 "itemChangeHistoryNo=" + itemChangeHistoryNo +
                 ", itemInfoNo=" + itemInfoNo +
                 ", itemChangeHistoryDivision=" + itemChangeHistoryDivision +
-                ", itemChangeHistoryAMount=" + itemChangeHistoryAMount +
-                ", itemDecrementReasonNo=" + itemDecrementReasonNo +
+                ", itemChangeHistoryAmount=" + itemChangeHistoryAmount +
                 ", outWarehouseNo=" + outWarehouseNo +
                 ", outWarehouseStatus='" + outWarehouseStatus + '\'' +
                 '}';

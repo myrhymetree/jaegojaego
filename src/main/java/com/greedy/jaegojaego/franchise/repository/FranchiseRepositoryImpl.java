@@ -117,12 +117,12 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                             franchiseInfo))
                     .from(franchiseInfo)
                     .where(
-                        franchiseInfo.memberRemoveStatus.eq("Y")
-                        .or(memberIdContatins(searchWord))
+                        memberIdContatins(searchWord)
                         .or(franchiseNameContatains(searchWord))
                         .or(franchisePhoneNumberContains(searchWord))
                         .or(franchiseAddressContains(searchWord))
                         .or(franchiseSupervisorContains(searchWord))
+                        .and(franchiseInfo.memberRemoveStatus.eq("Y"))
                     )
                     .orderBy(franchiseInfo.branchName.asc())
                     .fetch();
@@ -211,12 +211,12 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
                             franchiseInfo))
                     .from(franchiseInfo)
                     .where(
-                            franchiseInfo.memberRemoveStatus.eq("N")
-                            .or(memberIdContatins(searchWord))
+                            memberIdContatins(searchWord)
                             .or(franchiseNameContatains(searchWord))
                             .or(franchisePhoneNumberContains(searchWord))
                             .or(franchiseAddressContains(searchWord))
                             .or(franchiseSupervisorContains(searchWord))
+                            .and(franchiseInfo.memberRemoveStatus.eq("N"))
                     )
                     .orderBy(franchiseInfo.branchName.asc())
                     .fetch();

@@ -4,12 +4,13 @@
     left:2%;
     top: 16%;
     height: 340px;
-    width: 1950px;
+    width: 95%;
     background: white;
 }
 
 .dataTableH3 {
-    position: absolute;
+    /*position: absolute;*/
+    float: left;
 }
 
 .backlogListWhiteboard {
@@ -17,8 +18,8 @@
     position: absolute;
     top: 50%;
     left: 2%;
-    height: 530px;
-    width: 1950px;
+    height: 450px;
+    width: 95%;
     background: white;
 }
 
@@ -39,44 +40,44 @@
 .barGraph {
     border: 0.5px solid gray;
     height: 300px;
-    width: 1850px;
+    width: 95%;
     position: relative;
     margin-top: 15px;
-    margin-left: 50px;
+    margin-left: 2%;
     float: left;
 }
 
 .barGraphForOut {
     border: 0.5px solid gray;
     height: 300px;
-    width: 1750px;
+    width: 95%;
     position: relative;
     margin-top: 15px;
-    margin-left: 100px;
+    margin-left: 2%;
     float: left;
 }
 
 .yearBarGraph {
     position: absolute;
-    left: 90%;
+    left: 85%;
     top: 3%;
 }
 
 .yearOutBarGraph {
     position: absolute;
-    left: 93%;
+    left: 85%;
     top: 3%;
 }
 
 .itemListForBarGraph {
     position: absolute;
-    left: 75%;
+    left: 68%;
     top: 3%;
 }
 
 .itemListForOutBarGraph {
     position: absolute;
-    left: 76%;
+    left: 68%;
     top: 3%;
 }
 
@@ -101,10 +102,12 @@
 }
 
 .itemListForInWarehouseBacklog {
-    position: absolute;
-    left: 12%;
-    top: 3%;
+    /*position: absolute;*/
+    /*left: 15%;*/
+    /*top: 3%;*/
     z-index: 1050;
+    float: left;
+    margin-top: 10px;
 }
 
 .month {
@@ -113,7 +116,7 @@
 }
 
 #morris-bar-chart {
-    width: 1750px;
+    width: 100%;
     /*heigth: 20px;*/
 }
 
@@ -122,7 +125,7 @@ svg {
 }
 
 #morris-bar-chart2 {
-    width: 1750px;
+    width: 100%;
     z-index: 1050;
     height: 270px;
 }

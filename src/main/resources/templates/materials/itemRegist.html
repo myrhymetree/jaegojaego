@@ -91,7 +91,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">카테고리</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" id="category1" name="materialCategory" required>
+                                    <select class="form-control m-b" id="categorySelect" name="materialCategory" required>
                                         <option value="" selected>선택해주세요</option>
                                         <option th:each="categoryList : ${categoryList}" th:value="${categoryList.materialCategoryNo}"
                                                 th:text="${categoryList.materialCategoryName}"></option>
@@ -186,13 +186,6 @@
         $price.innerText = "$" + this.value;
 
     });
-
-<!--    $("#category1").on("propertychange change paste input" , function (){-->
-
-<!--       let $category = document.getElementById('category');-->
-<!--       $category.innerText = "Category" + this.value";-->
-
-<!--   });-->
 
 </script>
 

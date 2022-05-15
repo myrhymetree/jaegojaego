@@ -7,6 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * <pre>
+ * Class : MaterialsRepository
+ * Comment : MaterialsRepository Entity관련 메소드를 모아놓은 MaterialsRepository입니다.
+ * History
+ * 2022/04/20 (김영광) findAllProductList 자재 전체 목록 조회
+ * 2022/04/25 (김영광) findByMaterialsByCode 자재 상세 조회
+ * @version
+ * @author 김영광
+ * */
 public interface MaterialsRepository extends JpaRepository<Materials, Integer> {
 
     @Query(value = "SELECT * " +

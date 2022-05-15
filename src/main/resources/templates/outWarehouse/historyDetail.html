@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<!-- 컨텐츠 작성 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>출고 관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <span>가앵점 발주 관리</span>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/outwarehouse/history}"><strong>출고 내역</strong></a>
+            </li>
+        </ol>
+    </div>
+    <!--    <div class="col-lg-2">-->
+    <!--    </div>-->
+</div>
+<br>
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>출고 상세정보</h2>
+    <br>
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter th:style="${'text-align:center;'}">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>품번</th>
+            <th>품목</th>
+            <th>품명</th>
+            <th>출고 수량</th>
+            <th>작업 처리상태</th>
+            <th>작업 처리일자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="outWarehouseDetail,num : ${ outWarehouseDetailList }">
+            <td th:text="${ num.size - num.index }"></td>
+            <td th:text="${ outWarehouseDetail.itemInfoItemSerialNo }"></td>
+            <td th:text="${ outWarehouseDetail.materialCategoryName }"></td>
+            <td th:text="${ outWarehouseDetail.itemInfoName }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseItemAmount }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseWorkingStatusName }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseWorkingFinishedDate }"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

@@ -38,9 +38,9 @@ spring:
     resources:
       static-locations: file:src/main/resources/static/
 
-  thymeleaf:
-    cache: false
-    prefix: file:src/main/resources/templates/
+#  thymeleaf:
+#    cache: false
+#    prefix: file:src/main/resources/templates/
 
 # file upload
   servlet:
@@ -68,7 +68,7 @@ jaegojaego:
         path: D:\jaegojaego\src\main\resources\static\upload\issue\conversion
   client:
     upload:
-      path: C:\Users\kidol\git\JaeoGoJaeGo\src\main\resources\static\upload\client\conversion
+      path: D:\jaegojaego\src\main\resources\static\upload\client\conversion
   materials:
      upload:
         path: D:\jaegojaego\src\main\resources\static\upload\materials\conversion
