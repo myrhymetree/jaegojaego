@@ -143,8 +143,6 @@ public class OutWarehouseController {
 
         List<OutWarehouseFranchiseIssueListDTO> outWarehouseIssueList = outWarehouseService.findAllIssueList();
 
-        outWarehouseIssueList.forEach(System.out::println);
-
         return outWarehouseIssueList;
     }
 

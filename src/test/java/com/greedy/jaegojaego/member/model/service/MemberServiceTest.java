@@ -185,4 +185,18 @@ class MemberServiceTest {
 
         assertEquals(id, result.getMemberId());
     }
+
+//    @Test
+//    @Transactional
+//    public void 본사_직원_계정_정보_수정_테스트() {
+//
+//        CompanyAccount companyAccount = new CompanyAccount();
+//        companyAccount.setMemberNo(10);
+//        companyAccount.setMemberName("장덕철");
+//        companyAccount.setMemberCellPhone(null);
+//        companyAccount.setMemberCellPhone(null);
+//        companyAccount.setDepartmentNo(2);
+//
+//        companyAccountRepository.updateMember(companyAccount);
+//    }
 }

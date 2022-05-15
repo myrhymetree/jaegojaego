@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -430,6 +431,8 @@ public class OrderController {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
         List<FranchiseOrderListDTO> franchiseOrderList = orderService.selectFranchiseOrderList(customUser.getMemberNo(), customUser.getMemberDivision(), customUser.getOfficeDivision());
+
+        franchiseOrderList = franchiseOrderList.stream().sorted(Comparator.comparing(FranchiseOrderListDTO::getFranchiseOrderApplicationDate).reversed()).collect(Collectors.toList());
 
         mv.addObject("franchiseOrderList", franchiseOrderList);
         mv.addObject("member", customUser);
