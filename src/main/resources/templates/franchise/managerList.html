@@ -139,7 +139,7 @@
                 .then(function (response) {
                     console.log(response);
 
-                    $("#detail-memberNo").val(response.data.memberNo);
+                    $("#detail-memberNo1").val(response.data.memberNo);
                     $("#manager-id").text(response.data.memberId).val();
                     $("#manager-name").text(response.data.managerName).val();
                     $("#manager-phone").text(response.data.managerPhone).val();
@@ -171,7 +171,7 @@
                     .then(function (response) {
                         console.log(response);
 
-                        $("#detail-memberNo").val(response.data.memberNo);
+                        $("#detail-memberNo1").val(response.data.memberNo);
                         $("#manager-id").text(response.data.memberId).val();
                         $("#manager-name").text(response.data.managerName).val();
                         $("#manager-phone").text(response.data.managerPhone).val();
@@ -190,7 +190,7 @@
             /* 가맹점 계정 삭제 이벤트 */
             $(function () {
                 $("#removeManager").click(function () {
-                    const memberNo = $("#detail-memberNo").val();
+                    const memberNo = $("#detail-memberNo1").val();
                     location.href="/franchise/delete/" + memberNo;
                 });
             });
@@ -198,7 +198,7 @@
             /* 가맹점 계정 복구 이벤트 */
             $(function () {
                 $("#restoreManager").click(function () {
-                    const memberNo = $("#detail-memberNo").val();
+                    const memberNo = $("#detail-memberNo1").val();
                     location.href="/franchise/restore/" + memberNo;
                 });
             });

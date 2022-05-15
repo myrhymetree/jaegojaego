@@ -80,7 +80,7 @@ public class FranchiseRepositoryImpl extends QuerydslRepositorySupport implement
             updateBuilder.set(franchiseInfo.writedMemberNo, franchise.getWritedMemberNo());
         }
 
-        if((StringUtils.hasText(String.valueOf(franchise.getSupervisorNo())))) {
+        if((String.valueOf(franchise.getSupervisorNo())).isEmpty()) {
             updateBuilder.set(franchiseInfo.supervisorNo, franchise.getSupervisorNo());
         }
 

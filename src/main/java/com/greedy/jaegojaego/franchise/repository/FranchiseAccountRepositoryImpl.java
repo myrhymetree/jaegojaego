@@ -86,11 +86,11 @@ public class FranchiseAccountRepositoryImpl extends QuerydslRepositorySupport im
                             franchiseAccount))
                     .from(franchiseAccount)
                     .where(
-                            franchiseAccount.memberRemoveStatus.eq("Y")
-                            .or(managerIdContains(searchWord))
+                            managerIdContains(searchWord)
                             .or(managerNameContains(searchWord))
                             .or(franchiseNameContains(searchWord))
                             .or(franchisePhoneNumberContains(searchWord))
+                            .and(franchiseAccount.memberRemoveStatus.eq("Y"))
                     )
                     .orderBy(franchiseAccount.franchiseInfo.branchName.asc())
                     .fetch();
