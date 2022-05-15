@@ -1,7 +1,5 @@
  $(document).ready(function(){
 
-     $("#managerModifyModal1").children("input[class='form-control']").empty();
-
     <!-- input mask, validation(password equality, length, email validation) -->
     $("#modifyManagerForm1").ready().validate({
         errorPlacement: function (error, element) {
@@ -13,7 +11,9 @@
                 maxlength: 15
             },
             confirm: {
-                equalTo: "#managerPwd1"
+                equalTo: "#managerPwd1",
+                minlength: 8,
+                maxlength: 15
             },
             managerEmail: {
                 email: true
