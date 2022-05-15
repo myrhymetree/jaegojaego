@@ -22,7 +22,7 @@
                 <span>가앵점 발주 관리</span>
             </li>
             <li class="breadcrumb-item">
-                <a th:href="@{/outWarehouse/list}"><strong>출고 관리</strong></a>
+                <a th:href="@{/outwarehouse/list}"><strong>출고 관리</strong></a>
             </li>
         </ol>
     </div>
@@ -62,7 +62,7 @@
 <!-- 테이블 시작 -->
 <div class="ibox-content">
 
-    <h2>출고 정보</h2>
+    <h2>출고 상세정보</h2>
     <br>
         <h3>작업 상태</h3>
         <select id="outWarehouseStatus" th:style="${'width:10%; height:2rem; text-align:center; font-size:1.2rem;'}">
@@ -87,7 +87,7 @@
         </thead>
         <tbody>
         <tr th:each="outWarehouseDetail,num : ${ outWarehouseDetailList }">
-            <td th:text="${ num.size - num.index }"></td>
+            <td th:text="${ num.index + 1 }"></td>
             <td th:text="${ outWarehouseDetail.itemInfoItemSerialNo }"></td>
             <td th:text="${ outWarehouseDetail.materialCategoryName }"></td>
             <td th:text="${ outWarehouseDetail.itemInfoName }"></td>
