@@ -164,11 +164,13 @@ public class MemberService {
 
         /* 본사 직원 계정 목록 조회 */
         List<CompanyAccount> memberList = companyAccountRepository.searchMembers(searchWord);
-        List<CompanyAccountDTO> memberDTOList =  memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
+        List<CompanyAccountDTO> memberDTOList =
+                memberList.stream().map(member -> modelMappper.map(member, CompanyAccountDTO.class)).collect(Collectors.toList());
 
         /* 삭제된 본사 직원 계정 목록 조회 */
         List<CompanyAccount> removedMemberList = companyAccountRepository.searchRemovedMembers(searchWord);
-        List<CompanyAccountDTO> removedMembers = removedMemberList.stream().map(removedMember -> modelMappper.map(removedMember, CompanyAccountDTO.class)).collect(Collectors.toList());
+        List<CompanyAccountDTO> removedMembers =
+                removedMemberList.stream().map(removedMember -> modelMappper.map(removedMember, CompanyAccountDTO.class)).collect(Collectors.toList());
 
         /* 컨트롤러에 인자 하나로 전달하기 위해서 DTO타입을 생성해서 담아줌 */
         MemberListDTO memberListDTO = new MemberListDTO();

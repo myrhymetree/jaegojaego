@@ -93,7 +93,7 @@ class MemberServiceTest {
     EntityManagerFactory emf;
     
     @Test
-    public void 검색테스트() {
+    public void 본사_직원_계정_목록_조회_테스트() {
         
         String searchWord = null;
         
@@ -103,12 +103,9 @@ class MemberServiceTest {
 
         assertTrue(loaded);
 
-        System.out.println("companyAccounts = " + companyAccounts);
-
         List<CompanyAccountDTO> companyAccountDTOS =
-                companyAccounts.stream().map(companyAccount -> modelMapper.map(companyAccount, CompanyAccountDTO.class)).collect(Collectors.toList());
-
-        companyAccountDTOS.forEach(row -> System.out.println(row));
+                companyAccounts.stream().map(companyAccount -> modelMapper.map(companyAccount,
+                        CompanyAccountDTO.class)).collect(Collectors.toList());
 
         assertNotNull(companyAccountDTOS);
     }
@@ -186,17 +183,14 @@ class MemberServiceTest {
         assertEquals(id, result.getMemberId());
     }
 
-//    @Test
-//    @Transactional
-//    public void 본사_직원_계정_정보_수정_테스트() {
-//
-//        CompanyAccount companyAccount = new CompanyAccount();
-//        companyAccount.setMemberNo(10);
-//        companyAccount.setMemberName("장덕철");
-//        companyAccount.setMemberCellPhone(null);
-//        companyAccount.setMemberCellPhone(null);
-//        companyAccount.setDepartmentNo(2);
-//
-//        companyAccountRepository.updateMember(companyAccount);
-//    }
+    @Test
+    @Transactional
+    public void 본사_직원_계정_정보_수정_테스트() {
+
+        CompanyAccount companyAccount = new CompanyAccount();
+        companyAccount.setMemberNo(191);
+        companyAccount.setMemberPwd(passwordEncoder.encode("1111"));
+
+        companyAccountRepository.updateMember(companyAccount);
+    }
 }
