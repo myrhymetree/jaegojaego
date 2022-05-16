@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+
+    <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <style>
+        .bg{ background-color: white;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>자재관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/materials/product/list}">자재관리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/materials/product/list}">자재목록</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <a th:href="@{/materials/product/list}"><strong>자재상세 조회</strong></a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<!-- 시작 -->
+<div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+    <div class="pace-progress-inner"></div>
+</div>
+    <div class="pace-activity"></div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>자재 상세조회</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content" style="height: 700px;">
+                    <div style="float: left; width: 40%;">자재 정보
+                        <button class="btn btn-primary" type="button" id="materialModify" style="float: right;">
+                            <i class="fa fa-check"></i>&nbsp;자재 수정
+                        </button>
+                        <button class="btn btn-primary" type="button" id="materialDelete" style="float: right;margin-right: 5px;">
+                            <i class="fa fa-check"></i>&nbsp;자재 삭제
+                        </button>
+                        <hr></hr>
+                        <form action="/materials/modify" method="post">
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">자재 번호</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" th:value="${materials.itemInfoNo}" name="itemInfoNo" id="itemInfoNo" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">자재 품번</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:value="${materials.itemSerialNo}" name="itemSerialNo" id="itemSerialNo" readonly required>
+                                </div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">자재 품명</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:value="${materials.itemInfoName}" name="itemInfoName" id="itemInfoName" readonly required>
+                                </div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">카테고리</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:value="${materials.materialsCategory.materialCategoryName}" name="materialsCategory.materialCategoryName" id="materialCategoryName" readonly required>
+                                </div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">가공 유무</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:value="${materials.subdivisionYN}" name="subdivisionYN" id="subdivisionYN" readonly required>
+                                </div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">판매 가격</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" th:value="${materials.itemPrice}" name="franchiseOrderableItem.itemPrice" id="itemPrice" readonly required>
+                                </div>
+                            </div>
+                            <div class="form-group  row">
+                                <label class="col-sm-2 col-form-label">소분 단위</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" th:value="${materials.subdivisionUnit}" name="subdivisionUnit" id="subdivisionUnit" readonly>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" type="submit" id="save" onclick="location.href='/materials/modify'" style="float: right; display : none;">
+                                    <i class="fa fa-check"></i>&nbsp;저장
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div style="overflow-x:hidden; overflow-y:scroll; height: 550px;">
+                   <th:block th:each="itemList: ${clientList}">
+                    <div style="float: right; width: 40%;">거래처 정보<hr></hr>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">상품 번호</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" th:value="${itemList.clientPK.clientItemNo}" name="itemInfoNo" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">상품명</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${itemList.clientItemName}" name="itemSerialNo" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">공급가</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${itemList.clientPrice}" name="itemInfoName" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">거래처 명</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${itemList.clientContractInfoJoin.client.clientName}" name="itemPrice" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">이메일</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${itemList.clientContractInfoJoin.client.clientEmail}" name="subdivisionUnit" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">대표 핸드폰</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${itemList.clientContractInfoJoin.client.clientPhone}" name="subdivisionUnit" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">사업자 번호</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${itemList.clientContractInfoJoin.client.registrationNo}" name="subdivisionUnit" readonly>
+                            </div>
+                        </div>
+                    </div>
+                   </th:block>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<th:blockpi th:replace="/common/footer.html"></th:blockpi>
+
+<script>
+    $("#materialModify").click(function (){
+        if(document.getElementById("itemSerialNo").readOnly == true) {
+
+            document.getElementById('itemSerialNo').readOnly = false;
+            document.getElementById('itemInfoName').readOnly = false;
+            document.getElementById('materialCategoryName').readOnly = false;
+            document.getElementById('subdivisionYN').readOnly = false;
+            document.getElementById('itemPrice').readOnly = false;
+            document.getElementById('subdivisionUnit').readOnly = false;
+
+            document.getElementById('save').style.display = "block";
+
+        } else if(document.getElementById("itemSerialNo").readOnly == false) {
+
+            document.getElementById('itemSerialNo').readOnly = true;
+            document.getElementById('itemInfoName').readOnly = true;
+            document.getElementById('materialCategoryName').readOnly = true;
+            document.getElementById('subdivisionYN').readOnly = true;
+            document.getElementById('itemPrice').readOnly = true;
+            document.getElementById('subdivisionUnit').readOnly = true;
+
+            document.getElementById('save').style.display = "none";
+        }
+    });
+</script>
+<script>
+    window.onload = function () {
+        document.getElementById('materialDelete').onclick = function () {
+        const itemInfoNo = document.getElementById('itemInfoNo').value;
+            location.href = "/materials/delete/" + itemInfoNo;
+        };
+    };
+</script>
+
+<script>
+
+</script>
+</body>
+</html>

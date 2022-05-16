@@ -4,30 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/main/main.css}">
+
 </head>
-<body>
-    <h1 align="center">GREEDY RESTAURANT에 오신 것을 환영합니다.</h1>
-    <div align="right">
-        <!-- 로그인을 하지 않았을 때 보여질 영역 -->
-        <th:block sec:authorize="isAnonymous()">
-            <h3>로그인이 필요한 서비스입니다.</h3>
-            <button onclick="location.href='/member/login'">로그인</button>
-        </th:block>
+<body class="md-skin">
 
-        <!-- 로그인을 했을 때 보여질 영역 -->
-        <th:block sec:authorize="isAuthenticated()">
-            <h3><span sec:authentication="principal.name"></span>님 환영합니다.</h3>
-            <button onclick="location.href='/member/logout'">로그아웃</button>
-        </th:block>
+    <th:block th:include="/common/header.html"></th:block>
+
+    <div id="main" class="main">
+
     </div>
+    <!-- 컨텐츠 작성 영역 -->
 
-    <button onclick="location.href='/menu/list'">메뉴 보기</button>
-    <th:block sec:authorize="hasAnyRole('MEMBER','ADMIN')">
-        <button onclick="location.href='/order/regist'">주문하기</button>
-    </th:block>
-    <th:block sec:authorize="hasRole('ADMIN')">
-        <button onclick="location.href='/admin/dashboard'">관리자메뉴</button>
-    </th:block>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/js/inspinia.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+
+    <!-- Password meter -->
+    <script th:src="@{/js/plugins/pwstrength/pwstrength-bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/pwstrength/zxcvbn.js}"></script>
+
+    <!-- Jquery Validate -->
+    <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+    <!-- Input Mask-->
+    <script th:src="@{/js/plugins/jqueryMask/jquery.mask.min.js}"></script>
 
 </body>
 </html>

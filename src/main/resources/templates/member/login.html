@@ -1,79 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <title>Insert title here</title>
-    <style>
-        h5 {
-            color: red;
-        }
+    <title>Title</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
 
-        div>button, input[type=submit] {
-            width: 200px;
-            margin-top: 10px;
-        }
-    </style>
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
 </head>
-<body>
-<br>
-<h1 align="center">GREEDY RESTAURANT</h1>
-<br>
-<br>
-<h3 align="center">로그인이 필요한 서비스 입니다.</h3>
-<br><br>
-<h5 align="center">19세 미만 사용자는 사용 불가능하니 꺼지세요.</h5>
-<Br>
+<body class="gray-bg">
 
-<form action="/member/login" method="post" id="loginForm">
-    <table align="center">
-        <tr>
-            <td>
-                <div class="input-group mb-3 input-group-lg">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" style="width:120px">아이디</span>
-                    </div>
-                    <input type="text" class="form-control" name="username"><!-- 시큐리티에서는 반드시 username으로 name값 설정 -->
-                </div>
-            </td>
-            <td rowspan="2"></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="input-group mb-3 input-group-lg">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" style="width:120px">비밀번호</span>
-                    </div>
-                    <input type="password" class="form-control" name="password"><!-- 시큐리티에서는 반드시 password으로 name값 설정 -->
-                </div>
-            </td>
+<!-- 컨텐츠 작성 영역 -->
 
-        </tr>
-    </table>
-</form>
 <div align="center">
-    <input type="submit" value="로그인" class="btn btn-info">
-    <br>
-    <button class="btn btn-success">19세 이상 회원 가입 하기</button>
-    <br>
-    <button class="btn btn-secondary">아이디 / 비밀번호 찾기</button>
+
+    <img alt="image" th:src="@{/img/jaegojaego_logo.png}"/>
+
 </div>
 
-<script>
-    $(function(){
-        $("input[name=userId]").focus();
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <h3>JaeGoJaeGo에 오신것을 환영합니다.</h3>
+        <p>계정 유형을 선택 해주세요.</p>
+        <form class="m-t" role="form" method="post" action="/member/login" id="loginForm" onsubmit="return frm_check();">
+            <br><br>
+            <div class="form-group">
+                <input type="text" id="loginId" name="username" class="form-control" placeholder="ID를 입력하세요." required="">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요." required="">
+            </div>
+            <div class="logSave" align="left">
+                <input type="checkbox" class="save_id" name="checkId" id="saveId" >
+                <label for="saveId">아이디 저장</label>
+            </div>
 
-        $("input[type=submit]").click(function(){
-            $("#loginForm").submit();
+            <button type="submit" class="btn btn-primary block full-width m-b">로그인</button>
+
+            <a href="#"><small>비밀번호를 잊으셨나요?</small></a>
+            <br>
+            <a href="#"><small>아이디를 잊으셨나요?</small></a>
+        </form>
+        <p class="m-t"> <small>재고재고 2022</small> </p>
+    </div>
+</div>
+
+
+<!-- Mainly scripts -->
+<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.js}"></script>
+
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
         });
-    })
+    });
+
+    $(function() {
+
+        fnInit();        //기본 실행함수에 fnInit(); 함수를 넣어서 실행함
+
+    });
+
+    function frm_check(){
+        saveid();        //saveid함수에는 체크박스에 체크값에 대하여 조건에 따라 시간을 구해주는 기능을 구현함
+    }
+
+    function fnInit(){
+        let cookieid = getCookie("saveid");     // cookie 변수에 saveid라는 키를 가진 쿠키를 담아줌
+        console.log(cookieid);
+        if(cookieid !=""){
+            $("input:checkbox[id='saveId']").prop("checked", true);     //checkbox가 체크 될때 true 값 지정
+            $('#loginId').val(cookieid);        //#logid에 cookieid 변수를 값으로 지정함
+        }
+
+    }
+
+    function setCookie(name, value, expiredays) {
+        let todayDate = new Date();
+        todayDate.setTime(todayDate.getTime() + 0);     //오늘날짜를 시간으로  환산하고 0을 더해줌
+        if(todayDate > expiredays){
+            document.cookie = name + "=" + escape(value) + "; path=/; expires=" + expiredays + ";";
+        }else if(todayDate < expiredays){       //만료된 날짜가 오늘보다 클 경우
+            todayDate.setDate(todayDate.getDate() + expiredays);        //오늘 날짜 + 만료일, 음수가 됨.
+            document.cookie = name + "=" + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";";
+        }
+
+
+        console.log(document.cookie);
+    }
+
+    function getCookie(Name) {
+        let search = Name + "=";
+        console.log("search : " + search);
+
+        if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+            offset = document.cookie.indexOf(search);
+            console.log("offset : " + offset);
+            if (offset != -1) {     // 쿠키가 존재하면
+                offset += search.length;
+                // set index of beginning of value
+                end = document.cookie.indexOf(";", offset);
+                console.log("end : " + end);
+                // 쿠키 값의 마지막 위치 인덱스 번호 설정
+                if (end == -1)
+                    end = document.cookie.length;
+                console.log("end위치  : " + end);
+
+                return unescape(document.cookie.substring(offset, end));
+            }
+        }
+        return "";
+    }
+
+    function saveid() {
+        let expdate = new Date();
+        if ($("#saveId").is(":checked")){
+            expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30);     //한달
+            setCookie("saveid", $("#loginId").val(), expdate);
+        }else{
+            expdate.setTime(expdate.getTime() - 1000 * 3600 * 24 * 30);
+            setCookie("saveid", $("#loginId").val(), expdate);
+
+        }
+    }
 </script>
+
 </body>
 </html>

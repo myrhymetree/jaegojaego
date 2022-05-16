@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>거래처 계약 상품</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/client/clientcss.css}">
+</head>
+
+<body style="overflow-y: scroll;">
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="body-header">
+    <div class="menu-title">거래처정보</div>
+    <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처 판매계약상품</div>
+</div>
+    <div id="page-wrapper" class="gray-bg">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="button-area" style="text-align: right">
+                <button type="button" id="registNewClient" class="btn btn btn-primary" onclick="location.href='/client/itemregist';">신규등록</button><br><br>
+            </div>
+            <div class="row">
+                <div class="col-md-3" th:each="clientContractItemList : ${ clientContractItemList }">
+                    <div class="ibox">
+                        <div class="ibox-content product-box">
+                            <div class="product-imitation">
+                                <th:block th:if = "${ clientContractItemList.filePath } ne null">
+                                <img th:src="@{ ${ clientContractItemList.filePath } }" style="width: 70%; height: 70%;">
+                                </th:block>
+                            </div>
+                            <div class="product-desc">
+<!--                                <small class="text-muted" th:text="${ clientContractItemList.clientContractItemCategory }"></small>-->
+                                <span class="product-name" th:text="${ clientContractItemList.clientContractItemName }"></span>
+                                <div class="small m-t-xs">
+<!--                                    납품업체 : <a th:text="${ clientContractItemList.clientContractInfoNo.client.clientName }"></a><br>-->
+                                    공급가 : <span th:text="${ clientContractItemList.clientContractItemSupplyPrice }"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Mainly scripts -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/inspinia.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+</head>
+<body>
+    <th:block th:include="/common/header.html"></th:block>
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>직원 계정 목록</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="">직원 관리</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href=""><strong>직원 계정 목록</strong></a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+<!--    <div class="body-header">-->
+<!--        <div class="menu-title">계정 목록</div>-->
+<!--        <div class="menu-path"><a th:href="@{/}">메인페이지</a> / <a href="">직원 관리</a> / <a href="/member/list">계정 목록</a></div>-->
+<!--    </div>-->
+
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-8" id="good">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <h2>계정 목록</h2>
+                        <p>
+                            본사 소속 모든 직원 목록 입니다.
+                        </p>
+                        <form method="get" id="searchForm" action="/member/list">
+                        <div class="input-group">
+                            <input type="text" placeholder="검색하세요 " name="searchWord" class="input form-control" value="">
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn btn-primary"> <i class="fa fa-search"></i> 검색</button>
+                            </span>
+                        </div>
+                        </form>
+                        <div class="clients-list">
+                            <span class="float-right small text-muted"></span>
+                            <ul class="nav nav-tabs">
+                                <li><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>본사직원목록</a></li>
+                                <li><a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-remove"></i>삭제된 직원 목록</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tab-1" class="tab-pane active">
+                                    <div class="full-height-scroll">
+                                        <div class="table-responsive">
+                                            <table id="memberTable" class="table table-striped table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>번호</th>
+                                                    <th>아이디</th>
+                                                    <th>이름</th>
+                                                    <th>부서</th>
+                                                </tr>
+                                                <tr th:each="memberList, index : ${ memberList }">
+                                                    <td class="memberNo" th:text="${ memberList.memberNo }"></td>
+                                                    <td>[[${index.count}]]</td>
+                                                    <td th:text="${ memberList.memberId }"></td>
+                                                    <td th:text="${ memberList.memberName }"></td>
+                                                    <td th:text="${ memberList.department.departmentName }"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tab-2" class="tab-pane">
+                                    <div class="full-height-scroll">
+                                        <div class="table-responsive">
+                                            <table id="removedMemberTable" class="table table-striped table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <th>번호</th>
+                                                    <th>아이디</th>
+                                                    <th>이름</th>
+                                                    <th>부서</th>
+                                                </tr>
+                                                <tr th:each="removedMember, index : ${ removedMemberList }">
+                                                    <td class="memberNo" th:text="${ removedMember.memberNo }"></td>
+                                                    <td>[[${index.count}]]</td>
+                                                    <td th:text="${ removedMember.memberId }"></td>
+                                                    <td th:text="${ removedMember.memberName }"></td>
+                                                    <td th:text="${ removedMember.department.departmentName }"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <th:block th:include="/member/employeeInfoModifyModal.html"></th:block>
+        <th:block th:if="${ true }">
+            <th:block th:replace="/member/detailView.html"></th:block>
+        </th:block>
+        <th:block th:replace="/common/footer.html"></th:block>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+
+            $('.memberNo').attr('style', "display:none;");
+
+            $("#memberTable tbody").on("click", "tr", function () {
+
+                $(".memberDetailView").addClass("active").attr('style', "display:block");
+                $("#modifyModal").addClass("hover").attr('style', "display:block");
+                $("#removeMember").addClass("hover").attr('style', "display:block");
+                $("#restoreMember").addClass("hover").attr('style', "display:none");
+
+                /* td에 숫자가 안나오게 표시함 */
+                let memberNo = this.children[0].innerText;
+
+                console.log("번호는 : " + memberNo);
+
+                axios({
+                    method: 'get',
+                    url: '/member/detailInfo/' + memberNo,
+                })
+                .then(function (response1) {
+                    console.log(response1);
+
+                    $("#detail-memberNo").val(response1.data.memberNo);
+                    $("#detail-name").text(response1.data.memberName);
+                    $("#detail-id").text(response1.data.memberId).val();
+                    $("#detail-department").text(response1.data.department.departmentName).val();
+                    $("#detail-cellPhone").text(response1.data.memberCellPhone).val();
+                    $("#detail-officePhone").text(response1.data.officePhoneNumber).val();
+                    $("#detail-email").text(response1.data.memberEmail).val();
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+                .then(function () {
+
+                });
+
+                axios({
+                    method: 'get',
+                    url: '/member/department'
+                })
+                .then(function (response2) {
+
+                    console.log(response2);
+
+                    const $department = $("#employeeDepartment");
+                    $department.html("");
+
+                    $department.append($("<option>"))
+
+                    for (let i = 0; i < response2.data[i].departmentNo; i++) {
+                        $department.append($("<option>").val(response2.data[i].departmentNo).text(response2.data[i].departmentName));
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+                .then(function () {
+
+                });
+
+            });
+
+            $("#removedMemberTable tbody").on("click", "tr", function () {
+
+                $(".memberDetailView").addClass("active").attr('style', "display:block");
+                $("#modifyModal").addClass("hover").attr('style', "display:none");
+                $("#removeMember").addClass("hover").attr('style', "display:none");
+                $("#restoreMember").addClass("hover").attr('style', "display:block");
+
+                /* 파라미터에 값을 전달하기 위해 변수에 넣어줌 */
+                let memberNo = this.children[0].innerText;
+
+                console.log("번호는 : " + memberNo);
+
+                axios({
+                    method: 'get',
+                    url: '/member/detailInfo/' + memberNo,
+                })
+                    .then(function (response1) {
+                        console.log(response1);
+
+                        $("#detail-memberNo").val(response1.data.memberNo);
+                        $("#detail-name").text(response1.data.memberName);
+                        $("#detail-id").text(response1.data.memberId).val();
+                        $("#detail-department").text(response1.data.department.departmentName).val();
+                        $("#detail-cellPhone").text(response1.data.memberCellPhone).val();
+                        $("#detail-officePhone").text(response1.data.officePhoneNumber).val();
+                        $("#detail-email").text(response1.data.memberEmail).val();
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+                    .then(function () {
+
+                    });
+            });
+
+            /* 본사 직원 계정 삭제 이벤트 */
+            $(function () {
+                $("#removeMember").click(function () {
+
+                    const memberNo = $("#detail-memberNo").val();
+
+                    location.href="/member/delete/" + memberNo;
+                });
+            });
+
+            /* 본사 직원 계정 복구 이벤트 */
+            $(function () {
+                $("#restoreMember").click(function () {
+                    const memberNo = $("#detail-memberNo").val();
+                    location.href="/member/restore/" + memberNo;
+                });
+            });
+
+        });
+    </script>
+
+    <!-- iCheck -->
+    <script th:src="@{js/plugins/iCheck/icheck.min.js}"></script>
+
+    <!-- Password meter -->
+    <script th:src="@{/js/plugins/pwstrength/pwstrength-bootstrap.min.js}"></script>
+    <script th:src="@{/js/plugins/pwstrength/zxcvbn.js}"></script>
+
+    <!-- Jquery Validate -->
+    <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+    <!-- Input Mask-->
+    <script th:src="@{/js/plugins/jqueryMask/jquery.mask.min.js}"></script>
+
+    <!-- Select2 -->
+    <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+    <!-- Sweet alert -->
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+</body>
+</html>

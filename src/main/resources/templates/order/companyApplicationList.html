@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .company-order-output {
+            background-color: #1a7bb9;
+            color: white;
+            cursor: pointer;
+            width: 50px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="/common/header.html"></div>
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>발주 신청</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    발주 관리
+                </li>
+                <li class="breadcrumb-item">
+                    <span style="font-weight: bold">발주 신청서</span>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="ibox ">
+        <div class="row" style="margin-top: 30px; height: 590px;">
+            <div class="col-lg-6">
+                <div class="ibox " style="width: 1000px; margin-left: 350px">
+                    <div class="ibox-title">
+                        <h3 style="font-weight: bold">발주 신청서 출력</h3>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <table class="table table-bordered" style="text-align: center; margin-left: 150px; width: 750px;">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>거래처명</th>
+                                    <th style="width: 180px;">발주 신청서</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="orderApplication : ${ applicationList }">
+                                    <td th:text="${ orderApplicationStat.count }"></td>
+                                    <td th:text="${ orderApplication.clientName }"></td>
+                                    <td>
+                                        <button class="company-order-output" id="company-order-output">출력</button>
+                                        <input type="hidden" th:value="${ orderApplication.companyOrderHistoryNo }">
+                                        <input type="hidden" th:value="${ orderApplication.clientNo }">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const $companyOrderOutputBtn = document.querySelectorAll('#company-order-output');
+
+        for(let i = 0; i < $companyOrderOutputBtn.length; i++) {
+
+            $companyOrderOutputBtn[i].onclick = function() {
+
+                let companyOrderHistoryNo = this.parentNode.children[1].value;
+                let clientNo = this.parentNode.children[2].value;
+
+                location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
+
+            }
+
+        }
+    </script>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+
+</body>
+</html>

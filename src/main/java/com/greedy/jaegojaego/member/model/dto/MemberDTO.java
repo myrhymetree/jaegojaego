@@ -2,6 +2,9 @@ package com.greedy.jaegojaego.member.model.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -10,15 +13,17 @@ import lombok.*;
 @Builder
 public class MemberDTO {
 
-    private int memberNo;
+    private Integer memberNo;
     private String memberId;
     private String memberPwd;
-    private String nickname;
-    private String phone;
-    private String email;
-    private String address;
-    private java.sql.Date enrollDate;
-    private String memberRole;
-    private String memberStatus;
+    private LocalDateTime memberPwdUpdateDate;
+    private String memberPwdInitStatus;
+    private LocalDateTime memberCreatedDate;
+    private LocalDateTime memberRemovedDate;
+    private String memberRemoveStatus;
+    private String officeDivision;
+    private String memberDivision;
 
+    private CompanyAccountDTO companyAccountDTO;
+    private List<AuthorityDTO> authorityDTOList;
 }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/select2/select2-bootstrap4.min.css}" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+    <!-- 자체 css  -->
+    <link th:href="@{/css/franchise/franchise.css}" rel="stylesheet">
+
+    <link th:href="@{/css/plugins/datapicker/datepicker3.css}" rel="stylesheet">
+
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>가맹점 직원 계정 생성</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="">가맹점 관리</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <a href=""><strong>가맹점 직원 계정 생성</strong></a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<!-- 컨텐츠 작성 영역 -->
+<div align="center">
+    <img alt="image" th:src="@{/img/jaegojaego_logo.png}"/>
+</div>
+<div class="middle-box text-center animated fadeInDown">
+
+    <h3>가맹점 직원 계정 등록</h3>
+    <form class="m-t4" id="registManagerForm" role="form" action="/franchise/manager" method="post">
+        <div>
+            <div class="form-group" id="idContainer">
+                <input type="text"  id="memberId" name="memberId" class="form-control" placeholder="ID를 입력하세요." required>
+                <label id="duplicationText"></label>
+            </div>
+        </div>
+        <div id="pwd-container2">
+            <div class="form-group">
+                <input type="password" class="form-control example2" id="Pwd" name="memberPwd" placeholder="비밀번호를 입력하세요" required>
+                <div class="form-group">
+                    <div class="pwstrength_viewport_progress"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="confirm" id="confirm" placeholder="비밀번호를 한번 더 입력하세요" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="managerName" name="managerName" placeholder="이름을 입력하세요" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="managerPhone" name="managerPhone" placeholder="휴대전화 번호를 입력하세요" data-mask="000-0000-0000">
+        </div>
+
+        <div class="form-group">
+            <input type="email"  name="managerEmail" class="form-control" placeholder="이메일을 입력하세요">
+        </div>
+        
+        <select class="select2_demo_3 form-control m-b" name="representativeNo" id="branch" required>
+        </select>
+        <br>
+        <button type="submit" id="btn-submit" class="btn btn-primary block full-width m-b">등록</button>
+    </form>
+</div>
+</div>
+
+<th:block th:include="/member/registMultipleModal.html"></th:block>
+<th:block th:replace="/common/footer.html"></th:block>
+
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+<script th:src="@{/js/franchise/franchiseRegistManager.js}"></script>
+
+<!-- Custom and plugin javascript -->
+<script th:src="@{/js/inspinia.js}"></script>
+<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+
+<!-- Password meter -->
+<script th:src="@{/js/plugins/pwstrength/pwstrength-bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/pwstrength/zxcvbn.js}"></script>
+
+<!-- Jquery Validate -->
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+
+<!-- Input Mask-->
+<script th:src="@{/js/plugins/jqueryMask/jquery.mask.min.js}"></script>
+
+<!-- Select2 -->
+<script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+<!-- Sweet alert -->
+<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+<!-- Data picker -->
+<script th:src="@{/js/plugins/datapicker/bootstrap-datepicker.js}"></script>
+
+<!-- BS custom file -->
+<script th:src="@{/js/plugins/bs-custom-file/bs-custom-file-input.min.js}"></script>
+
+</body>
+</html>

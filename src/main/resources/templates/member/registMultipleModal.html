@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link th:href="@{/css/menucss.css}" rel="stylesheet">
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<!-- 본사직원 계정정보조회 모달 -->
+<div class="modal inmodal fade" id="registMultipleModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">계정 일괄 생성</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="button" placeholder="엑셀 양식 다운로드" class="form-control">
+                </div>
+
+                <div class="form-group row">
+                    <input type="button" placeholder="설명서 다운로드" class="form-control">
+                </div>
+                <label class="col-lg-3 col-form-label">엑셀파일로 일괄 생성</label>
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input id="inputGroupFile01" type="file" class="custom-file-input">
+                        <label class="custom-file-label" for="inputGroupFile01">파일을 입력하세요</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">등록</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

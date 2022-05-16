@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>본사 발주 목록 조회</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/main}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">입고관리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/list}">입고, 입하 처리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/complete}">본사 발주 목록 조회</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<!-- 컨텐츠 작성 영역 -->
+
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>발주 내역</h5>
+            </div>
+            <div class="ibox-content">
+                                <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>본사 발주 목록 조회</h2>
+    <br>
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>발주 번호</th>
+            <th>발주 일시</th>
+            <th>승인 처리 상태</th>
+            <th>제품 종류 개수</th>
+            <th>입하 대기 추가</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse,num : ${ warehouseCompanyOrderList }">
+<!--            <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">-->
+                <td th:text="${ num.index + 1 }"></td>
+                <td th:text="${ warehouse.companyOrderHistoryNo }"></td>
+                <td th:text="${ warehouse.companyOrderHistoryCreatedDate }"></td>
+                <td>
+                    <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
+                        <a>승인 완료</a>
+                    </th:block>
+                    <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'BEFORE'}">
+                        <a>처리 대기</a>
+                    </th:block>
+                    <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'CANCEL'}">
+                        <a>승인 거절</a>
+                    </th:block>
+                </td>
+                <td th:text="${ warehouse.companyOrderItemList.size() }+ 종류"></td>
+                <td>
+                    <th:block th:if="${ warehouse.companyOrderHistoryStatus eq 'COMPLETE'}">
+                        <button class="detailBtn btn btn-w-m btn-primary" type="submit" th:onclick="|javascript:viewDetail('${warehouse.companyOrderHistoryNo}')|">상세 정보 조회</button>
+                    </th:block>
+                    <th:block th:if="${ warehouse.companyOrderHistoryStatus ne 'COMPLETE'}">
+                        <a>처리 불가</a>
+                    </th:block>
+
+                </td>
+<!--            </th:block>-->
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+
+<script>
+    function viewDetail(num) {
+        let No = num;
+        location.href="/warehouse/complete/detail/" + num;
+    }
+</script>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

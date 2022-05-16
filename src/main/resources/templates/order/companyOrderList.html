@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+    <style>
+        .order-application-output-btn {
+            border: none;
+            background-color: #ffaa80;
+            cursor: pointer;
+            color: white;
+            width: 45px;
+            height: 25px;
+        }
+
+        .company-order-detail-modal-body-table {
+            text-align: center;
+            border-collapse:collapse;
+            width: 100%;
+        }
+
+        .company-order-detail-modal-body-table th, td {
+            border: none;
+        }
+
+        .order-before-btn {
+            border: none;
+            cursor: pointer;
+            background-color: yellowgreen;
+            width: 80px;
+            height: 25px;
+            color: white;
+        }
+
+        .order-cancel-btn {
+            border: none;
+            cursor: pointer;
+            background-color: orangered;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .order-complete-btn {
+            border: none;
+            cursor: pointer;
+            background-color: skyblue;
+            width: 80px;
+            height: 25px;
+            color: white;
+
+        }
+
+        .status-change-div {
+            width: 80px;
+            display: none;
+            position: absolute;
+            margin-left: 71px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="/common/header.html"></div>
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>발주 내역</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    발주 관리
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/order/companyorderlist}" style="font-weight: bold">발주 내역</a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="ibox ">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h2 style="font-weight: bold; margin-left: 10px">발주 내역</h2>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <input type="text" class="form-control form-control-sm m-b-xs" id="filter"
+                               placeholder="검색하고자 하는 검색어를 2글자 이상 입력하세요.">
+
+                        <table class="footable table table-stripped" data-page-size="8" data-filter=#filter style="text-align: center">
+                            <thead>
+                                <tr>
+                                    <th>신청일자</th>
+                                    <th>신청자</th>
+                                    <th>신청물품</th>
+                                    <th>총 금액</th>
+                                    <th>처리일자</th>
+                                    <th>처리자</th>
+                                    <th>처리상태</th>
+                                    <th>발주 신청서</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="companyOrder, index : ${ companyOrderList }" id="company-order-history-tr" data-toggle="modal" data-target="#myModal4">
+                                    <input type="hidden" id="companyOrderHistoryNo" th:value="${ companyOrder.companyOrderHistoryNo }">
+                                    <td th:text="${ companyOrder.companyOrderHistoryCreatedDate }"></td>
+                                    <td th:text="${ companyOrder.companyAccount.memberName }"></td>
+                                    <td>
+                                        <th:block th:each="itemName, i : ${ itemName }">
+                                            <th:block th:if="${ index.index eq i.index }">
+                                                <th:block th:text="${ itemName }"></th:block>
+                                            </th:block>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <th:block th:each="totalPrice, t : ${ totalPrice }">
+                                            <th:block th:if="${ index.index eq t.index }">
+                                                <th:block th:text="${ totalPrice }"></th:block>
+                                            </th:block>
+                                        </th:block>
+                                    </td>
+                                    <td th:text="${ companyOrder.companyOrderHistoryStatusDate }"></td>
+                                    <td>
+                                        <th:block th:if="${ companyOrder.companyOrderUpdateMember ne null }">
+                                            <th:block th:text="${ companyOrder.companyOrderUpdateMember.memberName }"></th:block>
+                                        </th:block>
+                                        <th:block th:if="${ companyOrder.companyOrderUpdateMember eq null }">
+                                            <th:block th:text="${ companyOrder.companyOrderHistoryStatusDate }"></th:block>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'BEFORE' }">
+                                            <button class="order-before-btn" id="order-before-btn">처리전</button>
+                                            <div class="status-change-div" id="status-change-div">
+                                                <button class="order-complete-btn" id="order-complete-btn">승인완료</button>
+                                                <button class="order-cancel-btn" id="order-cancel-btn">신청취소</button>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'CANCEL' }">
+                                            <button class="order-cancel-btn">신청취소</button>
+                                        </th:block>
+                                        <th:block th:if="${ companyOrder.companyOrderHistoryStaus eq 'COMPLETE' }">
+                                            <button class="order-complete-btn">승인완료</button>
+                                        </th:block>
+                                    </td>
+                                    <td>
+                                        <button class="order-application-output-btn" id="order-application-output-btn">출력</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+                                        <ul class="pagination float-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">내역 상세</h4>
+                                    <small id="company-order-detail-modal-small"></small>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="company-order-detail-modal-body-table">
+                                        <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>물품 이름</th>
+                                            <th>수량</th>
+                                            <th>금액</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="company-order-detail-table-tbody">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer" id="detail-modal-footer">
+                                    <button type="button" class="btn btn-white" id="order-modify-btn" style="background-color: #ba8b00; color: white; display: none">수정</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="company-order-detail-modal-ok-btn">확인</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none">
+                        <div class="modal-dialog">
+                            <div class="modal-content animated bounceInRight">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">발주신청서 선택</h4>
+                                    <small class="font-bold" style="color:red;">* 출력할 거래처를 선택해주세요. *</small>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="company-order-detail-modal-body-table">
+                                        <thead>
+                                        <tr>
+                                            <td>No</td>
+                                            <td>거래처명</td>
+                                            <td>발주 신청서</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="output-modal-body">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="output-modal-close-btn" data-dismiss="modal">닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+
+    <script th:src="@{/js/plugins/footable/footable.all.min.js}"></script>
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <!-- Page-Level Scripts -->
+    <script>
+
+        let modifyOrderNo = 0;
+
+        $(document).ready(function() {
+
+            $('.footable').footable();
+            $('.footable2').footable();
+
+            $(document).on('click', '#order-application-move-btn', function() {
+                const companyOrderHistoryNo = this.parentNode.parentNode.children[0].value;
+                const clientNo = this.parentNode.parentNode.children[1].value;
+
+                location.href='/order/companyorderapplicationdetail?companyOrderHistoryNo=' + companyOrderHistoryNo + '&clientNo=' + clientNo;
+            })
+
+            $(document).on('click', '.sa-button-container .confirm', function() {
+
+                if(checkSuccess == 1) {
+                    history.go(0);
+                }
+
+            });
+
+        });
+
+        const $orderBeforeBtn = document.querySelectorAll("#order-before-btn");
+        const $StatusChangeDiv = document.querySelectorAll("#status-change-div");
+
+        if(document.querySelectorAll("#company-order-history-tr td")) {
+            const $tds = document.querySelectorAll("#company-order-history-tr td");
+
+            for(let i = 0; i < $tds.length; i++) {
+
+                $tds[i].onmouseenter = function() {
+                    this.parentNode.style.backgroundColor = "#d3d3d3";
+                    this.parentNode.style.cursor = "pointer";
+                }
+
+                $tds[i].onmouseout = function() {
+                    this.parentNode.style.backgroundColor = "white";
+                }
+
+                $tds[i].onclick = function() {
+
+                    for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                        if($StatusChangeDiv[j].style.display = 'block') {
+                            $StatusChangeDiv[j].style.display = 'none';
+                        }
+
+                    }
+
+                    $("#company-order-detail-table-tbody").empty();
+
+                    $.ajax({
+                        url: '/order/selectcompanyorderdetail',
+                        type: 'get',
+                        data: {
+                            "companyOrderHistoryNo": this.parentNode.children[0].value
+                        },
+                        dataType: "json",
+                        success: function(data) {
+
+                            let companyOrderTableBody = '';
+
+                            let index = 1;
+
+                            if(data != null) {
+                                for(list in data) {
+
+                                    companyOrderTableBody += '<tr>';
+                                    companyOrderTableBody += '<td>' + index + '</td>';
+                                    companyOrderTableBody += '<td>' + data[list].itemName + '</td>';
+                                    companyOrderTableBody += '<td>' + data[list].itemAmount + '</td>';
+                                    companyOrderTableBody += '<td>' + data[list].itemPrice + '</td>';
+                                    companyOrderTableBody += '</tr>';
+
+                                    index++;
+                                }
+                            }
+
+                            $("#company-order-detail-table-tbody").append(companyOrderTableBody);
+
+                        },
+                        error: function(xhr) {
+                            alert("오류 발생");
+                        }
+                    });
+
+                    document.getElementById("company-order-detail-modal-small").innerText = this.parentNode.children[1].innerText + " 발주 내역";
+
+                    if(this.parentNode.children[7].innerText === '처리전') {
+
+                        document.getElementById('order-modify-btn').style.display = 'block';
+
+                    } else {
+
+                        document.getElementById('order-modify-btn').style.display = 'none';
+                    }
+
+                    modifyOrderNo = this.parentNode.children[0].value;
+
+                }
+
+            }
+        }
+
+        document.getElementById('order-modify-btn').onclick = function() {
+
+            location.href='/order/modifycompanyorder?companyOrderHistoryNo=' + modifyOrderNo;
+
+        }
+
+
+        const $outputBtn = document.querySelectorAll("#order-application-output-btn");
+        const $outputModalBody = $("#output-modal-body");
+
+        for(let i = 0; i < $outputBtn.length; i++) {
+
+            $outputBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+
+                for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                    if($StatusChangeDiv[j].style.display = 'block') {
+                        $StatusChangeDiv[j].style.display = 'none';
+                    }
+
+                }
+
+                $outputModalBody.empty();
+
+                document.getElementById("myModal").style.display = 'block';
+
+                $.ajax({
+                    url: "/order/selectonecompanyorderapplicationlist",
+                    type: "get",
+                    data: {
+                        "companyOrderHistoryNo": this.parentNode.parentNode.children[0].value
+                    },
+                    dataType: "json",
+                    success: function(data) {
+
+                        let orderDetailModalTbody = '';
+
+                        let index = 1;
+
+                        if(data != null) {
+
+                            for(list in data) {
+
+                                orderDetailModalTbody += '<tr>';
+                                orderDetailModalTbody += "<input type='hidden' value='" + data[list].companyOrderHistoryNo + "' name='companyOrderHistoryNo'>"
+                                orderDetailModalTbody += "<input type='hidden' value='" + data[list].clientNo + "' name='clientNo'>"
+                                orderDetailModalTbody += '<td>' + index + '</td>';
+                                orderDetailModalTbody += '<td>' + data[list].clientName + '</td>';
+                                orderDetailModalTbody += '<td><button class="order-application-output-btn" id="order-application-move-btn">출력</button></td>';
+                                orderDetailModalTbody += '</tr>';
+
+                                index++;
+
+
+                            }
+
+                        }
+
+                        $("#output-modal-body").append(orderDetailModalTbody);
+
+                    },
+                    error: function(xhr) {
+                        alert("연결 실패");
+                    }
+                });
+
+            }
+
+        }
+
+        document.getElementById("output-modal-close-btn").onclick = function() {
+
+            document.getElementById("myModal").style.display = 'none';
+
+        }
+
+        for(let i = 0; i < $orderBeforeBtn.length; i++) {
+
+            $orderBeforeBtn[i].onclick = function(e) {
+                e.stopPropagation();
+
+                for(let j = 0; j < $StatusChangeDiv.length; j++) {
+
+                    if(j == i) {
+                        if($StatusChangeDiv[i].style.display == 'block') {
+
+                            $StatusChangeDiv[i].style.display = 'none';
+                        } else {
+
+                            $StatusChangeDiv[i].style.display = 'block';
+                        }
+                    } else {
+
+                        $StatusChangeDiv[j].style.display = 'none';
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        let checkSuccess = 0;
+        const $orderCompleteBtn = document.querySelectorAll("#order-complete-btn");
+        const $orderCancelBtn = document.querySelectorAll("#order-cancel-btn");
+
+        for(let i = 0; i < $orderCompleteBtn.length; i++) {
+
+
+            $orderCompleteBtn[i].onclick = function(e) {
+
+                let companyOrderNo = this.parentNode.parentNode.parentNode.children[0].value;
+
+                e.stopPropagation();
+
+                $StatusChangeDiv[i].style.display = 'none';
+
+                swal({
+                    title: "승인 완료 처리하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+
+                    fetch("/order/modifycompanyorderhistorystatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=COMPLETE")
+                        .then(response => response.json())
+                        .then(response => {
+                            swal("변경 완료!", "승인 완료 처리되었습니다.", "success");
+                            checkSuccess = 1;
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "변경 실패!",
+                                text: "알수 없는 문제가 발생하였습니다."
+                            });
+                        });
+                });
+
+            }
+
+            $orderCancelBtn[i].onclick = function(e) {
+
+                e.stopPropagation();
+                $StatusChangeDiv[i].style.display = 'none';
+
+                let companyOrderNo = this.parentNode.parentNode.parentNode.children[0].value;
+
+                swal({
+                    title: "신청 취소 처리하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+
+                    fetch("/order/modifycompanyorderhistorystatus?companyOrderHistoryNo=" + companyOrderNo + "&orderStatus=CANCEL")
+                        .then(response => response.json())
+                        .then(response => {
+                            swal("변경 완료!", "신청 취소 처리되었습니다.", "success");
+                            checkSuccess = 1;
+                        })
+                        .catch(err => {
+                            swal({
+                                title: "변경 실패!",
+                                text: "알수 없는 문제가 발생하였습니다."
+                            });
+                        });
+                });
+
+            }
+
+        }
+
+
+
+    </script>
+
+</body>
+</html>

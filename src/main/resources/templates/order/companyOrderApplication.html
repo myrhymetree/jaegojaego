@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .item-collection-area {
+            width: 620px;
+            height: 250px;
+            background-color: #d3d3d3;
+            margin-left: 380px;
+
+        }
+
+        .item-collection-left {
+            font-size: 20px;
+            margin-left: 150px;
+        }
+
+        .item-collection-right {
+            font-size: 20px;
+            margin-left: 50px;
+        }
+
+        .item-collection-area-items {
+            border-collapse: collapse;
+            width: 100%;
+            margin-left: 30px;
+            font-size: 15px;
+        }
+
+    </style>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
+</head>
+<body>
+    <div th:replace="/common/header.html"></div>
+
+    <div class="ibox ">
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>발주 신청서</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/}">메인페이지</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        발주 관리
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a th:href="@{/order/companyorderlist}">발주 내역</a>
+                    </li>
+                    <li class="breadcrumb-item" style="font-weight: bold">
+                        <a href="#" style="font-weight: bold">발주 신청서(<th:block th:text="${ companyOrderDetail.clientName }"></th:block>)</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+
+        <div class="float-right">
+            <button class="btn btn-primary btn-xs" type="button" id="download-btn" style="margin-right: 22rem; margin-top: 10px">Download</button>
+            <input type="hidden" th:value="${ companyOrderDetail.clientName }">
+            <input type="hidden" th:value="${ companyOrderDetail.orderCreatedDate }">
+        </div>
+        <div class="row justify-content-md-center" style="margin-top: 50px">
+            <div class="col-lg-10">
+                <div class="ibox" style="width: 70%; margin-left: 250px">
+                    <div class="ibox-content" id="order-application-content">
+                        <div class="text-center article-title">
+                            <h1 style="font-weight: bold">
+                                발주 신청서
+                            </h1>
+                        </div>
+                        <div class="item-collection-title">
+
+                            <span class="item-collection-left">업체명</span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ companyOrderDetail.clientName }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">업체 주소</span>
+                            <span class="item-collection-right" style="margin-left: 150px"><th:block th:text="${ orderApplication.get(0).client.clientAddress }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">업체 대표자 전화번호</span>
+                            <span class="item-collection-right" style="margin-left: 45px"><th:block th:text="${ orderApplication.get(0).client.clientRepresentativePhone }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">업체 대표자 이메일</span>
+                            <span class="item-collection-right" style="margin-left: 65px"><th:block th:text="${ orderApplication.get(0).client.clientRepresentativeEmail }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">담당자</span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.memberName }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">담당자 전화번호</span>
+                            <span class="item-collection-right" style="margin-left: 90px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.cellphone }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left">신청 일자</span>
+                            <span class="item-collection-right" style="margin-left: 150px"><th:block th:text="${ companyOrderDetail.orderCreatedDate }"></th:block></span>
+                            <br><br>
+                            <span class="item-collection-left" style="float: left">신청 물품</span>
+                            <div class="item-collection-area">
+                                <br>
+                                <table class="item-collection-area-items">
+                                    <tbody>
+                                        <tr th:each="items : ${ orderApplicationItemList }">
+                                            <td th:text="${ items.clientContractItem.clientContractItemName }"></td>
+                                            <td th:text="${ items.orderApplicationItemAmount + '개' }"></td>
+                                            <td th:text="${ items.clientContractItem.clientContractItemSupplyPrice } + '원(개)'"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br><br>
+                            <span class="item-collection-left">배송지</span>
+                            <span class="item-collection-right" style="margin-left: 175px"><th:block th:text="${ orderApplication.get(0).companyOrderHistory.companyAccount.companyAddress }"></th:block></span>
+
+                        </div>
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        document.getElementById('download-btn').onclick = function () {
+            // location.href = '/order/orderapplicationdownload';
+
+            function saveAs(uri, fileName) {
+                const link = document.createElement("a");
+                link.href = uri;
+                link.download = fileName;
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                document.body.removeChild(link);
+            }
+            html2canvas(document.querySelector("#order-application-content")).then(canvas => {
+
+                let imgData = canvas.toDataURL('image/jpeg');
+
+                let imgWidth = 210;                //A4 기준 가로 길이
+                let pageHeight = imgWidth * 1.414; //A4 기준 세로 길이
+                let imgHeight = pageHeight;
+                let heightLeft = imgHeight;
+                let margin = 0;
+
+                let doc = new jsPDF('p', 'mm', 'a4');
+                let position = 0;
+
+                doc.addImage(imgData, 'jepg', margin, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while(heightLeft >= 20) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'jepg', margin, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                doc.save(this.parentNode.children[1].value + " " + this.parentNode.children[2].value + ' 발주신청서.pdf');
+
+            });
+        }
+
+    </script>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

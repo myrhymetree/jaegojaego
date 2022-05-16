@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>INSPINIA | Dashboard</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+
+
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link th:href="@{/css/plugins/toastr/toastr.min.css}" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link th:href="@{/js/plugins/gritter/jquery.gritter.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <script>
+        const successMessage = "[[${ successMessage }]]";
+        if(successMessage) {
+            alert(successMessage);
+        }
+    </script>
+
+</head>
+<body class="md-skin">
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/js/common/memberInfo.js}"></script>
+
+     <sec:authorize authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+        <th:block th:include="/member/myInfoModal.html"></th:block>
+        <th:block th:include="/member/myInfoModifyModal.html"></th:block>
+     </sec:authorize>
+
+     <sec:authorize authorize="hasRole('ROLE_FRANCHISE')">
+         <th:block th:include="/franchise/franchiseInfoModal.html"></th:block>
+         <th:block th:include="/franchise/franchiseInfoModifyModal.html"></th:block>
+     </sec:authorize>
+
+    <sec:authorize authorize="hasRole('ROLE_FRANCHISE_MANAGER')">
+        <th:block th:include="/franchise/managerInfoModal.html"></th:block>
+        <th:block th:include="/franchise/managerInfoModifyModal.html"></th:block>
+    </sec:authorize>
+
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <img alt="image" class="rounded-circle" th:src="@{/img/profile_small.jpg}"/>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t-xs font-bold" sec:authentication="name"></span>
+<!--                            <span class="text-muted text-xs block" th:text="${ data.department.departmentName }"><b class="caret"></b></span>-->
+                            <span class="text-muted text-xs block"><b class="caret"></b></span>
+                        </a>
+                        <!-- 본사 관리자, 직원만 계정 정보 확인 가능 -->
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                            <li ><a class="dropdown-item" data-toggle="modal" data-target="#myInfoModal">계정정보조회</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#myInfoModifyModal">계정정보수정</a></li>
+                        </ul>
+
+                        <!-- 가맹점 대표만 계정 정보 확인 가능 -->
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs" sec:authorize="hasRole('ROLE_FRANCHISE')">
+                            <li ><a class="dropdown-item" data-toggle="modal" data-target="#franchiseInfoModal">계정정보조회</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#franchiseInfoModifyModal">계정정보수정</a></li>
+                        </ul>
+
+                        <!-- 가맹점 직원만 계정 정보 확인 가능 -->
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs" sec:authorize="hasRole('ROLE_FRANCHISE_MANAGER')">
+                            <li ><a class="dropdown-item" data-toggle="modal" data-target="#managerInfoModal">계정정보조회</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#managerInfoModifyModal">계정정보수정</a></li>
+                        </ul>
+
+                    </div>
+                    <div class="logo-element">
+                        JGJG
+                    </div>
+                </li>
+
+                <!-- 메뉴바 카테고리 -->
+                <!-- 가맹점 메뉴바는 따로 메뉴에다 조건 걸어서 안보이게 처리하시면 됩니다. -->
+                <!-- 하단에 하위 메뉴 추가는 <ul></ul> 안에 <li><a>하위 메뉴명</a></li> 추가하세요 -->
+                <!-- 메뉴바에서 하위 메뉴까지 볼 수 있는 화살표 추가는 메뉴명이 적힌 줄에서 오른쪽에 <span class="fa arrow"></span>을 <a></a> 태그 안에 추가하면 됩니다.-->
+
+                <!-- 가맹점 헤더 (조건 걸기 나중에) -->
+
+                <!-- 메인페이지 -->
+                <li class="active" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_FRANCHISE', 'ROLE_FRANCHISE_MANAGER')" style="background: none !important; border: none !important;">
+                    <a th:href="@{/main}"><i class="fa fa-th-large"></i> <span class="nav-label" style="font-weight: normal;">메인페이지</span></a>
+                </li>
+
+                <!-- 공지게시판 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_FRANCHISE', 'ROLE_FRANCHISE_MANAGER')">
+                    <a th:href="@{/board}"><i class="fa fa-diamond"></i> <span class="nav-label">공지사항</span></a>
+                </li>
+
+                <!-- 직원 관리 -->
+                <li sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/member}"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">직원 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a th:href="@{/member/regist}">직원 계정 생성</a></li>
+                        <li><a th:href="@{/member/list}">직원 계정 목록</a></li>
+                    </ul>
+                </li>
+
+                <!-- 가맹점 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/franchise}"><i class="fa fa-pie-chart"></i> <span class="nav-label">가맹점 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a th:href="@{/franchise/regist}">가맹점 계정 생성</a></li>
+                        <li><a th:href="@{/franchise/manager}">가맹점 직원 계정 생성</a></li>
+                        <li><a th:href="@{/franchise/list}">가맹점 계정 목록 조회</a></li>
+                        <li><a th:href="@{/franchise/managerList}">가맹점 직원 계정 목록 조회</a></li>
+                    </ul>
+                </li>
+
+                <!-- 거래처 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/client}"><i class="fa fa-desktop"></i> <span class="nav-label">거래처 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/client/list">- 거래처 정보</a></li>
+                        <li><a href="/client/itemlist">- 거래처 판매계약상품</a></li>
+<!--                        <li><a href="contacts.html">- 거래처 사업자등록증</a></li>-->
+<!--                        <li><a href="contacts.html">- 거래처 계약서류</a></li>-->
+                    </ul>
+                </li>
+
+                <!-- 메뉴 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_FRANCHISE', 'ROLE_FRANCHISE_MANAGER')">
+                    <a th:href="@{/menu/list}"><i class="fa fa-laptop"></i> <span class="nav-label">메뉴 관리</span></a>
+                </li>
+
+                <!-- 본사 발주 관리 -->
+                <!-- 본사 아이디로 로그인 한 경우만 보여주기 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/companyorder}"><i class="fa fa-globe"></i> <span class="nav-label">본사 발주 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <!--                            <li><a href="toast_notifications.html">Notification</a></li>-->
+                        <li><a href="/order/companyorderregist">발주 신청</a></li>
+                        <li><a href="/order/companyorderlist">발주 내역</a></li>
+                    </ul>
+                </li>
+
+                <!-- 가맹점 발주 관리 -->
+                <!-- 가맹점 발주 로그인시 보여줘야함 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_FRANCHISE', 'ROLE_FRANCHISE_MANAGER')">
+                    <a th:href="@{/franchiseorder}"><i class="fa fa-flask"></i> <span class="nav-label">가맹점 발주 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <!--                            <li><a href="typography.html">Typography</a></li>-->
+                        <li><a href="/order/franchiseorderlist">발주 내역</a></li>
+                        <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')"><a href="/outwarehouse/list">출고 관리</a></li>
+                        <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')"><a href="/outwarehouse/history">출고 내역</a></li>
+                        <li><a href="/issue/list">가맹점 이슈</a></li>
+                    </ul>
+                </li>
+
+                <!-- 입고 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/inwarehouse}"><i class="fa fa-edit"></i> <span class="nav-label">입고 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/warehouse/list">입고 관리</a></li>
+                        <li><a href="/warehouse/item">재고 관리</a></li>
+                        <li><a href="/warehouse/change">재고 변동 내역</a></li>
+                    </ul>
+                </li>
+
+
+                <!-- 자재 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/materials}"><i class="fa fa-flask"></i> <span class="nav-label">자재 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/materials/product/list">자재 목록</a></li>
+                    </ul>
+                </li>
+
+                <!-- 미수납금 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/payable}"><i class="fa fa-files-o"></i> <span class="nav-label">미수납금 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <!--                            <li><a href="search_results.html">Search results</a></li>-->
+                    </ul>
+                </li>
+
+                <!-- 자산관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/asset}"><i class="fa fa-table"></i> <span class="nav-label">자산 관리</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a th:href="@{/asset/main}">자산 관리</a></li>
+                        <li><a th:href="@{/asset/main}">재고 폐기처리</a></li>
+                    </ul>
+                </li>
+
+                <!-- 백로그 관리 -->
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')">
+                    <a th:href="@{/backlog/list}"><i class="fa fa-laptop"></i> <span class="nav-label">백로그 관리</span></a>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+
+
+
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <!--            <form role="search" class="navbar-form-custom" action="search_results.html">-->
+                    <!--                <div class="form-group">-->
+                    <!--                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">-->
+                    <!--                </div>-->
+                    <!--            </form>-->
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li style="padding: 20px">
+                        <span class="m-r-sm text-muted welcome-message" sec:authentication="name">님 환영합니다.</span>
+                    </li>
+                    <li>
+                        <a href="/member/logout">
+                            <i class="fa fa-sign-out"></i> Log out
+                        </a>
+                    </li>
+                    <li>
+                        <a class="right-sidebar-toggle">
+                            <i class="fa fa-tasks"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>

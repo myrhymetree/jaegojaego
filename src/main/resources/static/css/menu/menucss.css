@@ -1,0 +1,183 @@
+.menuListWhiteBoard {
+    border: 0.5px solid gray;
+    margin-left: 30px;
+    margin-top: 30px;
+    height: 900px;
+    width: 30%;
+    float: left;
+    background: white;
+}
+
+.selectOneMenuWhiteboard {
+    border: 0.5px solid gray;
+    float: left;
+    margin-left: 30px;
+    margin-top: 30px;
+    height: 900px;
+    width: 64%;
+    background: white;
+}
+
+.OneMenuWhiteboard {
+    border: 0.5px solid gray;
+    height: 610px;
+    float: left;
+    margin-left: 30px;
+    margin-top: 30px;
+    height: 900px;
+    width: 62%;
+    background: white;
+}
+
+.menuModifyModal {
+    position: absolute;
+    border: 0.5px solid gray;
+    height: 600px;
+    width: 600px;
+    background: white;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.menuRegistModal {
+    position: absolute;
+    border: 0.5px solid gray;
+    height: 600px;
+    width: 600px;
+    background: white;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.modal-layer {
+    position: relative;
+    top: -70%;
+    left:-99%;
+    width: 1900px;
+    height: 970px;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.forz-index {
+    position: absolute;
+    top: 21.3%;
+    left: 32.5%;
+    z-index: 1050
+}
+
+.menuRegistForm {
+    position: relative;
+    font-size: 16.5px;
+    width: 350px;
+    height: 250px;
+    top: 5%;
+    left: 23%;
+}
+
+.menuModifytForm {
+    position: relative;
+    font-size: 16.5px;
+    width: 350px;
+    height: 250px;
+    top: 5%;
+    left: 23%;
+}
+
+.materialCategoryForRegist {
+    position: relative;
+}
+
+.rawMaterialList {
+    position: relative;
+    right: 13%;
+    height: 200px;
+    width: 450px;
+    background: white;
+    border: 0.5px solid gray;
+}
+
+.button {
+    background: #1AB394;
+    color: white;
+    width: 75px;
+    height: 25px;
+    border: none;
+    box-shadow: 1px 1px gray;
+    cursor: pointer;
+}
+
+.registMenuButton {
+    position: absolute;
+    top: 17.5%;
+    left: 26%;
+}
+
+.modifyMenuButton {
+    position: absolute;
+    top: 17.5%;
+    left: 90%;
+}
+
+.registMenuCancelButton {
+    position: relative;
+    left: 50%;
+    margin-top: 8px;
+}
+
+.modifyMenuSubmitButton {
+    position: relative;
+    font-size: 16.5px;
+    top: 30.3%;
+    left: 30%;
+}
+
+.modifyMenuCancelButton {
+    position: relative;
+    left: 15%;
+    margin-top: 8px;
+    margin-left: 130px;
+}
+
+.registMenuSubmitButton {
+    position: relative;
+    font-size: 16.5px;
+    top: 30.3%;
+    left: 30%;
+}
+
+#oneRawMaterial, #oneRawMaterialForModify {
+    margin: 3px;
+    display: inline-block;
+    font-size: 5px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+
+#rawMaterialDeleteButton, #rawMaterialDeleteButtonForModify {
+    background-image: url("../../images/xButton.png");
+    border: 1px solid black;
+    margin-left: 3px;
+    margin-top: 3px;
+    margin-right :3px;
+    border-radius: 3px;
+    width: 17px;
+    height: 14px;
+    display: inline-block;
+}
+
+.sweet-alert {
+    margin-left: -190px !important;
+}
+
+#menuDeleteBox {
+    width: 15px;
+    height: 15px;
+
+}
+
+.checkboxForAll {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 10%;
+    top: 10%;
+}

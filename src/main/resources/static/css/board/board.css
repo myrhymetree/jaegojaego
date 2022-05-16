@@ -1,0 +1,69 @@
+/* 공지사항 css 파일 */
+
+/* 검색영역 */
+.search-area {
+    float: left;
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 20%;
+    height: 2.7rem;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    flex: 1;
+    display: flex;
+    padding: 6px 4px 0 14px;
+}
+
+.search-img {
+    padding-right: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.searchBox input{
+    display: flex;
+    border: none;
+    /*flex: 100%;*/
+    width: 100%;
+}
+
+.searchBtn {
+    float: left;
+    margin-left: 1%;
+    width: 4%;
+    height: 2.7rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+
+/* 등록, 삭제 버튼 */
+.registBtn, .deleteBtn {
+    float: right;
+    width: 4%;
+    height: 2.7rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+}
+
+.deleteBtn {
+    margin-right: 1%;
+}
+
+.registBtn {
+    margin-right: 5%;
+}
+
+/* 목록 영역 */
+.table th, td {
+    font-size: 20px;
+}
+
+.table td {
+    background-color: white !important;
+}
+
+#boardHeadCheckbox,
+.boardOneCheckbox {
+    width: 1.5rem;
+    height: 1.5rem;
+}

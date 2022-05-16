@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>재고 변동 내역</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/main}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">입고관리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/change}">재고 변동 내역</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<!-- 컨텐츠 작성 영역 -->
+
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>재고 변동 내역</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>재고 변동 내역</h2>
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>품목</th>
+            <th>품번</th>
+            <th>품명</th>
+<!--            <th>처리일자</th>-->
+            <th>증가</th>
+            <th>변동 수량</th>
+            <th>변동 사유</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse,num : ${ changeHistory }">
+            <td th:text="${ num.index + 1 }"></td>
+            <td th:text="${ warehouse.getItemInfoNo().getMaterialCategory().getMaterialCategoryName() }"></td>
+            <td th:text="${ warehouse.getItemInfoNo().getItemInfoItemSerialNo() }"></td>
+            <td th:text="${ warehouse.getItemInfoNo().getItemInfoName() }"></td>
+<!--            <td th:text="${ warehouse.getWarehouseNo().getWarehouseCompleteDate() }"></td>-->
+            <td>
+                <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
+                    <a>증가</a>
+                </th:block>
+                <th:block th:if="${ warehouse.itemChangeDivision eq 2 }">
+                    <a>감소</a>
+                </th:block>
+            </td>
+            <td th:text="${ warehouse.itemChangeAmount }"></td>
+            <td>
+            <th:block th:if="${ warehouse.itemChangeDivision eq 1 }">
+                <a>입고</a>
+            </th:block>
+                <th:block th:if="${ warehouse.itemChangeDivision eq 2 }">
+                    <a>출고</a>
+                </th:block>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

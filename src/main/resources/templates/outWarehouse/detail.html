@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<!-- 컨텐츠 작성 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>출고 관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <span>가앵점 발주 관리</span>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/outwarehouse/list}"><strong>출고 관리</strong></a>
+            </li>
+        </ol>
+    </div>
+    <!--    <div class="col-lg-2">-->
+    <!--    </div>-->
+</div>
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 번호</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 id="outWarehouseNo" class="no-margins" th:text="${ outWarehouseDetailList.get(0).outWarehouseNo }"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 물품 목록 수</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${ itemListCnt } + 개"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>출고 상세정보</h2>
+    <br>
+        <h3>작업 상태</h3>
+        <select id="outWarehouseStatus" th:style="${'width:10%; height:2rem; text-align:center; font-size:1.2rem;'}">
+            <option value="출고대기">출고 대기</option>
+            <option value="출고완료">출고 완료</option>
+        </select>
+        <button th:onclick="'javascipt:asyncModifyStatus();'" class="modifyStatusBtn btn btn-w-m btn-primary" th:style="${'margin-bottom:0.3rem;'}">수정</button>
+    <br>
+    <br>
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter th:style="${'text-align:center'}">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>품번</th>
+            <th>품목</th>
+            <th>품명</th>
+            <th>출고 수량</th>
+            <th>작업 처리상태</th>
+            <th>작업 처리일자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="outWarehouseDetail,num : ${ outWarehouseDetailList }">
+            <td th:text="${ num.index + 1 }"></td>
+            <td th:text="${ outWarehouseDetail.itemInfoItemSerialNo }"></td>
+            <td th:text="${ outWarehouseDetail.materialCategoryName }"></td>
+            <td th:text="${ outWarehouseDetail.itemInfoName }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseItemAmount }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseWorkingStatusName }"></td>
+            <td th:text="${ outWarehouseDetail.outWarehouseWorkingFinishedDate }"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+<script>
+    const modifyStatusBtn = document.getElementsByClassName("modifyStatusBtn");
+    const outWarehouseNo = document.getElementById("outWarehouseNo").innerText;
+
+    function postStatus() {
+        try {
+            let outWarehouseStatus = document.getElementById("outWarehouseStatus").value;
+
+            axios.post("/outwarehouse/modify",
+                {
+                    "outWarehouseNo": parseInt(outWarehouseNo),
+                    "outWarehouseStatus": outWarehouseStatus
+                }
+            )
+            .then(function(response) {
+                alert("처리 상태 수정에 성공하셨습니다.");
+                console.log(response)
+            })
+            .then(() => {
+                location.reload();
+            })
+        } catch(e) {
+            alert("처리 상태 수정에 실패하셨습니다.");
+            console.log(e);
+        }
+    }
+
+    async function asyncModifyStatus() {
+        return await postStatus();
+    }
+</script>
+
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

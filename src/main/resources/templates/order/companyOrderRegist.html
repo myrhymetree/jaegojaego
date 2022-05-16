@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .order-regist-ok-btn {
+            width: 65px;
+            height: 30px;
+            background-color: rgba(255, 0, 0, 0.7);
+            margin-top: 20px;
+            margin-left: 1180px;
+            margin-bottom: 10px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .order-table {
+            border: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .order-table tr, th, td {
+            border: none;
+        }
+
+        .order-select-item {
+            margin-top: 30px;
+            background-color: rgba(169, 169, 169, 0.4);
+            height: 300px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        #ui-id-1 {
+            border: none;
+            position: absolute;
+        }
+
+        .item-select-cancel-btn {
+            border: none;
+            cursor: pointer;
+            background-color: #db4455;
+            color: white;
+            border-radius: 20px;
+            height: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div th:replace="/common/header.html"></div>
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>발주 신청</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item">
+                    발주 관리
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/order/companyorderregist}" style="font-weight: bold">발주 신청</a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="ibox ">
+        <div class="ibox-title" style="margin-top: 30px">
+            <h2 style="font-weight: bold">물품 찾기</h2>
+        </div>
+        <div class="ibox-content">
+            <p style="color: rgba(255, 0, 0, 0.3); font-weight: bold">
+                * 찾으실 물품의 이름을 통해 검색할 수 있습니다. *
+            </p>
+            <div>
+                <input type="text" placeholder="물품 이름을 입력해주세요." id="searchItems" style="width: 800px;">
+            </div>
+            <form action="/order/companyorderregist" method="post" id="companyOrderRegistForm">
+                <div class="order-select-item">
+                    <table border="none" align="center" class="order-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 400px">물품 명</th>
+                                <th style="width: 200px">물품 공급가</th>
+                                <th style="width: 150px">물품 수량</th>
+                                <th style="width: 300px">거래처 선택</th>
+                                <th>취소</th>
+                            </tr>
+                        </thead>
+                        <tbody id="company-order-select-item-info"></tbody>
+                    </table>
+                </div>
+            </form>
+            <button class="btn btn-warning btn-sm demo3" style="margin-top: 20px; margin-left: 1570px; width: 65px; height: 30px">발주</button>
+        </div>
+    </div>
+
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+    <script>
+
+        let searchItemsValue;
+
+        //input에 입력 값 변경에 반응하는 이벤트
+        $("#searchItems").on("propertychange change keyup paste input", function() {
+
+            // 현재 변경된 데이터 셋팅
+            searchItemsValue = $(this).val();
+        });
+
+        let itemForClientList = [];
+        let itemListCount = 0;
+        let allItemList = [];
+
+        $(function() {
+           $("#searchItems").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/order/searchitems',
+                        data : {
+                            searchValue: searchItemsValue,
+                        },
+                        traditional: true,
+                        dataType: 'json',
+                        success: function(data) {
+
+                            response(
+                                $.map(data, function(item) {
+                                    return {
+                                        value : item
+                                    }
+                                })
+                            )
+
+                        },
+                        error: function(xhr) {
+                            alert("연결 실패!");
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    selectItemValue = ui.item.value.itemInfoName;
+
+                    selectItemNo = ui.item.value.itemInfoNo;
+
+                    if(selectItemValue != null) {
+
+                        document.getElementById('searchItems').value = "";
+
+                    }
+
+                    $.ajax({
+                        type: 'get',
+                        url: '/order/selectclientitemlist',
+                        data : {
+                            'itemInfoNo': ui.item.value.itemInfoNo
+                        },
+                        dataType: 'json',
+                        async: false,
+                        success: function (data) {
+
+                            itemForClientList = [];
+
+                            if(data != null) {
+
+                                for(list in data) {
+
+                                    itemForClientList.push(data[list]);
+
+                                }
+
+                                allItemList[itemListCount] = itemForClientList;
+                            }
+
+                        },
+                        error: function(xhr) {
+                            alert("연결 실패");
+                        }
+                    });
+
+                    let companyOrderRegistItemTableBody = '';
+
+                    companyOrderRegistItemTableBody += '<tr>';
+                    companyOrderRegistItemTableBody += '<td>' + ui.item.value.itemInfoName + '</td>';
+                    companyOrderRegistItemTableBody += '<td id="item-price">' + itemForClientList[0].clientContractItemSupplyPrice + '</td>';
+                    companyOrderRegistItemTableBody += '<td><input type="number" name="itemAmount" min="1" style="width: 80px" placeholder="수량" id="item-amount" required></td>';
+                    companyOrderRegistItemTableBody += '<td style="width: 300px;"><select style="width: 250px; text-align: center" id="select-client-selectbox">';
+
+                    for(let i = 0; i < itemForClientList.length; i++) {
+
+                        if(i == 0) {
+                            companyOrderRegistItemTableBody += '<option selected>' + itemForClientList[0].clientContractInfo.orderClient.clientName + '</option>';
+                        } else {
+                            companyOrderRegistItemTableBody += '<option>' + itemForClientList[i].clientContractInfo.orderClient.clientName + '</option>';
+                        }
+                    }
+
+                    companyOrderRegistItemTableBody += '</select></td>';
+                    companyOrderRegistItemTableBody += '<td>'
+                    companyOrderRegistItemTableBody += '<input type="hidden" name="clientItemInfoNo" id="clientItemInfoNo" value="' + itemForClientList[0].clientContractItemNo + '">'
+                    companyOrderRegistItemTableBody += '<input type="hidden" name="itemInfoNo" id="company-order-itemInfoNo" value="' + itemForClientList[0].orderItemInfo.itemInfoNo + '">'
+                    companyOrderRegistItemTableBody += '<input type="hidden" name="clientNo" id="company-order-clientNo" value="' + itemForClientList[0].clientContractInfo.orderClient.clientNo + '">'
+                    companyOrderRegistItemTableBody += '<input type="hidden" id="itemListCount" value="' + itemListCount + '">';
+
+                    itemListCount++;
+
+                    companyOrderRegistItemTableBody += '<button class="item-select-cancel-btn" id="item-select-cancel-btn" type="button">X</button></td>';
+                    companyOrderRegistItemTableBody += '</tr>';
+
+                    $("#company-order-select-item-info").append(companyOrderRegistItemTableBody);
+
+                },
+                focus: function(event, ui) {
+                    return false;
+                },
+                minLength: 1,
+                autoFocus: true,
+                classes: {
+                    'ui-autocomplete': 'highlight'
+                },
+                delay: 100,
+                position: { my: 'right top', at: 'right bottom' },
+                close: function(event, ui) {
+                    document.getElementById('searchItems').value = "";
+                }
+           }).autocomplete('instance')._renderItem = function(ul, item) {
+               return $('<li style="list-style: none; margin-left: 560px;" id="autocomplete-li">')
+                   .append('<div style="background-color: white; width: 800px; margin-left: 500px">' + item.value.itemInfoName + '</div>')
+                   .appendTo(ul);
+           };
+        });
+
+        $(document).ready(function () {
+
+            $(document).on('change', '#select-client-selectbox', function() {
+
+                let idx = this.selectedIndex;
+                let countIndex = this.parentNode.parentNode.children[4].children[3].value;
+
+                this.parentNode.parentNode.children[4].children[0].value = allItemList[countIndex][idx].clientContractItemNo;
+                this.parentNode.parentNode.children[4].children[1].value = allItemList[countIndex][idx].orderItemInfo.itemInfoNo;
+                this.parentNode.parentNode.children[4].children[2].value = allItemList[countIndex][idx].clientContractInfo.orderClient.clientNo;
+                this.parentNode.parentNode.children[1].innerText = allItemList[countIndex][idx].clientContractItemSupplyPrice;
+
+            });
+
+            $(document).on('click', '#item-select-cancel-btn', function() {
+
+                this.parentNode.parentNode.remove();
+
+            });
+
+            $('.demo3').click(function () {
+                swal({
+                    title: "발주 신청하시겠습니까?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                }, function () {
+                    swal("신청 완료!", "발주 신청이 완료되었습니다.", "success");
+                });
+            });
+
+            let confirmCount = 0;
+
+            $(document).on('click', '.sa-button-container .confirm', function() {
+
+                if($("#company-order-select-item-info")[0].children.length == 0) {
+                    swal({
+                        title: "발주 신청 실패!",
+                        text: "발주 신청 물품이 선택되지 않았습니다.\n발주 신청 물품을 선택해주세요."
+                    });
+                } else {
+
+                    let checkItemAmount = 0;
+                    let checkClient = 0;
+
+                    const $itemAmount = document.querySelectorAll("#item-amount");
+                    const $clientItemInfoNo = document.querySelectorAll("#clientItemInfoNo");
+                    const $itemNo = document.querySelectorAll("#company-order-itemInfoNo");
+
+                    for(let i = 0; i < $clientItemInfoNo.length - 1; i++) {
+                        for(let j = i + 1; j < $clientItemInfoNo.length; j++) {
+                            if($clientItemInfoNo[i].value == $clientItemInfoNo[j].value && $itemNo[i].value == $itemNo[j].value) {
+                                checkClient = 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    for(let i = 0; i < $itemAmount.length; i++) {
+
+                        let amountInt = $itemAmount[i].value * 1;
+
+                        if(amountInt < 1) {
+                            checkItemAmount = 1;
+                            break;
+                        }
+
+                    }
+
+                    if(checkItemAmount == 1) {
+                        swal({
+                            title: "발주 신청 실패!",
+                            text: "선택된 발주 신청 물품 중\n수량이 입력되지 않은 물품이 존재합니다.\n확인부탁드립니다."
+                        });
+                    } else if(checkClient == 1) {
+                        swal({
+                            title: "발주 신청 실패!",
+                            text: "같은 물품에 중복된 거래처가 존재합니다.\n확인부탁드립니다."
+                        });
+                    } else {
+                        confirmCount++;
+                    }
+
+                }
+
+                if(confirmCount == 2) {
+
+                    $("#companyOrderRegistForm").submit();
+                }
+
+            });
+
+        });
+
+    </script>
+
+    <th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>

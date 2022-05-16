@@ -1,0 +1,136 @@
+.chartAreaWhiteBoard {
+    border: 0.5px solid gray;
+    position: absolute;
+    left:2%;
+    top: 16%;
+    height: 340px;
+    width: 95%;
+    background: white;
+}
+
+.dataTableH3 {
+    /*position: absolute;*/
+    float: left;
+}
+
+.backlogListWhiteboard {
+    border: 0.5px solid gray;
+    position: absolute;
+    top: 50%;
+    left: 2%;
+    height: 450px;
+    width: 95%;
+    background: white;
+}
+
+.button {
+    background: #1AB394;
+    color: white;
+    border: none;
+    box-shadow: 1px 1px gray;
+    cursor: pointer;
+}
+
+.moveButton {
+    position: absolute;
+    left: 2%;
+    top: 48%;
+}
+
+.barGraph {
+    border: 0.5px solid gray;
+    height: 300px;
+    width: 95%;
+    position: relative;
+    margin-top: 15px;
+    margin-left: 2%;
+    float: left;
+}
+
+.barGraphForOut {
+    border: 0.5px solid gray;
+    height: 300px;
+    width: 95%;
+    position: relative;
+    margin-top: 15px;
+    margin-left: 2%;
+    float: left;
+}
+
+.yearBarGraph {
+    position: absolute;
+    left: 85%;
+    top: 3%;
+}
+
+.yearOutBarGraph {
+    position: absolute;
+    left: 85%;
+    top: 3%;
+}
+
+.itemListForBarGraph {
+    position: absolute;
+    left: 68%;
+    top: 3%;
+}
+
+.itemListForOutBarGraph {
+    position: absolute;
+    left: 68%;
+    top: 3%;
+}
+
+.YearCircleGraph {
+    position: absolute;
+    left: 67%;
+    top: 3%;
+}
+
+.MonthCircleGraph {
+    position: absolute;
+    left: 83%;
+    top: 3%;
+}
+
+
+.itemListForCircleGraph {
+    position: absolute;
+    left: 1.5%;
+    top: 10%;
+    z-index: 1050;
+}
+
+.itemListForInWarehouseBacklog {
+    /*position: absolute;*/
+    /*left: 15%;*/
+    /*top: 3%;*/
+    z-index: 1050;
+    float: left;
+    margin-top: 10px;
+}
+
+.month {
+    position: absolute;
+    top: 85%;
+}
+
+#morris-bar-chart {
+    width: 100%;
+    /*heigth: 20px;*/
+}
+
+svg {
+    height: 270px;
+}
+
+#morris-bar-chart2 {
+    width: 100%;
+    z-index: 1050;
+    height: 270px;
+}
+
+#morris-bar-chart2 svg {
+    height: 270px;
+}
+

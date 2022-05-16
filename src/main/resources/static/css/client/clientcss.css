@@ -1,0 +1,102 @@
+.clientScroll{
+    overflow-y: scroll;
+    height:90%;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+.clientScroll::-webkit-scrollbar-thumb {
+    background-color: limegreen; /*스크롤바의 색상*/
+}
+
+details summary::-webkit-details-marker{
+    display: none;
+}
+
+.clintWrapper{
+
+}
+
+.client-regist-title{
+    font-size: 30px;
+    border : #0b2e13;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.client-regist-body{
+    background-color: white;
+    margin: auto;
+    width: 70%;
+    height: 70%;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    font-size: 15px;
+}
+
+.client-regist-text{
+    width: 20%;
+}
+
+.client-regist-label{
+    width : 20%;
+}
+
+.client-regist-date {
+    width: 20%;
+}
+
+.client-regist-address{
+    width: 75.5%;
+}
+
+.client-regist-select{
+    width: 20%;
+    height: 25px;
+}
+
+.client-regist-buttonarea{
+    text-align: center;
+    margin-top : 10%;
+    margin-bottom: 1%;
+}
+
+.client-regist-submit{
+    background-color: mediumseagreen;
+    width: 10%;
+    border: none;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    margin-right: 3%;
+    height: 30px;
+}
+
+.client-regist-cancel{
+    background-color: mediumseagreen;
+    width: 10%;
+    border: none;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    margin-left: 3%;
+    height: 30px;
+}
+
+.clientMemoInsertForm{
+    height: 60px;
+    width: 78%;
+    margin-left: 17%;
+    border-radius: 15px;
+}
+
+.memoRegistButton{
+    margin-left: 75%;
+}
+
+.image-freeview{
+    width:650px;
+    height:300px;
+    margin:0 auto;
+}
+
+.image-freeview > img{
+
+    width: 600px;
+    height: 300px;
+    object-fit: cover;
+}

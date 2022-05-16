@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link th:href="@{/css/backlog/backlogcss.css}" rel="stylesheet">
+    <link th:href="@{/css/menu/menucss.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/morris/morris-0.4.3.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/c3/c3.min.css}" rel="stylesheet">
+
+</head>
+<body>
+
+    <th:block th:replace="/common/header.html"></th:block>
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>백로그관리</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">메인페이지</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a th:href="@{/backlog/list}"><strong>백로그 관리</strong></a>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+
+    <div class="chartAreaWhiteBoard">
+        <div class="chart-modalForIn" id="chartModalForIn">
+            <div class="barGraph">
+                <h4 style="font-weight: bold; margin-left: 5px;">각 물품 구매량 증/감소율</h4>
+                <select class="itemListForBarGraph" id="itemListForBarGraph" onchange="selectOneItemInfoForBarGraph(this.value, this.options[this.selectedIndex].text)">
+                    <option selected="selected" disabled="disabled">선택해주세요</option>
+                </select>
+
+                <select class="yearBarGraph" id="yearBarGraph" onchange="selectBarGraphForInWarehouse(this.value, this.options[this.selectedIndex].text);">
+
+                </select>
+
+                <div id="morris-bar-chart"></div>
+                <script type="text/javascript">
+                        let changeBarGraphCount = 0;
+                        $(document).ready(function() {
+                            Morris.Bar({
+                                element: 'morris-bar-chart',
+                                data: [
+                                    { m: '1', amount: 0 },
+                                    { m: '2', amount: 0 },
+                                    { m: '3', amount: 0 },
+                                    { m: '4', amount: 0 },
+                                    { m: '5', amount: 0 },
+                                    { m: '6', amount: 0 },
+                                    { m: '7', amount: 0 },
+                                    { m: '8', amount: 0 },
+                                    { m: '9', amount: 0 },
+                                    { m: '10', amount: 0 },
+                                    { m: '11', amount: 0 },
+                                    { m: '12', amount: 0 }
+                                ],
+                                xkey: 'm',
+                                ykeys: ['amount'],
+                                labels: ['총수량'],
+                                hideHover: 'auto',
+                                resize: true,
+                                barColors: ['#1ab394', '#cacaca'],
+                            });
+                        });
+
+                        function changeBarGraph() {
+                            if(changeBarGraphCount == 1) {
+                                $(document).ready(function() {
+                                    Morris.Bar({
+                                        element: 'morris-bar-chart',
+                                        data: [
+                                            { m: '1', amount: januaryAmount },
+                                            { m: '2', amount: februaryAmount },
+                                            { m: '3', amount: MarchAmount },
+                                            { m: '4', amount: AprilAmount },
+                                            { m: '5', amount: MayAmount },
+                                            { m: '6', amount: JunAmount },
+                                            { m: '7', amount: JulyAmount },
+                                            { m: '8', amount: AugustAmount },
+                                            { m: '9', amount: SeptemberAmount },
+                                            { m: '10', amount: OctoberAmount },
+                                            { m: '11', amount: NovemberAmount },
+                                            { m: '12', amount: DecemberAmount }
+                                        ],
+                                        xkey: 'm',
+                                        ykeys: ['amount'],
+                                        labels: ['총수량'],
+                                        hideHover: 'auto',
+                                        resize: true,
+                                        barColors: ['#1ab394', '#cacaca'],
+                                    });
+                                });
+                            }
+                        }
+
+                        let inWarehlouseListBySelectbox = [];
+                        const $yearSelectboxForBarGraph = $("#yearBarGraph");
+
+                        function selectOneItemInfoForBarGraph(value, text) {
+                            $.ajax({
+                                url: "/backlog/selectonebackloglist",
+                                type: "get",
+                                data: {"itemInfoNo":value},
+                                success: function(data) {
+                                        inWarehlouseListBySelectbox.length = 0;
+
+                                    for(list in data){
+                                        inWarehlouseListBySelectbox.push(data[list]);
+                                    }
+
+                                    const year = [ '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009'];
+
+                                    $yearSelectboxForBarGraph.html("");
+                                    $yearSelectboxForBarGraph.append($("<option selected>").text("년도선택").attr("disabled", true));
+
+                                    for(x in year) {
+                                        const opt = document.createElement("option");
+                                        opt.innerText = year[x];
+                                        opt.value = year[x];
+                                        $yearSelectboxForBarGraph.append(opt);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    alert("에러가 발생하였습니다. 다시 시도해주세요");
+                                }
+                            });
+                        }
+                </script>
+             </div>
+        </div>
+    </div>
+
+    <div class="moveButton" id="moveButton">
+        <button class="button backlogList" id="releasebacklogButton" style="width: 150px;">본사 이슈출고 백로그</button>
+    </div>
+
+    <div class="list-modal" id="listModal">
+        <div class="backlogListWhiteboard">
+            <div class="releasebacklog-modal" id="releasebacklogModal">
+                <div class="ibox">
+                    <div class="ibox-content" style="height: 450px; overflow: auto;">
+                    <h3 class="dataTableH3" style="font-weight: bold; padding: 6px; margin-left: 10px;">본사 입고물품 백로그</h3>
+                <select class="itemListForInWarehouseBacklog" id="itemListForInWarehouseBacklog" onchange="selectOneItemInfo(this.value, this.options[this.selectedIndex].text);">
+                    <option selected="selected" disabled="disabled">선택해주세요</option>
+                </select>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                <thead>
+                                <tr>
+                                    <th>물품번호</th>
+                                    <th>물품명</th>
+                                    <th>거래처명</th>
+                                    <th>입고완료처리일자</th>
+                                    <th>개수</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbodyForInWarehouse" class="tbodyForInWarehouse">
+                                    <tr th:each="inbacklog : ${ inWarehouseBacklogList }" id="InWarehouseBacklogList" class="InWarehouseBacklogList">
+                                        <td th:text="${ inbacklog.itemInfoNoForInWarehouse.itemInfoItemSerialNo }"></td>
+                                        <td th:text="${ inbacklog.itemInfoNoForInWarehouse.itemInfoName }"></td>
+                                        <td th:text="${ inbacklog.clientNoForInWarehouse.clientName }"></td>
+                                        <td th:text="${ inbacklog.inWarehouseCompleteDate }"></td>
+                                        <td th:text="${ inbacklog.inWarehouseAmount }"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<th:block th:replace="/common/footer.html"></th:block>
+
+<script>
+   document.getElementById("releasebacklogButton").onclick = function () {
+       location.href='/backlog/outwarehouselist';
+   }
+
+    $(function() {
+        $.ajax({
+            url: "/backlog/iteminfolist",
+            success: function(data) {
+                const itemListForInWarehouseBacklog = $("#itemListForInWarehouseBacklog");
+
+                for(let list in data) {
+                    itemListForInWarehouseBacklog.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
+                }
+            },
+            error: function(xhr) {
+                alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+    });
+
+   let januaryAmount = 0;
+   let februaryAmount = 0;
+   let MarchAmount = 0;
+   let AprilAmount = 0;
+   let MayAmount = 0;
+   let JunAmount = 0;
+   let JulyAmount = 0;
+   let AugustAmount = 0;
+   let SeptemberAmount = 0;
+   let OctoberAmount = 0;
+   let NovemberAmount = 0;
+   let DecemberAmount = 0;
+
+   function selectBarGraphForInWarehouse(value, text) { //이거 눌렀을 때 저 그래프가 나오는게 되고 (원래 그래프 되는거 따로 또 두고?)
+
+       januaryAmount = 0;
+       februaryAmount = 0;
+       MarchAmount = 0;
+       AprilAmount = 0;
+       MayAmount = 0;
+       JunAmount = 0;
+       JulyAmount = 0;
+       AugustAmount = 0;
+       SeptemberAmount = 0;
+       OctoberAmount = 0;
+       NovemberAmount = 0;
+       DecemberAmount = 0;
+
+       for(list in inWarehlouseListBySelectbox) {
+
+           let YearForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(0, 4);
+           let MonthForInWarehouse = inWarehlouseListBySelectbox[list].inWarehouseCompleteDate.substring(5, 7);
+           let Amount = inWarehlouseListBySelectbox[list].inWarehouseAmount;
+
+           if(YearForInWarehouse == value && MonthForInWarehouse == '01') {
+               januaryAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '02') {
+               februaryAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '03') {
+               MarchAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '04') {
+               AprilAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '05') {
+               MayAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '06') {
+               JunAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '07') {
+               JulyAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '08') {
+                AugustAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '09') {
+               SeptemberAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '10') {
+               OctoberAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '10') {
+               NovemberAmount += Amount;
+           } else if(YearForInWarehouse == value && MonthForInWarehouse == '10') {
+               DecemberAmount += Amount;
+           }
+       }
+
+       $("#morris-bar-chart").html("");
+       changeBarGraphCount = 1;
+       changeBarGraph();
+   }
+
+    $(function() {
+        $.ajax({
+            url: "/backlog/iteminfolist",
+            success: function(data) {
+                const itemListForBarGraph = $("#itemListForBarGraph");
+
+                for(let list in data) {
+                    itemListForBarGraph.append($("<option>").text(data[list].itemInfoName).val(data[list].itemInfoNo));
+                }
+            },
+            error: function(xhr) {
+                alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+    });
+
+    const $InWarehouseBacklogList = document.getElementById("InWarehouseBacklogList");
+
+    function selectOneItemInfo(value, text) {
+        $.ajax({
+           url: "/backlog/selectonebackloglist",
+            type: "get",
+            data: {"itemInfoNo":value},
+            success: function(data) {
+                $InWarehouseBacklogList.remove();
+
+                let str = "";
+
+                for(list in data){
+                    str += '<tr id="InWarehouseBacklogList" class="InWarehouseBacklogList">';
+                    str += '<td>'+data[list].itemInfoNoForInWarehouse.itemInfoItemSerialNo + '</td>';
+                    str += '<td>'+data[list].itemInfoNoForInWarehouse.itemInfoName +'</td>';
+                    str += '<td>'+data[list].clientNoForInWarehouse.clientName+'</td>';
+                    str += '<td>'+data[list].inWarehouseCompleteDate +'</td>';
+                    str += '<td>'+data[list].inWarehouseAmount +'</td>';
+                    str += '</tr>';
+                }
+
+                $("#tbodyForInWarehouse").empty();
+                $("#tbodyForInWarehouse").append(str);
+
+            },
+            error: function(xhr) {
+               alert("에러가 발생하였습니다. 다시 시도해주세요");
+            }
+        });
+    }
+
+</script>
+<script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
+<script th:src="@{/js/plugins/morris/raphael-2.1.0.min.js}"></script>
+<script th:src="@{/js/plugins/morris/morris.js}"></script>
+<script th:src="@{/js/demo/morris-demo.js}"></script>
+<script th:src="@{/js/plugins/d3/d3.min.js}"></script>
+<script th:src="@{/js/plugins/c3/c3.min.js}"></script>
+
+<script>
+    $.fn.dataTable.Buttons.defaults.dom.button.className = 'btn btn-white btn-sm';
+
+    $(document).ready(function(){
+        $('.dataTables-example').DataTable({
+            pageLength: 6,
+            responsive: true,
+            lengthChange: false,
+            info: false,
+
+        });
+
+    });
+</script>
+</body>
+</html>

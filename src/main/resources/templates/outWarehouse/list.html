@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/outWarehouse/outWarehouse.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .modal-content {
+            box-shadow: rgba(0,0,0,0.5) 0 0 0 9999px, rgba(0,0,0,0.5) 2px 2px 3px 3px !important;
+        }
+
+        #orderListModal-table,
+        #issueListModal-table{
+            width: 100%;
+        }
+
+        #orderListModal-tbl-header,
+        #issueListModal-tbl-header {
+            border-bottom: solid 1px black;
+            margin-bottom: 1px;
+            /*width: 100%;*/
+        }
+    </style>
+</head>
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<!-- 컨텐츠 작성 영역 -->
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>출고 관리</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <span>가앵점 발주 관리</span>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/outwarehouse/list}"><strong>출고 관리</strong></a>
+            </li>
+        </ol>
+    </div>
+<!--    <div class="col-lg-2">-->
+<!--    </div>-->
+</div>
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 목록 수</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${outWarehouseDataCnt}">건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 대기</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${outWarehouseDataCnt - outWarehouseCompletedCnt}">건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>출고 완료</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${outWarehouseCompletedCnt}">건</h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content" th:style="${'width:98%; margin:0 auto;'}">
+
+    <h2 th:style="${'font-weight:bold;'}">출고 정보</h2>
+    <br>
+
+    <div th:style="${'vertical-align:middle; float:left; margin-right:5%;'}">
+        <h4>가맹점 발주 상태 "완료" 목록 조회</h4>
+        <button class="checkOrderListBtn btn btn-w-m btn-primary">조회</button>
+    </div>
+    <div th:style="${'vertical-align:middle; float:left; margin-bottom:2%;'}">
+        <h4>가맹점 이슈 상태 "교환처리" 목록 조회</h4>
+        <button class="checkIssueListBtn btn btn-w-m btn-primary">조회</button>
+    </div>
+    <br>
+    <table class="outWarehouseTbl footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>출고 번호</th>
+            <th>작업상태</th>
+            <th>작업 처리일자</th>
+            <th>목적지(가맹점명)</th>
+            <th>목적지(가맹점 주소)</th>
+            <th>상세 정보</th>
+        </tr>
+        </thead>
+        <tbody>
+<!--        <tr>-->
+<!--            <td>2</td>-->
+<!--            <td class="outWarehouseNo">20222022</td>-->
+<!--            <td>출하 대기</td>-->
+<!--            <td>2022-04-14</td>-->
+<!--            <td>서울 강남 2호점</td>-->
+<!--            <td>서울시 강남구</td>-->
+<!--            <td>500</td>-->
+<!--            <td>-->
+<!--                <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${outWarehouseNo}')|">상세 조회</button>-->
+<!--            </td>-->
+<!--        </tr>-->
+        <tr th:each="outWarehouse, num : ${ outWarehouseList }">
+            <th:block th:if="${!'출고완료'.equals(outWarehouse.outWarehouseWorkingStatusName.toString()) or #dates.format(#dates.createToday(), 'yyyy-MM-dd').equals(outWarehouse.outWarehouseWorkingFinishedDate.toString())}">
+                <td>[[${num.count}]]</td>
+                <td th:text="${ outWarehouse.outWarehouseNo }"></td>
+                <td th:text="${ outWarehouse.outWarehouseWorkingStatusName }"></td>
+                <td th:text="${ outWarehouse.outWarehouseWorkingFinishedDate }"></td>
+                <td th:text="${ outWarehouse.franchiseName }"></td>
+                <td th:text="${ outWarehouse.franchiseAddress }"></td>
+                <td>
+                    <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${outWarehouse.outWarehouseNo}')|">상세 조회</button>
+    <!--                <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="'location.href=\'/outwarehouse/detail\''">상세 조회</button>-->
+                </td>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="modal inmodal fade" id="orderListModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
+                <div class="modal-header">
+                    <h4 class="modal-title">가맹점 발주 승인완료 목록</h4>
+                    <button class="close modalClose" type="button" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="orderListModal-table">
+                        <tr id="orderListModal-tbl-header">
+                            <th>발주번호</th>
+                            <th>발주 요청 가맹점명</th>
+                            <th>가맹점 주소</th>
+                            <th>출고 추가 여부</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal" id="orderListModalCloseBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="issueListModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn" style="width: 1000px; right: 200px">
+                <div class="modal-header">
+                    <h4 class="modal-title">이슈 처리중인 목록</h4>
+                    <button class="close modalClose" type="button" data-dismiss="modal">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="issueListModal-table">
+                        <tr id="issueListModal-tbl-header">
+                            <th>이슈번호</th>
+                            <th>이슈 요청 가맹점명</th>
+                            <th>가맹점 주소</th>
+                            <th>출고 추가 여부</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal" id="issueListModalCloseBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 테이블 끝 -->
+
+<th:block th:replace="/common/footer.html"></th:block>
+
+<script>
+    const checkOrderListBtn = document.getElementsByClassName("checkOrderListBtn");
+    const checkIssueListBtn = document.getElementsByClassName("checkIssueListBtn");
+    const closeBtns = document.getElementsByClassName("modalClose");
+    const modalOrderOkBtn = document.getElementById("orderListModalCloseBtn");
+    const modalIssueOkBtn = document.getElementById("issueListModalCloseBtn");
+    const $orderListTbl = document.getElementById("orderListModal-table");
+    const $issueListTbl = document.getElementById("issueListModal-table");
+    let insertBtn = [];
+    let orderNums = [];
+    let issueNums = [];
+    let representativeNums = [];
+    let franchiseOrderList = [];
+    let today = 0;
+    let year = 0;
+    let month = 0;
+    let date = 0;
+    let dateForm = 0;
+
+    function viewDetail(num) {
+        location.href="/outwarehouse/detail/" + num;
+    }
+
+    checkOrderListBtn[0].onclick = function() {
+        document.getElementById("orderListModal").style.display = "block";
+        document.getElementById("orderListModal").classList.add("show");
+
+        try {
+            axios.get("/outwarehouse/orderlist")
+            .then(function(res) {
+                franchiseOrderList = res.data;
+
+                franchiseOrderList.sort(function (a, b) {
+                    return a.franchiseOrderNo - b.franchiseOrderNo;
+                });
+
+                for(let i = 0; i < franchiseOrderList.length; i++) {
+                    let tr = document.createElement("tr");
+                    let td1 = document.createElement("td");
+                    let td2 = document.createElement("td");
+                    let td3 = document.createElement("td");
+                    let td4 = document.createElement("td");
+                    let btn = document.createElement("button");
+
+                    btn.className = "insertBtn btn btn-primary";
+                    btn.innerHTML = "추가";
+                    btn.setAttribute("value", res.data[i].franchiseOrderNo);
+
+                    td1.innerHTML = res.data[i].franchiseOrderNo;
+                    td2.innerHTML = res.data[i].franchiseName;
+                    td3.innerHTML = res.data[i].franchiseAddress;
+
+                    td4.appendChild(btn);
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+
+                    $orderListTbl.children[0].appendChild(tr);
+                }
+
+                insertBtn = document.getElementsByClassName("insertBtn");
+
+                for(let i = 0; i < insertBtn.length; i++) {
+                    insertBtn[i].onclick = function() {
+
+                        orderNums.push(this.value);
+                        representativeNums.push(franchiseOrderList[i].franchiseRepresentativeNo);
+
+                        orderNums = orderNums.map((e) => parseInt(e));
+                        representativeNums = representativeNums.map((e) => parseInt(e));
+
+                        insertBtn[i].setAttribute("disabled", "disabled");
+                    }
+                }
+            })
+        } catch(e) {
+            alert("조회 실패");
+            console.log(e);
+        }
+    }
+
+    checkIssueListBtn[0].onclick = function() {
+        document.getElementById("issueListModal").style.display = "block";
+        document.getElementById("issueListModal").classList.add("show");
+
+        try {
+            axios.get("/outwarehouse/issuelist")
+                .then(function(res) {
+                    franchiseIssueList = res.data;
+
+                    franchiseIssueList.sort(function (a, b) {
+                        return a.franchiseIssueNo - b.franchiseIssueNo;
+                    });
+
+                    for(let i = 0; i < franchiseIssueList.length; i++) {
+                        let tr = document.createElement("tr");
+                        let td1 = document.createElement("td");
+                        let td2 = document.createElement("td");
+                        let td3 = document.createElement("td");
+                        let td4 = document.createElement("td");
+                        let btn = document.createElement("button");
+
+                        btn.className = "insertBtn btn btn-primary";
+                        btn.innerHTML = "추가";
+                        btn.setAttribute("value", res.data[i].franchiseIssueNo);
+
+                        td1.innerHTML = res.data[i].franchiseIssueNo;
+                        td2.innerHTML = res.data[i].franchiseName;
+                        td3.innerHTML = res.data[i].franchiseAddress;
+
+                        td4.appendChild(btn);
+                        tr.appendChild(td1);
+                        tr.appendChild(td2);
+                        tr.appendChild(td3);
+                        tr.appendChild(td4);
+
+                        $issueListTbl.children[0].appendChild(tr);
+                    }
+
+                    insertBtn = document.getElementsByClassName("insertBtn");
+
+                    for(let i = 0; i < insertBtn.length; i++) {
+                        insertBtn[i].onclick = function() {
+
+                            issueNums.push(this.value);
+                            representativeNums.push(franchiseIssueList[i].franchiseRepresentativeNo);
+
+                            issueNums = orderNums.map((e) => parseInt(e));
+                            representativeNums = representativeNums.map((e) => parseInt(e));
+
+                            insertBtn[i].setAttribute("disabled", "disabled");
+                        }
+                    }
+                })
+        } catch(e) {
+            alert("조회 실패");
+            console.log(e);
+        }
+    }
+
+    for(let i = 0; i < closeBtns.length; i++) {
+        closeBtns[i].onclick = function() {
+            if( i === 0 ) {
+                document.getElementById("orderListModal").style.display = "none";
+
+                $orderListTbl.children[0].innerHTML = "";
+
+                let tr = document.createElement("tr");
+                tr.id = "orderListModal-tbl-header";
+                let th1 = document.createElement("th");
+                th1.innerHTML = "발주번호";
+                let th2 = document.createElement("th");
+                th2.innerHTML = "발주 요청 가맹점명";
+                let th3 = document.createElement("th");
+                th3.innerHTML = "가맹점 주소";
+                let th4 = document.createElement("th");
+                th4.innerHTML = "출고 추가 여부";
+
+                tr.appendChild(th1);
+                tr.appendChild(th2);
+                tr.appendChild(th3);
+                tr.appendChild(th4);
+
+                $orderListTbl.children[0].appendChild(tr);
+            } else {
+                document.getElementById("issueListModal").style.display = "none";
+
+                $issueListTbl.children[0].innerHTML = "";
+
+                let tr = document.createElement("tr");
+                tr.id = "issueListModal-tbl-header";
+                let th1 = document.createElement("th");
+                th1.innerHTML = "이슈번호";
+                let th2 = document.createElement("th");
+                th2.innerHTML = "이슈 요청 가맹점명";
+                let th3 = document.createElement("th");
+                th3.innerHTML = "가맹점 주소";
+                let th4 = document.createElement("th");
+                th4.innerHTML = "출고 추가 여부";
+
+                tr.appendChild(th1);
+                tr.appendChild(th2);
+                tr.appendChild(th3);
+                tr.appendChild(th4);
+
+                $issueListTbl.children[0].appendChild(tr);
+            }
+        }
+    }
+
+    modalOrderOkBtn.onclick = function() {
+        $orderListTbl.children[0].innerHTML = "";
+
+        let tr = document.createElement("tr");
+        tr.id = "orderListModal-tbl-header";
+        let th1 = document.createElement("th");
+        th1.innerHTML = "발주번호";
+        let th2 = document.createElement("th");
+        th2.innerHTML = "발주 요청 가맹점명";
+        let th3 = document.createElement("th");
+        th3.innerHTML = "가맹점 주소";
+        let th4 = document.createElement("th");
+        th4.innerHTML = "출고 추가 여부";
+        tr.appendChild(th1);
+
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+        $orderListTbl.children[0].appendChild(tr);
+
+        today = new Date();
+        year = today.getFullYear();
+        month = today.getMonth() + 1;
+        date = today.getDate();
+        dateForm = year + "-" + month + "-" + date;
+
+        try{
+            axios({
+                method: 'post',
+                url: '/outwarehouse/insertorderdata',
+                data: {
+                    orderNums: orderNums,
+                    representativeNums: representativeNums,
+                    today: dateForm
+                }
+            })
+                .then(function(res) {
+                    if(res.data === 1) {
+                        // alert("출고에 정보가 추가되었습니다.");
+                        location.reload();
+                    }
+                })
+        } catch(e) {
+            alert("데이터 추가에 실패했습니다.");
+        }
+
+        document.getElementById("orderListModal").style.display = "none";
+    }
+
+    modalIssueOkBtn.onclick = function() {
+        $issueListTbl.children[0].innerHTML = "";
+
+        let tr = document.createElement("tr");
+        tr.id = "issueListModal-tbl-header";
+        let th1 = document.createElement("th");
+        th1.innerHTML = "이슈번호";
+        let th2 = document.createElement("th");
+        th2.innerHTML = "이슈 요청 가맹점명";
+        let th3 = document.createElement("th");
+        th3.innerHTML = "가맹점 주소";
+        let th4 = document.createElement("th");
+        th4.innerHTML = "출고 추가 여부";
+        tr.appendChild(th1);
+
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+        $issueListTbl.children[0].appendChild(tr);
+
+        today = new Date();
+        year = today.getFullYear();
+        month = today.getMonth() + 1;
+        date = today.getDate();
+        dateForm = year + "-" + month + "-" + date;
+
+        try{
+            axios({
+                method: 'post',
+                url: '/outwarehouse/insertissuedata',
+                data: {
+                    issueNums: issueNums,
+                    representativeNums: representativeNums,
+                    today: dateForm
+                }
+            })
+                .then(function(res) {
+                    if(res.data === 1) {
+                        // alert("출고에 정보가 추가되었습니다.");
+                        location.reload();
+                    }
+                })
+        } catch(e) {
+            alert("데이터 추가에 실패했습니다.");
+        }
+
+        document.getElementById("issueListModal").style.display = "none";
+    }
+</script>
+</body>
+</html>

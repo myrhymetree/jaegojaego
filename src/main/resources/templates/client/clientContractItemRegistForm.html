@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>거래처 신규 등록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/client/clientcss.css}">
+</head>
+<body>
+<div th:replace="/common/header.html"></div>
+
+<div class="body-header" style="min-height: 7%;">
+    <div class="menu-title">거래처정보</div>
+    <div class="menu-path"><a href="index.html">메인페이지</a> / 거래처관리 / 거래처등록</div>
+</div>
+<div class="client-regist-title">거래처 신규 등록 </div>
+<div class="client-regist-body" style="position: center !important;">
+<div class="panel-body">
+    <fieldset>
+        <form class="client-regist-form" id="clientFrom" action="/client/registclientitem" enctype="multipart/form-data" method="post">
+            <h2> 회사 정보 </h2><hr>
+            <label class="client-regist-label" >상품명 : </label>
+                <input type="text" class="client-regist-text"  id="registClientItemName" name="clientContractItemName"><br>
+            <label class="client-regist-label" >공급가 : </label>
+                 <input type="text" class="client-regist-text" id="registClientItemSupplyPrice" name="clientContractItemSupplyPrice"><br>
+            <label class="client-regist-label">거래처 : </label>
+                <select id="registClientItemByClient" class="client-regist-select" name="clientNo">
+                    <option></option>
+                    <option th:each= " client : ${ client }" th:value="${ client.getClientNo }" th:text="${ client.getClientName }" th:name="${ client.getClientName }"/>
+                </select><br>
+            <label class="client-regist-label">상품이미지 : </label>
+                <input type="file" class="" id="registClientItemImage" accept=".jpg, .gif, .png, .jpeg" onchange="setThumbnail(event);" name="clientItemImage">
+            <div id="image_container" class="image-freeview">
+            </div>
+            <div class="client-regist-buttonarea">
+                <button class="client-regist-submit" type="submit" id="clientItemRegistSubmit">등록</button>
+                <button class="client-regist-cancel" type="button" id="clientItemRegistCancel" onclick="location.href='/client/itemlist'">취소</button>
+                <br><br>
+            </div>
+            <hr>
+        </form>
+    </fieldset>
+</div>
+
+</div>
+
+
+<th:block th:replace="/common/footer.html"></th:block>
+<script>
+    function setThumbnail(event) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var img = document.createElement("img");
+            img.setAttribute("src", event.target.result);
+            document.querySelector("div#image_container").appendChild(img);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+
+
+
+<script>
+    // $("#clientItemRegistSubmit").click(function (){
+    //
+    //     const clientItemName = $("#registClientItemName").val();
+    //     const clientItemSupplyPrice = $("#registClientItemSupplyPrice").val();
+    //     const clientItemImage = $("#registClientItemImage").val();
+    //     const clientNo = $("#registClientItemByClient").val();
+    //
+    //
+    //     if($("#registClientItemName").val() == "") {
+    //         alert("상품명을 입력하세요");
+    //     } else if($("#registClientItemSupplyPrice").val() == "") {
+    //         alert("공급가를 입력하세요");
+    //     } else if($("#registClientItemByClient").val() == "") {
+    //         alert("납품 거래처를 선택하세요");
+    //     } else {
+    //         $.ajax({
+    //             url:"/client/registclientitem",
+    //             type:"get",
+    //             data: {
+    //                 clientItemName : clientItemName,
+    //                 clientItemSupplyPrice : clientItemSupplyPrice,
+    //                 clientItemImage : clientItemImage,
+    //                 clientNo : clientNo
+    //             },
+    //             dataType: "text",
+    //             async : true,
+    //             success:function(data, status, xhr) {
+    //                 alert("신규 거래처가 등록되었습니다.");
+    //                 location.href="/client/itemlist";
+    //             },
+    //             error:function(xhr, status, error) {
+    //                 alert("등록에 실패하였습니다.");
+    //                 console.log(error);
+    //                 console.log(status);
+    //                 console.log(xhr);
+    //             }
+    //         });
+    //
+    //     }
+    // })
+
+</script>
+</body>
+</html>

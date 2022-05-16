@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "path.css",
+	"sources": [
+		"path.less"
+	],
+	"names": [],
+	"mappings": "AAAA;gCACgC;AAEhC,UAAU;EACR,WAAW,EAAE,aAAa;EAC1B,GAAG,EAAE,8DAA8D;EACnE,GAAG,EAAE,qEAAqE,CAAC,2BAA2B,EACpG,gEAAgE,CAAC,eAAe,EAChF,+DAA+D,CAAC,cAAc,EAC9E,8DAA8D,CAAC,kBAAkB,EACjF,iFAAiF,CAAC,aAAa;EAEjG,WAAW,EAAE,MAAM;EACnB,UAAU,EAAE,MAAM"
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<style>
+
+    .hidden {
+
+        display:none;
+
+    }
+
+</style>
+
+
+<body>
+<th:block th:include="/common/header.html"></th:block>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>본사 발주 상세 조회</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/main}">메인페이지</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/}">입고관리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/list}">입고, 입하 처리</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/complete}">본사 발주 목록 조회</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a th:href="@{/warehouse/complete}">본사 발주 상세 조회</a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<!-- 컨텐츠 작성 영역 -->
+
+<br>
+
+<!-- 상단박스 시작 -->
+<div class="row">
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>발주 번호</h5>
+            </div>
+            <div class="ibox-content">
+                    <h1 class="no-margins" th:text="${ orderHistory.getCompanyOrderHistoryNo() }"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>제품 종류</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins" th:text="${ orderHistory.getCompanyOrderItemList().size() } + 종류"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>발주 건수</h5>
+            </div>
+            <div class="ibox-content">
+                    <h1 class="no-margins" th:text="${ itemCnt } + 건"></h1>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 상단박스 끝 -->
+
+<!-- 테이블 시작 -->
+<div class="ibox-content">
+
+    <h2>본사 발주 상세 정보</h2>
+    <br>
+
+    <table class="footable table table-stripped" data-page-size="8" data-filter=#filter>
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>품목</th>
+            <th>품번</th>
+            <th>품명</th>
+            <th>거래처</th>
+            <th>발주 수량</th>
+            <th>입고 목록 추가</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="warehouse,num : ${ completeDetail }">
+            <td th:text="${ num.index + 1 }"></td>
+            <td th:text="${ warehouse.completeItemCategoryName }"></td>
+            <td th:text="${ warehouse.completeItemSerialNo }"></td>
+            <td th:text="${ warehouse.completeItemName }"></td>
+            <td th:text="${ warehouse.clientName }"></td>
+            <td th:text="${ warehouse.companyAmount }"></td>
+            <!-- 제품 번호 -->
+            <input type="hidden" name="completeItemInfoNo" id="completeItemInfoNo" th:value="${ warehouse.completeItemInfoNo }" >
+            <!-- 본사 발주 신청서 번호 -->
+            <input type="hidden" name="orderApplicationNo" id="orderApplicationNo" th:value="${ warehouse.orderApplicationNo }" >
+            <!-- 거래처 번호 -->
+            <input type="hidden" name="clientNo" id="clientNo" th:value="${ warehouse.clientNo }" >
+            <!-- 거래처 판매 계약 상품 번호 -->
+            <input type="hidden" name="clientContractItemNo" id="clientContractItemNo" th:value="${ warehouse.clientContractItemNo }" >
+            <!-- 발주 수량 -->
+            <input type="hidden" name="companyAmount" id="companyAmount" th:value="${ warehouse.companyAmount }" >
+            <th:block th:if="${ warehouse.orderApplicationItemYN eq 'N'}">
+            <td>
+                <button class="btn btn-w-m btn-primary" id="warehouseRegistBtn">입하 목록 추가</button>
+            </td>
+            </th:block>
+
+            <th:block th:if="${ warehouse.orderApplicationItemYN eq 'Y'}">
+                <td>
+                    <a>입고 목록 추가 완료</a>
+                </td>
+            </th:block>
+
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<!-- 테이블 끝 -->
+
+<script>
+    const $completeItemInfoNo = document.querySelectorAll('#completeItemInfoNo');
+    const $orderApplicationNo = document.querySelectorAll('#orderApplicationNo');
+    const $clientNo = document.querySelectorAll('#clientNo');
+    const $clientContractItemNo = document.querySelectorAll('#clientContractItemNo');
+    const $companyAmount = document.querySelectorAll('#companyAmount');
+
+    const $warehouseRegistBtn = document.querySelectorAll('#warehouseRegistBtn');
+
+    for (let i = 0; i < $warehouseRegistBtn.length; i++) {
+
+        $warehouseRegistBtn[i].onclick = function () {
+
+            for (let j = 0; j < $completeItemInfoNo.length; j++) {
+
+                if ($clientContractItemNo[j].value == this.parentNode.parentNode.children[9].value) {
+
+                    $.ajax({
+                        url: "/warehouse/complete/regist",
+                        dataType: 'json',
+                        type: "post",
+                        data: {
+                            "completeItemInfoNo" : $completeItemInfoNo[j].value,
+                            "orderApplicationNo" : $orderApplicationNo[j].value,
+                            "clientNo" : $clientNo[j].value,
+                            "clientContractItemNo" :$clientContractItemNo[j].value,
+                            "companyAmount" : $companyAmount[j].value
+
+                        },
+                        success: function (data) {
+                            alert("처리 상태 수정에 성공하셨습니다.");
+                            history.go(0);
+                        },
+                        error: function (xhr) {
+                            alert("처리 상태 수정에 실패하셨습니다.");
+                            console.log(xhr);
+                        }
+
+                    });
+
+                }
+
+            }
+
+        }
+
+    }
+
+</script>
+<th:block th:replace="/common/footer.html"></th:block>
+</body>
+</html>
