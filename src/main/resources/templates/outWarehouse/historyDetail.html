@@ -51,7 +51,7 @@
         </thead>
         <tbody>
         <tr th:each="outWarehouseDetail,num : ${ outWarehouseDetailList }">
-            <td th:text="${ num.size - num.index }"></td>
+            <td th:text="${ num.index + 1 }"></td>
             <td th:text="${ outWarehouseDetail.itemInfoItemSerialNo }"></td>
             <td th:text="${ outWarehouseDetail.materialCategoryName }"></td>
             <td th:text="${ outWarehouseDetail.itemInfoName }"></td>

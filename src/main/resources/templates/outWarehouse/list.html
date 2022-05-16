@@ -108,6 +108,7 @@
     <table class="outWarehouseTbl footable table table-stripped" data-page-size="8" data-filter=#filter>
         <thead>
         <tr>
+            <th>No</th>
             <th>출고 번호</th>
             <th>작업상태</th>
             <th>작업 처리일자</th>
@@ -129,8 +130,9 @@
 <!--                <button type="button" class="detailBtn btn btn-w-m btn-primary" th:onclick="|javascript:viewDetail('${outWarehouseNo}')|">상세 조회</button>-->
 <!--            </td>-->
 <!--        </tr>-->
-        <tr th:each="outWarehouse : ${ outWarehouseList }">
+        <tr th:each="outWarehouse, num : ${ outWarehouseList }">
             <th:block th:if="${!'출고완료'.equals(outWarehouse.outWarehouseWorkingStatusName.toString()) or #dates.format(#dates.createToday(), 'yyyy-MM-dd').equals(outWarehouse.outWarehouseWorkingFinishedDate.toString())}">
+                <td>[[${num.count}]]</td>
                 <td th:text="${ outWarehouse.outWarehouseNo }"></td>
                 <td th:text="${ outWarehouse.outWarehouseWorkingStatusName }"></td>
                 <td th:text="${ outWarehouse.outWarehouseWorkingFinishedDate }"></td>

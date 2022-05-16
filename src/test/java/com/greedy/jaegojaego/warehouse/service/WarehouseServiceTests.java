@@ -58,8 +58,8 @@ public class WarehouseServiceTests {
 
         //given
         String status = "입고 대기";
-        int warehouseNo = 1;
-        int warehouseAmount = 200;
+        int warehouseNo = 101;
+        int warehouseAmount = 2;
 
         //when
         /* 입고 정보 수정용 */
@@ -132,14 +132,13 @@ public class WarehouseServiceTests {
     public void registCompleteItem() {
 
         //given
-        int completeItemInfoNo = 1;
-        int orderApplicationNo = 204;
-        int clientNo = 1;
+        int completeItemInfoNo = 4;
+        int orderApplicationNo = 385;
+        int clientNo = 7;
         int clientContractItemNo = 1;
-        int companyAmount = 200;
+        int companyAmount = 3;
 
         //when
-
         Warehouse warehouse = new Warehouse();
 
         WarehouseItemInfo warehouseItemInfo = new WarehouseItemInfo();
