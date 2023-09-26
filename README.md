@@ -112,3 +112,13 @@
 4. 발주 상세 정보에서 발주할 물품의 정보들을 조회할 수 있습니다.
 5. 발주 상세 정보에서 해당 발주에 대한 출고 처리상태를 수정할 수 있습니다.
 6. 출고 내역을 조회할 수 있습니다.
+
+## 6. 시연 영상
+
+## 7. 테스트
+
+<img width="1015" alt="image" src="https://github.com/myrhymetree/jaegojaego/assets/94158097/4b5e53b8-4a4a-4625-ba1d-7cd73c143e41">
+
+다음과 같은 테스트 결과를 산출물로 정리하였습니다.
+
+https://ember-event-d5a.notion.site/5ed0a3127fe44dc4ab0f80c62aa2f5a2?pvs=4
