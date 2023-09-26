@@ -33,3 +33,5 @@
 ## 3. 개발환경
 ![재고재고 개발환경](https://github.com/myrhymetree/jaegojaego/assets/94158097/11b1490f-a1b4-4751-b364-d1e3207da485)
 
+## 4. ERD
+![ERD_jaegojaego](https://github.com/myrhymetree/jaegojaego/assets/94158097/a98ff64f-ed3b-4f6e-83b4-76cd61c86112)
