@@ -30,3 +30,6 @@
   </tr>
 </table>
 
+## 3. 개발환경
+![재고재고 개발환경](https://github.com/myrhymetree/jaegojaego/assets/94158097/11b1490f-a1b4-4751-b364-d1e3207da485)
+
