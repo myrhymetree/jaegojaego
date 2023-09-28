@@ -1,7 +1,7 @@
 # jaegojaego
 
 ## 1. 프로젝트 소개
-**소규모 커피 프렌차이즈를 위한 공급망 관리**
+**소규모 커피 프렌차이즈를 위한 사내 구축형 공급망 관리(SCM) 웹 애플리케이션**
 ### 1-1. 프로젝트 산출물
 <img width="1059" alt="image" src="https://github.com/myrhymetree/jaegojaego/assets/94158097/feb19bef-878d-4c09-9ced-4690c60bd989">
 
