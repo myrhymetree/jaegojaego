@@ -2,6 +2,7 @@
 
 ## 1. 프로젝트 소개
 ### 설계 및 개발 기간 : 2022.3.16 ~ 2022.5.15
+### 원본 : https://gitlab.com/jaegojaego/jaegojaego
 **소규모 커피 프렌차이즈를 위한 사내 구축형 공급망 관리(SCM) 웹 애플리케이션**
 ### 1-1. 프로젝트 산출물
 <img width="1059" alt="image" src="https://github.com/myrhymetree/jaegojaego/assets/94158097/feb19bef-878d-4c09-9ced-4690c60bd989">
